@@ -551,3 +551,15 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Five packages (engine, content, ui, shell, tools); the engine is pure rules with seeded randomness and injected time, one simulate function, and every change an event with a cause id. The event log feeds the Trace, histories, Chronicle, reports, letters and playtest logs. Game values are integers. Content is JSON with schemas, loaded as packs (mods later). Ironman saves are written safely each day, versioned with migrations, never overwritten when unreadable, synced by Steam Cloud. Optional AI flavour is off by default, player-keyed and never blocks templates. Performance: 1366×768 minimum, 60 fps map, day tick under 50 ms, simulated year under 1 s, save/load under 1 s. Detail: `docs/design/PLAN.md` §11b–§11g.
 - **Why:** Owner accepted the draft (Plan Q11b); holds for either engine in D-090.
+
+## D-092 Tools adopted now: docs checker, mock-up script, one setup audit
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** `tools/docs-check.mjs` runs before every push with the drift check (cited decision ids exist; no draft markers in accepted PLAN sections). `tools/mockup-shot.mjs` renders every HTML mock-up or page at desktop and phone width before publishing (fonts, no sideways scroll, screenshots). The `setup-audit` skill runs once on this repo; its proposals come to the owner before any change. Detail: `docs/design/TOOLS-REVIEW.md` §3.
+- **Why:** Owner's choice from the tools review. Measured: the docs checker runs in 0.06 s and caught both planted mistakes on a copy of the docs; of the day's four lessons it would have caught one. The mock-up script turns the VER-06 check used for every mock-up into one command.
+
+## D-093 Adversarial review before every pull request
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Before creating any pull request, and again before marking one ready, review the whole branch diff adversarially: what is wrong, inconsistent with DECISIONS, unverified or missing. Fix or report each finding before the PR goes up. Use the `reviewer` agent or `code-review` skill for large diffs. Recorded in AGENTS.md project rules.
+- **Why:** Owner's rule (2026-10-26).

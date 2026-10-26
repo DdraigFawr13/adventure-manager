@@ -8,6 +8,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Just done
 
+- 2026-10-26 Tools and skills review drafted: `docs/design/TOOLS-REVIEW.md`, page https://claude.ai/artifact/UiwdssAjKy2dnZ73pzJfeB. Adopted: docs checker, mock-up script, one setup audit (D-092); adversarial review before every PR (D-093). Ripgrep: useful, already in use; caveman skill: not adopted.
 - 2026-10-26 PLAN.md §11 accepted: engine chosen after a two-engine test, web tech (Electron, TypeScript) vs Godot 4 (C#), as prototype step 0 (D-090); engine-neutral architecture with the event log as spine, integer determinism, JSON packs, safe versioned saves (D-091).
 - 2026-10-26 PR #2 (Part A, §1–§10) merged to `main`. Part B work on branch `claude/plan-part-b`.
 - 2026-10-26 PLAN.md §10 accepted: playtest logs only, release sends nothing, opt-in telemetry a future option (D-088); playtest stages, measures and acting on results (D-089). Part A complete.
@@ -29,7 +30,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Next
 
-1. Tools and skills review (Next 3) now that §11 is done, then PLAN.md §12 (art and audio production, including the kingdom map workshop, D-087), then §13..§15. Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
+1. Owner is reviewing the tools list page; record their answer on the rest of the list (build-start tools, art connectors, not-needed list) and the two audit findings (fresh session per PR or section; deny rules). Then PLAN.md §12 (art and audio production, including the kingdom map workshop, D-087), then §13..§15. Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
 2. In §12 (art and audio production): cost the art (map art, ink renderer, face part library, two icon sizes, painted portraits later). Ledger readability is settled for now (D-084), to confirm on real monitors in prototype R4.
 3. **Tools and skills review** (owner's request, 2026-10-26): after PLAN §11, before §15, look into tools and skills that improve development (Claude Code skills, agents, hooks; engine and editor tooling; testing, CI and asset pipelines). Adopt only if measured cheaper or equal at the same quality (DEL-07).
 
@@ -45,6 +46,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Working style with the owner
 
+- Before creating any PR, and before marking one ready, do an adversarial review of the whole branch diff (D-093).
 - Keep `docs/roadmap.html` current: update and republish it (same file path, same URL) at every checkpoint where a section or phase changes.
 - Ask one question at a time as a popup (AskUserQuestion) with a recommendation and room for notes; record each answer in the design doc and DECISIONS.md immediately. "[No preference]" means skipped, not approved; show long content in chat, not only in option previews.
 - The owner often combines or extends options in the notes ("B but with more fantasy flair"); record their words as an owner's note and treat unselected extras as Proposed until approved.
