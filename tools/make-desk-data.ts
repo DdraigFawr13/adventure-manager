@@ -11,7 +11,14 @@ import {
   type GameEvent,
   type PersonSlot,
 } from '@adventure-manager/engine';
-import { baseResolution, coinRates, names, reportText } from '@adventure-manager/content';
+import {
+  baseContracts,
+  baseResolution,
+  coinRates,
+  engineTestMapText,
+  names,
+  reportText,
+} from '@adventure-manager/content';
 import { rules, runYear } from './year-sim-play.ts';
 
 const seed = process.argv[2] ?? 'desk-1';
@@ -235,6 +242,86 @@ const letter = writeQuestReport(
   },
 ).map((l) => l.text);
 
+// The March from the engine test's bake (D-134), halved to 150 × 100 cells for a small sheet.
+// Sites are not placed on the map yet (PLAN §7c): the tool puts each one at about its travel
+// distance from the guild hall on its own bearing, on dry land. Placeholders, labelled as such.
+const baked = JSON.parse(readFileSync('packages/ui/assets/engine-test/map-base.json', 'utf8')) as {
+  width: number;
+  height: number;
+  dayCells: number;
+  water: string;
+  biome: string;
+  biomeIds: string[];
+  guildCell: number;
+  placeCells: number[];
+  villageCells: number[];
+  roads: { cells: number[] }[];
+  rivers: { cells: number[] }[];
+};
+const water = Buffer.from(baked.water, 'base64');
+const biome = Buffer.from(baked.biome, 'base64');
+const W = baked.width / 2;
+const H = baked.height / 2;
+const xy = (cell: number): [number, number] => [
+  Math.floor((cell % baked.width) / 2),
+  Math.floor(Math.floor(cell / baked.width) / 2),
+];
+const isWater = (x: number, y: number) => water[y * 2 * baked.width + x * 2] !== 0;
+let grid = '';
+for (let y = 0; y < H; y += 1)
+  for (let x = 0; x < W; x += 1)
+    grid += isWater(x, y)
+      ? '~'
+      : String.fromCharCode(97 + (biome[y * 2 * baked.width + x * 2] ?? 0));
+const line = (cells: number[]) =>
+  cells.filter((_, i) => i % 2 === 0 || i === cells.length - 1).map(xy);
+const [gx, gy] = xy(baked.guildCell);
+const daysFor: Record<string, number> = Object.fromEntries(
+  rules.dangers.map((d) => [d.danger, d.travelDays + 1]),
+);
+const sitePlaces = baseContracts.sites.map((site, i) => {
+  const days = Math.min(...site.dangers.map((d) => daysFor[d] ?? 6));
+  const angle = (i * 2 * Math.PI) / baseContracts.sites.length + 0.4;
+  const r = (days * baked.dayCells) / 2;
+  let best: [number, number] = [gx, gy];
+  let bestScore = Infinity;
+  for (let y = 0; y < H; y += 1)
+    for (let x = 0; x < W; x += 1) {
+      // Dry land, and far enough from the sheet's edge for the label.
+      if (isWater(x, y) || x < 8 || y < 6 || x > W - 9 || y > H - 7) continue;
+      const tx = gx + Math.cos(angle) * r;
+      const ty = gy + Math.sin(angle) * r;
+      const score = (x - tx) ** 2 + (y - ty) ** 2;
+      if (score < bestScore) {
+        bestScore = score;
+        best = [x, y];
+      }
+    }
+  return { name: names[site.id] ?? site.id, x: best[0], y: best[1] };
+});
+const text = engineTestMapText;
+const map = {
+  w: W,
+  h: H,
+  dayCells: baked.dayCells / 2,
+  biomes: baked.biomeIds,
+  grid,
+  roads: baked.roads.map((r) => line(r.cells)),
+  rivers: baked.rivers.map((r) => line(r.cells)),
+  hall: { name: text['place.guild-hall'] ?? 'the guild hall', x: gx, y: gy },
+  towns: baked.placeCells.map((c, i) => ({
+    name: text[`place.${i}`] ?? '',
+    x: xy(c)[0],
+    y: xy(c)[1],
+  })),
+  villages: baked.villageCells.map((c, i) => ({
+    name: text[`village.${i}`] ?? '',
+    x: xy(c)[0],
+    y: xy(c)[1],
+  })),
+  sites: sitePlaces,
+};
+
 const data = {
   seed,
   today,
@@ -249,6 +336,7 @@ const data = {
   parties,
   quests: quests.slice(-24).reverse(),
   letter,
+  map,
 };
 const page = readFileSync(PAGE, 'utf8');
 const start = page.indexOf('/*DATA*/');
