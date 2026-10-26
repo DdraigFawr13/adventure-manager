@@ -41,7 +41,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 ## Working style with the owner
 
 - End the session after each merged PR or finished plan section; the next one starts here (D-095).
-- PRs (D-133): independent adversarial review of the whole branch diff, then the owner's approval, then create the PR; merge it yourself once CI is green. Commits after approval need a new review and approval.
+- PRs (D-133): independent adversarial review of the whole branch diff, its findings and fixes published as an artifact and linked, then the owner's approval, then create the PR; merge it yourself once CI is green. Commits after approval need a new review and approval.
 - Every session updates and republishes `docs/roadmap.html` to https://claude.ai/artifact/FTio9mE7jLaK4Wrn189YAg (D-128); read the live artifact first, then publish with its `url`.
 - Ask one question at a time as a popup (AskUserQuestion) with a recommendation and room for notes; record each answer in the design doc and DECISIONS.md immediately. "[No preference]" means skipped, not approved; show long content in chat, not only in option previews.
 - The owner often combines or extends options in the notes ("B but with more fantasy flair"); record their words as an owner's note and treat unselected extras as Proposed until approved.

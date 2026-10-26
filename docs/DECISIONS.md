@@ -823,6 +823,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** No pull request is created until (1) an independent adversarial review of the whole branch diff has run (D-093, D-107) and its findings are fixed or reported, and (2) the owner has seen the findings and approved. After approval, Claude creates the PR and, once CI is green with no open review thread or conflict, marks it ready and merges it without asking again. Commits added after approval need a fresh review and approval before merging. This overrides the session default of opening a draft PR right after pushing. Amends D-093.
 - **Why:** Owner's rule (2026-10-26), after PR #11 was opened with its second commit reviewed only by the main session: "don't create the PR until after the adversarial review and my approval. Then you can create prs and merge when they are ready."
+- **Amended (2026-10-26):** the review's findings, and what was done about each, are also published as an artifact (a private page) and linked when asking for approval. Owner: "in future I would like to see the results of the adversarial review in an artifact as well".
 
 
 ## D-134 Engine-test map: one region, about 300 × 200 km, drawn finer
