@@ -319,3 +319,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Icons are black-ink woodcuts: hatched detail at card size, clean silhouettes at 16–24 px; one ink colour; status icons never stand alone. Detail: `docs/design/STYLE.md` §6.
 - **Why:** Owner's choice (Style Q6); matches the old-press type and the inked map, and survives ledger size.
+
+## D-054 Portraits: woodcut now, painted later, faces stored as data
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Launch with woodcut portraits assembled from parts, with age and scars as layers and a mourning corner on death. Painted portraits come later; faces are stored as art-independent data so a painted set can redraw the same people. Detail: `docs/design/STYLE.md` §7.
+- **Why:** Owner's choice (Style Q7); woodcut is cheap per face and matches the desk, and the owner wants painted portraits eventually.

@@ -1,0 +1,195 @@
+<title>Guild Portrait Styles</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+DW+Pica&family=Sorts+Mill+Goudy&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: neutral page chrome; each style is a vellum sheet with four adventurers, an ageing strip and a fallen card, then a verdict. Portraits are generated from the same parameters in every style. */
+:root {
+  --bg: #f3f2ef; --fg: #23211e; --muted: #6a655d; --line: #d6d2ca;
+  --desk: #3b2a1e; --desk2: #2c1f16; --paper: #efe4cc; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5; --seal: #8e2a22; --brass: #b8923e;
+  --display: "IM Fell English SC", Georgia, serif; --body: "IM Fell DW Pica", Georgia, serif; --data: "Sorts Mill Goudy", Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+.wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 36px; }
+header h1 { font-family: var(--display); font-size: 2.2rem; margin: 0; font-weight: normal; text-wrap: balance; }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 74ch; }
+.opt { display: grid; gap: 10px; }
+.opt > h2 { font-family: var(--display); font-size: 1.5rem; margin: 0; font-weight: normal; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.rec { font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; border: 1px solid currentColor; padding: 1px 6px; border-radius: 3px; }
+.verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 8px 24px; font-size: .95rem; }
+.verdict div { min-width: 0; } .verdict b { font-family: var(--mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; font-weight: 500; }
+.note { border-top: 1px solid var(--line); padding-top: 14px; color: var(--muted); font-size: .92rem; max-width: 80ch; }
+.desk { background: repeating-linear-gradient(92deg, var(--desk) 0 30px, var(--desk2) 30px 31px); border-radius: 6px; padding: 18px; }
+.sheet { background: var(--paper); color: var(--ink); border-radius: 2px; box-shadow: 0 10px 24px rgba(0,0,0,.35); padding: 18px 20px; display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 22px; }
+@media (max-width: 760px) { .sheet { grid-template-columns: 1fr; } }
+.grp { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.grp h3 { font-family: var(--mono); font-weight: 500; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink2); margin: 0; }
+.row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+figure { margin: 0; display: grid; gap: 4px; justify-items: center; min-width: 0; }
+figure svg { width: 100%; max-width: 132px; height: auto; display: block; }
+figcaption { font-family: var(--data); font-size: 13px; text-align: center; line-height: 1.25; }
+figcaption span { display: block; color: var(--ink2); font-size: 12px; }
+.fallen { display: grid; grid-template-columns: 100px 1fr; gap: 12px; align-items: center; border-top: 1px solid var(--rule); padding-top: 10px; }
+.fallen p { margin: 0; font-size: 14px; line-height: 1.4; }
+.fallen b { font-family: var(--display); font-weight: normal; font-size: 17px; display: block; }
+.mini { display: flex; gap: 8px; align-items: center; border-top: 1px solid var(--rule); padding-top: 10px; font-family: var(--data); font-size: 14px; flex-wrap: wrap; }
+.mini svg { width: 28px; height: 34px; display: block; }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <pattern id="hx" width="2.2" height="2.2" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="2.2" height=".7" fill="#2a2017"/></pattern>
+  <pattern id="hx2" width="2.2" height="2.2" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><rect width="2.2" height=".6" fill="#2a2017"/></pattern>
+  <filter id="rgh"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="1.3"/></filter>
+  <filter id="pnt"><feGaussianBlur stdDeviation=".35"/></filter>
+  <clipPath id="shadeR"><rect x="50" y="0" width="60" height="130"/></clipPath>
+</defs></svg>
+
+<div class="wrap">
+  <header>
+    <h1>Guild portrait styles</h1>
+    <p>Style Q7: how adventurers' faces look. Every recruit needs a face, and that face must age across a career, carry its scars and be remembered after death. So each style is shown on four generated adventurers, one face ageing from recruit to veteran, and a fallen hero's card. The faces are crude stand-ins built from parts in code; they show the treatment and the method, not the final art.</p>
+  </header>
+  <div id="opts"></div>
+  <p class="note">Method behind A, B and D: portraits are assembled from drawn parts (head, hair, brows, eyes, nose, mouth, beard, ears per ancestry, scars, age lines, kit at the collar), picked by the adventurer's seed (GAME-01) and updated by events: a scar after an injury, greying and lines with age. Parts are data, so mods can add them (D-044). Names and details are placeholders.</p>
+</div>
+
+<script>
+const PEOPLE = [
+  { name: "Wenna Cray", sub: "Warden, 24, human", hw: 21, hair: "long", hc: "#7a4a24", skin: "#d9a57c", beard: false, ear: "round", age: 0, scar: false, collar: "#4f6f3a" },
+  { name: "Odric Hale", sub: "Hexblade, 31, human", hw: 23, hair: "short", hc: "#2a2420", skin: "#c48a62", beard: true, ear: "round", age: 1, scar: false, collar: "#3d3550" },
+  { name: "Sefa Lund", sub: "Cantor, 27, elf · scarred", hw: 19, hair: "tied", hc: "#d8c48a", skin: "#e8c4a4", beard: false, ear: "point", age: 0, scar: true, collar: "#3f6f8f" },
+  { name: "Bram Oakes", sub: "Shieldman, 46, dwarf", hw: 25, hair: "bald", hc: "#8a8476", skin: "#b07850", beard: "long", ear: "round", age: 2, scar: false, collar: "#6e2420" },
+];
+const AGES = [0, 1, 2].map(a => ({ ...PEOPLE[1], age: a, sub: ["Recruit, 19", "Veteran, 31", "Old hand, 44"][a], hc: a === 2 ? "#8a8476" : "#2a2420", beard: a > 0 }));
+
+function parts(p) {
+  const w = p.hw, cx = 50, cy = 56, h = 27;
+  const head = `M${cx-w} ${cy} C${cx-w} ${cy-h-4} ${cx+w} ${cy-h-4} ${cx+w} ${cy} C${cx+w} ${cy+18} ${cx+8} ${cy+h} ${cx} ${cy+h} C${cx-8} ${cy+h} ${cx-w} ${cy+18} ${cx-w} ${cy}Z`;
+  const ears = p.ear === "point"
+    ? `M${cx-w+1} 52 L${cx-w-9} 40 L${cx-w+1} 63Z M${cx+w-1} 52 L${cx+w+9} 40 L${cx+w-1} 63Z`
+    : `M${cx-w+1} 52 C${cx-w-5} 52 ${cx-w-5} 64 ${cx-w+1} 64Z M${cx+w-1} 52 C${cx+w+5} 52 ${cx+w+5} 64 ${cx+w-1} 64Z`;
+  const hairs = {
+    long: `M${cx-w-3} 58 C${cx-w-5} 22 ${cx+w+5} 22 ${cx+w+3} 58 L${cx+w+4} 92 L${cx+w-5} 92 L${cx+w-4} 48 C${cx+8} 40 ${cx-10} 38 ${cx-w+4} 48 L${cx-w+5} 92 L${cx-w-4} 92Z`,
+    short: `M${cx-w-1} 52 C${cx-w-3} 22 ${cx+w+3} 22 ${cx+w+1} 52 C${cx+w-3} 40 ${cx+6} 34 ${cx-w+3} 44Z`,
+    tied: `M${cx-w-1} 54 C${cx-w-3} 22 ${cx+w+3} 22 ${cx+w+1} 54 C${cx+w-4} 38 ${cx-w+4} 38 ${cx-w-1} 54Z M${cx+w-2} 34 C${cx+w+10} 34 ${cx+w+12} 60 ${cx+w+6} 76 C${cx+w+2} 60 ${cx+w+4} 44 ${cx+w-4} 40Z`,
+    bald: `M${cx-w} 50 C${cx-w-2} 44 ${cx-w+2} 42 ${cx-w+3} 50Z M${cx+w} 50 C${cx+w+2} 44 ${cx+w-2} 42 ${cx+w-3} 50Z`,
+  };
+  const beard = p.beard === "long"
+    ? `M${cx-w+1} 60 C${cx-w+2} 86 ${cx-8} 104 ${cx} 106 C${cx+8} 104 ${cx+w-2} 86 ${cx+w-1} 60 C${cx+w-6} 74 ${cx+6} 76 ${cx} 76 C${cx-6} 76 ${cx-w+6} 74 ${cx-w+1} 60Z`
+    : p.beard ? `M${cx-w+2} 62 C${cx-w+4} 78 ${cx-8} ${cy+h+2} ${cx} ${cy+h+2} C${cx+8} ${cy+h+2} ${cx+w-4} 78 ${cx+w-2} 62 C${cx+w-6} 72 ${cx+6} 74 ${cx} 74 C${cx-6} 74 ${cx-w+6} 72 ${cx-w+2} 62Z` : "";
+  const brows = `M${cx-14} 49 Q${cx-9} 46 ${cx-4} 49 M${cx+4} 49 Q${cx+9} 46 ${cx+14} 49`;
+  const eyes = [[cx-9, 54], [cx+9, 54]];
+  const nose = `M${cx} 56 L${cx-3} 66 Q${cx} 68 ${cx+3} 66`;
+  const mouth = `M${cx-6} 73 Q${cx} 75.5 ${cx+6} 73`;
+  const ageL = p.age >= 1 ? `M${cx-10} 40 Q${cx} 38 ${cx+10} 40 M${cx-17} 56 l-3 -1 M${cx+17} 56 l3 -1` : "";
+  const ageL2 = p.age >= 2 ? ` M${cx-12} 36 Q${cx} 34 ${cx+12} 36 M${cx-7} 62 Q${cx-9} 68 ${cx-8} 71 M${cx+7} 62 Q${cx+9} 68 ${cx+8} 71 M${cx-17} 59 l-3 0 M${cx+17} 59 l3 0` : "";
+  const scar = p.scar ? `M${cx+4} 42 L${cx+15} 66` : "";
+  const body = `M14 130 C16 104 32 96 ${cx} 96 C68 96 84 104 86 130Z`;
+  const neck = `M${cx-8} 76 L${cx-8} 98 L${cx+8} 98 L${cx+8} 76Z`;
+  return { head, ears, hair: hairs[p.hair], beard, brows, eyes, nose, mouth, age: ageL + ageL2, scar, body, neck };
+}
+
+const STYLES = {
+  woodcut(p, dead) {
+    const P = parts(p), I = "#2a2017", V = "#efe4cc";
+    return `<rect x="2" y="2" width="96" height="126" rx="48" ry="60" fill="${V}" stroke="${I}" stroke-width="2"/>
+      <g filter="url(#rgh)">
+      <path d="${P.body}" fill="${I}"/><path d="${P.body}" fill="url(#hx2)" opacity=".0"/>
+      <path d="${P.neck}" fill="${V}" stroke="${I}" stroke-width="1.4"/><path d="${P.neck}" fill="url(#hx)" clip-path="url(#shadeR)"/>
+      <path d="${P.ears}" fill="${V}" stroke="${I}" stroke-width="1.4"/>
+      <path d="${P.head}" fill="${V}" stroke="${I}" stroke-width="1.8"/>
+      <path d="${P.head}" fill="url(#hx)" clip-path="url(#shadeR)" opacity=".9"/>
+      <path d="${P.hair}" fill="${p.hair === "bald" ? I : (p.age >= 2 ? "url(#hx)" : I)}" stroke="${I}" stroke-width="1"/>
+      ${P.beard ? `<path d="${P.beard}" fill="${p.age >= 2 ? "url(#hx2)" : I}" stroke="${I}" stroke-width="1.2"/>` : ""}
+      <path d="${P.brows}" fill="none" stroke="${I}" stroke-width="2"/>
+      ${P.eyes.map(([x, y]) => `<path d="M${x-4} ${y} Q${x} ${y-3} ${x+4} ${y} Q${x} ${y+2.4} ${x-4} ${y}Z" fill="${I}"/>`).join("")}
+      <path d="${P.nose}" fill="none" stroke="${I}" stroke-width="1.5"/>
+      ${p.beard ? "" : `<path d="${P.mouth}" fill="none" stroke="${I}" stroke-width="1.6"/>`}
+      <path d="${P.age}" fill="none" stroke="${I}" stroke-width=".9"/>
+      ${P.scar ? `<path d="${P.scar}" stroke="${V}" stroke-width="2.6"/><path d="${P.scar}" stroke="${I}" stroke-width="1" stroke-dasharray="1.5 1.5"/>` : ""}
+      </g>
+      ${dead ? `<path d="M64 2 L98 36 L98 50 L50 2Z" fill="${I}"/>` : ""}`;
+  },
+  sketch(p, dead) {
+    const P = parts(p), I = "#3a2a1c";
+    return `<rect x="1" y="1" width="98" height="128" fill="#efe4cc"/>
+      <g fill="none" stroke="${I}" stroke-linecap="round" filter="url(#rgh)">
+      <path d="${P.body}" stroke-width=".9"/><path d="${P.body}" fill="${p.collar}" opacity=".22" stroke="none"/>
+      <path d="${P.neck}" stroke-width=".8"/>
+      <path d="${P.ears}" stroke-width=".9"/>
+      <path d="${P.head}" stroke-width="1.1"/><path d="${P.head}" fill="#c89870" opacity=".28" stroke="none"/>
+      <path d="${P.head}" fill="url(#hx)" opacity=".18" clip-path="url(#shadeR)" stroke="none"/>
+      <path d="${P.hair}" stroke-width="1"/><path d="${P.hair}" fill="${p.hc}" opacity=".4" stroke="none"/>
+      ${P.beard ? `<path d="${P.beard}" stroke-width=".9"/><path d="${P.beard}" fill="${p.hc}" opacity=".35" stroke="none"/>` : ""}
+      <path d="${P.brows}" stroke-width="1.3"/>
+      ${P.eyes.map(([x, y]) => `<path d="M${x-4} ${y} Q${x} ${y-3} ${x+4} ${y}" stroke-width="1"/><circle cx="${x}" cy="${y-.4}" r="1.2" fill="${I}" stroke="none"/>`).join("")}
+      <path d="${P.nose}" stroke-width=".9"/>
+      ${p.beard ? "" : `<path d="${P.mouth}" stroke-width="1"/>`}
+      <path d="${P.age}" stroke-width=".6"/>
+      ${P.scar ? `<path d="${P.scar}" stroke="#8e2a22" stroke-width="1.1"/>` : ""}
+      </g>
+      ${dead ? `<path d="M10 120 L90 10" stroke="#2a2017" stroke-width="1.4"/><path d="M14 122 L92 14" stroke="#2a2017" stroke-width=".6"/>` : ""}`;
+  },
+  painted(p, dead) {
+    const P = parts(p), sh = "#3a2416";
+    const g = dead ? "grayscale(1) brightness(.9)" : "none";
+    return `<defs><radialGradient id="bg-${p.name.length}${p.age}" cx="40%" cy="35%" r="80%"><stop offset="0" stop-color="#6a5038"/><stop offset="1" stop-color="#21170f"/></radialGradient></defs>
+      <g style="filter:${g}">
+      <rect x="1" y="1" width="98" height="128" fill="url(#bg-${p.name.length}${p.age})"/>
+      <g filter="url(#pnt)">
+      <path d="${P.body}" fill="${p.collar}"/><path d="${P.neck}" fill="${p.skin}"/><path d="${P.neck}" fill="${sh}" opacity=".35" clip-path="url(#shadeR)"/>
+      <path d="${P.ears}" fill="${p.skin}"/>
+      <path d="${P.head}" fill="${p.skin}"/><path d="${P.head}" fill="${sh}" opacity=".28" clip-path="url(#shadeR)"/>
+      <ellipse cx="42" cy="44" rx="7" ry="5" fill="#fff" opacity=".18"/>
+      <path d="${P.hair}" fill="${p.hc}"/>
+      ${P.beard ? `<path d="${P.beard}" fill="${p.hc}"/>` : ""}
+      <path d="${P.brows}" fill="none" stroke="${p.hair === "bald" ? "#6a5a4a" : p.hc}" stroke-width="2.2"/>
+      ${P.eyes.map(([x, y]) => `<path d="M${x-4} ${y} Q${x} ${y-3} ${x+4} ${y} Q${x} ${y+2.4} ${x-4} ${y}Z" fill="#f4ece0"/><circle cx="${x}" cy="${y-.3}" r="1.5" fill="#2a2420"/>`).join("")}
+      <path d="${P.nose}" fill="none" stroke="${sh}" stroke-width="1.1" opacity=".7"/>
+      ${p.beard ? "" : `<path d="${P.mouth}" fill="none" stroke="#8a4a3a" stroke-width="1.6"/>`}
+      <path d="${P.age}" fill="none" stroke="${sh}" stroke-width=".7" opacity=".6"/>
+      ${P.scar ? `<path d="${P.scar}" stroke="#a8504a" stroke-width="1.4"/>` : ""}
+      </g></g>
+      ${dead ? `<rect x="1" y="1" width="98" height="128" fill="none" stroke="#2a2017" stroke-width="5"/>` : ""}`;
+  },
+  silhouette(p, dead) {
+    const P = parts(p), I = dead ? "#5a5248" : "#2a2017";
+    return `<rect x="2" y="2" width="96" height="126" rx="48" ry="60" fill="#e4d6b8" stroke="#b8923e" stroke-width="3"/>
+      <g fill="${I}"><path d="${P.body}"/><path d="${P.neck}"/><path d="${P.ears}"/><path d="${P.head}"/><path d="${P.hair}"/>${P.beard ? `<path d="${P.beard}"/>` : ""}</g>
+      <circle cx="50" cy="114" r="9" fill="${p.collar}" stroke="#b8923e" stroke-width="1.2"/>`;
+  },
+};
+const svg = (st, p, dead) => `<svg viewBox="0 0 100 130" role="img" aria-label="${p.name}">${STYLES[st](p, dead)}</svg>`;
+
+const OPTS = [
+  { st: "woodcut", name: "A. Woodcut portraits", rec: true,
+    good: "Same craft as the type, icons and map: an engraved likeness in a cameo frame. Built from drawn parts, so endless recruits are cheap, and scars, greying and age lines are just extra layers. Reads at roster size. A fallen hero gets a black mourning corner.",
+    bad: "Monochrome faces hold less warmth; the person comes through in features, scars and the letters they write, not skin tones and eye colour. Faces from parts can repeat; needs a large part library (an artist's job) to stay varied." },
+  { st: "sketch", name: "B. Scout's sketchbook",
+    good: "Loose pen sketches with a watercolour wash, as if the guild's scout drew each recruit: the most human and expressive, with some colour. Also part-based, so ageing and scars layer on.",
+    bad: "Loose line work turns to scribble at small roster sizes. Softer and less 'printed' than the rest of the desk, so it sits slightly apart from the old-press look." },
+  { st: "painted", name: "C. Painted portraits",
+    good: "Full-colour painted faces: the most emotional and the strongest on the store page. Death can desaturate the portrait.",
+    bad: "Painted parts can be layered (Battle Brothers does it), but each part must be painted to match lighting and every skin and hair colour, so the part library costs several times more than ink. Fully painted one-off portraits would mean hundreds of paintings or a generated-art pipeline with licensing questions (SAFE-05). Colour fights the ink desk." },
+  { st: "silhouette", name: "D. Silhouette cameos",
+    good: "FM's approach: no faces, a silhouette and a personal colour. Cheapest, never looks wrong, scales to any number.",
+    bad: "No faces in a game whose first pillar is 'people are the game'. Scars, ageing and grief can't show; every adventurer looks the same at a glance." },
+];
+const root = document.getElementById("opts");
+OPTS.forEach(o => {
+  const s = document.createElement("section"); s.className = "opt";
+  const cap = p => `<figcaption>${p.name}<span>${p.sub}</span></figcaption>`;
+  s.innerHTML = `<h2>${o.name}${o.rec ? ' <span class="rec">Recommended</span>' : ""}</h2>
+  <div class="desk"><div class="sheet">
+    <div class="grp"><h3>Four recruits</h3><div class="row">${PEOPLE.map(p => `<figure>${svg(o.st, p)}${cap(p)}</figure>`).join("")}</div>
+      <div class="mini">In the roster: ${PEOPLE.map(p => svg(o.st, p) + " " + p.name.split(" ")[0]).join(" ")}</div></div>
+    <div class="grp"><h3>Odric across a career</h3><div class="row three">${AGES.map(p => `<figure>${svg(o.st, p)}<figcaption>${p.sub}</figcaption></figure>`).join("")}</div>
+      <div class="fallen">${svg(o.st, { ...PEOPLE[3] }, true)}<p><b>Bram Oakes</b>Fell at the Hollow Barrow, Thaw 9th, Year 4. Held the doorway so Sefa could be carried out.</p></div></div>
+  </div></div>
+  <div class="verdict"><div><b>Strengths</b>${o.good}</div><div><b>Weaknesses</b>${o.bad}</div></div>`;
+  root.appendChild(s);
+});
+</script>

@@ -79,3 +79,16 @@ Rejected: Alegreya family (too plain), Grenze family, scribe's hand, Texturina t
 **Proposed (not yet approved):** a hand-tinted watercolour wash on large card icons only, as on historical woodcuts, for colour and flair; wax seals reserved for factions, contracts and set pieces.
 
 Rejected: wax seals for every icon (blur at 16 px, clash with the "bad" colour), painted miniatures (cost, mushy when small), clean line glyphs (no period character).
+
+## 7. Portraits (Accepted 2026-10-26)
+
+**Woodcut portraits to start, painted portraits later.** Mock-up: `docs/design/mockups/portraits.html` (option A now, option C later).
+
+- An engraved likeness in a cameo frame, assembled from drawn parts (head, hair, brows, eyes, nose, mouth, beard, ancestry ears, scars, age lines, kit at the collar). The adventurer's seed picks the parts (GAME-01); events add layers: a scar after an injury, greying and lines with age.
+- A fallen adventurer's portrait gets a black mourning corner and goes to the Hall of Heroes (D-042).
+- Parts are data, so mods can add them (D-044).
+- **Painted later (owner's note).** Store each face as art-independent data (part ids, age, scars, colours), not as a picture, so a painted part set can later redraw the same people and existing saves keep their faces. Painted layers cost several times more than ink per part, and colour faces on the ink desk will need an art-direction pass when they arrive.
+
+Owner's note: "Woodcut works to start but I do want painted portraits eventually."
+
+Rejected: scout's sketchbook (scribbles at roster size), silhouette cameos (no faces breaks pillar 1).
