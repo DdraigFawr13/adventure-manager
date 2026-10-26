@@ -645,3 +645,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Launch on Windows only. Linux and Steam Deck players can run it through Proton, not promised on the store page. Steam Deck support (1280×800 layout, controller) and a Mac build are decided after launch. Detail: `docs/design/PLAN.md` §15d.
 - **Why:** Owner's choice (Plan Q15a): one build to make and test for a solo developer (D-102); the Deck's screen is below the 1366×768 minimum (D-091).
 
+## D-107 Reviewers are independent
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Every review agent gets an unbiased brief: the goal, the files or diff, the lens and open questions, never the main session's findings, conclusions, hypotheses or preferred answer. The main session forms its own view separately and verifies every returned finding before using it (DEL-05, VER-05). Recorded in AGENTS.md project rules.
+- **Why:** Owner's rule (2026-10-26): a reviewer handed the main thread's view tends to confirm it.
+

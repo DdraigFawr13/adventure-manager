@@ -1,0 +1,122 @@
+<title>Adventure Manager Plan Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; verdict, the ten proposed actions, then findings by lens as a ledger with an impact pill each. Same paper-and-ink palette as the roadmap. */
+:root {
+  --bg: #f4efe4; --surface: #fbf8f1; --fg: #2a2017; --muted: #6b5a45; --line: #ddd0b6;
+  --high: #8e2a22; --med: #9c7a2f; --low: #3f6f8f;
+  --title: "IM Fell English SC", Georgia, serif;
+  --body: "Source Serif 4", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1d1813; --surface: #261f18; --fg: #eee4d2; --muted: #b3a48c; --line: #3d3328; --high: #d0675c; --med: #d0aa55; --low: #7fa9c9; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1d1813; --surface: #261f18; --fg: #eee4d2; --muted: #b3a48c; --line: #3d3328; --high: #d0675c; --med: #d0aa55; --low: #7fa9c9; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 56px; }
+.wrap { max-width: 880px; margin: 0 auto; display: grid; gap: 34px; }
+h1 { font-family: var(--title); font-weight: 400; font-size: 2.3rem; margin: 0; line-height: 1.1; text-wrap: balance; }
+h2 { font-family: var(--title); font-weight: 400; font-size: 1.5rem; margin: 0 0 10px; text-wrap: balance; }
+.meta { font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+header p { color: var(--muted); max-width: 68ch; margin: 8px 0 0; }
+section > p { margin: 0 0 12px; max-width: 70ch; }
+code { font-family: var(--mono); font-size: .8em; background: color-mix(in srgb, var(--fg) 6%, transparent); padding: 0 4px; border-radius: 3px; overflow-wrap: anywhere; }
+.top { margin: 0; padding: 14px 18px 14px 2.2em; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--high); border-radius: 4px; display: grid; gap: 6px; }
+.items { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.items li { display: grid; grid-template-columns: 2.6em 1fr auto; gap: 4px 12px; padding: 11px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.items .id { font-family: var(--mono); font-size: .8rem; color: var(--muted); }
+.items .txt { min-width: 0; font-size: .96rem; }
+.pill { font-family: var(--mono); font-size: .66rem; letter-spacing: .07em; text-transform: uppercase; padding: 1px 7px; border-radius: 10px; border: 1px solid currentColor; white-space: nowrap; }
+.i-high { color: var(--high); background: color-mix(in srgb, var(--high) 10%, transparent); } .i-medium { color: var(--med); } .i-low { color: var(--low); }
+.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 5px; }
+@media (max-width: 520px) { .items li { grid-template-columns: 2.4em 1fr; } .items .pill { grid-column: 2; justify-self: start; } }
+footer { color: var(--muted); font-size: .88rem; border-top: 1px solid var(--line); padding-top: 12px; }
+</style>
+<div class="wrap">
+<header><span class="meta">26 October 2026 · before plan approval (M0)</span><h1>Plan review</h1><p>Owner's request (2026-10-26): review the whole plan for efficient lean design, the gameplay loop and fun, codebase set-up that avoids missteps, and standards and practices. Method: two independent reviewers (D-107) read the docs cold, one for fun and one for lean production; the main session reviewed codebase and standards. Every finding below was checked at the cited line; three reviewer claims were corrected or dropped (end of page). Nothing here is decided: each item is a <b>proposal</b> for the owner (SRC-04).</p><p>Impact: <b>High</b> changes what gets built or risks the project; <b>Medium</b> shapes it; <b>Low</b> is tidy-up.</p></header>
+<section>
+<h2>Verdict</h2>
+<p>The plan holds together well: event log as the spine, determinism, content as data, gated milestones, and art money waiting for proof are all sound and lean. Budget and schedule arithmetic reconcile. The weak spots are (1) the plan is sized for a small team but the owner chose solo, (2) the heart of the game, how a quest actually resolves, is not designed yet, (3) the mid and late game have no fresh goals and a cheap dominant strategy is possible, and (4) four engine foundations that are cheap now and very expensive later are not written down.</p>
+</section>
+<section>
+<h2>Top 10 actions (proposed, in order)</h2>
+<ol class="top">
+<li><b>Re-plan for solo</b> (L1, L2): restate the timeline for a solo builder and adopt a smaller launch cut, keeping everything as data so it grows after.</li>
+<li><b>Write "resolution v0"</b> (F1): half a page on how party, plan, stats and site become events and odds; first M1 deliverable.</li>
+<li><b>Keep the simulation core</b> (L3): build it as the production engine package from day one; only prototype screens are throwaway.</li>
+<li><b>Settle the engine with less work</b> (L3): new evidence (Story-Generator is TypeScript and canvas) favours web; build Godot only if the web ledger or map test fails.</li>
+<li><b>Four engine foundations in §11</b> (C1–C4): values that carry their own breakdown and cause; named random streams kept in the state; a command log for replaying any bug; an event-log retention rule.</li>
+<li><b>Price every safe choice</b> (F2, F5): make caution, delegation and skipping winter cost something visible, and test it in the headless simulator.</li>
+<li><b>Give years 10–30 goals</b> (F3, F6): mid-career goals and a world-events and crises budget in §7.</li>
+<li><b>Kill and cut triggers, owner hours</b> (L4): write weekly hours down; set slip triggers that apply the cut list; define "stop".</li>
+<li><b>Marketing and tester plan</b> (L5): wishlist targets per gate; where the 30–50 and 200+ testers come from.</li>
+<li><b>A short standards file before the first line of code</b> (S1): conventions, boundaries enforced by lint, definition of done.</li>
+</ol>
+</section>
+<section>
+<h2>1. Lean scope and production</h2>
+<ul class="items">
+<li><span class="id">L1</span><div class="txt"><b>The schedule is for a small team; the owner chose solo.</b> <code>PLAN.md:769</code> "Durations are estimates (REP-01) for a small team"; <code>PLAN.md:819</code> code "written with AI help"; D-102 came after §13. The 18–28 months has no solo version. Proposal: restate per milestone for one person with AI help, and say what weekly hours it assumes.</div><span class="pill i-high">High</span></li>
+<li><span class="id">L2</span><div class="txt"><b>No minimum-lovable cut, and the costliest items for their fun are all at launch.</b> For example <code>PLAN.md:443</code> "multiclassing between any two classes from level 5", <code>PLAN.md:466</code> "Rival guilds: 17 ... each authored", <code>PLAN.md:470</code> "Tournaments: 3", <code>PLAN.md:452</code> about 100 traits, <code>PLAN.md:451</code> "Attributes: about 28". §12c's "ways to bring it down" (<code>PLAN.md:741</code>) names mostly art. Proposal (reviewer's, endorsed): 5–6 classes, 4 ancestries, ~24 monster kinds, ~16 attributes, ~30 traits, ~6 authored rivals plus generated ones, 1 tournament, no multiclass or prestige at launch, 3 map layers. Keep the watched quest, key moments, permadeath and Chronicle, succession, delegation and the map base. All of it stays data, so the cut grows back after launch.</div><span class="pill i-high">High</span></li>
+<li><span class="id">L3</span><div class="txt"><b>M1 builds the simulation twice and the engine test first.</b> <code>PLAN.md:528</code> "A prototype is throwaway code"; <code>PLAN.md:779</code> M2 builds "The production engine". Proposal: the simulation core is the first production package (tested, kept); only prototype screens are thrown away. The two-engine test (D-090) builds two pieces twice; the Story-Generator review found TypeScript and canvas code to reuse (<code>PLAN.md:753</code>, recorded then as "evidence for D-090, not a decision"). Proposal: build the web versions; build in Godot only if the web ledger or map misses its bar. Reopening D-090 is the owner's call (WS-07: new evidence).</div><span class="pill i-high">High</span></li>
+<li><span class="id">L4</span><div class="txt"><b>No stop rule, no cut triggers, no hours.</b> <code>PLAN.md:773</code> "go, loop or stop" never defines stop; <code>PLAN.md:869</code> "The owner's time is available at the pace the milestones assume" is the only mention of time. Proposal: write weekly hours down; time-box each M1 step; triggers such as "M1 over 6 months or M2 over 9 applies the L2 cut"; stop if R1 fails twice.</div><span class="pill i-high">High</span></li>
+<li><span class="id">L5</span><div class="txt"><b>Marketing and testers are unplanned, yet break-even rests on them.</b> <code>PLAN.md:867</code> "Wishlists ... carry the launch"; no wishlist number anywhere (searched "wishlist" in PLAN). Testers: <code>PLAN.md:580</code> "200+ testers" with no source. Proposal: wishlist targets at slice, demo and launch; a devlog; a tester list grown from the Steam page.</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">L6</span><div class="txt"><b>The headless year simulator is nearly the whole game.</b> <code>PLAN.md:554</code> needs economy, recruitment, ageing, rivals, ladder and delegation. Proposal: start with one guild, no rivals and three classes; widen in steps.</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">L7</span><div class="txt"><b>No writing tools.</b> Tools list (<code>PLAN.md:644</code>) has no template previewer for ~6,000 lines. Proposal: a previewer that generates N outputs and counts repeats; decide who writes at the slice gate.</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">L8</span><div class="txt"><b>The full map base is commissioned before the region settles.</b> <code>PLAN.md:843</code> spends "the whole kingdom-map base" before the hire gate; balance changes in M1–M3 can move places. Proposal: commission the slice's corner and a sketch of the rest; the full base after alpha balance.</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">L9</span><div class="txt"><b>Break-even covers cash only.</b> <code>PLAN.md:849</code>: excludes the owner's time, tax and post-launch work (war campaigns "need the most new engine code", <code>PLAN.md:799</code>). Proposal: say so in one line; add a post-launch support line.</div><span class="pill i-low">Low</span></li>
+</ul>
+</section>
+<section>
+<h2>2. Gameplay loop and fun</h2>
+<ul class="items">
+<li><span class="id">F1</span><div class="txt"><b>How a quest resolves is not designed.</b> <code>CONCEPT.md:33</code> says quests "simulate on their own"; no section in CONCEPT or PLAN turns party, plan, stats and site into odds and events. R1 (<code>PLAN.md:536</code>) tests whether watching is fun before the thing watched exists. Proposal: "resolution v0" as the first M1 deliverable, with tunable numbers in data.</div><span class="pill i-high">High</span></li>
+<li><span class="id">F2</span><div class="txt"><b>Caution's price is not weighed.</b> <code>PLAN.md:308</code> "cautious retreat thresholds and good knowledge roughly halve them [deaths]". The cost exists (abandoned contracts lose fee and renown, <code>PLAN.md:273</code>) but is never set against halved deaths. If it is small, "always cautious" is the solved game. Proposal: an R2 check that cautious and bold play both win sometimes.</div><span class="pill i-high">High</span></li>
+<li><span class="id">F3</span><div class="txt"><b>Progression runs out around year 10.</b> Top tier in 8–12 years (<code>PLAN.md:331</code>), full facilities in "8–12 years" (<code>PLAN.md:377</code>), guildmaster careers 20–30 years. Late pressure exists (<code>PLAN.md:334</code>) but no new goals. Proposal: mid-career goals (legacy projects, a larger ladder or compound pulled earlier, a region-scale threat).</div><span class="pill i-high">High</span></li>
+<li><span class="id">F4</span><div class="txt"><b>The routine week has almost no decision.</b> <code>PLAN.md:106</code> "take or decline contracts, send a party with its saved plan, continue". If R1 fails, the loop is "approve, continue, read". Proposal: one standing tension most weeks (a deadline clash, a promise due, a rival bidding on the same contract); state the "one more week" hook.</div><span class="pill i-high">High</span></li>
+<li><span class="id">F5</span><div class="txt"><b>Delegation is likely nearly free.</b> R6 passes at "10–25% better ... delegation never ruinous" (<code>PLAN.md:541</code>); the true cost (the guildmaster stops growing) is slow and unseen. Proposal: show the cost when delegating; give staff visible mistakes.</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">F6</span><div class="txt"><b>No world events or story arcs at launch.</b> <code>CONCEPT.md:49</code> promises "story arcs and world crises"; the §7 content list has none (searched "story arc", "crisis", "world event": only <code>PLAN.md:180</code> "seeded world events"). Proposal: a small crisis category in §7 (plague, war, a great beast).</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">F7</span><div class="txt"><b>Repetition across a long save.</b> About 750 quests over 25 years on 20 quest templates, and ~625 key moments on 60 (from <code>PLAN.md:86</code>, <code>:468</code>, <code>:469</code>); R8 tests only report wording. Proposal: combine site × monster × complication × faction state, and test shape repetition too.</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">F8</span><div class="txt"><b>Bad starts can spiral, with rubber-banding ruled out.</b> <code>PLAN.md:287</code> "two in a row means a loan or a sale"; <code>PLAN.md:280</code> "no hidden bonuses or rubber-banding". Proposal: visible recovery levers (patron emergency grant with strings, charity contracts, debt for service); test a "bad two years" seed set.</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">F9</span><div class="txt"><b>Winter: a quarter of the year, about a tenth of the play.</b> <code>PLAN.md:94</code> weeks 37–48, "~15 min", time-skip by default; wages keep running. It also lists "academy", which is not at launch (D-070). Proposal: make winter the planning season (budget, building, training plans) with a cash model in R2; drop "academy" from the line.</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">F10</span><div class="txt"><b>Only the mid guild is budgeted.</b> Friction and deaths are set for 3 parties (<code>PLAN.md:266</code>); a top guild runs 4–8 (<code>CONCEPT.md:189</code>). Proposal: a top-guild row in §2f and in R3.</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">F11</span><div class="txt"><b>Thin first hour for veterans and little self-expression.</b> No guaranteed season-one story beat beyond the prologue; expression is mostly the charter. Proposal: one seeded early beat (a rival's poaching try); party names and banners.</div><span class="pill i-low">Low</span></li>
+</ul>
+</section>
+<section>
+<h2>3. Codebase set-up</h2>
+<ul class="items">
+<li><span class="id">C1</span><div class="txt"><b>Values that explain themselves need an engine type from day one.</b> <code>PLAN.md:414</code> "Hovering or focusing any number shows how it was made"; <code>PLAN.md:508</code> "Every change records its cause". §11 does not say how. Proposal: every game number is a value with its parts and a cause id, built into the core types before any rule; retrofitting it later touches every system.</div><span class="pill i-high">High</span></li>
+<li><span class="id">C2</span><div class="txt"><b>Random numbers: one seed is not enough.</b> <code>PLAN.md:663</code> "A seeded generator ... passed in"; <code>PLAN.md:640</code> <code>simulate(state, command, seed)</code>. Proposal: named streams per system, derived from (seed, name), kept in the state, as Story-Generator does (<code>PLAN.md:749</code>). Then adding one roll in recruitment does not reshuffle every quest, so balance runs and bug replays stay comparable.</div><span class="pill i-high">High</span></li>
+<li><span class="id">C3</span><div class="txt"><b>Replays for bug reports.</b> Determinism makes this almost free: playtest saves keep the commands since the last daily snapshot, so any tester's bug replays exactly on the developer's machine. Not in §11 or §15 (searched "replay", "command log"). For a solo developer this is the biggest time-saver available.</div><span class="pill i-high">High</span></li>
+<li><span class="id">C4</span><div class="txt"><b>The event log grows without limit.</b> The log feeds Trace, histories and Chronicle (<code>PLAN.md:646</code>); saves must load in under 1 s at 30 years (<code>PLAN.md:687</code>). No retention rule (searched "retention", "compact"). Proposal: full detail for recent years, summaries for older ones, Chronicle-worthy events kept forever.</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">C5</span><div class="txt"><b>Package boundaries are described, not enforced.</b> Proposal: a lint rule that the engine imports nothing from ui or shell and never touches the clock or <code>Math.random</code>; a short AGENTS.md per package for AI coding sessions.</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">C6</span><div class="txt"><b>Text templates have no grammar yet.</b> No rules for variables, pronouns, plurals or conditional lines (searched "pronoun", "plural": none). Proposal: pick the template format before R8 writes lines; one schema source generates both validation and types.</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">C7</span><div class="txt"><b>Screen-reader check was deferred to §11 and never done.</b> <code>PLAN.md:430</code> "(assumption to check in §11)". Proposal: add it to the engine test's judging list; the two engines differ here.</div><span class="pill i-low">Low</span></li>
+<li><span class="id">C8</span><div class="txt"><b>UI labels as well as world text in string files</b> from day one, so translation (D-104) stays cheap.</div><span class="pill i-low">Low</span></li>
+</ul>
+</section>
+<section>
+<h2>4. Standards and practices</h2>
+<ul class="items">
+<li><span class="id">S1</span><div class="txt"><b>No coding standard yet.</b> Proposal: one short file written at M1 start: strict types, no <code>any</code>, pure engine, a test for every rule, naming, small files, and a definition of done per feature (VER-07).</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">S2</span><div class="txt"><b>Invariant checks.</b> Proposal: engine assertions (money conserved, no negative health, every event has a cause) run in every balance sweep; plus golden-file tests for generated text.</div><span class="pill i-medium">Medium</span></li>
+<li><span class="id">S3</span><div class="txt"><b>Pre-approve the stack's dependency list</b> when the engine is chosen, so SAFE-03 is one decision, not a stop per package.</div><span class="pill i-low">Low</span></li>
+<li><span class="id">S4</span><div class="txt"><b>Rules specs written just in time:</b> a half-page spec per system just before it is coded, not all up front (lean).</div><span class="pill i-low">Low</span></li>
+</ul>
+</section>
+<section>
+<h2>Checked and found sound</h2>
+<p>Budget sums and contingency (§14b); schedule sums (18–28 and 11–17 months); break-even maths; the death-rate arithmetic (<code>PLAN.md:299–306</code>); session and career times; friction table total; art spend gated on R1 and R2; event log as the spine; integer determinism; content packs; save safety.</p>
+</section>
+<section>
+<h2>Reviewer claims corrected or dropped</h2>
+<ul class="plain">
+<li>"Caution has no stated cost": it has one (abandoned contracts, <code>PLAN.md:273</code>); the finding became F2, "cost not weighed".</li>
+<li>"Story recruits cut at launch": wrong; the academy is the moved source (<code>CONCEPT.md:93</code>).</li>
+<li>"Save migrations from M2 are too early": dropped; M2 is the first build external testers receive, which is when GAME-05 must hold.</li>
+<li>"Release checklist and performance numbers over-specified": dropped; cheap, already accepted (D-105, D-091).</li>
+</ul2>
+</section>
+<footer>Source: <code>docs/design/PLAN-REVIEW.md</code>. Proposals only; nothing here is decided until you approve it.</footer>
+</div>

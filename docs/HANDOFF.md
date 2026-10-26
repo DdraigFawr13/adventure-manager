@@ -8,6 +8,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Just done
 
+- 2026-10-26 Plan review before M0 (owner's request): `docs/design/PLAN-REVIEW.md`, page `docs/design/mockups/plan-review.html`. 9 lean, 11 fun, 8 codebase, 4 standards findings and a top-10 action list; all proposals, none decided. Owner's rule: reviewers are independent, briefed without the main session's findings (D-107).
 - 2026-10-26 PLAN.md §15 accepted: checks per push vs before gates, path-filtered CI with release-only builds, bug severities, Steam branches, release checklist, hotfixes (D-105); launch on Windows only, Deck and Mac after launch (D-106). Plan complete; §14 and §15 on branch `ccr-a7e935d0-9dffpn`.
 - 2026-10-26 PLAN.md §14 accepted: start solo with AI help and contractors, decide on paid help at the slice and alpha gates (D-102); budget about $57k–185k solo, $128k–358k with one developer, $10k–32k before the hire gate; self-funded through the slice, funding route chosen there (D-103); price $24.99, English at launch (D-104). All estimates.
 - 2026-10-26 PLAN.md §13 accepted: milestones M0–M7 with owner gates, about 18–28 months to launch for a small team (estimate); vertical slice is one corner of the March at final quality; no bulk art before the prototypes pass R1 and R2 (D-099). Plan for 1.0; Early Access looked at again at the alpha gate (D-100). Post-launch: war campaigns first (D-101). Merged via PR #4.
@@ -35,7 +36,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Next
 
-1. Owner reviews and approves the whole plan (M0, D-099); record the approval in DECISIONS (it lifts D-001's no-code rule). Then M1 starts with the engine test (D-090): first extend `.claude/hooks/session-start.local.sh` with the .NET SDK and headless Godot (TOOLS-REVIEW §3 item 4). Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
+1. Owner decides on the plan review's proposals (`docs/design/PLAN-REVIEW.md`, top 10 first), one question at a time; apply accepted ones to PLAN and DECISIONS. Then the owner approves the whole plan (M0, D-099); record the approval in DECISIONS (it lifts D-001's no-code rule). Then M1 starts with the engine test (D-090): first extend `.claude/hooks/session-start.local.sh` with the .NET SDK and headless Godot (TOOLS-REVIEW §3 item 4). Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
 
 ## Open questions
 
