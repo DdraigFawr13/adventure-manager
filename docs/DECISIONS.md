@@ -13,3 +13,39 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** The game is "Football Manager meets Pathfinder": an adventurers' guild management game. Setting, classes and rules are original; no Paizo names or content.
 - **Why:** Avoids licensing exposure while keeping the tabletop-RPG feel.
+
+## D-003 Player is a desk guildmaster; the guild persists
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** The player manages and never fights. The guildmaster has stats that affect how well they do what they focus on. The guild is a persistent character, and control can pass to a successor. Detail: `docs/design/CONCEPT.md` §1.
+- **Why:** Owner's choice; keeps the adventurers as the stars and supports long, generational play.
+
+## D-004 Quests: simulation with key moments, tabletop view
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Quests simulate with decision pauses at key moments; full auto-resolve is an option. A stylised tabletop-style board shows parties on missions. Detail: `docs/design/CONCEPT.md` §2.
+- **Why:** Owner's choice; matches FM's watch-and-intervene feel without building a second tactics game.
+
+## D-005 Rival guilds and a tiered ranking; tournaments are events
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** AI rival guilds compete for contracts and adventurers within a tiered ranking. Tournaments are occasional events affecting rewards and reputation. Detail: `docs/design/CONCEPT.md` §3.
+- **Why:** Owner's choice; gives FM's league and transfer pressure without turning the game into a sports calendar.
+
+## D-006 Endless sandbox with optional arcs
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** No forced ending. Generational turnover of adventurers and guildmasters; optional story arcs and world crises provide goals. Detail: `docs/design/CONCEPT.md` §4.
+- **Why:** Owner's choice; fits guild-as-character succession (D-003).
+
+## D-007 Adventurers: 1–20 attributes plus skills, traits, class levels, talents
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** FM-style 1–20 visible and hidden attributes, with skills, traits, class levels and talents on top. Layer responsibilities still to be split. Detail: `docs/design/CONCEPT.md` §5.
+- **Why:** Owner's choice; granular attributes drive scouting and development depth, the RPG layers keep the tabletop feel.
+
+## D-008 Permadeath with rare, costly revival
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Permanent death; revival is rare, expensive and has a lasting cost. Injuries, scars and trauma are common and long-lasting. Detail: `docs/design/CONCEPT.md` §6.
+- **Why:** Owner's choice; real stakes on every key-moment decision without making one bad roll unrecoverable.
