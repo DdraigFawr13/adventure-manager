@@ -36,6 +36,8 @@ describe('base resolution content (SPEC.md)', () => {
         member('adv.c', 'class.cleric', 5),
       ],
       quest: null,
+      calendar: 1,
+      guild: null,
     };
     const events: GameEvent[] = [];
     const ids = ['c0'];
@@ -74,6 +76,8 @@ describe('watched-quest prototype data (D-127)', () => {
         content: baseResolution,
         roster: prototypeParty(),
         quest: null,
+        calendar: 1,
+        guild: null,
       };
       let result = simulate(state, {
         type: 'quest.start',

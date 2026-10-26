@@ -1,6 +1,6 @@
 // Resolution v0 balance sweep (PLAN §9b, R2 preview): runs the base barrow delve many times and
 // reports deaths and injuries against PLAN §4c, and runs the invariants on every quest. Then
-// each contract with the prototype party at cautious, default and reckless plans (D-131).
+// each contract (all four, the deadly Gallows Spire included) with the prototype party at cautious, default and reckless plans (D-131).
 // Usage: node tools/resolution-sweep.ts [quests=2000]
 import {
   ATTRIBUTES,
@@ -49,6 +49,8 @@ for (const retreat of ['badly-hurt', 'down', 'leader', 'dying', 'never'] as Retr
       content: baseResolution,
       roster: roster(),
       quest: null,
+      calendar: 1,
+      guild: null,
     };
     const events: GameEvent[] = [];
     const ids = ['c0'];
@@ -116,6 +118,8 @@ for (const quest of baseResolution.quests) {
         content: baseResolution,
         roster: prototypeParty(),
         quest: null,
+        calendar: 1,
+        guild: null,
       };
       let result = simulate(state, {
         type: 'quest.start',

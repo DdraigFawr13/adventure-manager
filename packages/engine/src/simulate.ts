@@ -1,6 +1,9 @@
 // The one entry point (GAME-02, PLAN §11b): preview and commit both call simulate, and it never
 // changes the state it is given, so a preview leaves the real game untouched.
 import { EventSink } from './core/events.ts';
+import { takeContract } from './guild/board.ts';
+import { advanceDay, foundGuild } from './guild/day.ts';
+import { signRecruit } from './guild/people.ts';
 import { chooseMoment, startQuest, stepQuest } from './resolution/quest.ts';
 import type { Command, GameEvent, GameState } from './resolution/types.ts';
 
@@ -21,6 +24,18 @@ export function simulate(state: GameState, command: Command): SimulationResult {
       break;
     case 'quest.choose':
       chooseMoment(next, command, sink);
+      break;
+    case 'guild.found':
+      foundGuild(next, command, sink);
+      break;
+    case 'day.advance':
+      advanceDay(next, command, sink);
+      break;
+    case 'contract.take':
+      takeContract(next, command, sink);
+      break;
+    case 'recruit.sign':
+      signRecruit(next, command, sink);
       break;
   }
   return { state: next, events: sink.events };
