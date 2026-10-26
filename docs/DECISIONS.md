@@ -169,3 +169,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Launch magic is rare-ish, costly and respected, with limited daily power and risks. Distinct magic traditions come later; launch design must leave room for them. Detail: `docs/design/CONCEPT.md` §24.
 - **Why:** Owner's choice; fits grounded high fantasy (D-010) and storied items (D-012).
+
+## D-029 Guildmaster: background plus growth by doing
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Background sets starting stats and contacts; stats grow through use; age brings decline and succession. Detail: `docs/design/CONCEPT.md` §25.
+- **Why:** Owner's choice; rewards the focus the player actually plays (D-003, D-022).
