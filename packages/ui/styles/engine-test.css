@@ -64,6 +64,7 @@ body {
 
 .et-app {
   height: 100%;
+  max-width: 100vw;
   display: grid;
   grid-template-rows: auto 1fr;
 }
@@ -74,6 +75,7 @@ body {
 
 .et-bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 24px;
   padding: 6px 16px;
