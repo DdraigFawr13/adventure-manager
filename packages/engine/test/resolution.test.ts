@@ -692,6 +692,8 @@ describe('the plan risk presses on, not tending or getting out (D-131)', () => {
     expect(attack?.outcome).toBe('bad-failure');
     const counter = ofType(events, 'check.rolled').find((e) => e.causeId === attack?.id);
     expect(counter).toMatchObject({ purpose: 'defence', subjectIds: ['a', 'f'] });
+    // Control: on the foe's own strike in the same exchange, a guard does step in.
+    expect(ofType(events, 'action.used').some((e) => e.actionId === 'action.guard')).toBe(true);
     expect(
       ofType(events, 'check.rolled').some((e) => e.purpose === 'guard' && e.causeId === attack?.id),
     ).toBe(false);

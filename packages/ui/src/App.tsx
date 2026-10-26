@@ -291,7 +291,12 @@ export function App() {
             {lines.map((l) => (
               <li key={l.id} className={`k-${l.kind}`}>
                 <span>
-                  {l.label ? <b className="act-name">{l.label}</b> : null}
+                  {l.label ? (
+                    <>
+                      <b className="act-name">{l.label}</b>
+                      <span aria-hidden="true"> · </span>
+                    </>
+                  ) : null}
                   {l.text}
                 </span>
                 {l.chance ? (

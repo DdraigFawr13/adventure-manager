@@ -441,9 +441,6 @@ select:focus-visible {
   font-variant: small-caps;
   letter-spacing: 0.04em;
 }
-.log .act-name::after {
-  content: ' · ';
-}
 
 .log .k-harm {
   color: var(--harm);

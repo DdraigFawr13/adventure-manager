@@ -1,7 +1,7 @@
 // Resolution v0 starting numbers (packages/engine/src/resolution/SPEC.md, D-118..D-123).
 // Second tuning pass (2026-10-26, tools/resolution-sweep.ts, D-131): death, bleed and the mill
 // cellar's numbers put the prototype party near PLAN §4c on all three contracts at the default
-// plan, with cautious and reckless plans moving deaths about as §4c asks.
+// plan. Cautious and reckless plans hit §4c's half and double only on the perilous chapel (D-131).
 import type { QuestTemplate, ResolutionContent, ResolutionRules } from '@adventure-manager/engine';
 
 export const baseResolutionRules: ResolutionRules = {
