@@ -1,5 +1,6 @@
 // From Story-Generator src/engine/core/rng.ts@8a5c4ef, the owner's own code (D-116).
-// Changed: chance() takes basis points (integers only, STANDARDS.md); weights must be integers.
+// Changed: chance() takes basis points (integers only, STANDARDS.md); weights must be integers;
+// the seed is length-prefixed so (seed, name) pairs cannot collide; own-property checks only.
 // Named deterministic RNG streams (PLAN §11h, D-114). A stream's starting state is derived
 // from (seed, name), so adding a new stream never reshuffles existing ones.
 // Use one stream per system, e.g. 'quest.combat', 'recruit.traits'.
@@ -66,7 +67,7 @@ export function nextUint32(state: RngState): number {
 }
 
 export function deriveStreamState(seed: string, name: string): RngState {
-  const state = hash128(`${seed}:${name}`);
+  const state = hash128(`${seed.length}:${seed}:${name}`);
   for (let i = 0; i < WARM_UP; i += 1) nextUint32(state);
   return state;
 }
@@ -79,7 +80,7 @@ export class RngStream {
     private readonly states: Record<string, RngState>,
     private readonly name: string,
   ) {
-    if (!states[name]) throw new Error(`RNG stream "${name}" has no state.`);
+    if (!Object.hasOwn(states, name)) throw new Error(`RNG stream "${name}" has no state.`);
   }
 
   /** A standalone stream outside any game state, e.g. for tests and tools. */
@@ -139,11 +140,14 @@ export class RngStream {
   }
 }
 
-/** Returns the named stream for a game state, creating its state from the seed on first use. */
+/**
+ * Returns the named stream for a game state, creating its state from the seed on first use.
+ * It writes to `owner.rng`, so only `simulate` (or a tool's own detached copy) may call it.
+ */
 export function streamFor(
   owner: { readonly seed: string; readonly rng: Record<string, RngState> },
   name: string,
 ): RngStream {
-  if (owner.rng[name] === undefined) owner.rng[name] = deriveStreamState(owner.seed, name);
+  if (!Object.hasOwn(owner.rng, name)) owner.rng[name] = deriveStreamState(owner.seed, name);
   return new RngStream(owner.rng, name);
 }

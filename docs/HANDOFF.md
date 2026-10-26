@@ -8,7 +8,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Just done
 
-- 2026-10-26 M1 started on branch `ccr-829d90c0-lqu9xa`: owner holds Story-Generator rights, reuse approved (D-116); one dependency list approved incl. the game stack (D-117); `docs/STANDARDS.md` written with the per-package `AGENTS.md` plan; npm workspace with `packages/engine` (named random streams copied from Story-Generator, self-explaining `Value`), boundary check `tools/check-boundaries.mjs`, `npm run check` green (8 tests).
+- 2026-10-26 M1 started on branch `ccr-829d90c0-lqu9xa`: owner holds Story-Generator rights, reuse approved (D-116); one dependency list approved incl. the game stack (D-117); `docs/STANDARDS.md` written with the per-package `AGENTS.md` plan; npm workspace with `packages/engine` (named random streams copied from Story-Generator, self-explaining `Value`), boundary check `tools/check-boundaries.mjs`, `npm run check` green (26 tests, incl. the boundary check's own); independent review fixed (D-093).
 - 2026-10-26 Owner approved the whole plan (M0, D-115); PR #5 merged.
 - 2026-10-26 Plan review decided: 10–20 h a week, about 31–46 months to launch (D-108); lean launch cut (D-109); web-first engine test (D-110); stop and slip rules (D-111); 3–4 small crises at launch (D-112); all other recommendations adopted (D-113 design and production, D-114 engine foundations and standards). Applied across PLAN.md.
 - 2026-10-26 Plan review before M0 (owner's request): `docs/design/PLAN-REVIEW.md`, page `docs/design/mockups/plan-review.html`. 9 lean, 11 fun, 8 codebase, 4 standards findings and a top-10 action list; all proposals, none decided. Owner's rule: reviewers are independent, briefed without the main session's findings (D-107).

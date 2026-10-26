@@ -26,6 +26,7 @@ export function makeValue(base: number, causeId: string, parts: readonly ValuePa
     assertWhole(part.amount, `Part ${part.sourceId}`);
     total += part.amount;
   }
+  assertWhole(total, 'Total');
   return { base, parts, total, causeId };
 }
 

@@ -6,14 +6,14 @@ Written at the start of M1, before the first line of game code (D-114, PLAN §11
 
 - TypeScript, ES modules, one repository with npm workspaces under `packages/`: `engine`, `content`, `ui`, `shell`, `tools` (D-091). If the engine test moves the client to Godot (D-110), only `ui` and `shell` change language; the engine stays as specified here unless the owner decides otherwise.
 - Compiler settings: `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`, `noImplicitOverride`, `verbatimModuleSyntax` (same set as Story-Generator's `tsconfig.json`).
-- No `any`, no `@ts-ignore`, no `as` casts except at a validated boundary (loaded JSON after schema checking, saves after migration). A non-null `!` needs a one-line comment saying why it holds.
+- No `any`, no `@ts-ignore`, no `as` casts except `as const` and at a validated boundary (loaded JSON after schema checking, saves after migration), where the line above says `// cast-ok: <why>`. A non-null `!` needs a one-line comment saying why it holds (not checked automatically; reviewers check it).
 - Formatting by Prettier, never by hand.
 
 ## The engine is pure (GAME-01, GAME-02)
 
 - One entry point: `simulate(state, command) → { state, events }`, used for preview and commit. Nothing else changes game state.
 - No clock, no `Math.random`, no I/O, no DOM, no `process`, no `Intl` or `localeCompare` (results differ by machine), no timers. Time arrives in commands.
-- Package boundaries are checked by a script, not only described: the engine imports only itself; content imports only the engine's types; ui and shell import engine and content, never each other's internals (D-114). The check runs in the local checks and CI.
+- Package boundaries are checked by `tools/check-boundaries.mjs`, the project's lint (D-114; it needs no extra dependency under D-117): the engine imports only itself; content imports only itself and the engine; ui, shell and tools import engine and content, never each other. The same script enforces the type rules above, the banned globals and the banned Math functions, and has its own tests. It runs in `npm run check`; CI runs it once `ci.yml` gains that step (HANDOFF Next).
 - **Integers only** in game state (PLAN §11c): money in pennies, stats as whole numbers, chances in basis points (1 bp = 1/10,000). No `Math.sin`, `exp`, `pow`, `log` and similar in the engine (they can differ between JS engines); use integer maths or lookup tables. Rounding is explicit and named (`divRoundDown`, `divRoundHalfUp`).
 - Ordering is explicit: iterate arrays or sorted ids, never rely on object or `Map` insertion order across saves; sort with a comparator on ids.
 
@@ -49,7 +49,7 @@ Written at the start of M1, before the first line of game code (D-114, PLAN §11
 
 ## Dependencies and provenance
 
-- The dependency list is approved by the owner once (D-114, SAFE-03); anything outside it is asked for first. Versions are pinned exactly and the lockfile is committed.
+- The approved dependency list is D-117 (D-114, SAFE-03); anything outside it is asked for first. Versions are pinned exactly and the lockfile is committed.
 - Code copied from Story-Generator keeps a first-line comment naming its source path and commit (provenance, SAFE-05, D-116).
 
 ## Definition of done (per feature)
@@ -64,7 +64,7 @@ Each package gets a short `AGENTS.md` (under 30 lines) when it is created, so a 
 
 | Package | Its rules |
 |---|---|
-| engine | Pure: the "engine is pure" and "foundations" sections above. Imports nothing outside itself. Integers only. |
+| engine | `packages/engine/AGENTS.md` (written): the short form of the two engine sections above. |
 | content | Data and schemas only; no logic beyond validation. Ids never renamed once shipped. No Paizo terms. |
 | ui | Reads state and events, sends commands; never computes a rule or a number's breakdown. Labels from string files. 15 px ledger minimum with lining figures (D-084). |
 | shell | Window, saves, Steam. Saves written to a temporary file then swapped; unreadable saves never overwritten (GAME-05). |

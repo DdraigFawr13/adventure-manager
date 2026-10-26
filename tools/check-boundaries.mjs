@@ -2,6 +2,7 @@
 // Changed: layers are workspace packages (packages/<name>/src), imported by relative path or
 // as @adventure-manager/<name>; ui may import React. Rules: docs/STANDARDS.md, PLAN §11h.
 import { readdir, readFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parse } from '@babel/parser';
@@ -39,7 +40,6 @@ const forbiddenCoreNames = new Set([
   'Function',
   'Intl',
   'localeCompare',
-  'random',
 ]);
 // Safe math for determinism (REBOOT_PLAN §7.2): transcendental Math functions can differ
 // between JS engines, so the new engine and content use lookup tables instead.
@@ -67,11 +67,14 @@ const unsafeMathNames = new Set([
   'log10',
   'cbrt',
   'hypot',
+  'random',
 ]);
 
 export function checkModule(fileName, sourceText) {
   const layer = path.relative(packages, fileName).split(path.sep)[0];
   if (!allowed[layer]) return [`Unknown source layer: ${fileName}`];
+  // Only TypeScript is checked by typecheck and by this script, so nothing else may hide in src.
+  if (!/\.tsx?$/.test(fileName)) return [`Only .ts and .tsx files belong in src: ${fileName}`];
   const errors = [];
   const source = parse(sourceText, {
     sourceType: 'module',
@@ -91,7 +94,8 @@ export function checkModule(fileName, sourceText) {
       const target = path.resolve(path.dirname(fileName), name);
       destination = path.relative(packages, target).split(path.sep)[0];
     } else {
-      // Pure layers import nothing external; ui only React; shell and tools use the approved list (D-117).
+      // Pure layers import nothing external; ui only React. Shell and tools may import any installed
+      // package; package.json holds only the approved list (D-117).
       const reactOnly = reactLayers.has(layer) && !['react', 'react-dom/client'].includes(name);
       if (pureLayers.has(layer) || reactOnly)
         errors.push(`${layer} cannot import external module ${name}.`);
@@ -100,7 +104,27 @@ export function checkModule(fileName, sourceText) {
     if (!allowed[layer].has(destination))
       errors.push(`${layer} cannot import ${destination}: ${name}.`);
   }
+  // Type-safety rules from docs/STANDARDS.md, for every package: no `any`, no `@ts-ignore`,
+  // no `as` casts except `as const`. A validated boundary marks its one cast with `// cast-ok: <why>`.
+  const castOk = new Set();
+  for (const comment of source.comments ?? []) {
+    if (/@ts-(ignore|nocheck|expect-error)/.test(comment.value))
+      errors.push(`@ts-ignore and similar are not allowed (line ${comment.loc.start.line}).`);
+    if (/cast-ok:/.test(comment.value)) castOk.add(comment.loc.end.line + 1);
+  }
+  const mathObjects = new Set();
   function visit(node) {
+    if (node.type === 'TSAnyKeyword') errors.push(`No \`any\` (line ${node.loc.start.line}).`);
+    if (
+      node.type === 'TSAsExpression' &&
+      !(
+        node.typeAnnotation.type === 'TSTypeReference' &&
+        node.typeAnnotation.typeName.name === 'const'
+      ) &&
+      !castOk.has(node.loc.start.line)
+    )
+      errors.push(`No \`as\` casts outside a marked boundary (line ${node.loc.start.line}).`);
+    if (node.type === 'TSTypeAssertion') errors.push(`No <T> casts (line ${node.loc.start.line}).`);
     if (
       ['ImportDeclaration', 'ExportNamedDeclaration', 'ExportAllDeclaration'].includes(node.type) &&
       node.source
@@ -131,6 +155,7 @@ export function checkModule(fileName, sourceText) {
       node.object.type === 'Identifier' &&
       node.object.name === 'Math'
     ) {
+      mathObjects.add(node.object);
       const name = node.computed
         ? node.property.type === 'StringLiteral'
           ? node.property.value
@@ -140,8 +165,21 @@ export function checkModule(fileName, sourceText) {
       else if (unsafeMathNames.has(name))
         errors.push(`Engine math must be deterministic: Math.${name} is not allowed.`);
     }
-    if (safeMathLayers.has(layer) && node.type === 'BinaryExpression' && node.operator === '**') {
+    if (
+      safeMathLayers.has(layer) &&
+      ((node.type === 'BinaryExpression' && node.operator === '**') ||
+        (node.type === 'AssignmentExpression' && node.operator === '**='))
+    ) {
       errors.push('Engine math must be deterministic: ** is not allowed.');
+    }
+    // Math may only be used as `Math.<name>`, so aliases and destructuring cannot hide unsafe calls.
+    if (
+      safeMathLayers.has(layer) &&
+      node.type === 'Identifier' &&
+      node.name === 'Math' &&
+      !mathObjects.has(node)
+    ) {
+      errors.push('Engine code may use Math only as Math.<function>.');
     }
     for (const child of Object.values(node)) {
       if (Array.isArray(child))
@@ -161,7 +199,7 @@ async function sources(directory) {
   for (const entry of entries) {
     const name = path.join(directory, entry.name);
     if (entry.isDirectory()) result.push(...(await sources(name)));
-    else if (/\.tsx?$/.test(name)) result.push(name);
+    else result.push(name);
   }
   return result;
 }
@@ -169,9 +207,10 @@ async function sources(directory) {
 if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === import.meta.url) {
   const files = [];
   for (const entry of await readdir(packages, { withFileTypes: true })) {
-    if (entry.isDirectory()) files.push(...(await sources(path.join(packages, entry.name, 'src'))));
+    const src = path.join(packages, entry.name, 'src');
+    if (entry.isDirectory() && existsSync(src)) files.push(...(await sources(src)));
   }
-  const errors = [];
+  const errors = files.length ? [] : ['No source modules found under packages/*/src.'];
   for (const file of files) {
     errors.push(
       ...checkModule(file, await readFile(file, 'utf8')).map(
