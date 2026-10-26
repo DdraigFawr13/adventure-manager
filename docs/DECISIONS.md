@@ -313,3 +313,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** If the old-press ledger fails readability, make a renamed OFL derivative of Sorts Mill Goudy tuned for small sizes before choosing another face. Custom illuminated initials and a symbol font are art work; a commissioned display face is a later paid option. No full typeface from scratch. Detail: `docs/design/STYLE.md` §5.
 - **Why:** Owner asked whether we could make our own typeface; modifying an OFL font is realistic and keeps the chosen look, a from-scratch face is not.
+
+## D-053 Icons: woodcut blocks in two levels
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Icons are black-ink woodcuts: hatched detail at card size, clean silhouettes at 16–24 px; one ink colour; status icons never stand alone. Detail: `docs/design/STYLE.md` §6.
+- **Why:** Owner's choice (Style Q6); matches the old-press type and the inked map, and survives ledger size.

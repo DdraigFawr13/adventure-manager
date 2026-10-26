@@ -66,3 +66,16 @@ Known risk: the old-press roughness blurs at small screen sizes, and the ledger 
 Owner's direction during the question: start from the Alegreya family, then "it could look a little more whimsical or medieval or fantasy" and "I want all the fonts to have some level of this not just the titles."
 
 Rejected: Alegreya family (too plain), Grenze family, scribe's hand, Texturina throughout, Uncial with Grenze.
+
+## 6. Iconography (Accepted 2026-10-26)
+
+**Woodcut blocks.** Mock-up: `docs/design/mockups/iconography.html` (option A; shapes are stand-ins, an artist draws the real set).
+
+- Black ink, cut like a printer's woodblock, matching the old-press type (§5) and the inked quest map (§4).
+- Two drawn levels per icon: a detailed, hatched version for cards and set pieces (48 px and up), and a clean silhouette for ledgers and buttons (16–24 px).
+- One ink colour; meaning-bearing colour stays with the status and faction sets (D-048). A status icon always sits beside a word or a status colour, never alone.
+- The small level can ship as the custom symbol font (D-052) so icons sit inline with text.
+
+**Proposed (not yet approved):** a hand-tinted watercolour wash on large card icons only, as on historical woodcuts, for colour and flair; wax seals reserved for factions, contracts and set pieces.
+
+Rejected: wax seals for every icon (blur at 16 px, clash with the "bad" colour), painted miniatures (cost, mushy when small), clean line glyphs (no period character).

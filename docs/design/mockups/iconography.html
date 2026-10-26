@@ -1,0 +1,133 @@
+<title>Guild Icon Styles</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+DW+Pica&family=Sorts+Mill+Goudy&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: neutral page chrome; each treatment gets a vellum sheet with the same ten icons at 64/24/16 px plus a ledger row in context, then a verdict. */
+:root {
+  --bg: #f3f2ef; --fg: #23211e; --muted: #6a655d; --line: #d6d2ca;
+  --desk: #3b2a1e; --desk2: #2c1f16; --paper: #efe4cc; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5; --seal: #8e2a22; --brass: #b8923e;
+  --good: #3f6f8f; --warn: #c08a1e; --bad: #8e2a22;
+  --display: "IM Fell English SC", Georgia, serif; --body: "IM Fell DW Pica", Georgia, serif; --data: "Sorts Mill Goudy", Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+.wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 36px; }
+header h1 { font-family: var(--display); font-size: 2.2rem; margin: 0; font-weight: normal; text-wrap: balance; }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 72ch; }
+.opt { display: grid; gap: 10px; }
+.opt > h2 { font-family: var(--display); font-size: 1.5rem; margin: 0; font-weight: normal; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.rec { font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; border: 1px solid currentColor; padding: 1px 6px; border-radius: 3px; }
+.verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 8px 24px; font-size: .95rem; }
+.verdict div { min-width: 0; } .verdict b { font-family: var(--mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; font-weight: 500; }
+.note { border-top: 1px solid var(--line); padding-top: 14px; color: var(--muted); font-size: .92rem; max-width: 80ch; }
+
+.desk { background: repeating-linear-gradient(92deg, var(--desk) 0 30px, var(--desk2) 30px 31px); border-radius: 6px; padding: 18px; }
+.sheet { background: var(--paper); color: var(--ink); border-radius: 2px; box-shadow: 0 10px 24px rgba(0,0,0,.35); padding: 18px 20px; display: grid; gap: 14px; }
+.big { display: grid; grid-template-columns: repeat(auto-fill, minmax(82px, 1fr)); gap: 12px 8px; }
+.big figure { margin: 0; display: grid; justify-items: center; gap: 4px; }
+.big figcaption { font-family: var(--data); font-size: 13px; color: var(--ink2); text-align: center; }
+.sizes { display: flex; gap: 22px; flex-wrap: wrap; align-items: center; border-top: 1px solid var(--rule); padding-top: 10px; }
+.sizes .lab { font-family: var(--mono); font-size: 11px; color: var(--ink2); letter-spacing: .06em; text-transform: uppercase; }
+.sizes .row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.tbl { overflow-x: auto; border-top: 1px solid var(--rule); padding-top: 6px; }
+table { border-collapse: collapse; width: 100%; font-family: var(--data); font-size: 15px; font-variant-numeric: tabular-nums lining-nums; }
+th { font-weight: normal; font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink2); text-align: left; padding: 3px 10px 3px 0; white-space: nowrap; }
+td { padding: 4px 10px 4px 0; border-top: 1px solid var(--rule); white-space: nowrap; vertical-align: middle; }
+td.n { text-align: right; }
+.ic { display: inline-flex; vertical-align: middle; gap: 6px; align-items: center; }
+svg.i { display: block; flex: none; overflow: visible; }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- base silhouettes, 24-unit grid -->
+    <symbol id="g-shield" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5z"/></symbol>
+    <symbol id="g-sword" viewBox="0 0 24 24"><path d="M11 1.5h2l.6 13h-3.2zM6.5 14.5h11v2.2h-11zM10.9 16.7h2.2v4.3h-2.2zM9.6 21h4.8v1.8H9.6z"/></symbol>
+    <symbol id="g-lyre" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M6 2.5c-3 5-3 12 1.5 18.5h9C21 14.5 21 7.5 18 2.5c-1 2.4-2.6 3.4-6 3.4S7 4.9 6 2.5zM8.4 8.6h1.3v10.4H8.4zm2.9-.4h1.4v10.8h-1.4zm3 .4h1.3v10.4h-1.3z"/></symbol>
+    <symbol id="g-lantern" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M10 1.5h4v2h-4zM8 4h8v2.2l-1 1v9.6l1 1V20H8v-2.2l1-1V7.2l-1-1zm3 5v6.5h2V9z"/></symbol>
+    <symbol id="g-paw" viewBox="0 0 24 24"><path d="M12 11.5c3.5 0 6 3.6 6 6.4 0 2-1.6 3.1-3.3 3.1-1.3 0-1.8-.7-2.7-.7s-1.4.7-2.7.7C7.6 21 6 19.9 6 17.9c0-2.8 2.5-6.4 6-6.4z"/><ellipse cx="6" cy="9.6" rx="2" ry="2.6"/><ellipse cx="9.6" cy="5.6" rx="2" ry="2.7"/><ellipse cx="14.4" cy="5.6" rx="2" ry="2.7"/><ellipse cx="18" cy="9.6" rx="2" ry="2.6"/></symbol>
+    <symbol id="g-coin" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2a10 10 0 110 20 10 10 0 010-20zM7 15.5h10l1-7-3.2 2.6L12 6.5l-2.8 4.6L6 8.5z"/></symbol>
+    <symbol id="g-star" viewBox="0 0 24 24"><path d="M12 1.8l2.9 6.6 7.1.7-5.4 4.8 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.1l7.1-.7z"/></symbol>
+    <symbol id="g-book" viewBox="0 0 24 24"><path d="M3 4.5h6.5c1.4 0 2.5 1.1 2.5 2.5v14c0-1-1-1.8-2.2-1.8H3zM21 4.5h-6.5C13.1 4.5 12 5.6 12 7v14c0-1 1-1.8 2.2-1.8H21z"/></symbol>
+    <symbol id="g-wound" viewBox="0 0 24 24"><path d="M9 2.5h6v6.5h6.5v6H15v6.5H9V15H2.5V9H9z"/></symbol>
+    <symbol id="g-skull" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2.5c-5 0-8.5 3.4-8.5 8 0 3 1.4 5 3.5 6.2V21h10v-4.3c2.1-1.2 3.5-3.2 3.5-6.2 0-4.6-3.5-8-8.5-8zM8.7 9.2a2.2 2.2 0 110 4.4 2.2 2.2 0 010-4.4zm6.6 0a2.2 2.2 0 110 4.4 2.2 2.2 0 010-4.4zM12 14.5l1.2 2.4h-2.4zM9.4 18.4h1.2V21H9.4zm4 0h1.2V21h-1.2z"/></symbol>
+
+    <!-- treatments -->
+    <pattern id="hatch" width="1.4" height="1.4" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)"><rect width="1.4" height=".45" fill="#efe4cc"/></pattern>
+    <filter id="rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale=".7"/></filter>
+    <radialGradient id="wax" cx="38%" cy="32%" r="70%"><stop offset="0" stop-color="#b8473c"/><stop offset=".55" stop-color="#8e2a22"/><stop offset="1" stop-color="#5e1a14"/></radialGradient>
+    <linearGradient id="pt-steel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dfe3e6"/><stop offset=".5" stop-color="#8f9aa3"/><stop offset="1" stop-color="#4c5560"/></linearGradient>
+    <linearGradient id="pt-gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6dc8c"/><stop offset=".5" stop-color="#c99a2e"/><stop offset="1" stop-color="#7a5a16"/></linearGradient>
+    <linearGradient id="pt-wood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9a066"/><stop offset=".5" stop-color="#9a6234"/><stop offset="1" stop-color="#5a3518"/></linearGradient>
+    <linearGradient id="pt-blood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e06a5a"/><stop offset=".5" stop-color="#a8322a"/><stop offset="1" stop-color="#5e1a14"/></linearGradient>
+    <linearGradient id="pt-bone" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbf6e8"/><stop offset=".55" stop-color="#d8ccaf"/><stop offset="1" stop-color="#8f8466"/></linearGradient>
+    <linearGradient id="pt-leaf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b8d08a"/><stop offset=".5" stop-color="#6d8f43"/><stop offset="1" stop-color="#344a1d"/></linearGradient>
+    <linearGradient id="pt-vel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fb6d6"/><stop offset=".5" stop-color="#4f6f9f"/><stop offset="1" stop-color="#25395a"/></linearGradient>
+    <filter id="paint"><feDropShadow dx=".5" dy=".9" stdDeviation=".5" flood-color="#1a1008" flood-opacity=".6"/></filter>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header>
+    <h1>Guild icon styles</h1>
+    <p>Style Q6: how icons look. The same ten icons in four treatments, at card size (64 px), button size (24 px) and ledger size (16 px), then in a ledger row. The shapes are rough stand-ins I drew to show each treatment; an artist draws the real set. Judge the 16 px row hardest: that is where icons live most of the time.</p>
+  </header>
+  <div id="opts"></div>
+  <p class="note">Icons never carry meaning alone: status icons always sit beside a word or a colour-blind-safe status colour (D-048). Whatever the style, the small-size version can ship as the custom symbol font from D-052 so icons sit inline with text. Names and figures are placeholders.</p>
+</div>
+
+<script>
+const ICONS = [
+  ["shield","Shieldman","pt-steel"],["sword","Hexblade","pt-steel"],["lyre","Cantor","pt-wood"],["lantern","Delver","pt-gold"],["paw","Wildcaller","pt-leaf"],
+  ["coin","Crowns","pt-gold"],["star","Renown","pt-gold"],["book","Knowledge","pt-vel"],["wound","Injured","pt-blood"],["skull","Fallen","pt-bone"]];
+const INK = "#2a2017", PAPER = "#efe4cc";
+
+// treatment renderers: return inner SVG for a 24-unit box; `small` simplifies detail for 16 px
+const T = {
+  woodcut: (id, _, small) => small
+    ? `<use href="#g-${id}" fill="${INK}"/>`
+    : `<g filter="url(#rough)"><use href="#g-${id}" fill="${INK}"/><use href="#g-${id}" fill="url(#hatch)" opacity=".55" transform="translate(12 12) scale(.62) translate(-12 -12)"/></g>`,
+  seal: (id, _, small) => `<circle cx="12" cy="12" r="11.5" fill="url(#wax)"/>${small ? "" : '<circle cx="12" cy="12" r="9.6" fill="none" stroke="#5e1a14" stroke-width=".5"/>'}<use href="#g-${id}" fill="${PAPER}" transform="translate(12 12) scale(${small ? .66 : .58}) translate(-12 -12)"/>`,
+  painted: (id, grad) => `<use href="#g-${id}" fill="url(#${grad})" stroke="#1a1008" stroke-width=".7" filter="url(#paint)"/>`,
+  line: (id) => `<use href="#g-${id}" fill="none" stroke="${INK}" stroke-width="1.3" stroke-linejoin="round"/>`,
+};
+const icon = (t, id, grad, px) => `<svg class="i" width="${px}" height="${px}" viewBox="0 0 24 24" role="img" aria-label="${id}">${T[t](id, grad, px <= 16)}</svg>`;
+
+const OPTS = [
+  { t: "woodcut", name: "A. Woodcut blocks", rec: true,
+    good: "Printer's woodblocks: black ink cut with hatching, the same era and craft as the old-press type (D-051) and the inked quest map (D-050). One ink colour, so status colours stay free to carry meaning. At 16 px it drops the hatching and becomes a clean silhouette, which still reads.",
+    bad: "Needs two drawn levels per icon (detailed for cards, simple for ledgers), so twice the drawing. Monochrome is less eye-catching on store-page shots; colour comes from seals, banners and portraits instead." },
+  { t: "seal", name: "B. Wax seals and charges",
+    good: "Every icon a pressed seal or heraldic charge: very on-theme for letters, contracts and factions, and instantly recognisable as 'this game'.",
+    bad: "Everything becomes a red disc: at 16 px the discs blur together, and oxblood clashes with the 'bad' status colour (D-048). Best kept for factions, contracts and set pieces, not every icon." },
+  { t: "painted", name: "C. Painted miniatures",
+    good: "Full-colour painted icons, like an RPG inventory: rich, readable at large size, and good on the store page.",
+    bad: "The most expensive (a painter for every icon, item and status). Colour everywhere competes with status and faction colours, and at 16 px the shading turns to mush. Feels like a different game from the inked desk." },
+  { t: "line", name: "D. Clean line glyphs",
+    good: "Modern outline icons: the crispest at 16 px and the cheapest to make. Closest to FM.",
+    bad: "No period character at all; looks like a web app pasted onto a vellum desk, against the flair you asked for in type and board." },
+];
+const root = document.getElementById("opts");
+OPTS.forEach(o => {
+  const big = ICONS.map(([id, label, g]) => `<figure>${icon(o.t, id, g, 64)}<figcaption>${label}</figcaption></figure>`).join("");
+  const mid = ICONS.map(([id, , g]) => icon(o.t, id, g, 24)).join("");
+  const sm = ICONS.map(([id, , g]) => icon(o.t, id, g, 16)).join("");
+  const c = (id, g) => icon(o.t, id, g, 16);
+  const s = document.createElement("section"); s.className = "opt";
+  s.innerHTML = `<h2>${o.name}${o.rec ? ' <span class="rec">Recommended</span>' : ""}</h2>
+  <div class="desk"><div class="sheet">
+    <div class="big">${big}</div>
+    <div class="sizes"><span class="lab">24 px</span><span class="row">${mid}</span><span class="lab">16 px</span><span class="row">${sm}</span></div>
+    <div class="tbl"><table>
+      <tr><th>Name</th><th>Class</th><th>Lvl</th><th>Condition</th><th>Wage</th><th>Renown</th></tr>
+      <tr><td>Bram Oakes</td><td><span class="ic">${c("shield","pt-steel")}Shieldman</span></td><td class="n">6</td><td><span class="ic">${c("wound","pt-blood")}Injured, 4 days</span></td><td class="n"><span class="ic">29 ${c("coin","pt-gold")}</span></td><td class="n"><span class="ic">112 ${c("star","pt-gold")}</span></td></tr>
+      <tr><td>Odric Hale</td><td><span class="ic">${c("sword","pt-steel")}Hexblade</span></td><td class="n">5</td><td>Fit</td><td class="n"><span class="ic">31 ${c("coin","pt-gold")}</span></td><td class="n"><span class="ic">87 ${c("star","pt-gold")}</span></td></tr>
+      <tr><td>Aldo Venn</td><td><span class="ic">${c("lantern","pt-gold")}Delver</span></td><td class="n">4</td><td><span class="ic">${c("skull","pt-bone")}Fallen, Hollow Barrow</span></td><td class="n">–</td><td class="n"><span class="ic">64 ${c("star","pt-gold")}</span></td></tr>
+    </table></div>
+  </div></div>
+  <div class="verdict"><div><b>Strengths</b>${o.good}</div><div><b>Weaknesses</b>${o.bad}</div></div>`;
+  root.appendChild(s);
+});
+</script>
