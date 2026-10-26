@@ -1,6 +1,6 @@
 # Resolution v0
 
-How a party, its plan, stats, gear and the site become odds and events (PLAN §9b step 0b, D-113). Decisions: D-118..D-126, D-129, D-130. Every number below is a starting value in content data (`packages/content/src/base/resolution.ts`), to be tuned by R1 and R2; none is in engine code.
+How a party, its plan, stats, gear and the site become odds and events (PLAN §9b step 0b, D-113). Decisions: D-118..D-126, D-129..D-131. Every number below is a starting value in content data (`packages/content/src/base/resolution.ts`), to be tuned by R1 and R2; none is in engine code.
 
 ## Inputs
 
@@ -12,7 +12,7 @@ How a party, its plan, stats, gear and the site become odds and events (PLAN §9
 
 - chance = base 50% + 5% × (attribute − difficulty) + gear + plan + site, clamped 5–95%. The chance is a `Value` with every part named.
 - Roll 1–10,000 from the `quest.resolution` stream; success if the roll ≤ chance.
-- A failure is **bad** if the roll lands in the top share of the failure band: cautious 15%, steady 30%, bold 50%. Risk also adds to every party chance (not to foes' attacks): cautious −5%, steady 0, bold +5%.
+- A failure is **bad** if the roll lands in the top share of the failure band: cautious 15%, steady 30%, bold 50%. Risk also adds to the chance: cautious −5%, steady 0, bold +5%. Both apply only to the checks that press on, scene tests and attacks (content list, D-131); tending, mending, the leader's read and the retreat check are untouched, so a cautious plan never makes the healer or the way out worse.
 
 ## Scenes
 
@@ -22,7 +22,8 @@ How a party, its plan, stats, gear and the site become odds and events (PLAN §9
 ## Main fight (D-118, D-123)
 
 - Up to 6 exchanges. In each, everyone standing acts once, fastest first (Agility against each foe group's speed; ties by id, D-129). An adventurer attacks the first standing foe group (class attribute + weapon vs the group's defence); a foe group attacks one standing adventurer (group attack vs Agility, minus armour; front-line members are picked 2:1 over back-line). Down and Dying members are not attacked. Each foe group has its own number of hits to beat (content data), and is down when it has taken them.
-- A hit moves the target one wound step; a hit with a roll in the lowest quarter of the chance moves it two.
+- A hit moves the target one wound step; a hit with a roll in the lowest 30% of the chance moves it two.
+- **Overreach** (D-131): an attack that fails badly leaves the attacker open; the foe group they swung at strikes them at once, and no guard can step in. This is what bold costs in a fight.
 - The fight ends when all groups are Down (won), the party retreats, every member is Down or worse (rout), or the exchanges run out (the foes withdraw; the contract is half done).
 
 ## Class actions (D-130)
@@ -40,9 +41,9 @@ Roles set in the plan and more actions (abilities by level, D-074) are later add
 
 ## Wounds, death and injury (D-120)
 
-- Steps: Fit, Hurt, Badly hurt, Down, Dying; foe groups stop at Down. A Down member does nothing. At the end of each scene or exchange, each standing cleric tends one fallen member, Dying first (Lore check, difficulty 10): a tended Dying member returns to Down (with a `wound.changed` event), a tended Down member is held steady. Each untended Down member then **bleeds**: 20% − 2% per Toughness point above 10 to slip to Dying (D-124). Then each member who was Dying before the bleed rolls makes a **death roll**: 25% − 1% per Toughness and Resolve point above 10. A step past Dying forces a death roll at once.
+- Steps: Fit, Hurt, Badly hurt, Down, Dying; foe groups stop at Down. A Down member does nothing. At the end of each scene or exchange, each standing cleric tends one fallen member, Dying first (Lore check, difficulty 10): a tended Dying member returns to Down (with a `wound.changed` event), a tended Down member is held steady. Each untended Down member then **bleeds**: 30% − 2% per Toughness point above 10 to slip to Dying (D-124). Then each member who was Dying before the bleed rolls makes a **death roll**: 35% − 1.5% per Toughness and Resolve point above 10. A step past Dying forces a death roll at once.
 - **Rout:** when no member is standing, the quest ends; the party limps home and the contract fails.
-- At the quest's end each member at Badly hurt or worse rolls for a lasting injury: Badly hurt 15%, Down 40%, Dying 70%.
+- At the quest's end each member at Badly hurt or worse rolls for a lasting injury: Badly hurt 7.5%, Down 22.5%, Dying 41%.
 - Step sizes (failure 1, bad failure 2, alarm bad failure 1, hit 1, strong hit 2, failed retreat 1) are content data too.
 - Lasting injuries are events only in v0; nothing is stored on the adventurer yet.
 - Target: these numbers start where the headless simulator should give PLAN §4c's deaths per danger rating and about 5 injuries per death; R2 tunes them.

@@ -4,7 +4,7 @@ import { actionOf, guardFor, scoutPart, used, wardPart } from './actions.ts';
 import { succeeded } from './check.ts';
 import { wound, woundFoe } from './harm.ts';
 import { foeDown, partyCheck, rankBy, roll, standing, stepOf, type Turn } from './turn.ts';
-import type { FoeState, SceneTemplate } from './types.ts';
+import type { Adventurer, FoeState, SceneTemplate } from './types.ts';
 import { WOUND } from './types.ts';
 
 export function resolveScene(turn: Turn, scene: SceneTemplate, commandId: string): void {
@@ -105,6 +105,11 @@ export function resolveExchange(turn: Turn, commandId: string): void {
       exchangeEvent,
       [foe.id],
     );
+    if (result.outcome === 'bad-failure') {
+      // Overreach (D-131): the foe group swung at strikes the attacker at once, past any guard.
+      if (!foeDown(foe)) foeStrikes(turn, foe, eventId, ward, attacker);
+      continue;
+    }
     if (!succeeded(result.outcome)) continue;
     if (shadow) used(turn, shadow.id, [attacker.id, foe.id], eventId);
     const strong = result.outcome === 'strong-success';
@@ -125,22 +130,30 @@ export function foesStrike(turn: Turn, causeId: string): void {
   }
 }
 
-/** One foe group strikes one standing adventurer, front line weighted over back. */
+/**
+ * One foe group strikes one standing adventurer, front line weighted over back; a counter-strike
+ * after an overreach names its target and no guard steps in.
+ */
 function foeStrikes(
   turn: Turn,
   foe: FoeState,
   causeId: string,
   ward: ValuePart | null = null,
+  counterTarget: Adventurer | null = null,
 ): void {
   const { quest, rules } = turn;
   const steps = rules.woundSteps;
   const alarm = quest.alarm ? rules.alarmFoeBonus : 0;
   const targets = standing(turn);
   if (targets.length === 0) return;
-  const aimedAt = turn.stream.weighted(
-    targets.map((a) => [a, rules.targetWeight[a.position]] as const),
-  );
-  const target = guardFor(turn, aimedAt, foe.id, causeId);
+  const target =
+    counterTarget ??
+    guardFor(
+      turn,
+      turn.stream.weighted(targets.map((a) => [a, rules.targetWeight[a.position]] as const)),
+      foe.id,
+      causeId,
+    );
   const parts: ValuePart[] = [
     { sourceId: 'foe.attack', amount: rules.stepBp * (foe.attack - target.attributes.agility) },
   ];

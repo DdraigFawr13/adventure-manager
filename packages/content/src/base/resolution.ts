@@ -1,6 +1,7 @@
 // Resolution v0 starting numbers (packages/engine/src/resolution/SPEC.md, D-118..D-123).
-// First tuning pass (2026-10-26, tools/resolution-sweep.ts): death, bleed, strong-hit and injury
-// numbers hit PLAN §4c on the hazardous delve with the leader's call; the rest are first guesses.
+// Second tuning pass (2026-10-26, tools/resolution-sweep.ts, D-131): death, bleed and the mill
+// cellar's numbers put the prototype party near PLAN §4c on all three contracts at the default
+// plan, with cautious and reckless plans moving deaths about as §4c asks.
 import type { QuestTemplate, ResolutionContent, ResolutionRules } from '@adventure-manager/engine';
 
 export const baseResolutionRules: ResolutionRules = {
@@ -22,6 +23,7 @@ export const baseResolutionRules: ResolutionRules = {
     steady: { chanceBp: 0, badFailureShareBp: 3000 },
     bold: { chanceBp: 500, badFailureShareBp: 5000 },
   },
+  riskPurposes: ['scene', 'attack'],
   approachAttribute: { stealth: 'stealth', assault: 'might', diplomacy: 'presence' },
   tagShifts: {
     guarded: { stealth: -2, assault: 2 },
@@ -31,8 +33,8 @@ export const baseResolutionRules: ResolutionRules = {
   alarmFoeBonus: 2,
   maxExchanges: 6,
   targetWeight: { front: 2, back: 1 },
-  deathRoll: { baseBp: 5000, stepBp: 150, pivot: 10 },
-  bleed: { baseBp: 3500, stepBp: 200, pivot: 10 },
+  deathRoll: { baseBp: 3500, stepBp: 150, pivot: 10 },
+  bleed: { baseBp: 3000, stepBp: 200, pivot: 10 },
   stabilise: { attribute: 'lore', difficulty: 10 },
   injuryBp: { badlyHurt: 750, down: 2250, dying: 4100 },
   retreat: {
@@ -131,12 +133,12 @@ export const millCellar: QuestTemplate = {
       id: 'scene.flooded-steps',
       kind: 'fixed',
       attribute: 'agility',
-      difficulty: 6,
+      difficulty: 10,
       testers: 'all',
       onFailure: 'wound',
     },
   ],
-  foes: [{ id: 'foe.cellar-rats', attack: 11, defence: 6, speed: 13, hits: 6 }],
+  foes: [{ id: 'foe.cellar-rats', attack: 14, defence: 6, speed: 13, hits: 8 }],
 };
 
 /** A perilous delve: the drowned chapel and what keeps it. */

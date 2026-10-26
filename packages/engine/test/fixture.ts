@@ -31,6 +31,7 @@ export const rules: ResolutionRules = {
     steady: { chanceBp: 0, badFailureShareBp: 3000 },
     bold: { chanceBp: 500, badFailureShareBp: 5000 },
   },
+  riskPurposes: ['scene', 'attack'],
   approachAttribute: { stealth: 'stealth', assault: 'might', diplomacy: 'presence' },
   tagShifts: { guarded: { stealth: -2, assault: 2 } },
   alarmFoeBonus: 2,

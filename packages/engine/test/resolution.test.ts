@@ -663,3 +663,46 @@ describe('class signature actions (D-130)', () => {
     expect(ofType(events, 'action.used').some((e) => e.actionId === 'action.ward')).toBe(true);
   });
 });
+
+describe('the plan risk presses on, not tending or getting out (D-131)', () => {
+  it('makes a foe strike back at once at an attacker who overreaches, past any guard', () => {
+    const roster = [adventurer('a', { might: 1, agility: 20 }), adventurer('b', { agility: 19 })];
+    const everyMissIsBad = {
+      ...game([]).content.rules.risk,
+      steady: { chanceBp: 0, badFailureShareBp: 10_000 },
+    };
+    const { events } = run(
+      game(roster, {
+        rules: { ...certain, maxExchanges: 1, risk: everyMissIsBad },
+        quest: { scenes: [], foes: [{ id: 'f', attack: 1, defence: 20, speed: 1, hits: 3 }] },
+      }),
+    );
+    const attack = ofType(events, 'check.rolled').find(
+      (e) => e.purpose === 'attack' && e.subjectIds[0] === 'a',
+    );
+    expect(attack?.outcome).toBe('bad-failure');
+    const counter = ofType(events, 'check.rolled').find((e) => e.causeId === attack?.id);
+    expect(counter).toMatchObject({ purpose: 'defence', subjectIds: ['a', 'f'] });
+    expect(
+      ofType(events, 'check.rolled').some((e) => e.purpose === 'guard' && e.causeId === attack?.id),
+    ).toBe(false);
+  });
+
+  it('adds the risk only to the checks content names', () => {
+    const roster = [adventurer('a', { might: 20, agility: 20, stealth: 14 })];
+    const plan = { ...steadyPlan, risk: 'bold' } as const;
+    const { events } = run(game(roster, { rules: { riskPurposes: ['scene'] } }), plan);
+    const checks = ofType(events, 'check.rolled');
+    const risky = (purpose: string) =>
+      checks
+        .filter((e) => e.purpose === purpose)
+        .every((e) => e.chance.parts.some((p) => p.sourceId === 'plan.risk.bold'));
+    expect(checks.some((e) => e.purpose === 'attack')).toBe(true);
+    expect(risky('scene')).toBe(true);
+    expect(
+      checks
+        .filter((e) => e.purpose === 'attack')
+        .some((e) => e.chance.parts.some((p) => p.sourceId === 'plan.risk.bold')),
+    ).toBe(false);
+  });
+});
