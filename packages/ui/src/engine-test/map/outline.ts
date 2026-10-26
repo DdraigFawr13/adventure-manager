@@ -1,4 +1,4 @@
-// From Story-Generator src/app/tales/outline.ts @ 8a5c4ef (D-116); unchanged. `contourSteps` and `contours` now trace the March coast, lake shores and the sea ripple lines (map-ground.ts); `pathOf` is kept unused.
+// From Story-Generator src/app/tales/outline.ts @ 8a5c4ef (D-116); changed: only `contourSteps` is kept (it traces the March coast, lake shores and sea ripple lines, map-ground.ts); the unused `contours` and `pathOf` are removed.
 // The shore as a vector line: marching squares over the smoothed land mask. The raster map steps
 // at the pixel grid when zoomed in; this line is smooth at any zoom. Pure, no DOM.
 
@@ -6,25 +6,6 @@
 export interface Outline {
   points: number[];
   closed: boolean;
-}
-
-/**
- * Contours of `plane` (w by h, one value a cell centre, sampled bilinearly like the raster map)
- * at `level`, on a grid `sub` times finer than the cells. Coordinates are in cell units, with a
- * cell's centre at +0.5.
- */
-export function contours(
-  plane: Float32Array,
-  w: number,
-  h: number,
-  level: number,
-  sub: number,
-): Outline[] {
-  const steps = contourSteps(plane, w, h, level, sub);
-  for (;;) {
-    const r = steps.next();
-    if (r.done) return r.value;
-  }
 }
 
 /** Grid points traced between pauses, so a big plane does not hold the page for long. */
@@ -163,17 +144,4 @@ export function* contourSteps(
   for (const [id, n] of links) if (n.length === 1 && !seen.has(id)) walk(id);
   for (const id of links.keys()) if (!seen.has(id)) walk(id);
   return out;
-}
-
-/** An SVG path (`M x y L ...`) for the outlines, in cell units. */
-export function pathOf(lines: readonly Outline[]): string {
-  const parts: string[] = [];
-  for (const line of lines) {
-    const p = line.points;
-    if (p.length < 4) continue;
-    let d = `M${p[0]!.toFixed(2)} ${p[1]!.toFixed(2)}`;
-    for (let i = 2; i < p.length; i += 2) d += `L${p[i]!.toFixed(2)} ${p[i + 1]!.toFixed(2)}`;
-    parts.push(line.closed ? `${d}Z` : d);
-  }
-  return parts.join('');
 }

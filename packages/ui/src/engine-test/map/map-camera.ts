@@ -19,14 +19,15 @@ export const ZOOM_STEP = 1.25;
 
 /** The zoom at which the whole sheet just fits the window. */
 export const fitZoom = (viewW: number, viewH: number, sheet: Sheet2): number =>
-  Math.min(viewW / sheet.w, viewH / sheet.h);
+  Math.max(1e-3, Math.min(viewW / sheet.w, viewH / sheet.h));
 
 /**
  * Keeps the zoom in range and the sheet in view. Spare width goes to the left (the layer switches
  * live there, off the paper); spare height is shared top and bottom.
  */
 export function clampCamera(cam: Camera, viewW: number, viewH: number, sheet: Sheet2): void {
-  cam.z = Math.min(MAX_ZOOM, Math.max(fitZoom(viewW, viewH, sheet), cam.z));
+  // On a window bigger than the sheet at MAX_ZOOM, the fit wins, so the paper still fills it.
+  cam.z = Math.max(fitZoom(viewW, viewH, sheet), Math.min(MAX_ZOOM, cam.z));
   const spanX = viewW / cam.z;
   const spanY = viewH / cam.z;
   cam.x = spanX >= sheet.w ? sheet.w - spanX : Math.min(sheet.w - spanX, Math.max(0, cam.x));

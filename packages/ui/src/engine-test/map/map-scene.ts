@@ -95,12 +95,16 @@ export function createScene(data: MapData, atlas: Atlas, text: SceneText): Scene
   const hidden = new Uint8Array(sites.length + data.areas.length + 1);
   const hiddenLandmark = sites.length + data.areas.length;
   let lastLook = -10;
-  const look = (seconds: number) => {
-    if (seconds - lastLook < LOOK_EVERY && seconds >= lastLook) return;
+  // With the fog layer off nothing is under vellum, so every name shows.
+  let fogOn = true;
+  const veiled = (cell: number) => fogOn && journey.uncharted(cell);
+  const look = (seconds: number, fogLayer: boolean) => {
+    if (fogLayer === fogOn && seconds - lastLook < LOOK_EVERY && seconds >= lastLook) return;
     lastLook = seconds;
-    sites.forEach((c, k) => (hidden[k] = journey.uncharted(c) ? 1 : 0));
-    data.areas.forEach((a, k) => (hidden[sites.length + k] = journey.uncharted(a.cell) ? 1 : 0));
-    hidden[hiddenLandmark] = journey.uncharted(data.landmarkCell) ? 1 : 0;
+    fogOn = fogLayer;
+    sites.forEach((c, k) => (hidden[k] = veiled(c) ? 1 : 0));
+    data.areas.forEach((a, k) => (hidden[sites.length + k] = veiled(a.cell) ? 1 : 0));
+    hidden[hiddenLandmark] = veiled(data.landmarkCell) ? 1 : 0;
   };
 
   const rooms = new Rooms();
@@ -119,7 +123,7 @@ export function createScene(data: MapData, atlas: Atlas, text: SceneText): Scene
     lastSeconds = seconds;
     const z = cam.z;
     journey.step(seconds, dt);
-    look(seconds);
+    look(seconds, layers.fog);
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, viewW, viewH);
@@ -197,7 +201,7 @@ export function createScene(data: MapData, atlas: Atlas, text: SceneText): Scene
       // Villages after the settlements, so a village gives way when names compete.
       const village: LabelStyle = { size: 13 * ls, spacing: 0.3, face: 'italic', alpha: 0.85 };
       data.villageCells.forEach((c, k) => {
-        if (journey.uncharted(c)) return;
+        if (veiled(c)) return;
         const reach = { rx: VILLAGE_REACH.rx * z, ry: VILLAGE_REACH.ry * z };
         placeTownName(ctx, rooms, say(`village.${k}`), sx(cx(c)), sy(cy(c)), reach, village);
       });

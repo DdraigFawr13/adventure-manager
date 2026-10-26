@@ -4,6 +4,7 @@
   "ui.north": "N",
   "ui.subtitle": "as kept by The Lantern Company",
   "ui.mapLabel": "Inked map of the Fenn March. Drag or use the arrow keys to move, plus and minus to zoom.",
+  "ui.placesList": "Places on the map",
   "ui.loading": "Inking the map...",
   "ui.zoomIn": "Zoom in",
   "ui.zoomOut": "Zoom out",

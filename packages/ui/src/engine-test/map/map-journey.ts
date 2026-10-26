@@ -84,7 +84,7 @@ export function createJourney(data: MapData, fog: Fog, S: number): Journey {
     const r = Math.max(24, Math.min(want, room, MAX_VELLUM_RADIUS));
     fog.cover(x, y, r, 3);
     for (let i = 0; i < W * H; i += 1) {
-      if (Math.hypot((i % W) - x, Math.floor(i / W) - y) < r * 0.9) veiled[i] = 1;
+      if (Math.hypot((i % W) - x, Math.floor(i / W) - y) < r) veiled[i] = 1;
     }
   }
   fog.keepAsStart();
@@ -114,7 +114,7 @@ export function createJourney(data: MapData, fog: Fog, S: number): Journey {
   const reveal = (x: number, y: number, r: number, seed: number, final: boolean) => {
     fog.reveal(x, y, r, seed);
     if (!final) return;
-    const reach = Math.ceil(r * 0.85);
+    const reach = Math.ceil(r);
     for (let dy = -reach; dy <= reach; dy += 1) {
       for (let dx = -reach; dx <= reach; dx += 1) {
         const px = Math.floor(x) + dx;
@@ -149,11 +149,10 @@ export function createJourney(data: MapData, fog: Fog, S: number): Journey {
       if (cycle !== lastCycle) {
         lastCycle = cycle;
         lastMilestone = -1;
-      }
-      if (party.regrow) {
-        fog.regrow(1 - Math.exp(-3 * dt));
+        // The vellum has grown back over the rest at home, so the names go with it now.
         charted.fill(0);
       }
+      if (party.regrow) fog.regrow(1 - Math.exp(-3 * dt));
       const milestone = Math.floor(party.idx / BURST_EVERY);
       const here = route[Math.min(lastLeg, Math.max(0, Math.round(party.idx)))]!;
       // Ink bursts mark new ground only: none on the charted roads near home.

@@ -2,7 +2,8 @@
 // pans and zooms, memory, size on disk, labelled controls, and screenshots of the real Electron
 // window at 1366×768. Run under a display: xvfb-run -a node tools/engine-test-measure.mjs [out-dir]
 // Numbers here come from a container with software rendering; the owner's Windows machine is the
-// real test, so treat fps as a floor, not the verdict.
+// real test, so treat fps as a floor, not the verdict. All times are approximate: buildSeconds
+// includes npx start-up; mapReadyMs is window launch to page load plus page load to the map drawn.
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -21,7 +22,8 @@ const results = {};
 let start = performance.now();
 execFileSync('npx', ['vite', 'build', '-c', 'vite.engine-test.config.ts'], {
   cwd: join(root, 'packages/ui'),
-  stdio: 'ignore',
+  // Shown, so a failed build is visible (VER-03).
+  stdio: 'inherit',
 });
 results.buildSeconds = Math.round(performance.now() - start) / 1000;
 

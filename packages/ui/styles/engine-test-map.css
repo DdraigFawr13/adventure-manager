@@ -153,3 +153,13 @@
   background: rgba(44, 31, 22, 0.85);
   pointer-events: none;
 }
+
+/* Text for screen readers only: off-screen, not display:none, so it is still read. */
+.etm-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

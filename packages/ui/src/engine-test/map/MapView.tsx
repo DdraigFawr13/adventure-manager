@@ -5,7 +5,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { engineTestMapText as defaultText } from '@adventure-manager/content';
 import '../../../styles/engine-test-map.css';
-import { atlasSteps } from './map-atlas.ts';
+import { atlasSteps, type Atlas } from './map-atlas.ts';
 import {
   clampCamera,
   fitCamera,
@@ -16,6 +16,10 @@ import {
 } from './map-camera.ts';
 import { decodeMap } from './map-data.ts';
 import { createScene, type LayerName, type LayerToggles, type Scene } from './map-scene.ts';
+
+/** Decoded once and inked once per page (the base never changes while the page is open). */
+const mapData = decodeMap();
+let built: Atlas | null = null;
 
 const LAYER_ORDER: readonly LayerName[] = ['names', 'guilds', 'factions', 'threat', 'party', 'fog'];
 const MAX_DPR = 2;
@@ -52,19 +56,22 @@ export function MapView({ text = defaultText }: MapViewProps) {
   textRef.current = text;
   const frames = useRef({ count: 0, since: 0 });
 
-  // Build the atlas in slices so the page stays alive, then the scene on top of it.
+  // Build the atlas in slices so the page stays alive, then the scene on top of it. The atlas is
+  // kept for the page's life, so coming back to the map tab does not ink it again.
   useEffect(() => {
     let cancelled = false;
-    const data = decodeMap();
-    const build = atlasSteps(data);
+    const data = mapData;
+    const build = built ? null : atlasSteps(data);
     const pump = () => {
       if (cancelled) return;
-      const r = build.next();
-      if (!r.done) {
+      const r = build?.next();
+      if (r && !r.done) {
         setTimeout(pump, 0);
         return;
       }
-      const atlas = r.value;
+      if (r) built = r.value;
+      const atlas = built;
+      if (!atlas) return;
       sheet.current = { w: atlas.width, h: atlas.height };
       scene.current = createScene(data, atlas, textRef.current);
       const view = size.current;
@@ -207,6 +214,19 @@ export function MapView({ text = defaultText }: MapViewProps) {
         }}
       >
         <canvas ref={canvas} className="etm-canvas" />
+      </div>
+      {/* The map's places as text, for screen readers (PLAN §6c): the canvas alone says nothing. */}
+      <div className="etm-sr">
+        <h2>{say('ui.placesList')}</h2>
+        <ul>
+          <li>{`${say('place.guild-hall')}, ${say('guild.ours')}`}</li>
+          {mapData.placeCells.map((_, k) => (
+            <li key={`place.${k}`}>{say(`place.${k}`)}</li>
+          ))}
+          {mapData.villageCells.map((_, k) => (
+            <li key={`village.${k}`}>{say(`village.${k}`)}</li>
+          ))}
+        </ul>
       </div>
       {!ready && (
         <p className="etm-loading" role="status">

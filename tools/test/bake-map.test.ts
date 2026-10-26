@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { bakeMap, MARCH, MARCH_WORLD } from '../worldgen/bake.ts';
 import { VILLAGES } from '../worldgen/layout-villages.ts';
+import committed from '../../packages/ui/assets/engine-test/map-base.json' with { type: 'json' };
 
 // A small sheet (80 x 54 cut from a 160-cell world) keeps the test fast; the real March is the
 // 300 x 200 window in MARCH_WORLD.
@@ -56,6 +57,24 @@ describe('kingdom-map baker (roadmap 1.8, GAME-01)', () => {
         expect(gap(v, other)).toBeGreaterThanOrEqual(VILLAGES.minGap * k);
       }
     }
+  });
+
+  it('the committed map base equals a fresh bake of the chosen March', () => {
+    const map = bakeMap({ ...MARCH_WORLD, width: MARCH.width, height: MARCH.height });
+    const b64 = (v: Int16Array | Uint8Array) =>
+      Buffer.from(v.buffer, v.byteOffset, v.byteLength).toString('base64');
+    expect(committed.elevation).toBe(b64(map.elevation));
+    expect(committed.water).toBe(b64(map.water));
+    expect(committed.biome).toBe(b64(map.biome));
+    const picks = (m: typeof committed | typeof map) => [
+      m.guildCell,
+      m.placeCells,
+      m.villageCells,
+      m.route,
+      m.landmarkCell,
+      m.closedRoadCell,
+    ];
+    expect(picks(committed)).toEqual(picks(map));
   });
 
   it('keeps the March at a 3:2 sheet of about 300 x 200 km, 1 km a cell', () => {

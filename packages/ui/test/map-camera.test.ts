@@ -33,6 +33,15 @@ describe('kingdom-map camera (3:2 sheet)', () => {
     expect(MAX_ZOOM / fitZoom(1366, 768, sheet)).toBeGreaterThan(2);
   });
 
+  it('still fills a window too big for the closest zoom, and survives a 0 px view', () => {
+    const cam: Camera = { x: 0, y: 0, z: 1 };
+    clampCamera(cam, 3840, 2160, sheet);
+    expect(cam.z).toBeCloseTo(fitZoom(3840, 2160, sheet), 5);
+    expect(cam.z * sheet.h).toBeGreaterThanOrEqual(2160 - 1e-6);
+    clampCamera(cam, 0, 0, sheet);
+    expect(Number.isFinite(cam.x) && Number.isFinite(cam.z)).toBe(true);
+  });
+
   it('never leaves a gap of desk inside the window once the sheet fills it', () => {
     const cam: Camera = { x: -5000, y: 9000, z: MAX_ZOOM };
     clampCamera(cam, 1366, 768, sheet);
