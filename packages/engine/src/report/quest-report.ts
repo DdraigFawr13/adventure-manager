@@ -14,9 +14,9 @@ import type {
 
 export interface DeathNote {
   readonly id: string;
-  /** The foe group whose blow knocked them down; null when a scene or the retreat did. */
+  /** The foe group whose blow knocked them down; null when a scene did. */
   readonly foeId: string | null;
-  /** What knocked them down: a foe, a scene on the way in (a fall, a trap), or the way out. */
+  /** What knocked them down: a foe in the fight, a foe while retreating, or a scene on the way in. */
   readonly cause: 'foe' | 'scene' | 'retreat';
 }
 
@@ -158,18 +158,20 @@ function attackerOf(e: GameEvent, causeOf: (e: GameEvent) => GameEvent | undefin
   return null;
 }
 
-/** What lay behind a knock-down: a foe's attack or an overreach's counter-blow, a scene, or the retreat. */
+/**
+ * What lay behind a knock-down: a foe's blow (its defence check names the foe, and an overreach's
+ * counter-blow is a defence check too), struck on a retreat beat, or a scene's failed test.
+ */
 function fallCause(
   fall: GameEvent,
   causeOf: (e: GameEvent) => GameEvent | undefined,
 ): Pick<DeathNote, 'foeId' | 'cause'> {
-  for (let at = causeOf(fall), n = 0; at && n < 4; at = causeOf(at), n += 1) {
-    if (at.type !== 'check.rolled') continue;
-    if (at.purpose === 'defence' || at.purpose === 'attack')
-      return { foeId: at.subjectIds[1] ?? null, cause: 'foe' };
-    return { foeId: null, cause: at.purpose === 'retreat' ? 'retreat' : 'scene' };
-  }
-  return { foeId: null, cause: 'scene' };
+  const check = causeOf(fall);
+  if (check?.type !== 'check.rolled' || check.purpose !== 'defence')
+    return { foeId: null, cause: 'scene' };
+  const foeId = check.subjectIds[1] ?? null;
+  const onTheWayOut = causeOf(check)?.type === 'retreat.beat';
+  return { foeId, cause: onTheWayOut ? 'retreat' : 'foe' };
 }
 
 /** One section of the letter, in content (SPEC.md). */

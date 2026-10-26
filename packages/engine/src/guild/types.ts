@@ -129,7 +129,7 @@ export interface GuildState {
   readonly board: Offer[];
   readonly parties: Party[];
   readonly prospects: Prospect[];
-  /** Shape ids the board posted most recently, oldest first (contract/SPEC.md). */
+  /** Real shape ids the board drew recently, oldest first, per danger (contract/SPEC.md). Engine-only: it can name a hidden twist, so views never read it. */
   readonly recentShapes: string[];
   /** Counters for ids, so ids stay unique and replayable. */
   nextOfferNo: number;

@@ -60,6 +60,15 @@ const record = new Map<
     signedDay: number;
     diedDay: number | null;
     diedAt: string | null;
+    history: {
+      week: number;
+      site: string;
+      danger: string;
+      outcome: string;
+      hits: number;
+      injured: boolean;
+    }[];
+    party: { key: string; label: string } | null;
   }
 >();
 for (const a of state.roster)
@@ -71,6 +80,8 @@ for (const a of state.roster)
     signedDay: 1,
     diedDay: null,
     diedAt: null,
+    history: [],
+    party: null,
   });
 const quests: {
   week: number;
@@ -96,6 +107,21 @@ events.forEach((e, at) => {
   }
   for (const id of s.injuries) record.get(id)!.injuries += 1; // non-null: as above.
   const c = contractName(s.templateId);
+  // Standing parties are not simulated yet (D-014): the mock-up groups people by the party they
+  // last went out with, named after its writer (best Wits).
+  const label = s.writerId ? `${fullName(s.writerId)}'s party` : 'A lost party';
+  for (const id of s.partyIds) {
+    const r = record.get(id)!; // non-null: as above.
+    r.history.push({
+      week: weekOf(e.day),
+      site: c.site,
+      danger: c.danger,
+      outcome,
+      hits: s.hits[id] ?? 0,
+      injured: s.injuries.includes(id),
+    });
+    r.party = { key: s.questId, label };
+  }
   for (const d of s.deaths) {
     const r = record.get(d.id)!; // non-null: as above.
     r.diedDay = e.day;
@@ -114,8 +140,16 @@ events.forEach((e, at) => {
 const away = new Map<string, { site: string; homeDay: number }>();
 for (const p of guild.parties)
   if (p.homeDay > today)
-    for (const id of p.memberIds)
+    for (const id of p.memberIds) {
       away.set(id, { site: contractName(p.offer.shownTemplateId).site, homeDay: p.homeDay });
+      // A party still out is their party now, whatever they did before.
+      const leader = [...p.memberIds].sort(
+        (x, y) =>
+          (state.roster.find((r) => r.id === y)?.attributes.wits ?? 0) -
+            (state.roster.find((r) => r.id === x)?.attributes.wits ?? 0) || (x < y ? -1 : 1),
+      )[0]!; // non-null: a party has members.
+      record.get(id)!.party = { key: p.id, label: `${fullName(leader)}'s party` }; // non-null: members are on the roster.
+    }
 
 const roster = state.roster.map((a) => {
   const m = guild.members.find((x) => x.id === a.id);
@@ -135,6 +169,11 @@ const roster = state.roster.map((a) => {
     class: names[a.classId] ?? a.classId,
     position: a.position,
     attributes: a.attributes,
+    weaponBp: a.weaponBp,
+    armourBp: a.armourBp,
+    actions: (baseResolution.rules.classes[a.classId]?.actions ?? []).map(
+      (x) => names[x.id] ?? x.id,
+    ),
     wage: coins(m?.wageCopper ?? 0),
     wageCopper: m?.wageCopper ?? 0,
     status,

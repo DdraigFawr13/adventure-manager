@@ -25,5 +25,5 @@ Each twist has a weight on the board and a fee change in basis points (hidden tw
 ## The board
 
 - Each new offer draws a danger by weight (as before), then one shape of that danger: every fitting (site, kind) pair with every twist or none, weighted by the twist's weight (pairs count equally).
-- **Recent shapes:** the board keeps the last N shapes it posted (content number) and leaves them out of the draw while any other shape of that danger is left. The memory is part of the guild state.
-- Offers carry the template id; `offer.posted` names the site, kind and visible twist.
+- **Recent shapes:** the board keeps the last N shapes it drew for each danger (content number) and leaves them out of the draw while any other shape of that danger is left. The memory is part of the guild state; it holds real ids, so views never read it.
+- An offer keeps its real template id for the quest and a shown id (a hidden twist reads as none) for every view; `offer.posted` carries only the shown id. The real id is revealed when the quest starts (`quest.started`) and in the report.

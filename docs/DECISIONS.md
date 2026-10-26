@@ -868,3 +868,15 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** In the headless year simulator the 17 rival guilds are abstract: each has a strength (roster quality, money, staff) that drifts year to year with its results, and its contracts are drawn from the same board tables and resolved as quick odds rather than full quests. The player's guild plays real quests. Deaths, poaching and named stars can be layered on later. This is what R2's ladder check ("no runaway rival in 30 simulated years") runs on.
 - **Why:** Owner's choice (2026-10-26), over full simulation (about 18× slower, so 30-year balance runs would shrink to a few dozen seeds) and a hybrid (real quests for the player's tier only).
+
+## D-141 The patron sets a yearly target and keeps a confidence score
+
+- **Status:** Accepted (2026-10-26); the targets, confidence steps and retirement ages are starting assumptions for tuning (R9).
+- **Decision:** At each Assembly the patron sets one target from the guild's standing (for example win promotion, finish in the top half of the tier, avoid relegation, stay out of debt). At the next Assembly confidence rises when the target was met and falls when it was missed, by how badly. The guildmaster is dismissed when confidence runs out, so one bad year is survivable and about three are not. The guildmaster also ages and retires on health in their 60s or 70s. These two endings are what the R9 proxy (median career 20–30 simulated years, PLAN §9a) measures.
+- **Why:** Owner's choice (2026-10-26), over a running weekly satisfaction score and fixed contract terms with renewal reviews. It mirrors FM's board expectations and gives the player one clear goal a year.
+
+## D-142 Desk notes: contract art, person card, parties in the roster
+
+- **Status:** Accepted as direction (2026-10-26); shown in the R4 mock-up, built for real with the UI (M2).
+- **Decision:** (1) The contracts screen has an art section: selecting a contract shows a panel with the site's picture over its details (a painted vignette per site, commissioned with the art, PLAN §12). (2) Clicking an adventurer's name opens their card: portrait (woodcut first, STYLE §7), all attributes, kit and abilities, record and recent contracts; equipment, traits and levels join it as those systems arrive. (3) The roster can be grouped by party with a toggle. The mock-up groups people by the party they last went out with, because the simulator does not keep standing parties yet (D-014); the year simulator should add them. (4) The roster shows a Line column (front or back) instead of "(back)" after the class: clerics start in the back line, where foes strike one time in three (front 2 : back 1, resolution SPEC).
+- **Why:** Owner (2026-10-26), after the R4 round-2 mock-up: "for the quests I will want to have a section on that screen that is for art", "when selecting a person ... I want a popup showing more details about them like equipment, other stats, art", "I want parties to be shown in roster. Like group by party as a toggle", and "why do all the clerics say back next to them?"

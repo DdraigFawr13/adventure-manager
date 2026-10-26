@@ -308,4 +308,46 @@ describe('contracts (contract SPEC.md, D-139)', () => {
     expect(ofType(run.events, 'offer.posted').length).toBe(18);
     expect(new Set(run.state.guild!.recentShapes).size).toBe(7); // non-null: founded above.
   });
+
+  it("remembers recent shapes per danger, dropping only that danger's oldest", () => {
+    const two: ContractContent = {
+      ...contracts,
+      recentShapes: 3,
+      sites: contracts.sites.map((x) => ({ ...x, dangers: ['hazardous', 'perilous'] as const })),
+      monsters: [
+        ...contracts.monsters,
+        {
+          id: 'monster.ghouls',
+          family: 'restless-dead',
+          lives: ['tomb'],
+          variants: {
+            perilous: [{ id: 'foe.ghouls', attack: 10, defence: 10, speed: 10, hits: 3 }],
+          },
+        },
+      ],
+    };
+    const base = game([]);
+    const state: GameState = {
+      ...base,
+      seed: 'board-two-dangers',
+      content: {
+        ...base.content,
+        contracts: two,
+        guild: {
+          ...guildRules,
+          offersPerWeek: { assembly: 3, campaign: 3, winter: 3 },
+          dangers: [guildRules.dangers[0]!, { ...guildRules.dangers[0]!, danger: 'perilous' }], // non-null: the fixture has one danger.
+        },
+      },
+    };
+    let run = playGuild(
+      { state, events: [], commandIds: [] },
+      { type: 'guild.found', day: 1, size: 3 },
+    );
+    run = advanceTo(run, 7 * 4 + 1);
+    const memory = run.state.guild!.recentShapes; // non-null: founded above.
+    const of = (d: string) => memory.filter((id) => shapeOf(id)?.danger === d);
+    expect(of('hazardous').length).toBe(3);
+    expect(of('perilous').length).toBe(3);
+  });
 });
