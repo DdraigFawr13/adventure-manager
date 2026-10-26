@@ -9,16 +9,18 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 ## Just done
 
 - 2026-10-25 Repo set up with AI-Master-Instructions v0.3.0. All work so far is on branch `setup/ai-master` (draft PR #1), not yet on `main`.
-- 2026-10-26 Style §1 war table (D-046); §2 palette candlelit oak (D-047), separate status and faction colours (D-048); §3 layout: desk home with ledger tabs (D-049); §4 quest board: inked map with standees (D-050). Mock-ups live in `docs/design/mockups/`.
+- 2026-10-26 Style §1 war table (D-046); §2 palette candlelit oak (D-047), separate status and faction colours (D-048); §3 layout: desk home with ledger tabs (D-049); §4 quest board: inked map with standees (D-050); §5 typography: old press (D-051). Mock-ups live in `docs/design/mockups/`.
 - 2026-10-25 Concept complete: `docs/design/CONCEPT.md` §1–§33, pillars, scope tiers; D-003..D-045. Review pass added D-032..D-044; premium + free demo superseded F2P (D-040).
 
 ## Next
 
-1. Next: Style Q5 typography; then, iconography, portraits, audio mood, naming and voice.
+1. Next: Style Q6 iconography; then, portraits, audio mood, naming and voice.
 2. Show visual options as artifacts (mood boards, UI mock-ups) where words aren't enough.
 3. Write `docs/design/STYLE.md` as decisions land; then phase 3 plan.
 
 ## Open questions
+
+- Old-press ledger readability (STYLE.md §5): check minimum size on a rendered ledger during UI work; owner decides any fallback face.
 
 - "More fantasy flair" for the quest board (STYLE.md §4) needs defining when art direction starts.
 

@@ -47,3 +47,20 @@ Rejected: ledger tabs with Letters as home (the region gets sidelined), desk-as-
 Owner's note: "B but with a bit more fantasy flare to be added to the art styling. I will also eventually want like effects of moves and reactions of the standees and animations of them doing various things but for now it works great."
 
 Rejected: painted tiles (costly per biome, implies tactics), isometric diorama (most expensive, near the ruled-out 3D), encounter card spread (no sense of place).
+
+## 5. Typography (Accepted 2026-10-26)
+
+**Old press.** Real 17th-century printing types, with flair in every font rather than titles only (owner's direction). Specimen: `docs/design/mockups/typography-sets.html` (set 3). Earlier rounds: `typography.html`, `typography-flair.html`.
+
+- **Titles, seals, set pieces:** IM Fell English SC.
+- **Letters, notices, Chronicle text:** IM Fell DW Pica.
+- **Ledgers, numbers, buttons:** Sorts Mill Goudy. Measured: its digits are equal-width, so columns line up.
+- **Decorated initial:** the first letter of every in-world letter and notice is a large oxblood initial (owner: "I like the large T start of a paragraph thing").
+- **Ornaments:** brass fleurons between sections of letters and notices.
+- All faces are SIL Open Font License (SAFE-05); record sources when the files are added.
+
+Known risk: the old-press roughness blurs at small screen sizes, and the ledger is the least crisp of the sets tried. To check during UI work, with a rendered ledger: a minimum ledger size (likely 15 px), and a fallback to a crisper ledger face if dense screens fail readability. The owner decides any fallback.
+
+Owner's direction during the question: start from the Alegreya family, then "it could look a little more whimsical or medieval or fantasy" and "I want all the fonts to have some level of this not just the titles."
+
+Rejected: Alegreya family (too plain), Grenze family, scribe's hand, Texturina throughout, Uncial with Grenze.

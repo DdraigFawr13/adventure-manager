@@ -1,0 +1,112 @@
+<title>Guild Type Specimens</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=EB+Garamond:wght@400;600&family=Alegreya+SC:wght@500;700&family=Alegreya:wght@400;600&family=Alegreya+Sans:wght@400;500&family=UnifrakturMaguntia&family=Crimson+Pro:wght@400;600&family=Source+Sans+3:wght@400;600&family=Cormorant+SC:wght@600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: neutral page chrome; each option is a vellum specimen sheet on the walnut desk with the same three jobs: a title, a letter, a dense ledger. */
+:root {
+  --bg: #f3f2ef; --fg: #23211e; --muted: #6a655d; --line: #d6d2ca;
+  --desk: #3b2a1e; --desk2: #2c1f16; --paper: #efe4cc; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5; --seal: #8e2a22; --brass: #b8923e;
+  --good: #3f6f8f; --warn: #c08a1e; --bad: #8e2a22;
+  --ui: "Source Serif 4", Georgia, serif; --uimono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--ui); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+.wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 36px; }
+header h1 { font-family: "Cormorant SC", Georgia, serif; font-size: 2.2rem; margin: 0; letter-spacing: .02em; text-wrap: balance; }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 72ch; }
+.opt { display: grid; gap: 10px; }
+.opt > h2 { font-family: "Cormorant SC", Georgia, serif; font-size: 1.5rem; margin: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.opt > h2 small { font-family: var(--uimono); font-size: .72rem; color: var(--muted); letter-spacing: .04em; }
+.rec { font-family: var(--uimono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; border: 1px solid currentColor; padding: 1px 6px; border-radius: 3px; }
+.verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 8px 24px; font-size: .92rem; }
+.verdict div { min-width: 0; } .verdict b { font-family: var(--uimono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; font-weight: 500; }
+.note { border-top: 1px solid var(--line); padding-top: 14px; color: var(--muted); font-size: .9rem; max-width: 80ch; }
+
+.desk { background: repeating-linear-gradient(92deg, var(--desk) 0 30px, var(--desk2) 30px 31px); border-radius: 6px; padding: 20px; }
+.sheet { background: var(--paper); color: var(--ink); border-radius: 2px; box-shadow: 0 10px 24px rgba(0,0,0,.35); padding: 20px 22px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 22px; }
+@media (max-width: 760px) { .sheet { grid-template-columns: 1fr; } }
+.col { min-width: 0; display: grid; gap: 12px; align-content: start; }
+.title { font-family: var(--f-display); font-size: 2.3rem; line-height: 1.05; margin: 0; letter-spacing: var(--f-display-ls, 0); }
+.sub { font-family: var(--f-data); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink2); }
+.letter { font-family: var(--f-body); font-size: 1.02rem; line-height: 1.5; }
+.letter p { margin: 0 0 .5em; }
+.letter .from { font-family: var(--f-display); font-size: 1.3rem; margin: 0 0 .2em; letter-spacing: var(--f-display-ls, 0); }
+.ledger h3 { font-family: var(--f-display); font-size: 1.3rem; margin: 0 0 4px; font-weight: normal; letter-spacing: var(--f-display-ls, 0); border-bottom: 1px solid var(--rule); padding-bottom: 3px; }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-family: var(--f-data); font-size: 13px; font-variant-numeric: tabular-nums lining-nums; }
+th { font-weight: 500; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink2); text-align: left; padding: 3px 8px 3px 0; white-space: nowrap; }
+td { padding: 3px 8px 3px 0; border-top: 1px solid var(--rule); white-space: nowrap; }
+td.n, th.n { text-align: right; }
+.pill { font-size: 11px; padding: 0 6px; border-radius: 9px; color: var(--paper); } .ok { background: var(--good); } .warn { background: var(--warn); } .bad { background: var(--bad); }
+.small { font-family: var(--f-data); font-size: 12px; color: var(--ink2); }
+.fonts { font-family: var(--uimono); font-size: .75rem; color: var(--muted); }
+
+.oA { --f-display: "IM Fell English SC", Georgia, serif; --f-body: "EB Garamond", Georgia, serif; --f-data: "IBM Plex Mono", ui-monospace, monospace; }
+.oB { --f-display: "Alegreya SC", Georgia, serif; --f-display-ls: .01em; --f-body: "Alegreya", Georgia, serif; --f-data: "Alegreya Sans", system-ui, sans-serif; }
+.oC { --f-display: "UnifrakturMaguntia", Georgia, serif; --f-body: "Crimson Pro", Georgia, serif; --f-data: "Source Sans 3", system-ui, sans-serif; }
+.oD { --f-display: "Cormorant SC", Georgia, serif; --f-display-ls: .02em; --f-body: "Source Sans 3", system-ui, sans-serif; --f-data: "Source Sans 3", system-ui, sans-serif; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Guild type specimens</h1>
+    <p>Style Q5: the typefaces. Each sheet does the three jobs the game asks of type: a title, an in-world letter you read for flavour, and a dense ledger at 13 px that you scan for hours. Judge the ledger hardest. All faces are under the SIL Open Font License, so they can ship in a commercial game.</p>
+  </header>
+  <div id="opts"></div>
+  <p class="note">Rule for any choice: the display face is for titles, names on seals and set pieces only. Ledgers, numbers and buttons use the data face with tabular figures, so columns line up. Names, figures and text are placeholders.</p>
+</div>
+
+<template id="sheet">
+  <div class="desk"><div class="sheet">
+    <div class="col">
+      <div><div class="sub">Guild of the Fenn March · Tier III</div><h2 class="title">Ashford Company</h2></div>
+      <div class="letter">
+        <div class="from">Lady Varrow, to the Guildmaster</div>
+        <p>The Saltmarsh matter will not wait for spring. My steward reports smoke at the old tide-fort, and the fishermen will not put out.</p>
+        <p>I expect a party on the road within the week. Do not send me children again.</p>
+      </div>
+      <div class="small">Sealed at Varrowmere, Thaw 3rd, Year 2 · Reply by Thaw 7th</div>
+    </div>
+    <div class="col ledger">
+      <h3>Roster</h3>
+      <div class="tbl"><table>
+        <tr><th>Name</th><th>Class</th><th class="n">Lvl</th><th class="n">Might</th><th class="n">Wits</th><th class="n">Wage</th><th>Morale</th></tr>
+        <tr><td>Wenna Cray</td><td>Warden</td><td class="n">7</td><td class="n">14</td><td class="n">16</td><td class="n">38 cr</td><td><span class="pill ok">Eager</span></td></tr>
+        <tr><td>Odric Hale</td><td>Hexblade</td><td class="n">5</td><td class="n">15</td><td class="n">11</td><td class="n">31 cr</td><td><span class="pill warn">Restless</span></td></tr>
+        <tr><td>Sefa Lund</td><td>Cantor</td><td class="n">4</td><td class="n">8</td><td class="n">17</td><td class="n">24 cr</td><td><span class="pill bad">Grieving</span></td></tr>
+        <tr><td>Bram Oakes</td><td>Shieldman</td><td class="n">6</td><td class="n">18</td><td class="n">10</td><td class="n">29 cr</td><td><span class="pill ok">Steady</span></td></tr>
+        <tr><td>Ilse Marrow</td><td>Delver</td><td class="n">3</td><td class="n">11</td><td class="n">13</td><td class="n">19 cr</td><td><span class="pill ok">Content</span></td></tr>
+        <tr><td>Tamsin Rook</td><td>Wildcaller</td><td class="n">2</td><td class="n">9</td><td class="n">14</td><td class="n">16 cr</td><td><span class="pill warn">Homesick</span></td></tr>
+      </table></div>
+      <div class="small">Weekly wages 157 cr · Treasury 1,284 cr · 6 of 12 places filled</div>
+    </div>
+  </div></div>
+</template>
+
+<script>
+const OPTS = [
+  { cls: "oA", name: "A. Old print", fonts: "IM Fell English SC · EB Garamond · IBM Plex Mono",
+    good: "Feels like a printed broadsheet from the region: rough, historic letterforms with real character. Garamond is a comfortable reading face for letters.",
+    bad: "Three unrelated families. The monospace data face reads as a computer terminal, which fights the desk. Fell's rough edges blur at small sizes, so it can only be used large." },
+  { cls: "oB", name: "B. Calligraphic family", rec: true, fonts: "Alegreya SC · Alegreya · Alegreya Sans",
+    good: "One family in three cuts, so everything belongs together. The calligraphic shapes carry the fantasy flair; Alegreya Sans stays crisp at 13 px with tabular figures. Wide language support for later translation.",
+    bad: "Less dramatic than old print or blackletter in titles; seals and set pieces may want a decorative initial on top. Alegreya is popular in indie games, so the identity has to come from the art. Alegreya Sans has short lowercase letters, so at the same 13 px it looks smaller than the others; ledgers would need 14 px." },
+  { cls: "oC", name: "C. Blackletter titles", fonts: "UnifrakturMaguntia · Crimson Pro · Source Sans 3",
+    good: "The strongest medieval signal; dramatic on seals, banners and the Hall of Heroes.",
+    bad: "Blackletter is hard to read in names and headings, and it reads as grim or heavy-metal more than grounded high fantasy. Has to be confined to a few set pieces." },
+  { cls: "oD", name: "D. Clean modern", fonts: "Cormorant SC · Source Sans 3",
+    good: "The most readable and closest to FM. Data and body share one sans face, so dense screens are effortless.",
+    bad: "The least fantasy: letters read like an office email, which undercuts the in-world inbox and the extra flair you asked for on the board." },
+];
+const tpl = document.getElementById("sheet"), root = document.getElementById("opts");
+OPTS.forEach(o => {
+  const s = document.createElement("section"); s.className = "opt " + o.cls;
+  s.innerHTML = `<h2>${o.name} <small>${o.fonts}</small>${o.rec ? ' <span class="rec">Recommended</span>' : ""}</h2>`;
+  s.appendChild(tpl.content.cloneNode(true));
+  const v = document.createElement("div"); v.className = "verdict";
+  v.innerHTML = `<div><b>Strengths</b>${o.good}</div><div><b>Weaknesses</b>${o.bad}</div>`;
+  s.appendChild(v); root.appendChild(s);
+});
+</script>

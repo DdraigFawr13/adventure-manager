@@ -301,3 +301,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The board is an ink map that draws itself as the party explores, with the scout's margin notes, portrait standees on loose positions and wax-seal key moments. Add more fantasy flair in art direction; standee animations and effects come in a later update. Detail: `docs/design/STYLE.md` §4.
 - **Why:** Owner's choice (Style Q4); fits the ledger desk, is cheap per class and biome, suits generated dungeons, and doesn't imply a tactics game.
+
+## D-051 Typography: old press, flair in every font
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** IM Fell English SC for titles, IM Fell DW Pica for letters, Sorts Mill Goudy for ledgers and numbers (equal-width digits); a large oxblood initial opens every in-world letter. Ledger readability is checked on a rendered screen during UI work. Detail: `docs/design/STYLE.md` §5.
+- **Why:** Owner's choice (Style Q5, third pass) after asking for medieval and fantasy flair in all fonts, not titles only.
