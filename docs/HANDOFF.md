@@ -33,6 +33,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 - Kingdom map art direction continues past §12 (D-097): Story-Generator layout as the artist's base.
 - Later: 20 class levels (D-074) need a pacing decision; facility compound / city-building style guildhall (D-075) not scoped.
 - Intrigue and underhanded dealings (owner's note, D-069): Later tier; content not decided.
+- Exploring the wilds (owner's wish, D-136): explorers uncover hidden places and items; design with expeditions, the map's charting and the R1 hidden-items note; tier not set.
 - Old-press ledger readability: 15 px minimum (D-084), confirm on real monitors in R4; fallback is our own Goudy ledger cut (D-052). Use lining figures (`lining-nums`) for all numbers: the face's default figures are old-style and proportional (measured 13.6–20.8 px wide at 40 px; lining 21.1 px each). Clear print (D-077) is the player-side option. Minimum size asked in PLAN §9c.
 - "More fantasy flair" for the quest board art (STYLE.md §4) needs defining when art direction starts.
 - Bardic songs (after launch, D-056): sung or instrumental not decided.

@@ -837,3 +837,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** No pennies. Game state keeps money as whole copper coins (integers, PLAN §11c); players read it as gold, silver and copper at 10 copper to the silver and 10 silver to the gold (rates in content, `packages/content/src/base/money.ts`; the engine's `splitCoins` does the split, the ui only adds the words). Names in code use `Copper` (`wageCopper`, `feeCopper`).
 - **Why:** Owner (2026-10-26): "Let's not use pennies as currency let's just use copper silver and gold"; chose 10 and 10 over 12 and 20 or 100 and 100.
+
+## D-136 Exploring the wilds (owner's wish, after launch)
+
+- **Status:** Accepted as a goal (2026-10-26); design, tier and timing not decided.
+- **Decision:** Eventually the guild can send explorers into wild, uncharted areas of the March to uncover hidden places, items and other finds. It joins three things already planned and should be designed with them, not bolted on (WS-05): expeditions (Early update, CONCEPT §28), the map's charted and uncharted ground (the engine-test fog revealed in ink, D-134), and the owner's R1 notes on hidden items and multiple pathways (D-132). Finds are content data (GAME-04). Not built now.
+- **Why:** Owner (2026-10-26): "another thing I want eventually is like wild areas to send explorers to and maybe uncover hidden places or items or stuff like that".
