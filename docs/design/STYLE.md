@@ -61,6 +61,8 @@ Rejected: painted tiles (costly per biome, implies tactics), isometric diorama (
 
 Known risk: the old-press roughness blurs at small screen sizes, and the ledger is the least crisp of the sets tried. To check during UI work, with a rendered ledger: a minimum ledger size (likely 15 px), and a fallback to a crisper ledger face if dense screens fail readability. The owner decides any fallback.
 
+**Fallback plan (accepted 2026-10-26, D-052):** if the ledger fails the readability check, first make a renamed OFL derivative of Sorts Mill Goudy (a "guild ledger" cut: taller x-height, looser spacing, crisper at small sizes, plus game symbols such as currency, ticks and stat markers) before switching faces. Check each font's licence for Reserved Font Names before renaming. Custom decorated initials (illuminated A–Z artwork) and a custom symbol font (crests, faction marks, class and status icons) belong to art and icon work. A commissioned display face for the logo and set pieces is a later, paid option for the owner to decide.
+
 Owner's direction during the question: start from the Alegreya family, then "it could look a little more whimsical or medieval or fantasy" and "I want all the fonts to have some level of this not just the titles."
 
 Rejected: Alegreya family (too plain), Grenze family, scribe's hand, Texturina throughout, Uncial with Grenze.

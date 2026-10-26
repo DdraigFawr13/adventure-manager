@@ -307,3 +307,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** IM Fell English SC for titles, IM Fell DW Pica for letters, Sorts Mill Goudy for ledgers and numbers (equal-width digits); a large oxblood initial opens every in-world letter. Ledger readability is checked on a rendered screen during UI work. Detail: `docs/design/STYLE.md` §5.
 - **Why:** Owner's choice (Style Q5, third pass) after asking for medieval and fantasy flair in all fonts, not titles only.
+
+## D-052 Type fallback: our own ledger cut before switching fonts
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** If the old-press ledger fails readability, make a renamed OFL derivative of Sorts Mill Goudy tuned for small sizes before choosing another face. Custom illuminated initials and a symbol font are art work; a commissioned display face is a later paid option. No full typeface from scratch. Detail: `docs/design/STYLE.md` §5.
+- **Why:** Owner asked whether we could make our own typeface; modifying an OFL font is realistic and keeps the chosen look, a from-scratch face is not.
