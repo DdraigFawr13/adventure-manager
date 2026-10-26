@@ -49,3 +49,45 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Permanent death; revival is rare, expensive and has a lasting cost. Injuries, scars and trauma are common and long-lasting. Detail: `docs/design/CONCEPT.md` §6.
 - **Why:** Owner's choice; real stakes on every key-moment decision without making one bad roll unrecoverable.
+
+## D-009 FM-style day-tick calendar
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Time advances day by day on Continue, auto-stopping for events, key moments, offers and reports; parties run in parallel. Detail: `docs/design/CONCEPT.md` §7.
+- **Why:** Owner's choice; proven management-game pacing.
+
+## D-010 One region, grounded high fantasy
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** The game is set in one large region; tone is grounded high fantasy. Detail: `docs/design/CONCEPT.md` §8.
+- **Why:** Owner's choice; depth over breadth makes each place matter.
+
+## D-011 Four guild systems
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Staff and facilities; finances and patrons; contracts and negotiation; gear, crafting and loot. Detail: `docs/design/CONCEPT.md` §9.
+- **Why:** Owner's choice; together they cover FM's backroom, board, transfers and kit.
+
+## D-012 Guild-level kit, storied magic items
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Armoury with tiered gear, auto-equipped by quartermaster policy; named magic items hand-assigned; crafting by commission. Detail: `docs/design/CONCEPT.md` §9.
+- **Why:** Owner's choice; keeps gear meaningful without per-item micromanagement across a large roster.
+
+## D-013 Four recruitment sources
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Scouted free agents (fog of war), poaching from rivals, a training academy, and story/quest recruits. Detail: `docs/design/CONCEPT.md` §10.
+- **Why:** Owner's choice; mirrors FM's scouting, transfers and youth, plus RPG-style story recruits.
+
+## D-014 Standing parties with pre-quest plans
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Named standing parties with chemistry; per-quest reshuffles allowed; pre-quest plan of roles, approach, risk tolerance and retreat thresholds. Detail: `docs/design/CONCEPT.md` §11.
+- **Why:** Owner's choice; gives FM's team selection and tactics an RPG party shape.
+
+## D-015 Launch quest types: delves/hunts and defence/warfare
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Launch with delves and monster hunts, and defence and warfare. Escorts/expeditions and intrigue/investigation are later candidates. Detail: `docs/design/CONCEPT.md` §12.
+- **Why:** Owner's choice; fewer quest families means each simulation is deeper.

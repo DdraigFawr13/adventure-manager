@@ -38,3 +38,48 @@ Working document for phase 1. Each section records what the owner decided, with 
 
 - **Decided (2026-10-25):** Adventurers can die permanently. Revival exists but is rare, expensive and leaves a price (e.g. lost levels or traits, a debt to a temple).
 - Injuries, scars and trauma are common and long-lasting, like FM injuries, and feed into the adventurer's traits and story.
+
+## 7. Time
+
+- **Decided (2026-10-25):** An FM-style calendar that advances day by day on Continue and stops automatically for events, quest key moments, offers and reports.
+- Several parties run in parallel on the same calendar.
+
+## 8. Setting frame
+
+- **Decided (2026-10-25):** One large region (a frontier kingdom and its neighbours) with several cities, wilds and dungeons. Deep rather than wide.
+- Tone: grounded high fantasy, played fairly straight; grit and humour come from the people.
+
+## 9. Guild systems
+
+- **Decided (2026-10-25):** Four management systems beyond the roster, all real systems:
+  1. **Staff and facilities:** trainers, scouts, healers, quartermaster, deputy; guildhall upgrades (training yard, infirmary, library, armoury, tavern).
+  2. **Finances and patrons:** wages, contract fees, upkeep, loans; a patron or board with expectations that can dismiss the guildmaster (which ties into succession, §1).
+  3. **Contracts and negotiation:** quest contracts (fee, loot share, deadlines, clauses) and adventurer contracts (wages, loot cut, release clauses, poaching).
+  4. **Gear, crafting and loot:** equipment, magic items, appraisal and sale, armoury.
+
+### Gear depth
+
+- **Decided (2026-10-25):** Guild-level kit. The guild owns an armoury; gear has tiers and a few properties. Notable magic items are named, unique and storied (they gather history as they're used).
+- The quartermaster equips adventurers to a policy the player sets; the player hand-assigns special pieces.
+- Crafting means commissioning items from contacts or the guild workshop; no crafting minigames.
+
+## 10. Recruitment
+
+- **Decided (2026-10-25):** Four sources of adventurers:
+  1. **Scouted free agents:** scouts report on prospects in towns and taverns through a fog of war (attributes shown as ranges until well known).
+  2. **Poaching:** approach adventurers at rival guilds (negotiation, release fees); rivals do the same to the player.
+  3. **Training academy:** apprentices raised over seasons; cheap, slow, loyal homegrown talent.
+  4. **Story and quest recruits:** rescued prisoners, reformed enemies, quest-givers who join; rare and unusual, with built-in backstories.
+
+## 11. Parties and tactics
+
+- **Decided (2026-10-25):** Named standing parties build chemistry and reputation together; the player can reshuffle members for a given quest.
+- Before each quest the player sets a plan: roles/formation, approach (stealth, assault, diplomacy), risk tolerance and retreat thresholds.
+- Relationships matter: chemistry, friendships and rivalries affect performance.
+
+## 12. Quest types
+
+- **Decided (2026-10-25):** Launch has two families of work:
+  1. **Delves and monster hunts:** dungeons, lairs, bounties on named beasts.
+  2. **Defence and warfare:** hold a village against a raid, garrison a fort, join a war campaign; larger, multi-party operations.
+- Not at launch (assumed candidates for later, not cut): escorts and expeditions; intrigue and investigation.
