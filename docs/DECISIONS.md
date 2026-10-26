@@ -361,3 +361,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** No narration or voiced dialogue; only short name-free vocal sounds (crier calls, cheers, grunts, funeral murmurs); no synthesised voices. Detail: `docs/design/STYLE.md` §9c.
 - **Why:** Owner's choice (Style Q9c); generated names can't be recorded, sounds never repeat a sentence, and translation stays cheap.
+
+## D-061 Style guide complete
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** `docs/design/STYLE.md` (§1–§9, D-046..D-060) is the locked phase-2 style guide. Phase 3 (full plan) begins.
+- **Why:** Owner locked it after reviewing the summary and the three noted risks (ledger readability, art cost, mixing painted portraits later).

@@ -1,6 +1,6 @@
 # Style
 
-Phase 2 style guide: theme, tone and visual identity. Each section records what the owner decided. Status: all questions answered 2026-10-26; awaiting the owner's sign-off to lock.
+Phase 2 style guide: theme, tone and visual identity. Each section records what the owner decided. Status: complete, locked by the owner on 2026-10-26 (D-061). Changes now need a new DECISIONS entry.
 
 ## 1. Visual metaphor (Accepted 2026-10-26)
 
