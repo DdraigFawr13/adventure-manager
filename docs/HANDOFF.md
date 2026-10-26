@@ -8,6 +8,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Just done
 
+- 2026-10-26 Plan review decided: 10–20 h a week, about 31–46 months to launch (D-108); lean launch cut (D-109); web-first engine test (D-110); stop and slip rules (D-111); 3–4 small crises at launch (D-112); all other recommendations adopted (D-113 design and production, D-114 engine foundations and standards). Applied across PLAN.md.
 - 2026-10-26 Plan review before M0 (owner's request): `docs/design/PLAN-REVIEW.md`, page `docs/design/mockups/plan-review.html`. 9 lean, 11 fun, 8 codebase, 4 standards findings and a top-10 action list; all proposals, none decided. Owner's rule: reviewers are independent, briefed without the main session's findings (D-107).
 - 2026-10-26 PLAN.md §15 accepted: checks per push vs before gates, path-filtered CI with release-only builds, bug severities, Steam branches, release checklist, hotfixes (D-105); launch on Windows only, Deck and Mac after launch (D-106). Plan complete; §14 and §15 on branch `ccr-a7e935d0-9dffpn`.
 - 2026-10-26 PLAN.md §14 accepted: start solo with AI help and contractors, decide on paid help at the slice and alpha gates (D-102); budget about $57k–185k solo, $128k–358k with one developer, $10k–32k before the hire gate; self-funded through the slice, funding route chosen there (D-103); price $24.99, English at launch (D-104). All estimates.
@@ -29,14 +30,10 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 - 2026-10-26 PLAN.md §3 accepted: ranking by renown earned this year, renown stored as sourced entries for a later intrigue layer (D-069); 14 launch systems, injury folded into Adventurers, scouting + knowledge merged, academy and commissioning moved to Early update (D-070; D-012, D-013 amended; CONCEPT §9, §10, §28 notes).
 - 2026-10-26 PLAN.md §2 accepted: a season is one in-game year (D-066); 48-week year with Assembly, campaigning, midsummer fair, winter (D-067); ~80 stops/year, three stop classes, rate cap on Digest items only (D-068). CONCEPT core-loop timings updated to match.
 - 2026-10-26 PLAN.md §1 accepted: management-sim veterans first, tabletop fans second (D-063); one season ≈ 2–2.5 h (D-064); design goals and success targets as a starting set (D-065). Merged via PR #2.
-- 2026-10-26 Plan outline approved (D-062); `docs/design/PLAN.md` holds the 15-section outline only.
-- 2026-10-26 Style guide complete and locked: `docs/design/STYLE.md` §1–§9, D-046..D-061. War table look, candlelit oak palette, desk-home layout, inked-map quest board, old-press type, woodcut icons and portraits (painted later), soft early-music ambience, mixed naming on an English-fenland core, grounded voice with dry wit, no narrator. Mock-ups (HTML) in `docs/design/mockups/`.
-- 2026-10-25 Concept complete: `docs/design/CONCEPT.md` §1–§33, pillars, scope tiers; D-003..D-045.
-- 2026-10-25 Repo set up with AI-Master-Instructions v0.3.0. Merged to `main` via PR #1 on 2026-10-26.
 
 ## Next
 
-1. Owner decides on the plan review's proposals (`docs/design/PLAN-REVIEW.md`, top 10 first), one question at a time; apply accepted ones to PLAN and DECISIONS. Then the owner approves the whole plan (M0, D-099); record the approval in DECISIONS (it lifts D-001's no-code rule). Then M1 starts with the engine test (D-090): first extend `.claude/hooks/session-start.local.sh` with the .NET SDK and headless Godot (TOOLS-REVIEW §3 item 4). Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
+1. Owner approves the whole plan (M0, D-099), now including the plan review's decisions (D-108..D-114); record the approval in DECISIONS (it lifts D-001's no-code rule). Then M1 starts: write `docs/STANDARDS.md` and resolution v0 (D-113, D-114), then the web-first engine test (D-110); Godot tooling only if web misses its bar. Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
 
 ## Open questions
 

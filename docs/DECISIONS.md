@@ -446,6 +446,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Adventurers have 10 class levels at launch: about 1 a year early, slowing; most survivors retire around level 7–9; level 10 is legendary; multiclassing or prestige opens at level 5. 20 levels are planned for later, so level count, experience curve and per-level abilities are class data and level-gated rules use bands. Moving to 20 needs its own pacing decision. Detail: `docs/design/PLAN.md` §5a.
+- **Amended (2026-10-26, D-109):** multiclassing and prestige paths are not at launch; they come in an update, still opening at level 5.
 - **Why:** Owner's choice (Plan Q5a): "Start with 10. Plan for 20 eventually." Ten levels fit 6–12 year careers with each level meaningful.
 
 ## D-075 Progression of adventurers, guild and guildmaster
@@ -477,18 +478,21 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Five launch ancestries: Marchfolk (humans), Stonewrights (stout hill miners), Lanthe (long-lived wood folk), Reedfolk (fen stilt-dwellers) and Barrowborn (born near the barrows, distrusted by the temple). Names, ages and hooks are first drafts. Hearthlings, Grael, Mossbacks and Ashlings are candidates for later, as data. Detail: `docs/design/PLAN.md` §7a; mock-up `docs/design/mockups/ancestries.html`.
+- **Amended (2026-10-26, D-109):** launch has 4 ancestries (Marchfolk, Stonewrights, Lanthe, Barrowborn); Reedfolk follow in an update.
 - **Why:** Owner's choice (Plan Q7a, option C): a readable roster plus a setting signature tied to the launch quest types.
 
 ## D-080 Launch content volume: standard
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** 36 monster kinds in 7 families, 20 site templates, 20 quest templates, 60 key-moment templates with text variants, about 6,000 written template lines; plus 6 factions, 17 authored rival guilds, 8 settlements, 5 biomes, 3 tournament kinds, 5 facilities, 4 gear tiers, about 30 magic-item templates and 10 legendary items, about 25 guild traits. All data; can grow after launch. Detail: `docs/design/PLAN.md` §7b–§7e.
+- **Amended (2026-10-26, D-109):** lean launch cut: about 24 monster kinds, about 40 key moments, about 4,500 template lines, 1 tournament, about 6 authored rival guilds with the rest generated; region crises added (D-112).
 - **Why:** Owner's choice (Plan Q7b): repeats stay rare within a guildmaster's career at about half the writing and art cost of the rich option.
 
 ## D-081 Launch people content
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** 8 classes with about 15 talents each plus about 30 shared talents; 4 prestige paths and multiclassing from level 5; caster classes carry an empty magic-tradition slot; about 28 attributes; about 40 personality and 60 earned traits; 6 staff roles; 5 guildmaster backgrounds. Detail: `docs/design/PLAN.md` §7a.
+- **Amended (2026-10-26, D-109):** 6 classes (guardian and druid later), no prestige or multiclass at launch, about 16 attributes, about 30 traits.
 - **Why:** Owner accepted the draft (Plan Q7c).
 
 ## D-082 Consequences: in-world first, trace, and numbered histories
@@ -513,6 +517,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** After plan approval, prototypes run in this order: 1 one watched quest (is watching fun?); 2 headless year simulator on the same simulation core (balance, pacing, delegation, careers); 3 desk-density mock-ups and the template-writing test, alongside 1 or 2; 4 a two-year attachment playtest. Detail: `docs/design/PLAN.md` §9b.
+- **Amended (2026-10-26, D-110, D-113):** the engine test is web-first; resolution v0 comes before step 1; the simulation core is kept as the production engine; each step is time-boxed.
 - **Why:** Owner's choice (Plan Q9a): test the assumption the whole game rests on first.
 - **Amended (2026-10-26, D-090):** step 0, the engine test, comes before step 1.
 - **Note:** first recorded as "headless simulator first"; the owner reported that answer as a misclick the same day and chose quest first.
@@ -546,6 +551,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The engine is chosen between web tech in Electron (TypeScript) and Godot 4 (C#) after prototype step 0: the same roster ledger and kingdom-map view built in both, judged on the owner's look-and-feel notes plus measured build time, frame rate and memory at 1366×768, download size and the find-the-fact task. Unity is out. The architecture in PLAN §11b–§11g is engine-neutral. Detail: `docs/design/PLAN.md` §11a; adds step 0 to D-085.
+- **Amended (2026-10-26, D-110):** web-first: build the test pieces in web tech; Godot only if web misses its bar.
 - **Why:** Owner's choice (Plan Q11a) after the trade-off: web tech favours dense ledgers and speed of building; Godot favours the animated map and board.
 
 ## D-091 Engine-neutral architecture
@@ -589,18 +595,21 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The launch March has a hand-illustrated base map in layers; live marks and later generated regions use the procedural ink renderer built for the quest board. Launch layers: areas and places, factions, guilds (with tier), action (moving parties, key-moment seals) and threats (spreading stains, closed roads), each linked to its Trace. Deeds and rumours on the map come later (meanwhile Chronicle and inbox). The map is to look better over time; the owner's Story-Generator repository is a lead for its art direction. Detail: `docs/design/PLAN.md` §12d; mock-up `docs/design/mockups/kingdom-map.html`.
+- **Amended (2026-10-26, D-109, D-113):** launch layers are places, guilds and action; factions and threats layers follow in an update. The slice's corner is drawn at M2 and the full base after alpha balance.
 - **Why:** Owner's choice (Plan Q12a): the best-looking launch map with a path to generated regions; a smaller launch layer set.
 
 ## D-098 Art and audio production lists and rough costs
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** An artist draws parts and set pieces; code assembles them (portraits ~200 parts, crests, site maps from ~60 stamps per biome); monsters 72 pieces, icons ~240 drawings, 26 initials, ~10 legendary items, a few textures; a ledger font cut only if D-084's real-monitor check fails. Audio: 60–90 min of commissioned early-music ambience, ~150 desk sounds, 5 biome beds, ~10 stingers, ~40 name-free vocal sounds. Rough estimates: art $23,000–74,000, audio $9,000–37,000, refined in PLAN §14 and replaced by quotes. Pipeline: layered sources exported by script, an asset licence ledger, OFL fonts, contracts that transfer the needed rights. AI-generated images for exploration only (D-094). Detail: `docs/design/PLAN.md` §12a–§12c, §12e.
+- **Amended (2026-10-26, D-109):** about 48 monster pieces and about 160 portrait parts; art about $20,000–66,000.
 - **Why:** Owner accepted the draft (Plan Q12b) and asked for a review of the Story-Generator repository's map code for art direction.
 
 ## D-099 Milestones M0–M7 with gates
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Build in seven milestones after plan approval, each ending at an owner gate (go, loop or stop): M1 prototypes (§9b, engine chosen), M2 vertical slice (production packages; prologue and first season in one corner of the March: 2 biomes, 3 settlements, 4 classes, ~10 monster kinds, ~6 quest templates, final art for that corner), M3 alpha (all 14 launch systems, about half the content, 30–50 testers), M4 free demo (the first season, alongside the beta), M5 beta (all content, final art and audio, 200+ testers), M6 launch, M7 free updates. Estimate: about 18–28 months to launch for a small team, scheduled in §14. Rules: no bulk art or music before M1 passes R1 and R2; old saves keep loading from M2; content after M2 is data only; Steam page live from M2. Detail: `docs/design/PLAN.md` §13a, §13b.
+- **Amended (2026-10-26, D-108, D-111, D-113):** estimates restated for solo at 10–20 h a week: about 31–46 months to launch. The simulation core from M1 is kept. Map base waits for alpha balance. Slip and stop rules in D-111.
 - **Why:** Owner accepted the draft (Plan Q13c); proving fun and balance before paying for bulk art protects the art budget (D-098).
 
 ## D-100 Launch model decided at the alpha gate
@@ -625,12 +634,14 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Budget estimates with 20% contingency: about $57,000–185,000 solo, about $128,000–358,000 with one developer hired; about $10,000–32,000 is spent before the hire gate (M1–M2). Self-funded through the slice; at the slice gate the owner chooses between self-funding, a publisher, crowdfunding and Early Access at the alpha gate (D-100); no talks before that decision. Five budget assumptions are checked at each gate. Detail: `docs/design/PLAN.md` §14b, §14d, §14e.
+- **Amended (2026-10-26, D-108, D-109):** about $52,000–174,000 solo and $124,000–347,000 with a hire; about $8,000–27,000 before the hire gate.
 - **Why:** Owner accepted the draft (Plan Q14c); the slice is the pitch, so funding is chosen when there is something to show.
 
 ## D-104 Price $24.99; English at launch
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Launch price $24.99, with about $12.50–15 net per copy (estimate) and break-even at about 4,000–15,000 copies solo. English only at launch; translation decided after launch on regional sales. Paid expansions decided after launch (D-040). Detail: `docs/design/PLAN.md` §14c.
+- **Amended (2026-10-26, D-109):** break-even about 3,500–14,000 copies solo, cash costs only.
 - **Why:** Owner's choice (Plan Q14b): in line with comparable deep management games and an easy buy after the free demo.
 
 ## D-105 Quality, CI and release process
@@ -650,4 +661,46 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Every review agent gets an unbiased brief: the goal, the files or diff, the lens and open questions, never the main session's findings, conclusions, hypotheses or preferred answer. The main session forms its own view separately and verifies every returned finding before using it (DEL-05, VER-05). Recorded in AGENTS.md project rules.
 - **Why:** Owner's rule (2026-10-26): a reviewer handed the main thread's view tends to confirm it.
+
+## D-108 Solo timeline at 10–20 hours a week
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The owner builds at about 10–20 hours a week. With the lean cut (D-109) the estimate is about 31–46 months to launch: M1 5–8, M2 7–10, M3 10–15, M4 2–3 alongside M5 7–10, M6 2–3 months. A lasting change in hours re-plans at the next gate. Detail: `docs/design/PLAN.md` §13a, §14e.
+- **Why:** Owner's answer (plan review Q1); the first estimate (18–28 months) assumed a small team, but the owner chose solo (D-102).
+
+## D-109 Lean launch cut
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Launch has 6 classes (warrior, rogue, ranger, cleric, wizard, bard-like support), 4 ancestries, about 24 monster kinds, about 16 attributes, about 30 traits, about 40 key moments, about 4,500 template lines, 1 tournament, about 6 authored rival guilds (the rest generated), no multiclassing or prestige, and 3 kingdom-map layers (places, guilds, action). Everything stays data; the cut content returns in free updates (PLAN §13c). Detail: `docs/design/PLAN.md` §7, §12.
+- **Why:** Owner's choice (plan review Q2): at 10–20 h a week the full scope was an estimated 4–6 years; this keeps the core (watched quests, key moments, permadeath, Chronicle, succession, delegation, the map) and cuts the items with the most cost for their fun.
+
+## D-110 Engine test is web-first
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The engine-test pieces (ledger and kingdom map) are built in web tech (Electron, TypeScript), reusing the Story-Generator map code. Godot 4 (C#) is built only if web misses its bar: 60 fps map at 1366×768, readable 15 px ledger, the find-the-fact task. A screen-reader check joins the judging list. Amends D-090. Detail: `docs/design/PLAN.md` §11a.
+- **Why:** Owner's choice (plan review Q3) on new evidence: Story-Generator is TypeScript and canvas, and building both engines costs weeks a solo builder does not have.
+
+## D-111 Stop and slip rules
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** If R1 (watching a quest is fun) fails twice, building stops and the core loop is redesigned before anything else. A milestone running 50% over its estimate triggers a cut review at that gate (content dropped or deferred, quality checks never). A prototype step over its time-box by half goes to the owner at once. Ending the project is the owner's call, not a rule. Detail: `docs/design/PLAN.md` §9b.
+- **Why:** Owner's choice (plan review Q4).
+
+## D-112 Small region crises at launch
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Launch has 3–4 small, local region crises: data-driven chains of contracts and consequences that can start from about year 5 and give the middle years goals. Larger region-wide crises and guild legacy projects come after launch. Detail: `docs/design/PLAN.md` §7c, §13c.
+- **Why:** Owner's choice (plan review Q5): "Small crisis at launch. Legacy goals and larger crises after launch." Answers the review's finding that years 10–30 had no fresh goals.
+
+## D-113 Plan review: design and production recommendations
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Adopted on the owner's instruction to go with the recommendations: the simulation core is kept from M1 (only prototype screens are throwaway); resolution v0 first; time-boxed prototype steps; a standing tension most weeks; winter as the planning season; every safe choice (caution, delegation, skipping winter) has a visible price; visible recovery levers without rubber-banding; extra simulator checks (no dominant safe play, winter cash, bad starts, top-guild load, late goals) and a shape-repetition writing check with a template previewer; the map base drawn after alpha balance; break-even stated as cash only; wishlist targets, a monthly devlog and tester sign-up. Detail: `docs/design/PLAN.md` §2b, §2d, §4g, §9b, §9d, §12d, §13, §14c, §14f; review `docs/design/PLAN-REVIEW.md`.
+- **Why:** Plan review findings, checked at their cited lines; owner: "just go with your recommendations for the rest."
+
+## D-114 Engine foundations and code standards
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Before any rule is coded: values carry their own breakdown and cause; named random streams per system kept in the state (`simulate(state, command)`); playtest saves keep commands since the last snapshot so bugs replay exactly; an event-log retention rule tested against the 30-year save. Package boundaries enforced by lint; one schema source for content types and validation; a text-template grammar before R8; interface labels in string files. `docs/STANDARDS.md` and a per-package `AGENTS.md` written at M1 start; engine invariant checks in every balance run; golden-file tests for text; half-page rules specs written just in time; the stack's dependency list approved once. Detail: `docs/design/PLAN.md` §11h, §11i, §15.
+- **Why:** Plan review codebase and standards findings (C1–C8, S1–S4); owner: "just go with your recommendations for the rest."
 

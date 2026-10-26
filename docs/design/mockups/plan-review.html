@@ -33,7 +33,19 @@ code { font-family: var(--mono); font-size: .8em; background: color-mix(in srgb,
 footer { color: var(--muted); font-size: .88rem; border-top: 1px solid var(--line); padding-top: 12px; }
 </style>
 <div class="wrap">
-<header><span class="meta">26 October 2026 · before plan approval (M0)</span><h1>Plan review</h1><p>Owner's request (2026-10-26): review the whole plan for efficient lean design, the gameplay loop and fun, codebase set-up that avoids missteps, and standards and practices. Method: two independent reviewers (D-107) read the docs cold, one for fun and one for lean production; the main session reviewed codebase and standards. Every finding below was checked at the cited line; three reviewer claims were corrected or dropped (end of page). Nothing here is decided: each item is a <b>proposal</b> for the owner (SRC-04).</p><p>Impact: <b>High</b> changes what gets built or risks the project; <b>Medium</b> shapes it; <b>Low</b> is tidy-up.</p></header>
+<header><span class="meta">26 October 2026 · before plan approval (M0)</span><h1>Plan review</h1><p>Owner's request (2026-10-26): review the whole plan for efficient lean design, the gameplay loop and fun, codebase set-up that avoids missteps, and standards and practices. Method: two independent reviewers (D-107) read the docs cold, one for fun and one for lean production; the main session reviewed codebase and standards. Every finding below was checked at the cited line; three reviewer claims were corrected or dropped (end of page). Written as proposals; your decisions are under Outcome.</p><p>Impact: <b>High</b> changes what gets built or risks the project; <b>Medium</b> shapes it; <b>Low</b> is tidy-up.</p></header>
+<section>
+<h2>Outcome (26 October 2026)</h2>
+<p>You decided five items and asked me to go with my recommendations for the rest:</p>
+<ul class="plain">
+<li><b>Hours:</b> 10–20 a week; timeline restated to about 31–46 months (D-108).</li>
+<li><b>Launch cut:</b> the lean cut (D-109).</li>
+<li><b>Engine:</b> web-first; Godot only as a fallback (D-110).</li>
+<li><b>Gates:</b> R1 failing twice stops building for a redesign; 50% over runs a cut review (D-111).</li>
+<li><b>Late game:</b> 3–4 small crises at launch; larger crises and legacy goals after (D-112).</li>
+<li><b>Everything else</b> adopted as recommended (D-113 design and production, D-114 engine foundations and standards) and applied to the plan.</li>
+</ul>
+</section>
 <section>
 <h2>Verdict</h2>
 <p>The plan holds together well: event log as the spine, determinism, content as data, gated milestones, and art money waiting for proof are all sound and lean. Budget and schedule arithmetic reconcile. The weak spots are (1) the plan is sized for a small team but the owner chose solo, (2) the heart of the game, how a quest actually resolves, is not designed yet, (3) the mid and late game have no fresh goals and a cheap dominant strategy is possible, and (4) four engine foundations that are cheap now and very expensive later are not written down.</p>
@@ -118,5 +130,5 @@ footer { color: var(--muted); font-size: .88rem; border-top: 1px solid var(--lin
 <li>"Release checklist and performance numbers over-specified": dropped; cheap, already accepted (D-105, D-091).</li>
 </ul2>
 </section>
-<footer>Source: <code>docs/design/PLAN-REVIEW.md</code>. Proposals only; nothing here is decided until you approve it.</footer>
+<footer>Source: <code>docs/design/PLAN-REVIEW.md</code>. Decisions: D-108–D-114.</footer>
 </div>

@@ -1,8 +1,19 @@
 # Plan review: lean design, fun, codebase, standards
 
-Owner's request (2026-10-26): review the whole plan for efficient lean design, the gameplay loop and fun, codebase set-up that avoids missteps, and standards and practices. Method: two independent reviewers (D-107) read the docs cold, one for fun and one for lean production; the main session reviewed codebase and standards. Every finding below was checked at the cited line; three reviewer claims were corrected or dropped (end of page). Nothing here is decided: each item is a **proposal** for the owner (SRC-04).
+Owner's request (2026-10-26): review the whole plan for efficient lean design, the gameplay loop and fun, codebase set-up that avoids missteps, and standards and practices. Method: two independent reviewers (D-107) read the docs cold, one for fun and one for lean production; the main session reviewed codebase and standards. Every finding below was checked at the cited line; three reviewer claims were corrected or dropped (end of page). Written as proposals; the owner's decisions are under Outcome.
 
 Impact: **High** changes what gets built or risks the project; **Medium** shapes it; **Low** is tidy-up.
+
+## Outcome (2026-10-26)
+
+The owner decided five items and told the main session to go with its recommendations for the rest:
+
+- **Hours:** 10–20 a week; timeline restated to about 31–46 months (D-108).
+- **Launch cut:** the lean cut (D-109).
+- **Engine:** web-first; Godot only as a fallback (D-110).
+- **Gates:** R1 failing twice stops building for a redesign; 50% over runs a cut review (D-111).
+- **Late game:** 3–4 small crises at launch; larger crises and legacy goals after (D-112).
+- **Everything else** was adopted as recommended (D-113 design and production, D-114 engine foundations and standards), and applied to PLAN.md.
 
 ## Verdict
 
