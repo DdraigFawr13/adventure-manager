@@ -380,8 +380,8 @@ function cameo(p) {
 }
 
 const LINE_NOTE = {
-  front: 'Front line: each front-line member is twice as likely to be a foe\'s target as each back-line member.',
-  back: 'Back line: each back-line member is half as likely to be a foe\'s target as each front-line member. Clerics start at the back.',
+  front: 'Front line: each front-line member is twice as likely as each back-line member to be picked as a foe\'s target (a guard may still step in).',
+  back: 'Back line: each back-line member is half as likely as each front-line member to be picked as a foe\'s target (a guard may still step in). Clerics start at the back.',
 };
 function personCard(p) {
   const [k, t] = statusText(p);
@@ -461,10 +461,14 @@ function renderCard() {
   host.innerHTML = p ? personCard(p) : '';
   // While the card is open nothing behind it can be reached (aria-modal), and closing it
   // gives focus back to the name that opened it.
-  for (const el of document.querySelectorAll('.bar, .tabs, .sheet, .tray')) el.inert = Boolean(p);
+  for (const el of document.querySelectorAll('.bar, .tabs, .sheet, .tray, .controls, #quiz, .intro')) el.inert = Boolean(p);
   if (p) $('card').focus();
   else if (opener && document.contains(opener)) { opener.focus(); opener = null; }
-  else if (opener) { document.querySelector(`[data-person="${opener.dataset?.person}"]`)?.focus(); opener = null; }
+  else if (opener) {
+    const again = document.querySelector(`[data-person="${opener.dataset?.person}"]`);
+    if (again && again.offsetParent) again.focus(); else document.querySelector('.tab[aria-selected="true"]')?.focus();
+    opener = null;
+  }
 }
 document.addEventListener('input', (e) => { if (e.target.id === 'find') { query = e.target.value; applyFind(); } });
 document.addEventListener('keydown', (e) => {
@@ -474,7 +478,7 @@ document.addEventListener('keydown', (e) => {
     const card = $('card');
     const stops = [card, ...card.querySelectorAll('button, [href], input, [tabindex]:not([tabindex="-1"])')];
     const at = stops.indexOf(document.activeElement);
-    const next = stops[(at + (e.shiftKey ? stops.length - 1 : 1) + stops.length) % stops.length];
+    const next = at < 0 ? (e.shiftKey ? stops[stops.length - 1] : stops[0]) : stops[(at + (e.shiftKey ? stops.length - 1 : 1)) % stops.length];
     e.preventDefault();
     next.focus();
     return;
@@ -596,7 +600,7 @@ document.addEventListener('click', (e) => {
   else if (t.id === 'tray-toggle') { trayOpen = !trayOpen; renderTray(); }
   else if (t.id === 'w1366' || t.id === 'w1920') { width = t.id === 'w1920' ? 1920 : 1366; try { localStorage.setItem('desk-width', String(width)); } catch {} fit(); }
   else if (t.id === 'quiz-start' || t.id === 'quiz-again') quizStart();
-  else if (t.id === 'quiz-go') { personId = null; renderCard(); quiz.phase = 'ask'; quiz.started = performance.now(); quizRender(); }
+  else if (t.id === 'quiz-go') { personId = null; renderCard(); quiz.phase = 'ask'; quiz.started = performance.now(); quizRender(); $('quiz-found')?.focus(); }
   else if (t.id === 'quiz-found') { quiz.last = (performance.now() - quiz.started) / 1000; quiz.phase = 'check'; quizRender(); }
   else if (t.id === 'quiz-right' || t.id === 'quiz-wrong') {
     quiz.results.push({ q: quiz.qs[quiz.at].q, s: quiz.last, ok: t.id === 'quiz-right' });
