@@ -245,6 +245,7 @@ const letter = writeQuestReport(
 // The March from the engine test's bake (D-134), halved to 150 × 100 cells for a small sheet.
 // Sites are not placed on the map yet (PLAN §7c): the tool puts each one at about its travel
 // distance from the guild hall on its own bearing, on dry land. Placeholders, labelled as such.
+// cast-ok: our own bake, read as tools/bake-map.ts wrote it; the fields used are checked below.
 const baked = JSON.parse(readFileSync('packages/ui/assets/engine-test/map-base.json', 'utf8')) as {
   width: number;
   height: number;
@@ -266,7 +267,20 @@ const xy = (cell: number): [number, number] => [
   Math.floor((cell % baked.width) / 2),
   Math.floor(Math.floor(cell / baked.width) / 2),
 ];
-const isWater = (x: number, y: number) => water[y * 2 * baked.width + x * 2] !== 0;
+if (typeof baked.water !== 'string' || typeof baked.biome !== 'string' || !(baked.width > 0))
+  throw new Error('map-base.json is not the bake this tool expects.');
+// A half-size cell is water when at least 3 of its 4 full cells are.
+const isWater = (x: number, y: number) => {
+  let wet = 0;
+  for (const [dx, dy] of [
+    [0, 0],
+    [1, 0],
+    [0, 1],
+    [1, 1],
+  ] as const)
+    if (water[(y * 2 + dy) * baked.width + x * 2 + dx] !== 0) wet += 1;
+  return wet >= 3;
+};
 let grid = '';
 for (let y = 0; y < H; y += 1)
   for (let x = 0; x < W; x += 1)
@@ -279,6 +293,8 @@ const [gx, gy] = xy(baked.guildCell);
 const daysFor: Record<string, number> = Object.fromEntries(
   rules.dangers.map((d) => [d.danger, d.travelDays + 1]),
 );
+// Sites keep clear of each other, the hall and the towns (about 6 half-cells).
+const taken: [number, number][] = [xy(baked.guildCell), ...baked.placeCells.map(xy)];
 const sitePlaces = baseContracts.sites.map((site, i) => {
   const days = Math.min(...site.dangers.map((d) => daysFor[d] ?? 6));
   const angle = (i * 2 * Math.PI) / baseContracts.sites.length + 0.4;
@@ -289,6 +305,7 @@ const sitePlaces = baseContracts.sites.map((site, i) => {
     for (let x = 0; x < W; x += 1) {
       // Dry land, and far enough from the sheet's edge for the label.
       if (isWater(x, y) || x < 8 || y < 6 || x > W - 9 || y > H - 7) continue;
+      if (taken.some(([ax, ay]) => (x - ax) ** 2 + (y - ay) ** 2 < 36)) continue;
       const tx = gx + Math.cos(angle) * r;
       const ty = gy + Math.sin(angle) * r;
       const score = (x - tx) ** 2 + (y - ty) ** 2;
@@ -297,6 +314,8 @@ const sitePlaces = baseContracts.sites.map((site, i) => {
         best = [x, y];
       }
     }
+  if (bestScore === Infinity) throw new Error(`No room on the map for ${site.id}.`);
+  taken.push(best);
   return { name: names[site.id] ?? site.id, x: best[0], y: best[1] };
 });
 const text = engineTestMapText;
