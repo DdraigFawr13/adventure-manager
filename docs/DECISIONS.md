@@ -325,3 +325,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Launch with woodcut portraits assembled from parts, with age and scars as layers and a mourning corner on death. Painted portraits come later; faces are stored as art-independent data so a painted set can redraw the same people. Detail: `docs/design/STYLE.md` §7.
 - **Why:** Owner's choice (Style Q7); woodcut is cheap per face and matches the desk, and the owner wants painted portraits eventually.
+
+## D-055 Audio: period chamber music, desk ambience, an occasional bard
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Sparse early-music ensemble with long silences; rich desk and guildhall ambience; a bard plays now and then as if from the hall; a drum for key moments and a tolling bell for deaths. Detail: `docs/design/STYLE.md` §8.
+- **Why:** Owner's choice (Style Q8) with the bard added; low fatigue over long sessions and fits the woodcut/old-press look.

@@ -92,3 +92,20 @@ Rejected: wax seals for every icon (blur at 16 px, clash with the "bad" colour),
 Owner's note: "Woodcut works to start but I do want painted portraits eventually."
 
 Rejected: scout's sketchbook (scribbles at roster size), silhouette cameos (no faces breaks pillar 1).
+
+## 8. Audio mood (Accepted 2026-10-26)
+
+**Period chamber music, desk sounds, and a bard now and then.**
+
+- **Music:** a small early-music ensemble (lute, viol, recorder, hurdy-gurdy, frame drum), sparse, with long silences between pieces so it survives hundreds of hours.
+- **A bard, occasionally (owner's note):** now and then a bard plays, heard as if from the guildhall below, as part of the world rather than the soundtrack.
+- **Desk ambience carries the game:** quill, pages, seal cracks, candle, rain on the shutters; a guildhall murmur that grows with facilities and changes with the seasons.
+- **Big moments:** a low drum when the calendar stops for a key moment; for a death, the room goes quiet and a single bell tolls.
+- **Quest board:** ambience per biome.
+- References: *Pentiment*, *Kingdom Come: Deliverance*.
+
+Owner's note: "A bit with like a bard playing occasionally."
+
+**Proposed (not yet approved):** tie the bard to the world: the bard plays more often with a tavern (D-011 guildhall upgrades) or a Cantor on the roster; after great deeds or deaths the bard plays a piece titled for them ("The Ballad of the Hollow Barrow"), named in the news and Chronicle. Instrumental only, so no lyrics have to name generated people.
+
+Rejected: epic orchestral (fatigue, fights the quiet desk), ambience only (no identity), dark folk (too grim for the whimsy asked for).
