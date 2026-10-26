@@ -614,3 +614,22 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Free updates after launch, in order: war campaigns; map deeds and rumours; training academy and item commissioning; escorts and expeditions; look and sound upgrades (painted portraits, standee animations, bardic songs); optional AI flavour. Later-tier items each need their own decision. Paid expansions stay undecided (D-040). Detail: `docs/design/PLAN.md` §13c.
 - **Why:** Owner's choice (Plan Q13b): war campaigns are the biggest new play and already an Early update item.
+
+## D-102 Team: start solo, hire later
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The owner directs and designs, code is written with AI help, and contractors are paid per job for art, audio and optionally writing. At the M2 (slice) and M3 (alpha) gates the owner decides whether to add paid help; the likely first hire is one developer for 12–18 months. Detail: `docs/design/PLAN.md` §14a.
+- **Why:** Owner's choice (Plan Q14a): cheapest start; paid help is decided when the slice shows the pace and the funding is known.
+
+## D-103 Budget and funding route
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Budget estimates with 20% contingency: about $57,000–185,000 solo, about $128,000–358,000 with one developer hired; about $10,000–32,000 is spent before the hire gate (M1–M2). Self-funded through the slice; at the slice gate the owner chooses between self-funding, a publisher, crowdfunding and Early Access at the alpha gate (D-100); no talks before that decision. Five budget assumptions are checked at each gate. Detail: `docs/design/PLAN.md` §14b, §14d, §14e.
+- **Why:** Owner accepted the draft (Plan Q14c); the slice is the pitch, so funding is chosen when there is something to show.
+
+## D-104 Price $24.99; English at launch
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Launch price $24.99, with about $12.50–15 net per copy (estimate) and break-even at about 4,000–15,000 copies solo. English only at launch; translation decided after launch on regional sales. Paid expansions decided after launch (D-040). Detail: `docs/design/PLAN.md` §14c.
+- **Why:** Owner's choice (Plan Q14b): in line with comparable deep management games and an easy buy after the free demo.
+

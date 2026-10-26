@@ -4,11 +4,12 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Phase
 
-3 of 3: Full plan → `docs/design/PLAN.md`. Concept locked (D-045); style locked (D-061); plan outline approved (D-062). PLAN.md Part A §1–§10 written (D-063..D-089); §11–§13 written (D-090..D-101); §14 and §15 to do.
+3 of 3: Full plan → `docs/design/PLAN.md`. Concept locked (D-045); style locked (D-061); plan outline approved (D-062). PLAN.md Part A §1–§10 written (D-063..D-089); §11–§14 written (D-090..D-104); §15 to do.
 
 ## Just done
 
-- 2026-10-26 PLAN.md §13 accepted: milestones M0–M7 with owner gates, about 18–28 months to launch for a small team (estimate); vertical slice is one corner of the March at final quality; no bulk art before the prototypes pass R1 and R2 (D-099). Plan for 1.0; Early Access looked at again at the alpha gate (D-100). Post-launch: war campaigns first (D-101). Branch `ccr-a7e935d0-9dffpn`; PR #3 (§11–§12) merged.
+- 2026-10-26 PLAN.md §14 accepted: start solo with AI help and contractors, decide on paid help at the slice and alpha gates (D-102); budget about $57k–185k solo, $128k–358k with one developer, $10k–32k before the hire gate; self-funded through the slice, funding route chosen there (D-103); price $24.99, English at launch (D-104). All estimates.
+- 2026-10-26 PLAN.md §13 accepted: milestones M0–M7 with owner gates, about 18–28 months to launch for a small team (estimate); vertical slice is one corner of the March at final quality; no bulk art before the prototypes pass R1 and R2 (D-099). Plan for 1.0; Early Access looked at again at the alpha gate (D-100). Post-launch: war campaigns first (D-101). Merged via PR #4.
 - 2026-10-26 PLAN.md §12 accepted: kingdom map hand-drawn base now, procedural later, launch layers factions, guilds, action, threats (D-097; D-087 amended; mock-up `kingdom-map.html`); asset lists, rough costs (art $23k–74k, audio $9k–37k) and pipeline (D-098). Story-Generator reviewed: its seeded worldgen and ink atlas (TypeScript, canvas) can lay out the March and seed the procedural renderer; reuse favours the web engine option (PLAN §12d).
 - 2026-10-26 Tools review accepted (D-094); fresh session per merged PR or plan section (D-095); deny secret reads and ask before force-push in `.claude/settings.json` (D-096).
 - 2026-10-26 Tools and skills review drafted: `docs/design/TOOLS-REVIEW.md`, page https://claude.ai/artifact/UiwdssAjKy2dnZ73pzJfeB. Adopted: docs checker, mock-up script, one setup audit (D-092); adversarial review before every PR (D-093). Ripgrep: useful, already in use; caveman skill: not adopted.
@@ -33,7 +34,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Next
 
-1. PLAN.md §14 (budget, team, business: turn §12's rough costs and §13's 18–28 months into a budget and team shape; paid expansions are undecided, D-040), then §15. Then the whole plan goes to the owner for approval (M0, D-099). Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
+1. PLAN.md §15 (quality, CI and release process; adopt the tools review, D-092..D-094). Then the whole plan goes to the owner for approval (M0, D-099). Owner chose to continue §14 and §15 in this session after PR #4. Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
 
 ## Open questions
 

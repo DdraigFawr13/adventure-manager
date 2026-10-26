@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: Part A (§1–§10) and §11–§13 written; §14 and §15 to do.
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: Part A (§1–§10) and §11–§14 written; §15 to do.
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -22,7 +22,7 @@ Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked
 11. **Technology and architecture.** Engine choice, deterministic simulation package, data formats, saves, modding, optional AI flavour. Written below.
 12. **Art and audio production.** What an artist makes vs what is generated, with costs. Written below.
 13. **Milestones.** Prototype, vertical slice, alpha, free demo, beta, launch, post-launch roadmap (painted portraits, standee animations, bardic songs, war campaigns). Written below.
-14. **Budget, team and business assumptions.**
+14. **Budget, team and business assumptions.** Written below.
 15. **Quality, CI and release process.**
 
 ---
@@ -805,3 +805,64 @@ Free updates, in this order (owner chose war campaigns first, Plan Q13b); each a
 5. **Look and sound upgrades:** painted portraits (D-054), standee animations (D-050), bardic songs (D-056).
 6. **Optional AI flavour** (Early update, D-017, §11f).
 7. **Later tier**, each needing its own decision: 20 class levels (D-074), magic traditions, generated regions (D-030), intrigue (D-069), public mod tools (D-044), social features.
+
+---
+
+## 14. Budget, team and business assumptions (Accepted 2026-10-26)
+
+Decisions: D-102..D-104. Inputs: art and audio costs (D-098), milestones and timing (D-099), launch model at the alpha gate (D-100), premium with a free demo (D-040), success targets (D-065), no runtime dependency, paid service or backend without asking (SAFE-03). **Every figure here is an estimate** (REP-01) unless marked as a fact; quotes and real spending replace them.
+
+### 14a. Team (Accepted 2026-10-26, D-102)
+
+Owner's choice (Plan Q14a): **start solo, hire later.**
+
+- **M1–M2:** the owner directs and designs; code is written with AI help (Claude Code, D-094); contractors are paid per job for the slice's art and audio (§12). The owner's own time is unpaid and not in the budget.
+- **Hire gate:** at the M2 (slice) gate, and again at M3 (alpha), the owner decides whether to add paid help, with the slice's results and the funding route (§14d) in view. The most likely first hire is one developer for 12–18 months.
+- **Contractors throughout:** illustrator (map, icons, monsters, portraits; one artist where possible so the style holds, §12c), composer, sound designer, and optionally a writer for the ~6,000 template lines (D-080).
+- **Risk:** progress depends on the owner's hours. The gates (D-099) are where a slow pace shows up and gets decided on, not hidden.
+
+### 14b. Budget (Accepted 2026-10-26, D-103)
+
+Two cases: solo all the way, and solo plus one developer hired at a gate. Contingency 20%. All figures in US dollars, estimates.
+
+| Item | Low | High | Basis (estimate) |
+|---|---|---|---|
+| Art (D-098) | 23,000 | 74,000 | §12c |
+| Audio (D-098) | 9,000 | 37,000 | §12c |
+| Writing (optional contractor) | 5,000 | 14,000 | ~6,000 lines ≈ 90,000 words at $0.05–0.15 a word; $0 if the owner writes with AI help |
+| Marketing | 5,000 | 15,000 | Trailer, store capsule art, festival build polish; festivals themselves are free |
+| Legal and business | 2,000 | 6,000 | Contractor agreements that transfer rights (§12e), a name and trademark check, company set-up if needed |
+| AI and dev tools | 2,000 | 6,000 | $100–200 a month for 18–28 months (plan prices to check) |
+| Test hardware | 1,000 | 2,000 | A minimum-spec laptop for §11g |
+| Steam Direct fee | 100 | 100 | Fact: $100 per app, recouped after $1,000 of sales (Steam's terms, to recheck at sign-up) |
+| **Subtotal** | **47,100** | **154,100** | |
+| **Solo total with 20% contingency** | **~57,000** | **~185,000** | |
+| One developer, 12–18 months (if hired) | 60,000 | 144,000 | $5,000–8,000 a month; varies a lot by country |
+| **Total with a hire, with contingency** | **~128,000** | **~358,000** | |
+
+**Spend before the hire gate (M1–M2):** about $10,000–32,000: the whole kingdom-map base ($3,000–10,000, the slice needs it), about a fifth of the other art and audio for the slice's corner, tools, the Steam fee and first contracts. Bulk art waits for M1 to pass (D-099).
+
+### 14c. Price and revenue (Accepted 2026-10-26, D-104)
+
+- **Launch price: $24.99** (owner's choice, Plan Q14b). Comparable deep management games sit around $25–35 (for example Darkest Dungeon, Wildermyth, Battle Brothers, RimWorld; list prices to recheck at launch); Football Manager is higher with an established brand.
+- **Net per copy: about $12.50–15** (50–60% of the list price, estimate). Steam keeps 30% (fact for the first $10 million of sales); sales tax and VAT come out of prices in many regions, and regional pricing, launch discounts and refunds take more.
+- **Break-even (estimate):** solo budget about **4,000–15,000 copies**; with a hire about **9,000–29,000 copies**.
+- **Demo:** the first season, free (D-040, M4); D-065's 15% demo conversion is the measure.
+- **Paid expansions:** stay undecided (D-040); decide after launch on sales and the post-launch plan (D-101). Free updates first.
+- **Languages:** English at launch. Text lives in template files ready for translation (D-091); translation is decided after launch on sales by region.
+
+### 14d. Funding route (Accepted 2026-10-26, D-103)
+
+- **M1–M2: self-funded** (about $10,000–32,000, §14b).
+- **At the slice gate** the slice is the pitch. Routes to choose between then: keep self-funding; a publisher deal (money and marketing for a revenue share and some control); crowdfunding (money and an early audience, but promises to keep); Early Access at the alpha gate (D-100).
+- No publisher, investor or crowdfunding talks before the owner decides (SAFE-01).
+
+### 14e. Assumptions to check (Accepted 2026-10-26, D-103)
+
+Each is an assumption the budget rests on; if one breaks, §14 is revisited at the next gate.
+
+1. Art and audio quotes land within the §12c ranges.
+2. AI-assisted solo development reaches the vertical slice in 7–11 months (M1 + M2, D-099).
+3. Wishlists from the Steam page (live from M2) and the demo carry the launch; no paid advertising in the budget.
+4. The list price and net share above hold at launch.
+5. The owner's time is available at the pace the milestones assume.
