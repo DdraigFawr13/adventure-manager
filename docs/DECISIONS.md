@@ -373,3 +373,21 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** `docs/design/PLAN.md` follows the approved 15-section outline: Part A game design (§1–§10), then Part B production (§11–§15), written in order, section by section.
 - **Why:** Owner approved the outline as proposed.
+
+## D-063 Target player: management-sim veterans first
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The primary player is a management-sim veteran (FM, Battle Brothers, Darkest Dungeon, RimWorld, Crusader Kings) with a taste for fantasy. Tabletop RPG fans are secondary, carried by the gentle first season and delegation. Players who want direct combat control or short roguelite sessions are not targeted. Detail: `docs/design/PLAN.md` §1b.
+- **Why:** Owner's choice (Plan Q1b); the concept's depth, Ironman saves and desk-only guildmaster are built for this group, and onboarding the secondary group costs less than diluting depth.
+
+## D-064 Pace: one season takes about 2–2.5 hours
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** A typical player takes about 2–2.5 h per in-game season. Derived targets: adventurer career about 12–30 h, guildmaster career about 40–75 h, first season about 3–4 h with onboarding. Weeks per season are set in PLAN §2. Detail: `docs/design/PLAN.md` §1c.
+- **Why:** Owner's choice (Plan Q1c), between the proposed 3 h (FM-like) and 1.5 h (faster generations); keeps succession within reach of committed players.
+
+## D-065 Design goals and success criteria (starting set)
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Five design goals, one per pillar (PLAN §1a), and six success targets (PLAN §1d): demo conversion ≥ 15%, first-season completion ≥ 70%, median playtime > 20 h, ≥ 25% of 40 h+ players reach a second guildmaster, Steam reviews ≥ 80% positive, no dense screen needing more than one explanation in playtests. Numbers are estimates, revisited in PLAN §10 and §14.
+- **Why:** Owner accepted the proposed starting set (Plan Q1a/d); gives later sections and playtests something measurable to aim at.
