@@ -1,9 +1,10 @@
 // Quest resolution v0 (SPEC.md, D-118..D-123): the commands, the end of each beat, retreat.
 import type { EventSink } from '../core/events.ts';
+import { divRoundDown } from '../core/math.ts';
 import { BP_CERTAIN } from '../core/rng.ts';
 import { succeeded } from './check.ts';
-import { resolveExchange, resolveScene } from './encounters.ts';
-import { tendTheDying, wound } from './harm.ts';
+import { foesStrike, resolveExchange, resolveScene } from './encounters.ts';
+import { tendTheFallen } from './harm.ts';
 import {
   findTemplate,
   living,
@@ -56,6 +57,9 @@ export function startQuest(
     foes: template.foes.map((f) => ({ ...f, step: WOUND.fit })),
     momentPending: false,
     answeredCount: 0,
+    retreatBeats: 0,
+    fledFight: false,
+    judgedFallen: 0,
   };
   sink.emit({
     type: 'quest.started',
@@ -71,7 +75,9 @@ export function stepQuest(state: GameState, causeId: string, sink: EventSink<Gam
   const turn = turnFor(state, sink);
   if (turn.quest.momentPending) throw new Error('A moment is waiting for the player.');
   const { quest, template } = turn;
-  if (quest.phase === 'scenes') {
+  if (quest.phase === 'retreat') {
+    retreatBeat(turn, causeId);
+  } else if (quest.phase === 'scenes') {
     const scene = template.scenes[quest.sceneIndex];
     if (!scene) throw new Error(`Scene ${quest.sceneIndex} is missing.`);
     resolveScene(turn, scene, causeId);
@@ -106,51 +112,123 @@ export function chooseMoment(
 /** After a scene or exchange: healing, death rolls, then whether the quest ends or pauses. */
 function afterBeat(turn: Turn, causeId: string, inFight: boolean): void {
   const { quest, rules } = turn;
-  tendTheDying(turn, causeId);
+  tendTheFallen(turn, causeId);
   if (standing(turn).length === 0) return endQuest(turn, 'routed', causeId);
   if (inFight) {
     if (quest.foes.every((f) => f.step >= WOUND.down)) return endQuest(turn, 'won', causeId);
     if (quest.exchange >= rules.maxExchanges) return endQuest(turn, 'partial', causeId);
   }
+  let pullOutCause = quest.plan.retreat === 'leader' ? leaderJudges(turn, causeId) : null;
   const count = pastThreshold(turn);
   // A stabilised member can drop the count; the moment returns when it rises past the new low.
   quest.answeredCount = Math.min(quest.answeredCount, count);
-  if (count <= quest.answeredCount) return;
+  if (count > quest.answeredCount) pullOutCause ??= causeId;
+  if (pullOutCause === null) return;
   if (quest.watched) {
     quest.momentPending = true;
-    turn.sink.emit({ type: 'moment.raised', causeId, subjectIds: [quest.id], moment: 'retreat' });
-  } else retreat(turn, causeId);
+    turn.sink.emit({
+      type: 'moment.raised',
+      causeId: pullOutCause,
+      subjectIds: [quest.id],
+      moment: 'retreat',
+    });
+  } else retreat(turn, pullOutCause);
 }
 
-/** Members (the dead included) at or past the plan's retreat threshold. */
+/** Members (the dead included) at or past the plan's hard retreat line. */
 function pastThreshold(turn: Turn): number {
   const threshold = turn.quest.plan.retreat;
   if (threshold === 'never') return 0;
-  return turn.quest.partyIds.filter(
-    (id) => member(turn.state, id).dead || stepOf(turn, id) >= THRESHOLD_STEP[threshold],
-  ).length;
+  const line = threshold === 'leader' ? WOUND.dying : THRESHOLD_STEP[threshold];
+  return turn.quest.partyIds.filter((id) => member(turn.state, id).dead || stepOf(turn, id) >= line)
+    .length;
 }
 
+/**
+ * D-125: when another member falls, the leader reads the fight. Winning means a larger share of
+ * foe groups down than of the party fallen. A Wits check, easier when the gap is wide, gets the
+ * read right; a failed one gets it wrong. Returns the judgement event's id on a pull-out call.
+ */
+function leaderJudges(turn: Turn, causeId: string): string | null {
+  const { quest, rules } = turn;
+  const fallen = quest.partyIds.filter(
+    (id) => member(turn.state, id).dead || stepOf(turn, id) >= WOUND.down,
+  ).length;
+  if (fallen <= quest.judgedFallen) {
+    quest.judgedFallen = Math.min(quest.judgedFallen, fallen);
+    return null;
+  }
+  quest.judgedFallen = fallen;
+  const call = rules.leaderCall;
+  const leader = rankBy(standing(turn), call.attribute)[0];
+  if (!leader) return null;
+  const foesDown = quest.foes.filter((f) => f.step >= WOUND.down).length;
+  const foeShareBp = quest.foes.length ? divRoundDown(foesDown * BP_CERTAIN, quest.foes.length) : 0;
+  const fallenShareBp = divRoundDown(fallen * BP_CERTAIN, quest.partyIds.length);
+  const winning = foeShareBp > fallenShareBp;
+  const clarity = divRoundDown(Math.abs(foeShareBp - fallenShareBp), call.clarityStepBp);
+  const { roll: result, eventId } = partyCheck(
+    turn,
+    'judgement',
+    leader,
+    call.attribute,
+    call.difficulty - clarity,
+    [],
+    causeId,
+  );
+  const right = succeeded(result.outcome);
+  const hold = right === winning;
+  const judged = turn.sink.emit({
+    type: 'leader.judged',
+    causeId: eventId,
+    subjectIds: [leader.id],
+    situation: winning ? 'winning' : 'losing',
+    call: hold ? 'hold' : 'pull-out',
+  });
+  return hold ? null : judged;
+}
+
+/** D-126: a retreat takes beats; the check, and carrying the fallen, decide how many. */
 function retreat(turn: Turn, causeId: string): void {
   const { rules, template, quest } = turn;
-  const retreatEvent = turn.sink.emit({ type: 'quest.retreated', causeId, subjectIds: [quest.id] });
-  const { attribute } = rules.retreat;
-  const leader = rankBy(standing(turn), attribute)[0];
+  const plan = rules.retreat;
+  let beats = plan.beats;
+  if (living(turn).some((a) => stepOf(turn, a.id) >= WOUND.down)) beats += plan.carryBeats;
+  const leader = rankBy(standing(turn), plan.attribute)[0];
+  let cause = causeId;
   if (leader) {
-    const difficulty = rules.retreat.difficulty[template.danger];
     const { roll: result, eventId } = partyCheck(
       turn,
       'retreat',
       leader,
-      attribute,
-      difficulty,
+      plan.attribute,
+      plan.difficulty[template.danger],
       [],
-      retreatEvent,
+      causeId,
     );
-    if (!succeeded(result.outcome))
-      wound(turn, turn.stream.pick(living(turn)).id, rules.woundSteps.failedRetreat, eventId);
+    cause = eventId;
+    if (!succeeded(result.outcome)) beats += plan.failedCheckBeats;
   }
-  endQuest(turn, 'retreated', retreatEvent);
+  quest.fledFight = quest.phase === 'fight' && quest.exchange > 0;
+  quest.phase = 'retreat';
+  quest.retreatBeats = beats;
+  turn.sink.emit({ type: 'quest.retreated', causeId: cause, subjectIds: [quest.id], beats });
+}
+
+/** One beat of the way out: foes strike if the party fled a fight, the fallen bleed. */
+function retreatBeat(turn: Turn, commandId: string): void {
+  const { quest } = turn;
+  quest.retreatBeats -= 1;
+  const beat = turn.sink.emit({
+    type: 'retreat.beat',
+    causeId: commandId,
+    subjectIds: [quest.id],
+    beatsLeft: quest.retreatBeats,
+  });
+  if (quest.fledFight) foesStrike(turn, beat);
+  tendTheFallen(turn, beat);
+  if (standing(turn).length === 0) return endQuest(turn, 'routed', beat);
+  if (quest.retreatBeats <= 0) endQuest(turn, 'retreated', beat);
 }
 
 /** Rolls lasting injuries, then ends the quest. v0 records injuries as events only. */

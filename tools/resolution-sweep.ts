@@ -36,7 +36,7 @@ function roster(): Adventurer[] {
   }));
 }
 
-for (const retreat of ['never', 'down', 'badly-hurt'] as RetreatThreshold[]) {
+for (const retreat of ['badly-hurt', 'down', 'leader', 'dying', 'never'] as RetreatThreshold[]) {
   let deaths = 0;
   let injuries = 0;
   const outcomes: Record<string, number> = {};

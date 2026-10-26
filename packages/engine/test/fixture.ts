@@ -25,7 +25,6 @@ export const rules: ResolutionRules = {
     alarmBadFailure: 1,
     hit: 1,
     strongHit: 2,
-    failedRetreat: 1,
   },
   risk: {
     cautious: { chanceBp: -500, badFailureShareBp: 1500 },
@@ -38,12 +37,17 @@ export const rules: ResolutionRules = {
   maxExchanges: 6,
   targetWeight: { front: 2, back: 1 },
   deathRoll: { baseBp: 2500, stepBp: 100, pivot: 10 },
+  bleed: { baseBp: 2000, stepBp: 200, pivot: 10 },
   stabilise: { attribute: 'lore', difficulty: 10 },
   injuryBp: { badlyHurt: 1500, down: 4000, dying: 7000 },
   retreat: {
     attribute: 'wits',
     difficulty: { routine: 6, hazardous: 9, perilous: 12, deadly: 15 },
+    beats: 1,
+    failedCheckBeats: 1,
+    carryBeats: 1,
   },
+  leaderCall: { attribute: 'wits', difficulty: 12, clarityStepBp: 2500 },
   classes: {
     warrior: { attackAttribute: 'might', canStabilise: false },
     rogue: { attackAttribute: 'agility', canStabilise: false },
@@ -153,4 +157,16 @@ export function ofType<T extends GameEvent['type']>(
   type: T,
 ): Extract<GameEvent, { type: T }>[] {
   return events.filter((e): e is Extract<GameEvent, { type: T }> => e.type === type);
+}
+
+/** Steps an already started quest to its end; returns the new events. */
+export function finish(state: GameState): { state: GameState; events: GameEvent[] } {
+  let current = state;
+  const events: GameEvent[] = [];
+  for (let n = 1; current.quest; n += 1) {
+    const result = simulate(current, { type: 'quest.step', id: `f${n}`, day: 1 });
+    events.push(...result.events);
+    current = result.state;
+  }
+  return { state: current, events };
 }

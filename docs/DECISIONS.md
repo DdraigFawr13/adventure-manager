@@ -760,3 +760,21 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** In the main fight, enemies come in foe groups (a named beast, or a band such as goblins), each with its own wound steps and a few attributes from content data, shown as one standee or cluster on the board. Each exchange, every standing adventurer acts against a group and every group acts against someone. Owner's note: "1 for launch but eventually 2": every enemy as its own token is a later goal, not scoped (Proposed until planned). Detail: `packages/engine/src/resolution/SPEC.md`.
 - **Why:** Owner's choice (resolution v0 fork 6, 2026-10-26): keeps fights to 3–6 exchanges and named beasts individual; per-enemy tokens add tabletop feel later.
+
+## D-124 Resolution v0: the fallen bleed out
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** A Down member who is not tended rolls at the end of each scene or exchange to slip to Dying; the chance falls with Toughness and is content data. A standing cleric tends one Down or Dying member per beat (Dying first). Death becomes a race against time, so retreat thresholds and healers matter. Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Why:** Owner's choice (tuning fork, 2026-10-26): measured with `tools/resolution-sweep.ts`, Down members were safe, so deaths stayed near 0.2% per adventurer against PLAN §4c's 0.8% whatever the death roll.
+
+## D-125 Resolution v0: the leader's call is the default retreat
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The default retreat setting sits between first Down and first Dying, by the situation. Each time a member falls, the leader reads the fight with a Wits check (easier when the situation is clear): a good read holds on to first Dying while winning and pulls out while losing; a failed read makes the wrong call. First Dying is the hard line. Owner's note: "1 and 2 where 2 is influenced by 1 but I want bad leaders to not always make good choices." PLAN §4c's death targets are measured at this default. Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Why:** Owner's choice (tuning, 2026-10-26): "somewhere between first dying and first downed depending on the situation".
+
+## D-126 Resolution v0: retreat takes time and has its own risks
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** A retreat lasts beats: 1, plus 1 while carrying the fallen, plus 1 on a failed retreat check (all content data). On each beat foes strike if the party fled a fight, and the fallen bleed and roll for death; a party with no one standing is routed. Replaces the old rule that a failed check costs one wound step and the Dying are carried home safe. Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Why:** Owner (tuning, 2026-10-26): "retreat should take time and have its own risks associated with it." Without it, retreating at a threshold ended the quest before bleeding (D-124) could matter.
