@@ -8,6 +8,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Just done
 
+- 2026-10-26 PR #2 (Part A, §1–§10) merged to `main`. Part B work on branch `claude/plan-part-b`.
 - 2026-10-26 PLAN.md §10 accepted: playtest logs only, release sends nothing, opt-in telemetry a future option (D-088); playtest stages, measures and acting on results (D-089). Part A complete.
 - 2026-10-26 Owner added a launch goal: an on-theme fantasy kingdom map showing areas, locations, guilds, action and deeds (D-087); to workshop in §12.
 - 2026-10-26 PLAN.md §9 accepted: ledger minimum 15 px with lining figures (D-084; corrected the §6 mock-up and D-077 rationale, which had shown old-style figures by mistake); prototype order watched quest first (D-085; an earlier answer was a misclick); nine risks with tests and pass lines (D-086).
@@ -19,7 +20,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 - 2026-10-26 PLAN.md §4 accepted: ~2 deaths a year in a mid guild, death rates by danger rating, turnover ~25% (D-071; §2e updated); money tight early, steady later (D-072); sources/sinks, tournaments as shop window, 3×6 ladder with bigger ladders later (D-073).
 - 2026-10-26 PLAN.md §3 accepted: ranking by renown earned this year, renown stored as sourced entries for a later intrigue layer (D-069); 14 launch systems, injury folded into Adventurers, scouting + knowledge merged, academy and commissioning moved to Early update (D-070; D-012, D-013 amended; CONCEPT §9, §10, §28 notes).
 - 2026-10-26 PLAN.md §2 accepted: a season is one in-game year (D-066); 48-week year with Assembly, campaigning, midsummer fair, winter (D-067); ~80 stops/year, three stop classes, rate cap on Digest items only (D-068). CONCEPT core-loop timings updated to match.
-- 2026-10-26 PLAN.md §1 accepted: management-sim veterans first, tabletop fans second (D-063); one season ≈ 2–2.5 h (D-064); design goals and success targets as a starting set (D-065). Branch `claude/adventure-manager-continue-kmy9rj`, PR #2 to `main`.
+- 2026-10-26 PLAN.md §1 accepted: management-sim veterans first, tabletop fans second (D-063); one season ≈ 2–2.5 h (D-064); design goals and success targets as a starting set (D-065). Merged via PR #2.
 - 2026-10-26 Plan outline approved (D-062); `docs/design/PLAN.md` holds the 15-section outline only.
 - 2026-10-26 Style guide complete and locked: `docs/design/STYLE.md` §1–§9, D-046..D-061. War table look, candlelit oak palette, desk-home layout, inked-map quest board, old-press type, woodcut icons and portraits (painted later), soft early-music ambience, mixed naming on an English-fenland core, grounded voice with dry wit, no narrator. Mock-ups (HTML) in `docs/design/mockups/`.
 - 2026-10-25 Concept complete: `docs/design/CONCEPT.md` §1–§33, pillars, scope tiers; D-003..D-045.
