@@ -8,6 +8,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Just done
 
+- 2026-10-26 Owner added a launch goal: an on-theme fantasy kingdom map showing areas, locations, guilds, action and deeds (D-087); to workshop in §12.
 - 2026-10-26 PLAN.md §9 accepted: ledger minimum 15 px with lining figures (D-084; corrected the §6 mock-up and D-077 rationale, which had shown old-style figures by mistake); prototype order watched quest first (D-085; an earlier answer was a misclick); nine risks with tests and pass lines (D-086).
 - 2026-10-26 Roadmap page for the owner: `docs/roadmap.html`, published at https://claude.ai/artifact/FTio9mE7jLaK4Wrn189YAg. A view of HANDOFF and PLAN (HANDOFF wins).
 - 2026-10-26 PLAN.md §8 accepted: in-world letters with a Trace to the cause chain, plus numbered inspector histories (D-082, mock-up `consequences.html`); nine surfaces and seven consequence rules (D-083).
@@ -31,6 +32,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Open questions
 
+- Kingdom map (D-087, launch): workshop its style, layers (areas, guilds, action, deeds) and interactions with §12 art production; mock-ups expected.
 - Later: 20 class levels (D-074) need a pacing decision; facility compound / city-building style guildhall (D-075) not scoped.
 - Intrigue and underhanded dealings (owner's note, D-069): Later tier; content not decided.
 - Old-press ledger readability: 15 px minimum (D-084), confirm on real monitors in R4; fallback is our own Goudy ledger cut (D-052). Use lining figures (`lining-nums`) for all numbers: the face's default figures are old-style and proportional (measured 13.6–20.8 px wide at 40 px; lining 21.1 px each). Clear print (D-077) is the player-side option. Minimum size asked in PLAN §9c.

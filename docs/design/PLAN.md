@@ -41,6 +41,8 @@ The game succeeds as a design when a player:
 4. Notices the region changed because of a contract they took or refused (Pillar 4).
 5. Hands a system to staff and later takes it back because they wanted to do it better themselves (Pillar 5).
 
+**Launch feature goal (owner, 2026-10-26, D-087):** a **kingdom map** of the March in a striking, on-theme fantasy style that shows its areas and locations, the guilds, what is happening now and the deeds done there. It builds on the home-screen region map (D-049, STYLE §3). Owner: "We can workshop that later but I'd like something like that at launch." Details to workshop with the art work (§12).
+
 ### 1b. Target player (Accepted 2026-10-26, D-063)
 
 - **Primary:** management-sim veterans who already like depth and spreadsheets: Football Manager, Battle Brothers, Darkest Dungeon, RimWorld, Crusader Kings players with a taste for fantasy. They accept dense screens (D-016, CONCEPT §13) and learn by playing, not by tutorial.
@@ -495,7 +497,7 @@ Each outcome reaches the player through one or more of these, from immediate to 
 | Week report (D-068) | Digest: results, injuries, money, morale moves | Weekly |
 | Letters (D-043) | Consequences that need or deserve attention, from a person in the world | When they land |
 | Criers and gossip (D-043) | Public news: rankings, rivals' deeds, region changes | When they land |
-| Region map (D-049) | Roads, threats, faction colours, rumours | Always |
+| Region map (D-049), raised to the kingdom map (D-087) | Areas and locations, guilds, parties and rivals in action, threats, faction colours, rumours, marks of past deeds | Always |
 | Inspector fields | Every person, item, place and faction: value, breakdown (D-078) and dated history | On demand |
 | Chronicle and Hall of Heroes (D-042) | Deeds, deaths, storied items, records | Permanent |
 | Year in review (D-067) | The year's biggest causes and effects | Year's end |

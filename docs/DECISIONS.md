@@ -521,3 +521,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Nine risks, each with its cheapest test and pass line: R1 watching quests is fun; R2 the simulation hits the §4 targets (±25%); R3 a year fits the friction budget (≤ 100 stops, ≤ 3 h); R4 the desk holds FM density (25+ rows at 1366 px); R5 ledgers readable (D-084); R6 the player's focus beats delegation by 10–25%; R7 attachment despite deaths; R8 template writing stays fresh; R9 guildmaster careers of 20–30 years. Fun and feel pass only on the owner's recorded playtest notes (GAME-06). Detail: `docs/design/PLAN.md` §9a.
 - **Why:** Owner accepted the draft (Plan Q9c).
+
+## D-087 Kingdom map at launch
+
+- **Status:** Accepted (2026-10-26) as a launch goal; design to workshop.
+- **Decision:** Launch includes a kingdom map of the March in a striking, on-theme fantasy style showing areas and locations, the player's and rival guilds, current action, and the deeds done across the region. It builds on the home-screen region map (D-049) and is a consequence surface (PLAN §8a). Style, layers and interactions are workshopped with the art plan (PLAN §12). Detail: `docs/design/PLAN.md` §1a.
+- **Why:** Owner's request: the region should be a place the player wants to look at, where the guild's history is visible (Pillars 3 and 4).
