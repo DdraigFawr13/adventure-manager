@@ -277,3 +277,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The UI is the guildmaster's desk (ledgers, seals, letters, painted map with miniatures). In-world styling carries the frame and set pieces; dense data screens use a clean, legible layer with no texture behind numbers. Detail: `docs/design/STYLE.md` §1.
 - **Why:** Owner's choice (Style Q1); ties to D-004 and D-043 while keeping D-016 density readable.
+
+## D-047 Palette mood: candlelit oak
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Warm lamp-lit palette: walnut desk, vellum paper, iron-gall ink, oxblood wax, brass. Detail: `docs/design/STYLE.md` §2.
+- **Why:** Owner's choice (Style Q2) from the swatch board; the most "guild hall" mood.
