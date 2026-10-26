@@ -15,8 +15,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 ## Next
 
 1. All style questions answered (D-046..D-060). Next: owner sign-off to lock STYLE.md, then phase 3 plan (`docs/design/PLAN.md`).
-2. Show visual options as artifacts (mood boards, UI mock-ups) where words aren't enough.
-3. Write `docs/design/STYLE.md` as decisions land; then phase 3 plan.
+2. Phase 3 starts with game-design best practices, then architecture and milestones (AGENTS.md "Phases").
 
 ## Open questions
 
