@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: Part A (§1–§10), §11 and §12 written; §13..§15 to do.
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: Part A (§1–§10) and §11–§13 written; §14 and §15 to do.
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -21,7 +21,7 @@ Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked
 
 11. **Technology and architecture.** Engine choice, deterministic simulation package, data formats, saves, modding, optional AI flavour. Written below.
 12. **Art and audio production.** What an artist makes vs what is generated, with costs. Written below.
-13. **Milestones.** Prototype, vertical slice, alpha, free demo, beta, launch, post-launch roadmap (painted portraits, standee animations, bardic songs, war campaigns).
+13. **Milestones.** Prototype, vertical slice, alpha, free demo, beta, launch, post-launch roadmap (painted portraits, standee animations, bardic songs, war campaigns). Written below.
 14. **Budget, team and business assumptions.**
 15. **Quality, CI and release process.**
 
@@ -761,3 +761,47 @@ Mock-up: `docs/design/mockups/kingdom-map.html` (interactive: base style and lay
 - Every asset gets a line in an asset ledger (`assets/LICENSES.md`): who made it, licence, date, source file (SAFE-05).
 - Fonts: OFL faces only (STYLE §5); check Reserved Font Names before any renamed cut.
 - Contracts with artists and composers transfer the rights the game needs; drafted when hiring (SAFE-01).
+
+---
+
+## 13. Milestones (Accepted 2026-10-26)
+
+Decisions: D-099..D-101. Inputs: prototype order (§9b, D-085), playtest stages (§10a, D-089), engine test (D-090), scope tiers (CONCEPT §28), launch content (D-080, D-081), art and audio (D-098). **Durations are estimates** (REP-01) for a small team; §14 sets the team and turns them into a schedule.
+
+### 13a. The ladder (Accepted 2026-10-26, D-099)
+
+Each milestone ends at a gate: the owner reviews the exit checks and says go, loop or stop. A missed check loops the milestone; the same miss twice is a design problem that goes to the owner (D-089).
+
+| # | Milestone | What is built | Who plays (§10a) | Exit checks | Estimate |
+|---|---|---|---|---|---|
+| M0 | Plan approved | PLAN §14–§15 finished | — | Owner approves the whole plan (D-001) | now |
+| M1 | Prototypes | §9b steps 0–4: engine test, one watched quest, headless year simulator, desk mock-ups and writing test, two years in the text prototype. Throwaway code (§9) | Owner | Engine chosen (D-090); R1–R4 and R6–R8 pass lines met (D-086); R9 proxy shows 20–30-year careers | 3–5 months |
+| M2 | Vertical slice | The production engine, content, ui and shell packages (§11b). The prologue and first season (D-076) in one corner of the March: 2 biomes, 3 settlements, 4 classes, ~10 monster kinds, ~6 quest templates; final art and audio for that corner only; kingdom map base with 2 layers | 6–10 invited players | First season in 3–4 h (D-064); no dense screen needs more than one explanation (D-065); testers name 3 adventurers (R7); determinism test and save upgrade test pass (GAME-05, GAME-06) | 4–6 months |
+| M3 | Alpha | All 14 launch systems (D-070) in, playable over many years; whole March with about half the launch content; placeholder art allowed outside the slice | 30–50 closed testers | Medians within ±25% of the §4 targets over real play; ≤ 100 stops a year (D-068); no unreadable saves; feature complete for launch | 6–9 months |
+| M4 | Free demo | The first season as a free build (D-040), cut from the alpha with final art for what it shows; Steam page live since M2 | Public (e.g. a Steam festival) | ≥ 70% of demo starts finish the first season (D-065); crash-free sessions; store feedback logged | 1–2 months, alongside M5 |
+| M5 | Beta | All launch content (D-080, D-081), final art and audio, achievements, Steam Cloud; balance and writing passes | 200+ testers | 30-year saves load and upgrade; succession reached in long saves (R9); §11g performance met on the minimum machine; no known save-losing bug | 4–6 months |
+| M6 | Launch | Release build, store assets, day-one patch plan | Everyone | Release checklist (§15) passes; owner signs off | 1–2 months |
+| M7 | Post-launch | Free updates (§13c) | Everyone | Each update keeps old saves loading (GAME-05) | ongoing |
+
+Total to launch: **about 18–28 months** from plan approval (sum of the ranges with the demo run alongside the beta; estimate).
+
+### 13b. Rules across milestones (Accepted 2026-10-26, D-099, D-100)
+
+- **Art money follows proof.** No bulk art or music is commissioned before M1 passes R1 and R2 (the game is fun to watch and the economy holds). M2 commissions only the slice's corner; bulk art starts once alpha balance is stable, so systems that change late don't waste drawings (§12).
+- **The slice sets the bar, the alpha sets the breadth.** The slice is small but final quality, so it tests feel and readability; the alpha is wide but rough, so it tests systems and balance.
+- **Content grows as data.** Content added after M2 is data entries only (GAME-04); the content validator runs in CI from M2.
+- **Saves are protected from M2.** Every build from the slice on keeps older saves loading through migrations (GAME-05); testers' long saves are the beta's best evidence for R9.
+- **Steam page at M2** so wishlists build through the alpha before the demo, and for about 11–17 months before launch (sum of M3, M5 and M6; estimate).
+- **Launch model: decided at the alpha gate** (owner's choice, Plan Q13a). The plan assumes a full 1.0 after the beta. At the M3 exit the owner looks again, with the budget (§14) and alpha results in hand, at Early Access instead: selling from the alpha's end and growing to 1.0 over 6–12 months. Early Access brings money sooner and gives real 40 h+ saves for R9; it costs early reviews of a rough build, and old saves must survive every big change.
+
+### 13c. Post-launch roadmap (Accepted 2026-10-26, D-101)
+
+Free updates, in this order (owner chose war campaigns first, Plan Q13b); each adds to the launch engine and content packs without reworking them (D-044); war campaigns need the most new engine code. Paid expansions stay undecided (D-040) and belong to §14.
+
+1. **War campaigns** (Early update, D-035): multi-party campaigns; the biggest new play after launch.
+2. **Map deeds and rumours** (D-097): inked cartouches for deeds, pencil rumours.
+3. **Training academy and item commissioning** (Early update, D-070).
+4. **Escorts and expeditions** (Early update, D-035).
+5. **Look and sound upgrades:** painted portraits (D-054), standee animations (D-050), bardic songs (D-056).
+6. **Optional AI flavour** (Early update, D-017, §11f).
+7. **Later tier**, each needing its own decision: 20 class levels (D-074), magic traditions, generated regions (D-030), intrigue (D-069), public mod tools (D-044), social features.
