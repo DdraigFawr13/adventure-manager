@@ -1,9 +1,8 @@
-// The party's walk and the fog it clears. The guild has charted the middle of the March; the far
-// corners are blank vellum. The party walks a road route out to the farthest place and back; every
+// The party's walk and the fog it clears. The guild has charted almost all of the March; only the
+// far corner the party is bound for is blank vellum (owner, 2026-10-26: the fog read as empty). The party walks a road route out to the farthest place and back; every
 // few cells it opens a burst of ink that spreads out and wipes the vellum away, and the vellum grows
 // back while the party rests at home. Also answers which cells are still uncharted (for names).
 import type { MapData } from './map-data.ts';
-import { sitesOf } from './map-data.ts';
 import { wobblePath, type Fog } from './map-layers.ts';
 import { INK, SEAL } from './map-palette.ts';
 
@@ -17,6 +16,8 @@ const BURST_SECONDS = 2.4;
 const BURST_RADIUS = 17;
 const LANTERN_RADIUS = 6;
 const MAX_BURSTS = 4;
+/** The vellum corner stays small, so the charted March fills the sheet. */
+const MAX_VELLUM_RADIUS = 48;
 
 interface Burst {
   live: boolean;
@@ -59,7 +60,6 @@ export function createJourney(data: MapData, fog: Fog, S: number): Journey {
   const { route } = data;
   const W = data.cells.width;
   const H = data.cells.height;
-  const sites = sitesOf(data);
   const cx = (cell: number) => ((cell % W) + 0.5) * S;
   const cy = (cell: number) => (Math.floor(cell / W) + 0.5) * S;
   const routeX = Float32Array.from(route, cx);
@@ -68,31 +68,25 @@ export function createJourney(data: MapData, fog: Fog, S: number): Journey {
   const legSeconds = lastLeg / SPEED;
   const cycleSeconds = 2 * legSeconds + PAUSE_FAR + PAUSE_HOME;
 
-  // Vellum over two far corners: the route's end and the place farthest from the hall besides it.
+  // Vellum over one far corner: the one the route ends in, reaching just past the place there.
   fog.clear();
   const hallX = data.guildCell % W;
   const hallY = Math.floor(data.guildCell / W);
-  const away = (c: number) => Math.hypot((c % W) - hallX, Math.floor(c / W) - hallY);
   const end = route[lastLeg] ?? data.guildCell;
-  const far = sites
-    .filter((s) => s !== data.guildCell && s !== end)
-    .reduce((a, b) => (away(a) >= away(b) ? a : b), sites[1]!);
   const veiled = new Uint8Array(W * H);
-  let skip = -1;
-  [end, far].forEach((cell, n) => {
-    const corner = cornerNear(cell, W, H, skip);
-    skip = corner[2];
-    // Centred between the place and its corner, so the vellum runs off the sheet's edge.
-    const x = (cell % W) + (corner[0] - (cell % W)) * 0.55;
-    const y = Math.floor(cell / W) + (corner[1] - Math.floor(cell / W)) * 0.55;
-    const want = Math.hypot(x - (cell % W), y - Math.floor(cell / W)) + 24;
-    const room = Math.hypot(x - hallX, y - hallY) - 26;
-    const r = Math.max(30, Math.min(want, room));
-    fog.cover(x, y, r, n + 3);
+  {
+    const corner = cornerNear(end, W, H, -1);
+    // Centred most of the way to the corner, so the vellum runs off the sheet's edge.
+    const x = (end % W) + (corner[0] - (end % W)) * 0.7;
+    const y = Math.floor(end / W) + (corner[1] - Math.floor(end / W)) * 0.7;
+    const want = Math.hypot(x - (end % W), y - Math.floor(end / W)) + 14;
+    const room = Math.hypot(x - hallX, y - hallY) - 40;
+    const r = Math.max(24, Math.min(want, room, MAX_VELLUM_RADIUS));
+    fog.cover(x, y, r, 3);
     for (let i = 0; i < W * H; i += 1) {
       if (Math.hypot((i % W) - x, Math.floor(i / W) - y) < r * 0.9) veiled[i] = 1;
     }
-  });
+  }
   fog.keepAsStart();
   const charted = new Uint8Array(W * H);
 
@@ -161,7 +155,9 @@ export function createJourney(data: MapData, fog: Fog, S: number): Journey {
         charted.fill(0);
       }
       const milestone = Math.floor(party.idx / BURST_EVERY);
-      if (party.walking && milestone !== lastMilestone) {
+      const here = route[Math.min(lastLeg, Math.max(0, Math.round(party.idx)))]!;
+      // Ink bursts mark new ground only: none on the charted roads near home.
+      if (party.walking && milestone !== lastMilestone && veiled[here] === 1) {
         lastMilestone = milestone;
         spawn(party.idx, seconds);
       }

@@ -7,7 +7,6 @@ import { sitesOf, type MapData } from './map-data.ts';
 import { createJourney } from './map-journey.ts';
 import { createFactionMark, createFog, createStain, type FactionMark } from './map-layers.ts';
 import {
-  drawName,
   placeAreaName,
   placeSideName,
   placeTownName,
@@ -42,7 +41,7 @@ export interface Scene {
 const GUILDS = [
   { site: 0, nameKey: 'guild.ours', colour: SEAL, tier: 2 },
   { site: 2, nameKey: 'guild.rival-0', colour: '#5b4a8b', tier: 1 },
-  { site: 1, nameKey: 'guild.rival-1', colour: '#3f6f8f', tier: 3 },
+  { site: 4, nameKey: 'guild.rival-1', colour: '#3f6f8f', tier: 3 },
 ] as const;
 const FACTIONS = [
   { site: 2, nameKey: 'faction.0', colour: '#3e6b3a', r: 30, charge: 'chevron' as const },
@@ -246,12 +245,15 @@ export function createScene(data: MapData, atlas: Atlas, text: SceneText): Scene
       const at = Math.min(lastLeg, Math.max(0, Math.floor(party.idx)));
       const next = Math.min(lastLeg, at + 1);
       const f = party.idx - at;
+      // At home the party stands below the hall, clear of its name and banner.
+      const home = !party.walking && at === 0;
       const px = sx(routeX[at]! + (routeX[next]! - routeX[at]!) * f);
-      const py = sy(routeY[at]! + (routeY[next]! - routeY[at]!) * f);
+      const py = sy(routeY[at]! + (routeY[next]! - routeY[at]!) * f) + (home ? 26 * u : 0);
       drawParty(ctx, px, py, u, SEAL, seconds, party.walking);
-      if (layers.names) {
+      if (layers.names && !home) {
         const style: LabelStyle = { size: 14 * ls, spacing: 0, face: 'italic' };
-        drawName(ctx, say('party.0'), px, py + 22 * u, style, 'center');
+        // Placed like the other side names, so it never prints over a town's name.
+        placeSideName(ctx, rooms, say('party.0'), px + 12 * u, py + 16 * u, style);
       }
     }
   }
