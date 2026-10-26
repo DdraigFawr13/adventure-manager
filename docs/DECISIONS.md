@@ -157,3 +157,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** New games either found a guild or take over an existing one, with difficulty set by that choice. Detail: `docs/design/CONCEPT.md` §23.
 - **Why:** Owner's choice; FM-style club selection plus the ownership of founding.
+
+## D-027 Pitch, five pillars and core loop
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** The pitch, pillars (people are the game; you plan, they bleed; a guild that outlives you; a region that remembers; depth on your terms) and four-layer core loop at the top of `docs/design/CONCEPT.md`. Every feature must serve at least one pillar.
+- **Why:** Owner approved as written; gives every later design and planning decision a test.

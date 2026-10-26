@@ -2,7 +2,7 @@
 
 Working document for phase 1. Each section records what the owner decided, with their own notes. Status: in progress.
 
-## Pitch, pillars and core loop (Proposed)
+## Pitch, pillars and core loop (Accepted 2026-10-25)
 
 **Pitch:** Run an adventurers' guild across generations. Recruit, develop and manage a roster of flawed, ambitious people, send them into a living frontier region, and live with the consequences.
 

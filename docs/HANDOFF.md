@@ -13,13 +13,12 @@ Updated: 2026-10-25. A fresh session must be able to continue from this file alo
 
 ## Next
 
-1. Owner to approve or edit the Proposed pitch, pillars and core loop (top of CONCEPT.md). Q25 was skipped without an answer.
+1. Pillars approved (D-027).
 2. Ask the owner whether the concept is 100% fleshed out; offer remaining optional topics (magic system, guildmaster progression, region geography, guild start sizes).
 3. Then phase 2: style design (`docs/design/STYLE.md`).
 
 ## Open questions
 
-- Pillars approval (above).
 - Stack and engine: decided in phase 3; add the matching `stacks/` layer then.
 
 ## Decisions since the last plan update
