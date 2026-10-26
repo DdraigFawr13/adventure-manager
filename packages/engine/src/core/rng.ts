@@ -1,6 +1,7 @@
 // From Story-Generator src/engine/core/rng.ts@8a5c4ef, the owner's own code (D-116).
 // Changed: chance() takes basis points (integers only, STANDARDS.md); weights must be integers;
-// the seed is length-prefixed so (seed, name) pairs cannot collide; own-property checks only.
+// the seed is length-prefixed so (seed, name) pairs cannot collide; own-property checks only;
+// plain fields instead of constructor parameter properties (erasable syntax, runs in plain Node).
 // Named deterministic RNG streams (PLAN §11h, D-114). A stream's starting state is derived
 // from (seed, name), so adding a new stream never reshuffles existing ones.
 // Use one stream per system, e.g. 'quest.combat', 'recruit.traits'.
@@ -76,10 +77,12 @@ export function deriveStreamState(seed: string, name: string): RngState {
 export const BP_CERTAIN = 10_000;
 
 export class RngStream {
-  constructor(
-    private readonly states: Record<string, RngState>,
-    private readonly name: string,
-  ) {
+  private readonly states: Record<string, RngState>;
+  private readonly name: string;
+
+  constructor(states: Record<string, RngState>, name: string) {
+    this.states = states;
+    this.name = name;
     if (!Object.hasOwn(states, name)) throw new Error(`RNG stream "${name}" has no state.`);
   }
 

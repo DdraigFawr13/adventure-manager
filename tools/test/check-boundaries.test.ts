@@ -47,4 +47,9 @@ describe('package boundary check (STANDARDS.md, PLAN §11h)', () => {
   it('rejects files that typecheck would skip', () => {
     expect(check(engineFile.replace('.ts', '.mjs'), '').join(' ')).toContain('Only .ts');
   });
+
+  it("allows a system folder's SPEC.md but no other Markdown in src", () => {
+    expect(check(engineFile.replace('sample.ts', 'SPEC.md'), '# Spec')).toEqual([]);
+    expect(check(engineFile.replace('sample.ts', 'notes.md'), '').join(' ')).toContain('Only .ts');
+  });
 });
