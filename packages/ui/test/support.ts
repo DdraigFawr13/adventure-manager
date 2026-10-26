@@ -18,6 +18,7 @@ export function narrateAll(templateId: string, retreat: RetreatThreshold, seed: 
   for (const event of session.events) {
     const line = narrate(event);
     if (!line) continue;
+    if (line.label) out.push(line.label);
     out.push(line.text);
     if (line.chance) out.push(describeChance(line.chance, line.purpose ?? ''));
   }

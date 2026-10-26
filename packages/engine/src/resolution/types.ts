@@ -86,6 +86,8 @@ export interface ResolutionRules {
   readonly risk: Readonly<
     Record<Risk, { readonly chanceBp: number; readonly badFailureShareBp: number }>
   >;
+  /** The checks the plan's risk changes (D-131): pressing on, not tending or getting out. */
+  readonly riskPurposes: readonly CheckPurpose[];
   readonly approachAttribute: Readonly<Record<Approach, Attribute>>;
   /** Difficulty change per site tag and approach; negative is easier (guarded: stealth -2, assault +2). */
   readonly tagShifts: Readonly<Record<string, Readonly<Partial<Record<Approach, number>>>>>;

@@ -663,3 +663,72 @@ describe('class signature actions (D-130)', () => {
     expect(ofType(events, 'action.used').some((e) => e.actionId === 'action.ward')).toBe(true);
   });
 });
+
+describe('the plan risk presses on, not tending or getting out (D-131)', () => {
+  it('makes a foe strike back at once at an attacker who overreaches, past any guard', () => {
+    const roster = [adventurer('a', { might: 1, agility: 20 }), adventurer('b', { agility: 19 })];
+    const everyMissIsBad = {
+      ...game([]).content.rules.risk,
+      steady: { chanceBp: 0, badFailureShareBp: 10_000 },
+    };
+    const base = game([]).content.rules;
+    const alwaysGuards = {
+      ...base.classes,
+      warrior: {
+        attackAttribute: 'might',
+        canStabilise: false,
+        actions: [{ id: 'action.guard', kind: 'guard', chanceBp: 10_000 }],
+      },
+    } as const;
+    const { events } = run(
+      game(roster, {
+        rules: { ...certain, maxExchanges: 1, risk: everyMissIsBad, classes: alwaysGuards },
+        quest: { scenes: [], foes: [{ id: 'f', attack: 1, defence: 20, speed: 1, hits: 3 }] },
+      }),
+    );
+    const attack = ofType(events, 'check.rolled').find(
+      (e) => e.purpose === 'attack' && e.subjectIds[0] === 'a',
+    );
+    expect(attack?.outcome).toBe('bad-failure');
+    const counter = ofType(events, 'check.rolled').find((e) => e.causeId === attack?.id);
+    expect(counter).toMatchObject({ purpose: 'defence', subjectIds: ['a', 'f'] });
+    // Control: on the foe's own strike in the same exchange, a guard does step in.
+    expect(ofType(events, 'action.used').some((e) => e.actionId === 'action.guard')).toBe(true);
+    expect(
+      ofType(events, 'check.rolled').some((e) => e.purpose === 'guard' && e.causeId === attack?.id),
+    ).toBe(false);
+  });
+
+  it('adds the risk only to the checks content names', () => {
+    const roster = [adventurer('a', { might: 20, agility: 20, stealth: 14 })];
+    const plan = { ...steadyPlan, risk: 'bold' } as const;
+    const { events } = run(game(roster, { rules: { riskPurposes: ['scene'] } }), plan);
+    const checks = ofType(events, 'check.rolled');
+    const withRisk = (e: (typeof checks)[number]) =>
+      e.chance.parts.some((p) => p.sourceId === 'plan.risk.bold');
+    expect(checks.filter((e) => e.purpose === 'scene').length).toBeGreaterThan(0);
+    expect(checks.filter((e) => e.purpose === 'scene').every(withRisk)).toBe(true);
+    expect(checks.filter((e) => e.purpose === 'attack').length).toBeGreaterThan(0);
+    expect(checks.some((e) => e.purpose !== 'scene' && withRisk(e))).toBe(false);
+  });
+
+  it('leaves tending, the leader and the way out untouched by a bold plan', () => {
+    const roster = [
+      adventurer('a', { might: 1, agility: 1 }),
+      adventurer('b', { might: 1, agility: 1 }),
+      adventurer('c', { lore: 14 }, 'cleric'),
+    ];
+    const foes = [{ id: 'f', attack: 20, defence: 20, speed: 20, hits: 9 }];
+    const plan = { ...steadyPlan, risk: 'bold', retreat: 'leader' } as const;
+    const purposes = new Set<string>();
+    for (const seed of ['r1', 'r2', 'r3', 'r4']) {
+      const { events } = run(game(roster, { seed, quest: { scenes: [], foes } }), plan);
+      for (const e of ofType(events, 'check.rolled')) {
+        purposes.add(e.purpose);
+        const risky = e.chance.parts.some((p) => p.sourceId === 'plan.risk.bold');
+        expect(risky).toBe(e.purpose === 'scene' || e.purpose === 'attack');
+      }
+    }
+    expect([...purposes]).toEqual(expect.arrayContaining(['attack', 'stabilise', 'judgement']));
+  });
+});

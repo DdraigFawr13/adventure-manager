@@ -571,7 +571,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 ## D-093 Adversarial review before every pull request
 
 - **Status:** Accepted (2026-10-26)
-- **Decision:** Before creating any pull request, and again before marking one ready, review the whole branch diff adversarially: what is wrong, inconsistent with DECISIONS, unverified or missing. Fix or report each finding before the PR goes up. Use the `reviewer` agent or `code-review` skill for large diffs. Recorded in AGENTS.md project rules.
+- **Decision:** Before creating any pull request, and again before marking one ready, review the whole branch diff adversarially: what is wrong, inconsistent with DECISIONS, unverified or missing. Fix or report each finding before the PR goes up. Use the `reviewer` agent or `code-review` skill for large diffs. Recorded in AGENTS.md project rules. Amended by D-133: the owner approves before the PR is created.
 - **Why:** Owner's rule (2026-10-26).
 
 ## D-094 Tools review accepted
@@ -797,6 +797,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** In each fight exchange everyone acts in order of speed: Agility for adventurers, a speed number for each foe group (content data). Each foe group also has its own number of hits to beat before it is down (a swarm about 3, a pack about 5, a warden or keeper about 7), so fights last the planned 3–6 exchanges (D-118) and foes strike throughout. Death numbers are retuned after. Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Amended:** D-131 gave the mill cellar's rats 8 hits, above the pack's "about 5", so a routine fight can still hurt; the sizes are guides, not limits.
 - **Why:** Owner's R1 note (2026-10-26): "I don't see any enemies ever really doing anything at all." Measured over 300 quests per contract: foes got 0–2 attacks per fight and fights lasted 1–2 exchanges, because the whole party acted first and a group fell after 3 wound steps.
 
 ## D-130 Resolution v0: classes have signature actions
@@ -804,3 +805,22 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Each class has 2–3 signature actions it uses on its own when the situation fits, shown in the log. Starting set: warrior Guard (takes a blow meant for a comrade) and Cleave (a strong hit also strikes the next group); rogue Scout ahead (helps the party's approach scenes) and Strike from shadow (a better hit on a foe already engaged this exchange); cleric Mend (a hurt member steps back up) and Ward (foes hit less often that exchange). Which class has which action, and every number, is content data; each action kind is one engine rule. Owner's note: "1 but room for 2 as well and room for more actions": roles set in the plan (guard, scout, striker, healer) that change which action a member prefers stay open as a later addition, and more actions (and abilities by level, D-074) are added as data. Detail: `packages/engine/src/resolution/SPEC.md`.
 - **Why:** Owner's R1 note (2026-10-26): "there will need to be distinct actions for different classes."
+
+## D-131 Resolution v0: bold overreaches, and risk only touches pressing on
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** An attack that fails badly is an overreach: the foe group attacked strikes the attacker at once, and no guard steps in. The plan's risk (chance shift and bad-failure share, D-121) applies only to the checks content lists as pressing on: scene tests and attacks. Tending, mending, the leader's read and the retreat check ignore it. For tuning, a "cautious" plan means cautious risk with retreat at first Down, and a "reckless" plan means bold risk with no retreat (PLAN §4c: about half and about double the default's deaths).
+- **Why:** Owner's choice ("Overreach", tuning pass 2, 2026-10-26). Measured with the sample party, 2,000 quests each, leader's call: hazardous deaths were cautious 0.91%, steady 0.69%, bold 0.50%, because a bad failure on an attack cost nothing and cautious's −5% also weakened tending and retreat. After the change the order is right on all three contracts (cautious lowest, bold highest at each retreat setting, within sampling noise). The half/double ratios are met only on the perilous chapel: reckless/default measured 1.0× routine, 1.35× hazardous, 2.15× perilous; cautious/default 0.78×, 0.74×, 0.52× (`tools/resolution-sweep.ts 4000`; other seed sets gave barrow reckless 0.88–1.18%, so hazardous reckless is 1.35–1.8×). The mill cellar's rats now take 8 hits, above D-129's "pack about 5", so a routine fight can still hurt. The cautious and reckless definitions are the session's default reading of §4c, not an owner ruling.
+
+## D-132 R1 passes, with notes
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The watched-quest test (R1, PLAN §9a) passes after the owner's 10-quest watch. Owner's notes become work, not blockers: (1) skill and spell names show in the log when used (done the same day: each action line starts with its name); (2) the quest log must feel more meaningful, and the UI will change a lot; (3) it feels "a little hollow"; (4) hidden items, traps and multiple pathways through a quest, later. Notes 2–4 are open for the slice (M2) and the quest template design; how is not decided.
+- **Why:** Owner (2026-10-26): "it feels a little hollow but otherwise it is fine for now"; chose "Pass, with notes".
+
+## D-133 Review, then owner approval, then the pull request
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** No pull request is created until (1) an independent adversarial review of the whole branch diff has run (D-093, D-107) and its findings are fixed or reported, and (2) the owner has seen the findings and approved. After approval, Claude creates the PR and, once CI is green with no open review thread or conflict, marks it ready and merges it without asking again. Commits added after approval need a fresh review and approval before merging. This overrides the session default of opening a draft PR right after pushing. Amends D-093.
+- **Why:** Owner's rule (2026-10-26), after PR #11 was opened with its second commit reviewed only by the main session: "don't create the PR until after the adversarial review and my approval. Then you can create prs and merge when they are ready."
+

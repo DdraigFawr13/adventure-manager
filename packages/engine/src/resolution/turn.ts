@@ -75,7 +75,7 @@ export function rankBy(people: Adventurer[], attribute: Attribute): Adventurer[]
   );
 }
 
-/** A party check: base, attribute against difficulty, extra parts, the plan's risk. */
+/** A party check: base, attribute against difficulty, extra parts, the plan's risk where it applies. */
 export function partyCheck(
   turn: Turn,
   purpose: CheckPurpose,
@@ -88,7 +88,9 @@ export function partyCheck(
   others: readonly string[] = [],
 ): { roll: Roll; eventId: string } {
   const { rules, quest } = turn;
-  const risk = rules.risk[quest.plan.risk];
+  const risk = rules.riskPurposes.includes(purpose)
+    ? rules.risk[quest.plan.risk]
+    : { chanceBp: 0, badFailureShareBp: 0 };
   const parts: ValuePart[] = [
     {
       sourceId: `attribute.${attribute}`,

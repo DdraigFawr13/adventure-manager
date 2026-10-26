@@ -84,7 +84,7 @@
     "purpose.judgement": "to read the fight",
     "action.guard": "Guard",
     "action.cleave": "Cleave",
-    "action.scout": "Scouted ahead",
+    "action.scout": "Scout ahead",
     "action.shadow-strike": "Strike from shadow",
     "action.mend": "Mend",
     "action.ward": "Ward",
@@ -114,7 +114,10 @@
     "attack.strong-success": ["{actor} lands a heavy blow on {foe}.", "{actor} hits {foe} hard."],
     "attack.success": ["{actor} strikes {foe}.", "{actor} gets a blow in on {foe}."],
     "attack.failure": ["{actor} swings at {foe} and misses.", "{actor} finds no opening."],
-    "attack.bad-failure": ["{actor} swings at {foe} and misses.", "{actor} finds no opening."],
+    "attack.bad-failure": [
+      "{actor} overreaches, and {foe} is on them at once.",
+      "{actor} swings wide and leaves an opening for {foe}."
+    ],
     "defence.strong-success": [
       "{actor} takes a heavy blow from {foe}.",
       "{foe}: a hard hit on {actor}."

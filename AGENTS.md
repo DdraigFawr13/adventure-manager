@@ -39,7 +39,7 @@ No game code before phase 3 is approved.
 - Every design decision the owner approves goes into `docs/DECISIONS.md` the same session, so later sessions don't reopen it.
 - Every session updates and republishes the roadmap page `docs/roadmap.html` (owner's rule, D-128; link in HANDOFF).
 - Design docs describe what the player experiences and why before how it is built.
-- Before creating any pull request, and again before marking one ready, do an adversarial review of the whole branch diff (owner's rule, D-093): look for what is wrong, inconsistent with DECISIONS, unverified or missing; fix or report each finding first. Use the `reviewer` agent or the `code-review` skill for large diffs.
+- Pull requests (owner's rule, D-133): first an independent adversarial review of the whole branch diff (D-093; `reviewer` agent, briefed per D-107), fix or report each finding, then show the owner the findings and ask approval. Create the PR only after that approval; once CI is green and nothing is open, mark it ready and merge it without asking again. New commits after approval need a new review and approval.
 - Reviewers are independent (owner's rule, D-107): a review agent's brief gives the goal, the files or diff, the lens and open questions, never the main session's findings, conclusions or preferred answer. The main session verifies the returned findings afterwards (DEL-05).
 
 ## Overrides
