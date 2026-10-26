@@ -49,6 +49,7 @@ export function App() {
   const [playing, setPlaying] = useState(false);
   const [watched, setWatched] = useState(readWatched);
   const [openChance, setOpenChance] = useState<string | null>(null);
+  const [skippedThisQuest, setSkippedThisQuest] = useState(false);
   const logEnd = useRef<HTMLLIElement | null>(null);
 
   const quest = session.state.quest;
@@ -66,22 +67,29 @@ export function App() {
     ? { quest: session.board, ended: session.boardEnded }
     : null;
 
-  function advance(next: Session): void {
+  const endedOutcome = session.events
+    .flatMap((e) => (e.type === 'quest.ended' ? [e.outcome] : []))
+    .at(-1);
+
+  /** A skipped quest is not a watched one (R1 compares the two). */
+  function advance(next: Session, skipped = false): void {
     setSession(next);
+    if (skipped) setSkippedThisQuest(true);
     if (!next.state.quest && session.state.quest) {
       setPlaying(false);
-      setWatched((n) => {
-        writeWatched(n + 1);
-        return n + 1;
-      });
+      if (!skipped && !skippedThisQuest) setWatched((n) => n + 1);
     }
+    if (!session.state.quest && next.state.quest) setSkippedThisQuest(false);
   }
+
+  useEffect(() => writeWatched(watched), [watched]);
 
   useEffect(() => {
     if (!playing || !running || moment) return;
     const timer = setTimeout(() => advance(step(session)), 900);
     return () => clearTimeout(timer);
-  });
+    // advance reads the same session; the timer restarts only when the quest moves on.
+  }, [playing, session, moment]);
 
   useEffect(() => {
     logEnd.current?.scrollIntoView({ block: 'nearest' });
@@ -101,6 +109,7 @@ export function App() {
         <h1>{t('title')}</h1>
         <p>{t('subtitle')}</p>
         <p className="tally">{t('watched', { n: String(Math.min(watched, 10)) })}</p>
+        <p className="seed">{t('seed', { seed: session.state.seed })}</p>
       </header>
 
       <main className="layout">
@@ -226,6 +235,11 @@ export function App() {
             <p className="hint">{t('waiting')}</p>
           )}
 
+          {view?.ended && endedOutcome ? (
+            <p className="tag ended">
+              {t('ended', { outcome: nameOf(`outcome.${endedOutcome}`) })}
+            </p>
+          ) : null}
           {moment ? (
             <div className="seal" role="group" aria-label={t('moment')}>
               <span className="wax" aria-hidden="true" />
@@ -263,7 +277,7 @@ export function App() {
             <button
               type="button"
               disabled={!running || moment}
-              onClick={() => advance(skip(session))}
+              onClick={() => advance(skip(session), true)}
             >
               {t('skip')}
             </button>

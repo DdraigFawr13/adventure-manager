@@ -71,6 +71,12 @@ body {
   max-width: 65ch;
 }
 
+.masthead .seed {
+  font-size: 15px;
+  color: var(--rule);
+  opacity: 0.8;
+}
+
 .masthead .tally {
   color: var(--brass);
   font-family: var(--ledger);
@@ -308,13 +314,13 @@ select:focus-visible {
 }
 
 .standee {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   border-radius: 50% 50% 4px 4px;
   display: grid;
   place-items: center;
   font-family: var(--title);
-  font-size: 14px;
+  font-size: 15px;
   background: var(--paper-2);
   border: 2px solid var(--good);
   box-shadow: 0 3px 0 var(--ink-2);
@@ -473,4 +479,10 @@ select:focus-visible {
   .standee {
     transition: none;
   }
+}
+
+.tag.ended {
+  margin: 0;
+  font-family: var(--title);
+  font-size: 19px;
 }

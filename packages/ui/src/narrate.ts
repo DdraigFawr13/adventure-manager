@@ -21,7 +21,7 @@ export function nameOf(id: string): string {
 
 function line(key: string, eventId: string, vars: Record<string, string>): string {
   const variants = logTemplates[key];
-  return variants ? fillTemplate(pickVariant(variants, eventId), vars) : key;
+  return variants ? capitalise(fillTemplate(pickVariant(variants, eventId), vars)) : key;
 }
 
 function capitalise(text: string): string {
@@ -67,7 +67,7 @@ export function narrate(event: GameEvent): LogLine | null {
       }
       if (event.purpose === 'defence') {
         const key = `defence.${event.outcome}`;
-        const foe = capitalise(nameOf(second));
+        const foe = nameOf(second);
         return { ...base, kind: 'roll', text: line(key, id, { actor: nameOf(first), foe }) };
       }
       if (event.purpose === 'stabilise') {

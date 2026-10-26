@@ -84,10 +84,7 @@
     "purpose.judgement": "to read the fight"
   },
   "log": {
-    "quest.started": [
-      "The party sets out for {quest}.",
-      "Five sets of boots on the road to {quest}."
-    ],
+    "quest.started": ["The party sets out for {quest}.", "The party takes the road to {quest}."],
     "scene.started": ["{scene}."],
     "scene.success": [
       "{actor} gets through.",
@@ -110,10 +107,16 @@
     "attack.success": ["{actor} strikes {foe}.", "{actor} gets a blow in on {foe}."],
     "attack.failure": ["{actor} swings at {foe} and misses.", "{actor} finds no opening."],
     "attack.bad-failure": ["{actor} swings at {foe} and misses.", "{actor} finds no opening."],
-    "defence.strong-success": ["{foe} catch {actor} square.", "{foe} hit {actor} hard."],
-    "defence.success": ["{foe} catch {actor}.", "{foe} get past {actor}'s guard."],
-    "defence.failure": ["{actor} turns {foe} aside.", "{foe} come at {actor} and find nothing."],
-    "defence.bad-failure": ["{actor} turns {foe} aside."],
+    "defence.strong-success": [
+      "{actor} takes a heavy blow from {foe}.",
+      "{foe}: a hard hit on {actor}."
+    ],
+    "defence.success": ["{actor} takes a blow from {foe}.", "{actor} is caught by {foe}."],
+    "defence.failure": [
+      "{actor} turns aside an attack from {foe}.",
+      "{actor} gives {foe} nothing to hit."
+    ],
+    "defence.bad-failure": ["{actor} turns aside an attack from {foe}."],
     "wound.changed": ["{actor} is {step}."],
     "wound.down": ["{actor} goes down.", "{actor} falls and does not get up."],
     "wound.dying": ["{actor} is dying.", "{actor} is bleeding badly. This is serious."],
@@ -166,6 +169,8 @@
     "waiting": "Choose a contract and a plan, then set out.",
     "dead": "dead",
     "notes": "For the R1 notes: did you want to watch the next one? Did skipping feel like a loss? Did the moments feel like real choices? Tell Claude in the chat.",
-    "chanceHint": "Tap a percentage to see how it was worked out."
+    "chanceHint": "Tap a percentage to see how it was worked out.",
+    "seed": "Run seed: {seed}",
+    "ended": "Quest over: {outcome}"
   }
 }
