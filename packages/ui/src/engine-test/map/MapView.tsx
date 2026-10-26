@@ -3,7 +3,7 @@
 // The atlas is built once into a canvas; every animation frame blits it with the zoom transform and
 // draws only the live layers. Words come from content text (engine-test.en.json), never from here.
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
-import defaultText from '../../../../content/data/engine-test.en.json';
+import { engineTestMapText as defaultText } from '@adventure-manager/content';
 import '../../../styles/engine-test-map.css';
 import { atlasSteps, type Atlas } from './atlas.ts';
 import { clampCamera, frameBox, ZOOM_STEP, zoomAt, type Camera } from './map-camera.ts';
@@ -15,6 +15,8 @@ const MAX_DPR = 2;
 /** Pixels a cell in the atlas; symbols are drawn for 8. */
 const ATLAS_SCALE = 8;
 const PAN_STEP = 90;
+/** With reduced motion (D-078, PLAN §6c) the map holds this moment: the party out on its route. */
+const STILL_SECONDS = 12;
 
 export interface MapViewProps {
   /** Labels and names by key; defaults to the engine-test English file. */
@@ -52,7 +54,10 @@ export function MapView({ text = defaultText }: MapViewProps) {
     const { width, height, water } = data.cells;
     const owner = new Uint16Array(width * height);
     for (let i = 0; i < owner.length; i += 1) owner[i] = water[i] === 3 ? 0 : 1;
-    const build = atlasSteps(data.cells, data.biomeIds, ATLAS_SCALE);
+    const build = atlasSteps(data.cells, data.biomeIds, ATLAS_SCALE, {
+      north: textRef.current['ui.north'] ?? '',
+      labelFont: "'IM Fell English SC', Georgia, serif",
+    });
     let drawing: Generator<void, unknown, void> | null = null;
     let atlas: Atlas | null = null;
     const pump = () => {
@@ -129,12 +134,14 @@ export function MapView({ text = defaultText }: MapViewProps) {
     if (!el || !ctx) return;
     let handle = 0;
     const start = performance.now();
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)');
     frames.current = { count: 0, since: start };
     const frame = (now: number) => {
       const s = scene.current;
       if (s) {
         const { w, h, dpr } = size.current;
-        s.render(ctx, camera.current, w, h, dpr, (now - start) / 1000, layersRef.current);
+        const seconds = still.matches ? STILL_SECONDS : (now - start) / 1000;
+        s.render(ctx, camera.current, w, h, dpr, seconds, layersRef.current);
       }
       frames.current.count += 1;
       if (now - frames.current.since >= 500) {

@@ -30,8 +30,16 @@ export function EngineTest() {
               role="tab"
               id={`et-tab-${id}`}
               aria-selected={tab === id}
-              aria-controls={`et-panel-${id}`}
+              aria-controls={tab === id ? `et-panel-${id}` : undefined}
+              tabIndex={tab === id ? 0 : -1}
               onClick={() => setTab(id)}
+              onKeyDown={(e) => {
+                // Arrow keys move between tabs (WAI-ARIA tabs pattern).
+                if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+                const other = id === 'ledger' ? 'map' : 'ledger';
+                setTab(other);
+                document.getElementById(`et-tab-${other}`)?.focus();
+              }}
             >
               {text.tabs[id]}
             </button>
@@ -58,13 +66,15 @@ export function EngineTest() {
           {text.controls.clearPrint}
         </label>
       </nav>
-      <main
-        className="et-panel"
-        role="tabpanel"
-        id={`et-panel-${tab}`}
-        aria-labelledby={`et-tab-${tab}`}
-      >
-        {tab === 'ledger' ? <Ledger /> : <MapView />}
+      <main className="et-panel">
+        <div
+          className="et-tabpanel"
+          role="tabpanel"
+          id={`et-panel-${tab}`}
+          aria-labelledby={`et-tab-${tab}`}
+        >
+          {tab === 'ledger' ? <Ledger /> : <MapView />}
+        </div>
       </main>
     </div>
   );

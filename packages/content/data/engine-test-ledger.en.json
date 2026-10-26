@@ -9,6 +9,7 @@
     "sortedBy": "Sorted by {column}, {direction}",
     "ascending": "ascending",
     "descending": "descending",
+    "breakdownMark": "†",
     "breakdownOf": "How {name}'s {column} is made",
     "total": "Total",
     "base": "Base"

@@ -1,4 +1,4 @@
-// From Story-Generator src/app/tales/outline.ts @ 8a5c4ef (D-116); unchanged.
+// From Story-Generator src/app/tales/outline.ts @ 8a5c4ef (D-116); unchanged. `contours` is kept unused for a vector coast later.
 // The shore as a vector line: marching squares over the smoothed land mask. The raster map steps
 // at the pixel grid when zoomed in; this line is smooth at any zoom. Pure, no DOM.
 

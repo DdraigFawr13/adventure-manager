@@ -1,4 +1,4 @@
-// From Story-Generator src/app/tales/atlas.ts @ 8a5c4ef (D-116); WorldCells import replaced by the local MapCells type, imports use .ts.
+// From Story-Generator src/app/tales/atlas.ts @ 8a5c4ef (D-116); WorldCells import replaced by the local MapCells type, imports use .ts, the compass letter and its face come from options. The political modes, towns and coastPath are kept unused for the later procedural renderer (PLAN §12d).
 // The Tales map, drawn on canvases from the world's cells (a port of the approved calm6 script).
 // The terrain layers (sea, paper, tints, symbols, rivers, roads, coast, compass) are drawn once per
 // world; the political layer (fills, wild land, borders, towns) is redrawn when the borders move.
@@ -391,6 +391,10 @@ export const defaultScale = (width: number): number => Math.max(4, Math.round(10
 export interface AtlasOptions {
   /** Draw the raster shore line (default); false leaves it to a vector line drawn over the map. */
   coast?: boolean;
+  /** The compass letter for north, from content text; none when absent. */
+  north?: string;
+  /** The face for the compass letter. */
+  labelFont?: string;
 }
 
 /**
@@ -606,9 +610,9 @@ export function* atlasSteps(
     needle(r * 0.62, r * 0.12, Math.PI / 2);
     needle(r * 0.62, r * 0.12, -Math.PI / 2);
     ctx.fillStyle = 'rgba(95,85,72,0.8)';
-    ctx.font = `italic ${Math.round(P * 0.011)}px Alegreya, Georgia, serif`;
+    ctx.font = `italic ${Math.round(P * 0.011)}px ${options.labelFont ?? 'Georgia, serif'}`;
     ctx.textAlign = 'center';
-    ctx.fillText('N', 0, -r - P * 0.006);
+    ctx.fillText(options.north ?? '', 0, -r - P * 0.006);
     ctx.restore();
   }
   const paperBase = yield* makeBase(false);

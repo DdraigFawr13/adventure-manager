@@ -9,7 +9,8 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// The container's Playwright is a global install, which require() finds and ESM import does not.
+// The container's Playwright (1.64.1, approved in D-117) is a global install, which require()
+// finds and ESM import does not; elsewhere install that version to reproduce the numbers.
 const { _electron } = createRequire(import.meta.url)('playwright');
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -55,8 +56,9 @@ async function frames(win, ms, drive) {
     };
     requestAnimationFrame(tick);
   }, ms);
-  await drive();
-  await win.waitForTimeout(ms + 200);
+  const t0 = performance.now();
+  await drive(t0 + ms);
+  await win.waitForTimeout(Math.max(0, ms + 200 - (performance.now() - t0)));
   return win.evaluate(() => {
     const f = window.__frames;
     let worst = 0;
@@ -128,7 +130,10 @@ async function unlabelled(win) {
 {
   const { app, win, startMs } = await launch('map');
   results.mapStartMs = startMs;
-  await win.waitForTimeout(1500);
+  // The atlas is inked in slices after the page loads; the map is usable once the notice goes.
+  const readyStart = performance.now();
+  await win.locator('.etm-loading').waitFor({ state: 'detached', timeout: 60_000 });
+  results.mapReadyMs = startMs + Math.round(performance.now() - readyStart);
   await win.screenshot({ path: join(out, 'map-1366.png') });
   if ((await win.locator('canvas').count()) === 0) throw new Error('The map tab has no canvas.');
   results.mapIdle = await frames(win, 3000, async () => {});
@@ -136,13 +141,22 @@ async function unlabelled(win) {
   const box = await canvas.boundingBox();
   const cx = box.x + box.width / 2;
   const cy = box.y + box.height / 2;
-  results.mapPanZoom = await frames(win, 5000, async () => {
-    await win.mouse.move(cx, cy);
-    for (let i = 0; i < 6; i += 1) await win.mouse.wheel(0, -240);
-    await win.mouse.down();
-    for (let i = 0; i < 40; i += 1) await win.mouse.move(cx - i * 8, cy - i * 4);
-    await win.mouse.up();
-    for (let i = 0; i < 4; i += 1) await win.mouse.wheel(0, 240);
+  // Input runs for the whole window: zoom in, drag around a circle, zoom out, repeat.
+  results.mapPanZoom = await frames(win, 5000, async (until) => {
+    let turn = 0;
+    while (performance.now() < until) {
+      await win.mouse.move(cx, cy);
+      for (let i = 0; i < 3; i += 1) await win.mouse.wheel(0, -240);
+      await win.mouse.down();
+      for (let i = 0; i < 24; i += 1) {
+        const a = (i / 24) * 2 * Math.PI;
+        await win.mouse.move(cx + Math.cos(a) * 150, cy + Math.sin(a) * 90, { steps: 2 });
+      }
+      await win.mouse.up();
+      for (let i = 0; i < 3; i += 1) await win.mouse.wheel(0, 240);
+      turn += 1;
+    }
+    results.mapPanZoomTurns = turn;
   });
   await win.screenshot({ path: join(out, 'map-zoomed.png') });
   results.mapUnlabelled = await unlabelled(win);

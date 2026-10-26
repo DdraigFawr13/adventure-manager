@@ -1,5 +1,6 @@
 // The engine-test roster ledger (D-110, PLAN §11a): 30 rows, sorting, a breakdown on every
-// number (D-078) read from the engine's Value parts, keyboard play through one roving focus.
+// number the engine derives (D-078) read from its Value parts, keyboard play through one roving
+// focus. Level, age and weeks left are plain facts here; they become Values with the roster system.
 import { useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import { ATTRIBUTES, type Value } from '@adventure-manager/engine';
 import {
@@ -105,7 +106,7 @@ function Breakdown({
     column: text.columnTitles[column] ?? text.columns[column],
   });
   return (
-    <div className="et-breakdown" role="tooltip" id={id}>
+    <div className="et-breakdown" role="tooltip" id={id} aria-hidden="true">
       <div className="et-breakdown-title">{title}</div>
       <table>
         <tbody>
@@ -135,6 +136,7 @@ export function Ledger() {
     descending: false,
   });
   const [focus, setFocus] = useState<{ row: number; col: number }>({ row: -1, col: 0 });
+  const [dismissed, setDismissed] = useState(false);
   const [hover, setHover] = useState<{ row: number; col: number } | null>(null);
   const tableRef = useRef<HTMLTableElement>(null);
 
@@ -158,6 +160,7 @@ export function Ledger() {
     const c = Math.max(0, Math.min(COLUMNS.length - 1, col));
     setFocus({ row: r, col: c });
     setHover(null);
+    setDismissed(false);
     const selector =
       r < 0
         ? `thead th:nth-child(${c + 1}) button`
@@ -182,10 +185,14 @@ export function Ledger() {
     } else if (event.key === 'End') {
       event.preventDefault();
       moveFocus(focus.row, COLUMNS.length - 1);
+    } else if (event.key === 'Escape') {
+      // Dismisses the breakdown without moving focus (WCAG 1.4.13).
+      setHover(null);
+      setDismissed(true);
     }
   };
 
-  const shown = hover ?? (focus.row >= 0 ? focus : null);
+  const shown = dismissed ? null : (hover ?? (focus.row >= 0 ? focus : null));
   const status = fill(text.controls.sortedBy, {
     column: text.columns[sort.column],
     direction: sort.descending ? text.controls.descending : text.controls.ascending,
@@ -255,9 +262,9 @@ export function Ledger() {
                   ) : (
                     <span className="et-value">
                       {cell.value.total}
-                      {cell.value.parts.length > 0 && (
-                        <span className="et-has-parts" aria-hidden="true" />
-                      )}
+                      <span className="et-has-parts" aria-hidden="true">
+                        {text.controls.breakdownMark}
+                      </span>
                     </span>
                   );
                 const Tag = col === 0 ? 'th' : 'td';
@@ -269,7 +276,10 @@ export function Ledger() {
                     tabIndex={focus.row === r && focus.col === col ? 0 : -1}
                     aria-describedby={active && cell.kind === 'value' ? tipId : undefined}
                     onFocus={() => setFocus({ row: r, col })}
-                    onMouseEnter={() => setHover({ row: r, col })}
+                    onMouseEnter={() => {
+                      setHover({ row: r, col });
+                      setDismissed(false);
+                    }}
                     onMouseLeave={() => setHover(null)}
                   >
                     {content}

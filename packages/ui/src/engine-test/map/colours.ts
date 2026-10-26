@@ -1,4 +1,4 @@
-// From Story-Generator src/app/tales/colours.ts @ 8a5c4ef (D-116); unchanged.
+// From Story-Generator src/app/tales/colours.ts @ 8a5c4ef (D-116); unchanged. Only Rgb3 is used here; the realm colour rules are kept for the later procedural renderer (PLAN §12d).
 // Realm, people and faith colours for the Tales map. Pure: no DOM. A realm keeps one hue for the
 // whole world (every year, every mode), picked by greedy graph colouring so that neighbouring
 // realms sit far apart on the colour wheel.

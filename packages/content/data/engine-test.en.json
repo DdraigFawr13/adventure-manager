@@ -1,6 +1,7 @@
 {
   "_note": "English text for the engine-test kingdom map (roadmap 1.8, D-110): interface labels and the invented names of the Fenn March. Keys are ids; {braces} are filled by the ui.",
   "ui.title": "The Fenn March",
+  "ui.north": "N",
   "ui.subtitle": "as kept by The Lantern Company",
   "ui.mapLabel": "Inked map of the Fenn March. Drag or use the arrow keys to move, plus and minus to zoom.",
   "ui.loading": "Inking the map...",

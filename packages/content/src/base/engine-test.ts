@@ -3,6 +3,7 @@
 import type { Attribute, Value } from '@adventure-manager/engine';
 import roster from '../../data/engine-test-roster.json' with { type: 'json' };
 import text from '../../data/engine-test-ledger.en.json' with { type: 'json' };
+import mapText from '../../data/engine-test.en.json' with { type: 'json' };
 
 export interface EngineTestRosterRow {
   readonly id: string;
@@ -22,6 +23,9 @@ export interface EngineTestRosterRow {
 export const engineTestRoster = roster.rows as readonly EngineTestRosterRow[];
 
 type Lookup = Readonly<Record<string, string>>;
+
+/** The map's words and invented place names, keyed by id. */
+export const engineTestMapText: Lookup = mapText;
 
 /** The ledger's words; id-keyed tables are lookups, so a missing id shows as the id. */
 export const engineTestLedgerText: Omit<
