@@ -1,0 +1,89 @@
+name: Delete merged PR branches
+
+# Synced from AI-Master-Instructions. Deletes a merged PR's branch only when it is unchanged since
+# the merge, unprotected, not the default or target branch, and not used by another open PR.
+# Once Settings > General > "Automatically delete head branches" is on, the job skips itself
+# (no runner minutes).
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: merged-pr-branch-cleanup-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  delete-merged-branch:
+    if: >-
+      github.event.pull_request.merged == true &&
+      github.event.repository.delete_branch_on_merge != true &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Delete same-repository merged branch only if unchanged
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          pr_json="$(gh api "/repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER")"
+          is_merged="$(jq -r '.merged' <<<"$pr_json")"
+          branch="$(jq -r '.head.ref' <<<"$pr_json")"
+          expected_sha="$(jq -r '.head.sha' <<<"$pr_json")"
+          head_repo="$(jq -r '.head.repo.full_name // ""' <<<"$pr_json")"
+          base_repo="$(jq -r '.base.repo.full_name // ""' <<<"$pr_json")"
+          base_branch="$(jq -r '.base.ref' <<<"$pr_json")"
+          default_branch="$(gh api "/repos/$GITHUB_REPOSITORY" --jq '.default_branch')"
+
+          if [[ "$is_merged" != "true" ||
+                "$head_repo" != "$GITHUB_REPOSITORY" ||
+                "$base_repo" != "$GITHUB_REPOSITORY" ]]; then
+            echo "Skip: PR was not merged from a branch in this repository."
+            exit 0
+          fi
+
+          if [[ -z "$branch" || "$branch" == "$default_branch" ||
+                "$branch" == "$base_branch" ]]; then
+            echo "Skip: refusing to delete the default or target branch."
+            exit 0
+          fi
+
+          error_log="$(mktemp)"
+          if ! branch_json="$(gh api "/repos/$GITHUB_REPOSITORY/branches/$branch" 2>"$error_log")"; then
+            if grep -q 'HTTP 404' "$error_log"; then
+              echo "Already deleted: $branch"
+              exit 0
+            fi
+            cat "$error_log" >&2
+            exit 1
+          fi
+
+          actual_sha="$(jq -r '.commit.sha' <<<"$branch_json")"
+          protected="$(jq -r '.protected' <<<"$branch_json")"
+          if [[ "$protected" == "true" ]]; then
+            echo "Preserved protected branch: $branch"
+            exit 0
+          fi
+          if [[ "$actual_sha" != "$expected_sha" ]]; then
+            echo "Preserved $branch: new commits were pushed after PR #$PR_NUMBER was merged."
+            exit 0
+          fi
+
+          # Do not remove a branch which is still being used by a second open PR.
+          open_prs="$(gh api --paginate --slurp "/repos/$GITHUB_REPOSITORY/pulls?state=open&per_page=100" |
+            jq -r --arg branch "$branch" --arg repo "$GITHUB_REPOSITORY" \
+              '[.[][] | select(.head.ref == $branch and .head.repo.full_name == $repo)] | length')"
+          if [[ "$open_prs" != "0" ]]; then
+            echo "Preserved $branch: $open_prs other pull request(s) are still open."
+            exit 0
+          fi
+
+          gh api --method DELETE "/repos/$GITHUB_REPOSITORY/git/refs/heads/$branch"
+          echo "Deleted merged source branch $branch from PR #$PR_NUMBER."

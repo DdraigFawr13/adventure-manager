@@ -1,0 +1,140 @@
+<title>Guild Desk Palettes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: page chrome is neutral; each palette is shown as a self-contained desk vignette with a roster card on top, so readability is judged on real data. */
+:root {
+  --bg: #f3f2ef; --fg: #23211e; --muted: #6a655d; --line: #d6d2ca;
+  --display: "Cormorant SC", "Cormorant", Georgia, serif;
+  --body: "Source Serif 4", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 28px; }
+header h1 { font-family: var(--display); font-size: 2.2rem; margin: 0; text-wrap: balance; letter-spacing: .02em; }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 68ch; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); gap: 24px; }
+.opt { display: grid; gap: 10px; min-width: 0; }
+.opt h2 { font-family: var(--display); font-size: 1.45rem; margin: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.opt h2 small { font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.rec { font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; border: 1px solid currentColor; padding: 1px 6px; border-radius: 3px; }
+.opt p { margin: 0; color: var(--muted); font-size: .92rem; }
+
+/* Vignette: every colour comes from the palette's own tokens set on .desk */
+.desk { background: var(--p-desk); border-radius: 6px; padding: 22px; display: grid; grid-template-columns: minmax(0, 1fr) 118px; gap: 18px; align-items: start; position: relative; overflow: hidden; }
+.desk::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(92deg, transparent 0 14px, var(--p-grain) 14px 15px); opacity: .5; pointer-events: none; }
+.paper { background: var(--p-paper); color: var(--p-ink); padding: 14px 16px 12px; border-radius: 2px; box-shadow: 0 2px 0 rgba(0,0,0,.25), 0 10px 24px rgba(0,0,0,.28); position: relative; min-width: 0; }
+.paper .ttl { font-family: var(--display); font-size: 1.05rem; display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--p-rule); padding-bottom: 4px; margin-bottom: 4px; }
+.paper .ttl span { font-family: var(--mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--p-ink2); }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .82rem; font-variant-numeric: tabular-nums; }
+th { font-family: var(--mono); font-weight: 500; font-size: .64rem; letter-spacing: .07em; text-transform: uppercase; color: var(--p-ink2); text-align: left; padding: 4px 6px 4px 0; }
+td { padding: 4px 6px 4px 0; border-top: 1px solid var(--p-rule); white-space: nowrap; }
+td.n { font-family: var(--mono); text-align: right; }
+.pill { font-family: var(--mono); font-size: .66rem; padding: 1px 6px; border-radius: 9px; color: var(--p-paper); }
+.ok { background: var(--p-good); } .warn { background: var(--p-warn); } .bad { background: var(--p-bad); }
+.side { display: grid; gap: 14px; justify-items: center; position: relative; }
+.seal { width: 72px; height: 72px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--p-seal) 70%, white), var(--p-seal) 45%, color-mix(in srgb, var(--p-seal) 70%, black)); display: grid; place-items: center; font-family: var(--display); font-size: 1.5rem; color: color-mix(in srgb, var(--p-seal) 45%, black); box-shadow: 0 3px 8px rgba(0,0,0,.35); }
+.map { width: 118px; height: 80px; border-radius: 2px; background:
+  radial-gradient(ellipse 40% 30% at 30% 40%, var(--p-map2) 0 60%, transparent 62%),
+  radial-gradient(ellipse 30% 40% at 72% 62%, var(--p-map2) 0 55%, transparent 57%),
+  var(--p-map); position: relative; box-shadow: 0 4px 10px rgba(0,0,0,.3); }
+.mini { position: absolute; width: 10px; height: 14px; border-radius: 5px 5px 2px 2px; background: var(--p-accent); box-shadow: 0 2px 2px rgba(0,0,0,.4); }
+.swatches { display: flex; flex-wrap: wrap; gap: 6px; }
+.sw { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: .7rem; color: var(--muted); }
+.sw i { width: 16px; height: 16px; border-radius: 3px; border: 1px solid var(--line); display: block; }
+.note { border-top: 1px solid var(--line); padding-top: 14px; color: var(--muted); font-size: .9rem; max-width: 80ch; }
+@media (max-width: 460px) { .desk { grid-template-columns: 1fr; } .side { grid-auto-flow: column; justify-content: start; } }
+
+/* Palettes */
+.p1 { --p-desk:#3b2a1e; --p-grain:#2c1f16; --p-paper:#efe4cc; --p-ink:#2a2017; --p-ink2:#6b5a45; --p-rule:#d6c6a5; --p-seal:#8e2a22; --p-accent:#b8923e; --p-map:#c9b78f; --p-map2:#9fa77a; --p-good:#4f6f3a; --p-warn:#a8741f; --p-bad:#8e2a22; }
+.p2 { --p-desk:#3c434a; --p-grain:#30363c; --p-paper:#e6e4dc; --p-ink:#1f2328; --p-ink2:#5d646b; --p-rule:#c9c7bd; --p-seal:#9a4a2a; --p-accent:#4f8a7c; --p-map:#b9bba8; --p-map2:#8b9a86; --p-good:#3f7564; --p-warn:#a0761f; --p-bad:#9a3a2a; }
+.p3 { --p-desk:#1f3d2f; --p-grain:#183225; --p-paper:#f4f0e6; --p-ink:#141414; --p-ink2:#55524a; --p-rule:#d8d1bf; --p-seal:#b3261e; --p-accent:#c99a2e; --p-map:#d6cca8; --p-map2:#7fa36b; --p-good:#2f6f45; --p-warn:#c08a1e; --p-bad:#b3261e; }
+.p4 { --p-desk:#2a2826; --p-grain:#222120; --p-paper:#dcd6ca; --p-ink:#1d1b19; --p-ink2:#5f5a52; --p-rule:#c3bcae; --p-seal:#5e1e1b; --p-accent:#8a8576; --p-map:#a9a493; --p-map2:#7e8172; --p-good:#56664a; --p-warn:#8a6a2c; --p-bad:#6e2420; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Guild desk palettes</h1>
+    <p>Style Q2: the colour mood of the war table. Each option shows the desk, a roster ledger with real-looking data, a wax seal and a corner of the painted map with miniatures. Judge the ledger first: you will read it for hundreds of hours.</p>
+  </header>
+
+  <div class="grid">
+    <section class="opt">
+      <h2>A. Candlelit oak <small>warm</small> <span class="rec">Recommended</span></h2>
+      <div class="desk p1">
+        <div class="paper">
+          <div class="ttl">Roster: Ashford Company <span>Week 14, Thaw</span></div>
+          <div class="tbl"><table>
+            <tr><th>Name</th><th>Class</th><th>Lvl</th><th>Cond.</th><th>Morale</th></tr>
+            <tr><td>Wenna Cray</td><td>Warden</td><td class="n">7</td><td class="n">92%</td><td><span class="pill ok">Eager</span></td></tr>
+            <tr><td>Odric Hale</td><td>Hexblade</td><td class="n">5</td><td class="n">61%</td><td><span class="pill warn">Restless</span></td></tr>
+            <tr><td>Sefa Lund</td><td>Cantor</td><td class="n">4</td><td class="n">34%</td><td><span class="pill bad">Grieving</span></td></tr>
+          </table></div>
+        </div>
+        <div class="side"><div class="seal">A</div><div class="map"><span class="mini" style="left:30px;top:26px"></span><span class="mini" style="left:78px;top:46px"></span></div></div>
+      </div>
+      <div class="swatches"><span class="sw"><i style="background:#3b2a1e"></i>walnut</span><span class="sw"><i style="background:#efe4cc"></i>vellum</span><span class="sw"><i style="background:#2a2017"></i>iron-gall</span><span class="sw"><i style="background:#8e2a22"></i>oxblood</span><span class="sw"><i style="background:#b8923e"></i>brass</span></div>
+      <p>Lamp-lit study at night. Warm and inviting; the most "guild hall". Risk: the common look for fantasy games, so the type and the map art have to carry the identity.</p>
+    </section>
+
+    <section class="opt">
+      <h2>B. Frontier slate <small>cool</small></h2>
+      <div class="desk p2">
+        <div class="paper">
+          <div class="ttl">Roster: Ashford Company <span>Week 14, Thaw</span></div>
+          <div class="tbl"><table>
+            <tr><th>Name</th><th>Class</th><th>Lvl</th><th>Cond.</th><th>Morale</th></tr>
+            <tr><td>Wenna Cray</td><td>Warden</td><td class="n">7</td><td class="n">92%</td><td><span class="pill ok">Eager</span></td></tr>
+            <tr><td>Odric Hale</td><td>Hexblade</td><td class="n">5</td><td class="n">61%</td><td><span class="pill warn">Restless</span></td></tr>
+            <tr><td>Sefa Lund</td><td>Cantor</td><td class="n">4</td><td class="n">34%</td><td><span class="pill bad">Grieving</span></td></tr>
+          </table></div>
+        </div>
+        <div class="side"><div class="seal">A</div><div class="map"><span class="mini" style="left:30px;top:26px"></span><span class="mini" style="left:78px;top:46px"></span></div></div>
+      </div>
+      <div class="swatches"><span class="sw"><i style="background:#3c434a"></i>slate</span><span class="sw"><i style="background:#e6e4dc"></i>linen</span><span class="sw"><i style="background:#1f2328"></i>charcoal</span><span class="sw"><i style="background:#9a4a2a"></i>rust</span><span class="sw"><i style="background:#4f8a7c"></i>verdigris</span></div>
+      <p>Daylight at a frontier outpost. Sober, cold, practical; suits "grounded" and long sessions. Less cosy, more working office.</p>
+    </section>
+
+    <section class="opt">
+      <h2>C. Heraldic baize <small>bold</small></h2>
+      <div class="desk p3">
+        <div class="paper">
+          <div class="ttl">Roster: Ashford Company <span>Week 14, Thaw</span></div>
+          <div class="tbl"><table>
+            <tr><th>Name</th><th>Class</th><th>Lvl</th><th>Cond.</th><th>Morale</th></tr>
+            <tr><td>Wenna Cray</td><td>Warden</td><td class="n">7</td><td class="n">92%</td><td><span class="pill ok">Eager</span></td></tr>
+            <tr><td>Odric Hale</td><td>Hexblade</td><td class="n">5</td><td class="n">61%</td><td><span class="pill warn">Restless</span></td></tr>
+            <tr><td>Sefa Lund</td><td>Cantor</td><td class="n">4</td><td class="n">34%</td><td><span class="pill bad">Grieving</span></td></tr>
+          </table></div>
+        </div>
+        <div class="side"><div class="seal">A</div><div class="map"><span class="mini" style="left:30px;top:26px"></span><span class="mini" style="left:78px;top:46px"></span></div></div>
+      </div>
+      <div class="swatches"><span class="sw"><i style="background:#1f3d2f"></i>baize</span><span class="sw"><i style="background:#f4f0e6"></i>white paper</span><span class="sw"><i style="background:#141414"></i>black ink</span><span class="sw"><i style="background:#b3261e"></i>gules red</span><span class="sw"><i style="background:#c99a2e"></i>or gold</span></div>
+      <p>Green gaming-table cloth and strong heraldic colours. Highest contrast and most readable; faction colours pop. Risk: brighter and more "board game" than grounded.</p>
+    </section>
+
+    <section class="opt">
+      <h2>D. Ash and bone <small>grim</small></h2>
+      <div class="desk p4">
+        <div class="paper">
+          <div class="ttl">Roster: Ashford Company <span>Week 14, Thaw</span></div>
+          <div class="tbl"><table>
+            <tr><th>Name</th><th>Class</th><th>Lvl</th><th>Cond.</th><th>Morale</th></tr>
+            <tr><td>Wenna Cray</td><td>Warden</td><td class="n">7</td><td class="n">92%</td><td><span class="pill ok">Eager</span></td></tr>
+            <tr><td>Odric Hale</td><td>Hexblade</td><td class="n">5</td><td class="n">61%</td><td><span class="pill warn">Restless</span></td></tr>
+            <tr><td>Sefa Lund</td><td>Cantor</td><td class="n">4</td><td class="n">34%</td><td><span class="pill bad">Grieving</span></td></tr>
+          </table></div>
+        </div>
+        <div class="side"><div class="seal">A</div><div class="map"><span class="mini" style="left:30px;top:26px"></span><span class="mini" style="left:78px;top:46px"></span></div></div>
+      </div>
+      <div class="swatches"><span class="sw"><i style="background:#2a2826"></i>soot</span><span class="sw"><i style="background:#dcd6ca"></i>bone</span><span class="sw"><i style="background:#1d1b19"></i>lamp-black</span><span class="sw"><i style="background:#5e1e1b"></i>dried blood</span><span class="sw"><i style="background:#8a8576"></i>pewter</span></div>
+      <p>Desaturated and heavy; leans into permadeath. Strong mood, but low contrast makes status colours harder to tell apart, and hours in it can feel draining.</p>
+    </section>
+  </div>
+
+  <p class="note">Whichever mood wins, two rules hold: status colours (good, warning, bad) stay a fixed, colour-blind-safe set separate from the mood, and faction colours get their own heraldic set. The mood sets the desk, paper, ink and accents only. Names, classes and data here are placeholders.</p>
+</div>

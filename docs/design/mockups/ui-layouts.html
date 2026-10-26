@@ -1,0 +1,193 @@
+<title>Guild Desk Layouts</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: neutral page chrome; each option is a scaled 16:10 desktop frame (container-query units) drawn in the candlelit oak palette, with a short verdict under it. */
+:root {
+  --bg: #f3f2ef; --fg: #23211e; --muted: #6a655d; --line: #d6d2ca;
+  --desk: #3b2a1e; --desk2: #2c1f16; --paper: #efe4cc; --paper2: #e4d6b8; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5;
+  --seal: #8e2a22; --brass: #b8923e; --map: #c9b78f; --map2: #9fa77a; --good: #3f6f8f; --warn: #c08a1e; --bad: #8e2a22;
+  --display: "Cormorant SC", "Cormorant", Georgia, serif;
+  --body: "Source Serif 4", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+.wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 36px; }
+header h1 { font-family: var(--display); font-size: 2.2rem; margin: 0; letter-spacing: .02em; text-wrap: balance; }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 70ch; }
+.opt { display: grid; gap: 10px; }
+.opt h2 { font-family: var(--display); font-size: 1.5rem; margin: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.rec { font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; border: 1px solid currentColor; padding: 1px 6px; border-radius: 3px; }
+.verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 8px 24px; font-size: .92rem; }
+.verdict div { min-width: 0; } .verdict b { font-family: var(--mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; font-weight: 500; }
+
+/* Frame */
+.frame { container-type: inline-size; width: 100%; aspect-ratio: 16 / 10; max-width: 100%; border-radius: 6px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.25); background: var(--desk); }
+.scr { width: 100%; height: 100%; font-size: 1.15cqw; color: var(--ink); display: grid; position: relative;
+  background: repeating-linear-gradient(92deg, var(--desk) 0 2.2em, var(--desk2) 2.2em 2.3em); }
+.top { grid-area: top; display: flex; align-items: center; gap: 1.2em; padding: 0 1.2em; background: color-mix(in srgb, var(--desk2) 85%, black); color: var(--paper); border-bottom: .12em solid var(--brass); }
+.crest { width: 2.1em; height: 2.1em; border-radius: 50%; background: var(--seal); display: grid; place-items: center; font-family: var(--display); color: var(--paper); flex: none; }
+.guild { font-family: var(--display); font-size: 1.25em; }
+.date { font-family: var(--mono); font-size: .85em; opacity: .85; margin-left: auto; }
+.stop { font-size: .85em; background: color-mix(in srgb, var(--seal) 60%, transparent); padding: .25em .7em; border-radius: .3em; }
+.cont { font-family: var(--display); font-size: 1.15em; background: var(--brass); color: var(--ink); padding: .25em 1.1em; border-radius: .3em; }
+.nav { grid-area: nav; display: flex; flex-direction: column; gap: .25em; padding: .8em .5em; }
+.nav span { background: var(--paper2); padding: .35em .7em; border-radius: 0 .3em .3em 0; font-size: .95em; border-left: .3em solid var(--brass); }
+.nav span.on { background: var(--paper); border-left-color: var(--seal); font-weight: 600; }
+.nav .grp { background: none; border: 0; color: var(--map); font-family: var(--mono); font-size: .7em; letter-spacing: .1em; text-transform: uppercase; padding: .6em .2em .1em; }
+.sheet { background: var(--paper); border-radius: .2em; box-shadow: 0 .3em .8em rgba(0,0,0,.35); padding: .9em 1.1em; min-width: 0; min-height: 0; overflow: hidden; }
+.sheet h3 { font-family: var(--display); font-size: 1.3em; margin: 0 0 .3em; border-bottom: .08em solid var(--rule); padding-bottom: .2em; display: flex; justify-content: space-between; align-items: baseline; }
+.sheet h3 small { font-family: var(--mono); font-size: .55em; color: var(--ink2); letter-spacing: .08em; text-transform: uppercase; }
+.row { display: flex; gap: .8em; padding: .32em 0; border-top: .06em solid var(--rule); font-size: .92em; align-items: center; }
+.row .from { font-weight: 600; flex: none; width: 9em; } .row .subj { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink2); }
+.row.unread .subj { color: var(--ink); }
+.dot { width: .6em; height: .6em; border-radius: 50%; flex: none; background: var(--rule); } .unread .dot { background: var(--seal); }
+.letter { font-size: .95em; line-height: 1.45; color: var(--ink); }
+.letter p { margin: 0 0 .6em; }
+.btns { display: flex; gap: .5em; flex-wrap: wrap; } .btns span { border: .08em solid var(--ink2); padding: .2em .7em; border-radius: .25em; font-size: .9em; } .btns span.pri { background: var(--seal); color: var(--paper); border-color: var(--seal); }
+.mapbox { border-radius: .2em; position: relative; box-shadow: 0 .3em .8em rgba(0,0,0,.35); overflow: hidden; min-height: 0;
+  background: radial-gradient(ellipse 22% 18% at 30% 38%, var(--map2) 0 60%, transparent 62%), radial-gradient(ellipse 18% 26% at 66% 60%, var(--map2) 0 55%, transparent 57%), radial-gradient(ellipse 14% 10% at 78% 24%, #8c8a7c 0 60%, transparent 62%), linear-gradient(160deg, var(--map), color-mix(in srgb, var(--map) 80%, var(--desk))); }
+.mapbox .lbl { position: absolute; left: .8em; top: .5em; font-family: var(--display); font-size: 1.2em; color: var(--ink); }
+.mini { position: absolute; width: 1em; height: 1.4em; border-radius: .5em .5em .15em .15em; background: var(--seal); box-shadow: 0 .15em .2em rgba(0,0,0,.45); }
+.mini.b { background: #3f5f7f; } .mini.r { background: #4b4b4b; }
+.tag { position: absolute; font-family: var(--mono); font-size: .7em; background: var(--paper); padding: .1em .4em; border-radius: .2em; white-space: nowrap; }
+.strip { display: flex; gap: .6em; min-width: 0; }
+.card { background: var(--paper); border-radius: .2em; padding: .45em .7em; font-size: .85em; flex: 1; min-width: 0; box-shadow: 0 .2em .5em rgba(0,0,0,.3); }
+.card b { display: block; font-family: var(--display); font-size: 1.15em; font-weight: 600; }
+.card .st { font-family: var(--mono); font-size: .8em; color: var(--ink2); }
+.bar { height: .35em; background: var(--rule); border-radius: .2em; margin-top: .3em; overflow: hidden; } .bar i { display: block; height: 100%; background: var(--brass); }
+table { border-collapse: collapse; width: 100%; font-size: .88em; font-variant-numeric: tabular-nums; }
+th { font-family: var(--mono); font-weight: 500; font-size: .75em; letter-spacing: .07em; text-transform: uppercase; color: var(--ink2); text-align: left; padding: .2em .5em .2em 0; }
+td { padding: .25em .5em .25em 0; border-top: .06em solid var(--rule); white-space: nowrap; } td.n { font-family: var(--mono); text-align: right; }
+.pill { font-family: var(--mono); font-size: .78em; padding: .05em .5em; border-radius: .8em; color: var(--paper); } .ok { background: var(--good); } .warn { background: var(--warn); } .bad { background: var(--bad); }
+.obj { position: absolute; box-shadow: 0 .4em 1em rgba(0,0,0,.45); }
+.objlbl { position: absolute; font-family: var(--mono); font-size: .75em; color: var(--paper); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.spine { position: absolute; width: 2.4em; border-radius: .2em; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; font-family: var(--display); color: var(--paper); font-size: 1em; box-shadow: .2em .2em .6em rgba(0,0,0,.4); }
+.candle { position: absolute; width: 1.6em; height: 4.2em; background: #efe4cc; border-radius: .2em; }
+.candle::before { content: ""; position: absolute; left: 50%; top: -1.3em; width: .8em; height: 1.2em; margin-left: -.4em; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: radial-gradient(circle at 50% 70%, #fff3c4, #e8a43a 60%, transparent 70%); }
+.glow { position: absolute; inset: 0; background: radial-gradient(circle at 88% 78%, rgba(255,200,110,.18), transparent 40%); pointer-events: none; }
+.note { border-top: 1px solid var(--line); padding-top: 14px; color: var(--muted); font-size: .9rem; max-width: 80ch; }
+
+/* Option-specific grids */
+.sA { grid-template: "top top" 3.4em "nav main" 1fr / 12em 1fr; }
+.sA .main { grid-area: main; display: grid; grid-template-columns: 1fr 1.15fr; gap: .8em; padding: .8em .8em .8em 0; min-height: 0; }
+.sB { grid-template: "top" 3.4em "desk" 1fr / 1fr; }
+.sB .deskarea { grid-area: desk; position: relative; }
+.sC { grid-template: "top top top" 3.4em "nav main tray" 1fr / 10.5em 1fr 17em; }
+.sC .main { grid-area: main; display: grid; grid-template-rows: 1fr auto; gap: .7em; padding: .8em .2em .8em 0; min-height: 0; min-width: 0; }
+.sC .tray { grid-area: tray; padding: .8em .8em .8em .6em; display: grid; min-height: 0; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Guild desk layouts</h1>
+    <p>Style Q3: how the war table is arranged on screen. Each frame is a 16:10 desktop screen on day 3 of Thaw, stopped on an unread letter. Look at two things: how fast you can reach any ledger, and how much of the desk's character survives.</p>
+  </header>
+
+  <!-- A -->
+  <section class="opt">
+    <h2>A. Ledger tabs (FM frame)</h2>
+    <div class="frame"><div class="scr sA">
+      <div class="top"><div class="crest">A</div><div class="guild">Ashford Company</div><div class="date">Thaw · Day 3 · Year 2</div><div class="stop">Stopped: letter from Lady Varrow</div><div class="cont">Continue</div></div>
+      <div class="nav">
+        <span class="on">Letters (3)</span><span>Roster</span><span>Parties</span><span>Contracts</span>
+        <span class="grp">Guild</span><span>Staff</span><span>Guildhall</span><span>Finances</span><span>Armoury</span>
+        <span class="grp">World</span><span>Region map</span><span>Ranking</span><span>Chronicle</span>
+      </div>
+      <div class="main">
+        <div class="sheet"><h3>Letters <small>3 unread</small></h3>
+          <div class="row unread"><i class="dot"></i><span class="from">Lady Varrow</span><span class="subj">Concerning the Saltmarsh contract</span></div>
+          <div class="row unread"><i class="dot"></i><span class="from">Town crier</span><span class="subj">Wolves sighted on the Fenn road</span></div>
+          <div class="row unread"><i class="dot"></i><span class="from">Odric Hale</span><span class="subj">A word about my wages</span></div>
+          <div class="row"><i class="dot"></i><span class="from">Quartermaster</span><span class="subj">Armoury stock: weekly report</span></div>
+          <div class="row"><i class="dot"></i><span class="from">Gossip</span><span class="subj">The Gilded Spur lost two in the barrows</span></div>
+          <div class="row"><i class="dot"></i><span class="from">Healer Ama</span><span class="subj">Sefa Lund: recovery 9 days</span></div>
+        </div>
+        <div class="sheet letter"><h3>Lady Varrow <small>Patron · House Varrow</small></h3>
+          <p>Guildmaster, the Saltmarsh matter will not wait for spring. My steward reports smoke at the old tide-fort. I expect a party on the road within the week.</p>
+          <p>Do not send me children again.</p>
+          <div class="btns"><span class="pri">Open contract</span><span>Reply</span><span>Delegate to deputy</span></div>
+        </div>
+      </div>
+    </div></div>
+    <div class="verdict">
+      <div><b>Strengths</b>Fastest to use: one click to any ledger, familiar to every FM player, and the cheapest to build. Dense screens get the whole main area.</div>
+      <div><b>Weaknesses</b>The desk shrinks to a border. The map is just one tab among twelve, so "a region that remembers" is easy to ignore.</div>
+    </div>
+  </section>
+
+  <!-- B -->
+  <section class="opt">
+    <h2>B. The desk is the menu</h2>
+    <div class="frame"><div class="scr sB">
+      <div class="top"><div class="crest">A</div><div class="guild">Ashford Company</div><div class="date">Thaw · Day 3 · Year 2</div><div class="stop">Stopped: letter from Lady Varrow</div><div class="cont">Continue</div></div>
+      <div class="deskarea">
+        <div class="mapbox obj" style="left:22%;top:8%;width:52%;height:62%"><span class="lbl">The Fenn March</span>
+          <span class="mini" style="left:30%;top:40%"></span><span class="tag" style="left:34%;top:36%">Wenna's party · day 2 of 5</span>
+          <span class="mini b" style="left:64%;top:62%"></span><span class="tag" style="left:68%;top:58%">Gilded Spur</span>
+        </div>
+        <div class="objlbl" style="left:22%;top:72%">Map table: quests and region</div>
+        <div class="obj sheet" style="left:4%;top:13%;width:15%;height:22%;transform:rotate(2deg);background:var(--paper2)"></div>
+        <div class="obj sheet" style="left:3%;top:10%;width:15%;height:22%;transform:rotate(-4deg)"><b style="font-family:var(--display)">Letters</b><div style="font-size:.85em;color:var(--ink2)">3 unread, top: Lady Varrow</div></div>
+        <div class="obj" style="left:9%;top:6%;width:2.4em;height:2.4em;border-radius:50%;background:var(--seal)"></div>
+        <div class="objlbl" style="left:3%;top:38%">Letter tray</div>
+        <div class="spine" style="left:80%;top:9%;height:34%;background:#5a3a24">Roster</div>
+        <div class="spine" style="left:84%;top:12%;height:31%;background:#4a3a2a">Finances</div>
+        <div class="spine" style="left:88%;top:10%;height:33%;background:#5e2a22">Contracts</div>
+        <div class="spine" style="left:92%;top:13%;height:30%;background:#3f4a35">Staff</div>
+        <div class="objlbl" style="left:80%;top:46%">Ledgers</div>
+        <div class="obj sheet" style="left:3%;top:50%;width:15%;height:30%"><b style="font-family:var(--display)">Calendar</b><div style="font-size:.85em;color:var(--ink2)">Day 5: Wenna's party arrives<br>Day 9: wages due<br>Day 21: Guild Assembly</div></div>
+        <div class="obj sheet" style="left:78%;top:56%;width:17%;height:22%;transform:rotate(3deg)"><b style="font-family:var(--display)">Hall of Heroes</b><div style="font-size:.85em;color:var(--ink2)">Chronicle and ranking</div></div>
+        <div class="candle" style="left:58%;top:76%"></div><div class="glow"></div>
+      </div>
+    </div></div>
+    <div class="verdict">
+      <div><b>Strengths</b>The most atmospheric: every screen is an object on your desk, and the map sits at the centre of the guild's life. Strong first impression in trailers and the demo.</div>
+      <div><b>Weaknesses</b>Every trip costs an extra step (back to the desk, then pick an object). Twelve ledgers don't fit on a desk, so some systems get buried. FM-scale play gets slow without heavy keyboard shortcuts.</div>
+    </div>
+  </section>
+
+  <!-- C -->
+  <section class="opt">
+    <h2>C. Desk home with ledger tabs <span class="rec">Recommended</span></h2>
+    <div class="frame"><div class="scr sC">
+      <div class="top"><div class="crest">A</div><div class="guild">Ashford Company</div><div class="date">Thaw · Day 3 · Year 2</div><div class="stop">Stopped: letter from Lady Varrow</div><div class="cont">Continue</div></div>
+      <div class="nav">
+        <span class="on">Desk</span><span>Roster</span><span>Parties</span><span>Contracts</span>
+        <span class="grp">Guild</span><span>Staff</span><span>Guildhall</span><span>Finances</span><span>Armoury</span>
+        <span class="grp">World</span><span>Ranking</span><span>Chronicle</span>
+      </div>
+      <div class="main">
+        <div class="mapbox"><span class="lbl">The Fenn March</span>
+          <span class="mini" style="left:30%;top:40%"></span><span class="tag" style="left:34%;top:36%">Wenna's party · day 2 of 5</span>
+          <span class="mini" style="left:52%;top:22%"></span><span class="tag" style="left:56%;top:18%">Odric's party · resting</span>
+          <span class="mini b" style="left:64%;top:62%"></span><span class="tag" style="left:68%;top:58%">Gilded Spur</span>
+          <span class="mini r" style="left:20%;top:70%"></span><span class="tag" style="left:24%;top:66%">Rumour: tide-fort smoke</span>
+        </div>
+        <div class="strip">
+          <div class="card"><b>Wenna's party</b><span class="st">Barrow delve · 2 of 5 days</span><div class="bar"><i style="width:40%"></i></div></div>
+          <div class="card"><b>Odric's party</b><span class="st">Resting · morale <span class="pill warn">Restless</span></span></div>
+          <div class="card"><b>Infirmary</b><span class="st">Sefa Lund · 9 days</span></div>
+          <div class="card"><b>Due</b><span class="st">Wages in 6 days · 410 crowns</span></div>
+        </div>
+      </div>
+      <div class="tray"><div class="sheet"><h3>Letters <small>3 unread</small></h3>
+        <div class="row unread"><i class="dot"></i><span class="subj"><b>Lady Varrow</b>: the Saltmarsh contract</span></div>
+        <div class="row unread"><i class="dot"></i><span class="subj"><b>Crier</b>: wolves on the Fenn road</span></div>
+        <div class="row unread"><i class="dot"></i><span class="subj"><b>Odric Hale</b>: my wages</span></div>
+        <div class="row"><i class="dot"></i><span class="subj"><b>Quartermaster</b>: weekly stock</span></div>
+        <div class="row"><i class="dot"></i><span class="subj"><b>Gossip</b>: the Gilded Spur lost two</span></div>
+        <div class="row"><i class="dot"></i><span class="subj"><b>Healer Ama</b>: Sefa's recovery</span></div>
+      </div></div>
+    </div></div>
+    <div class="verdict">
+      <div><b>Strengths</b>The home screen is the desk: the map in the middle with your parties and rivals as miniatures, the letter tray always open on the right, and this week's parties along the bottom. The ledger tabs stay one click away, so FM speed survives. Opening a ledger turns the middle into a full paper sheet; the letter tray folds away for dense screens.</div>
+      <div><b>Weaknesses</b>Map art carries the home screen, so it has to be good (a cost). It is more complex than A: three columns need care at small window sizes (the tray folds into a tab below about 1366 px wide).</div>
+    </div>
+  </section>
+
+  <p class="note">All three share the top bar: guild crest, date, why the calendar stopped, and Continue. The bar holds still everywhere so the "continue, stop, deal with it" loop never moves. Names, places and numbers are placeholders.</p>
+</div>

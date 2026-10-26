@@ -1,0 +1,6 @@
+{
+  "version": "v0.3.0",
+  "layers": ["core", "project-types/game"],
+  "exclude": [],
+  "overrides": []
+}

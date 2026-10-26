@@ -1,0 +1,126 @@
+<title>Guild Type Sets</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@500;700&family=Grenze:wght@400;500;600&family=Uncial+Antiqua&family=Fondamento&family=Kurale&family=IM+Fell+English+SC&family=IM+Fell+DW+Pica&family=Sorts+Mill+Goudy&family=Texturina:opsz,wght@12..72,400;12..72,500;12..72,700&family=Alegreya:wght@400;600&family=Alegreya+Sans:wght@400;500&family=Cormorant+SC:wght@600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: neutral page chrome; each option is a vellum specimen sheet on the walnut desk with the same three jobs: a title, a letter, a dense ledger. */
+:root {
+  --bg: #f3f2ef; --fg: #23211e; --muted: #6a655d; --line: #d6d2ca;
+  --desk: #3b2a1e; --desk2: #2c1f16; --paper: #efe4cc; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5; --seal: #8e2a22; --brass: #b8923e;
+  --good: #3f6f8f; --warn: #c08a1e; --bad: #8e2a22;
+  --ui: "Source Serif 4", Georgia, serif; --uimono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--ui); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+.wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 36px; }
+header h1 { font-family: "Cormorant SC", Georgia, serif; font-size: 2.2rem; margin: 0; letter-spacing: .02em; text-wrap: balance; }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 72ch; }
+.opt { display: grid; gap: 10px; }
+.opt > h2 { font-family: "Cormorant SC", Georgia, serif; font-size: 1.5rem; margin: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.opt > h2 small { font-family: var(--uimono); font-size: .72rem; color: var(--muted); letter-spacing: .04em; }
+.rec { font-family: var(--uimono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; border: 1px solid currentColor; padding: 1px 6px; border-radius: 3px; }
+.verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 8px 24px; font-size: .92rem; }
+.verdict div { min-width: 0; } .verdict b { font-family: var(--uimono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; font-weight: 500; }
+.note { border-top: 1px solid var(--line); padding-top: 14px; color: var(--muted); font-size: .9rem; max-width: 80ch; }
+
+.desk { background: repeating-linear-gradient(92deg, var(--desk) 0 30px, var(--desk2) 30px 31px); border-radius: 6px; padding: 20px; }
+.sheet { background: var(--paper); color: var(--ink); border-radius: 2px; box-shadow: 0 10px 24px rgba(0,0,0,.35); padding: 20px 22px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 22px; }
+@media (max-width: 760px) { .sheet { grid-template-columns: 1fr; } }
+.col { min-width: 0; display: grid; gap: 12px; align-content: start; }
+.title { font-family: var(--f-display); font-size: 2.3rem; line-height: 1.05; margin: 0; letter-spacing: var(--f-display-ls, 0); }
+.sub { font-family: var(--f-data); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink2); }
+.letter { font-family: var(--f-body); font-size: 1.02rem; line-height: 1.5; }
+.letter p { margin: 0 0 .5em; }
+.letter .from { font-family: var(--f-display); font-size: 1.3rem; margin: 0 0 .2em; letter-spacing: var(--f-display-ls, 0); }
+.ledger h3 { font-family: var(--f-display); font-size: 1.3rem; margin: 0 0 4px; font-weight: normal; letter-spacing: var(--f-display-ls, 0); border-bottom: 1px solid var(--rule); padding-bottom: 3px; }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-family: var(--f-data); font-size: 13px; font-variant-numeric: tabular-nums lining-nums; }
+th { font-weight: 500; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink2); text-align: left; padding: 3px 8px 3px 0; white-space: nowrap; }
+td { padding: 3px 8px 3px 0; border-top: 1px solid var(--rule); white-space: nowrap; }
+td.n, th.n { text-align: right; }
+.pill { font-size: 11px; padding: 0 6px; border-radius: 9px; color: var(--paper); } .ok { background: var(--good); } .warn { background: var(--warn); } .bad { background: var(--bad); }
+.small { font-family: var(--f-data); font-size: 12px; color: var(--ink2); }
+.fonts { font-family: var(--uimono); font-size: .75rem; color: var(--muted); }
+
+
+/* Each set: display, body, data words, digits (tabular), initial */
+.opt { --f-digits: var(--f-data); }
+table { font-size: 14px; } th { font-size: 11px; } .small { font-size: 12.5px; }
+td.n, .small .num { font-family: var(--f-digits); }
+.letter p:first-of-type::first-letter { font-family: var(--f-initial); float: left; font-size: 3.4em; line-height: .85; padding: .06em .12em 0 0; color: var(--seal); }
+.ornament { text-align: center; color: var(--brass); font-size: 1.1rem; letter-spacing: .6em; margin: -4px 0; }
+.title { font-weight: normal; }
+.s1 { --f-display: "Grenze Gotisch", Georgia, serif; --f-initial: "Grenze Gotisch", Georgia, serif; --f-body: "Grenze", Georgia, serif; --f-data: "Grenze", Georgia, serif; }
+.s2 { --f-display: "Uncial Antiqua", Georgia, serif; --f-initial: "Uncial Antiqua", Georgia, serif; --f-body: "Fondamento", Georgia, serif; --f-data: "Kurale", Georgia, serif; --f-digits: "Alegreya", Georgia, serif; }
+.s3 { --f-display: "IM Fell English SC", Georgia, serif; --f-initial: "IM Fell English SC", Georgia, serif; --f-body: "IM Fell DW Pica", Georgia, serif; --f-data: "Sorts Mill Goudy", Georgia, serif; }
+.s4 { --f-display: "Texturina", Georgia, serif; --f-initial: "Texturina", Georgia, serif; --f-body: "Texturina", Georgia, serif; --f-data: "Texturina", Georgia, serif; --f-digits: "Alegreya", Georgia, serif; }
+.s4 .title, .s4 .letter .from, .s4 .ledger h3 { font-weight: 700; }
+.s5 { --f-display: "Uncial Antiqua", Georgia, serif; --f-initial: "Uncial Antiqua", Georgia, serif; --f-body: "Grenze", Georgia, serif; --f-data: "Grenze", Georgia, serif; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Guild type sets</h1>
+    <p>Style Q5, third pass: flair in every font, not only titles, and the decorated initial stays. Each set gives titles the most character, letters a medium amount and ledgers a light touch, so a 14 px roster still scans. Where a font’s digits are uneven widths, the numbers come from a matching font with equal-width digits so columns line up. All faces are SIL Open Font License.</p>
+  </header>
+  <div id="opts"></div>
+  <p class="note">Rule for any choice: the strongest flair goes on titles and seals, a lighter touch on letters and ledgers. Numbers always use equal-width digits so columns line up. Names, figures and text are placeholders.</p>
+</div>
+
+<template id="sheet">
+  <div class="desk"><div class="sheet">
+    <div class="col">
+      <div><div class="sub">Guild of the Fenn March · Tier III</div><h2 class="title">Ashford Company</h2></div>
+      <div class="ornament">❦ ✦ ❦</div>
+      <div class="letter">
+        <div class="from">Lady Varrow, to the Guildmaster</div>
+        <p>The Saltmarsh matter will not wait for spring. My steward reports smoke at the old tide-fort, and the fishermen will not put out.</p>
+        <p>I expect a party on the road within the week. Do not send me children again.</p>
+      </div>
+      <div class="small">Sealed at Varrowmere, Thaw 3rd, Year 2 · Reply by Thaw 7th</div>
+    </div>
+    <div class="col ledger">
+      <h3>Roster</h3>
+      <div class="tbl"><table>
+        <tr><th>Name</th><th>Class</th><th class="n">Lvl</th><th class="n">Might</th><th class="n">Wits</th><th class="n">Wage</th><th>Morale</th></tr>
+        <tr><td>Wenna Cray</td><td>Warden</td><td class="n">7</td><td class="n">14</td><td class="n">16</td><td class="n">38 cr</td><td><span class="pill ok">Eager</span></td></tr>
+        <tr><td>Odric Hale</td><td>Hexblade</td><td class="n">5</td><td class="n">15</td><td class="n">11</td><td class="n">31 cr</td><td><span class="pill warn">Restless</span></td></tr>
+        <tr><td>Sefa Lund</td><td>Cantor</td><td class="n">4</td><td class="n">8</td><td class="n">17</td><td class="n">24 cr</td><td><span class="pill bad">Grieving</span></td></tr>
+        <tr><td>Bram Oakes</td><td>Shieldman</td><td class="n">6</td><td class="n">18</td><td class="n">10</td><td class="n">29 cr</td><td><span class="pill ok">Steady</span></td></tr>
+        <tr><td>Ilse Marrow</td><td>Delver</td><td class="n">3</td><td class="n">11</td><td class="n">13</td><td class="n">19 cr</td><td><span class="pill ok">Content</span></td></tr>
+        <tr><td>Tamsin Rook</td><td>Wildcaller</td><td class="n">2</td><td class="n">9</td><td class="n">14</td><td class="n">16 cr</td><td><span class="pill warn">Homesick</span></td></tr>
+      </table></div>
+      <div class="small">Weekly wages <span class="num">157</span> cr · Treasury <span class="num">1,284</span> cr · <span class="num">6</span> of <span class="num">12</span> places filled</div>
+    </div>
+  </div></div>
+</template>
+
+<script>
+const OPTS = [
+  { cls: "s1", name: "1. Grenze family", fonts: "Grenze Gotisch · Grenze · Grenze",
+    good: "One family that runs from blackletter titles to a roman with broken, pen-cut strokes, so medieval character reaches every line, ledgers included. Its digits are already equal-width. Most cohesive of the five.",
+    bad: "Leans more medieval than whimsical; the whimsy has to come from initials, ornaments and art. On screen Grenze runs small and condensed: at the same size it looks cramped next to the others and would need 16 px ledgers." },
+  { cls: "s2", name: "2. Scribe’s hand", fonts: "Uncial Antiqua · Fondamento · Kurale (+ Alegreya digits)",
+    good: "The most whimsical and fantasy: monastic titles, a pen-written letter hand, a quirky ledger face. Every screen feels hand-made.",
+    bad: "Three unrelated families; the ledger is the busiest of the five and the slowest to scan over hours. Fondamento tires the eye in long letters. Needs borrowed digits." },
+  { cls: "s3", name: "3. Old press", fonts: "IM Fell English SC · IM Fell DW Pica · Sorts Mill Goudy",
+    good: "Real 17th-century printing types: ink spread, irregular letters, very authentic. Letters feel like broadsheets and notices nailed to a door.",
+    bad: "Early-modern rather than high fantasy, and the roughness blurs at small sizes on screen. The ledger loses the most crispness of the five." },
+  { cls: "s4", name: "4. Texturina throughout", rec: true, fonts: "Texturina (+ Alegreya digits)",
+    good: "A modern family built to bridge blackletter and roman, with optical sizes: gothic at title size, calm at text size. On screen it is the best balance: every line has medieval character, yet the 14 px ledger stays crisp and open. One family everywhere.",
+    bad: "Less whimsical than the Scribe’s hand; whimsy comes from the initials, ornaments and art. Its digits are uneven widths, so numbers are borrowed from Alegreya (invisible in the render). Titles could take Uncial if you want more play." },
+  { cls: "s5", name: "5. Uncial and Grenze", fonts: "Uncial Antiqua · Grenze · Grenze",
+    good: "Mixes the most whimsical title face with Grenze’s medieval texture for letters and ledgers. More playful than set 1, still readable.",
+    bad: "Two families with different moods (insular and gothic); the join shows on screens with both. Celtic lean in titles." },
+];
+const tpl = document.getElementById("sheet"), root = document.getElementById("opts");
+OPTS.forEach(o => {
+  const s = document.createElement("section"); s.className = "opt " + o.cls;
+  s.innerHTML = `<h2>${o.name} <small>${o.fonts}</small>${o.rec ? ' <span class="rec">Recommended</span>' : ""}</h2>`;
+  s.appendChild(tpl.content.cloneNode(true));
+  const v = document.createElement("div"); v.className = "verdict";
+  v.innerHTML = `<div><b>Strengths</b>${o.good}</div><div><b>Weaknesses</b>${o.bad}</div>`;
+  s.appendChild(v); root.appendChild(s);
+});
+</script>
