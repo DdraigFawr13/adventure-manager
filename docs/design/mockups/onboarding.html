@@ -1,0 +1,220 @@
+<title>First Season Onboarding</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+DW+Pica:ital@0;1&family=Sorts+Mill+Goudy:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: neutral page chrome; three scaled 16:10 game frames (container-query units) in the locked candlelit-oak palette and old-press type, each with a short verdict. */
+:root {
+  --bg: #f3f2ef; --fg: #23211e; --muted: #6a655d; --line: #d6d2ca;
+  --desk: #3b2a1e; --desk2: #2c1f16; --paper: #efe4cc; --paper2: #e4d6b8; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5;
+  --seal: #8e2a22; --brass: #b8923e; --map: #c9b78f; --map2: #9fa77a; --pencil: #5b6470; --good: #3f6f8f; --warn: #c08a1e;
+  --title: "IM Fell English SC", Georgia, serif;
+  --letter: "IM Fell DW Pica", Georgia, serif;
+  --ledger: "Sorts Mill Goudy", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--ledger); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+.wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 40px; }
+header h1 { font-family: var(--title); font-size: 2.2rem; margin: 0; font-weight: 400; text-wrap: balance; }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 70ch; }
+.opt { display: grid; gap: 12px; }
+.opt h2 { font-family: var(--title); font-weight: 400; font-size: 1.55rem; margin: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; text-wrap: balance; }
+.rec { font-family: var(--mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; border: 1px solid currentColor; padding: 1px 6px; border-radius: 3px; }
+.lede { margin: 0; color: var(--muted); max-width: 75ch; }
+.verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 8px 24px; font-size: .95rem; }
+.verdict div { min-width: 0; }
+.verdict b { font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; font-weight: 500; }
+
+/* Game frame */
+.frame { container-type: inline-size; width: 100%; max-width: 100%; aspect-ratio: 16 / 10; border-radius: 6px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.25); background: var(--desk); }
+.scr { width: 100%; height: 100%; font-size: 1.2cqw; color: var(--ink); display: grid; grid-template: "top top" 3.4em "nav main" 1fr / 11em 1fr;
+  background: repeating-linear-gradient(92deg, var(--desk) 0 2.2em, var(--desk2) 2.2em 2.3em); }
+.top { grid-area: top; display: flex; align-items: center; gap: 1.1em; padding: 0 1.1em; background: color-mix(in srgb, var(--desk2) 85%, black); color: var(--paper); border-bottom: .12em solid var(--brass); }
+.crest { width: 2.1em; height: 2.1em; border-radius: 50%; background: var(--seal); display: grid; place-items: center; font-family: var(--title); color: var(--paper); flex: none; }
+.guild { font-family: var(--title); font-size: 1.25em; }
+.date { font-family: var(--ledger); font-size: .95em; opacity: .9; margin-left: auto; font-variant-numeric: tabular-nums; }
+.stop { font-size: .9em; background: color-mix(in srgb, var(--seal) 65%, transparent); padding: .2em .7em; border-radius: .3em; }
+.cont { font-family: var(--title); font-size: 1.15em; background: var(--brass); color: var(--ink); padding: .2em 1em; border-radius: .3em; }
+.nav { grid-area: nav; display: flex; flex-direction: column; gap: .25em; padding: .8em .5em; font-family: var(--ledger); }
+.nav span { background: var(--paper2); padding: .3em .7em; border-radius: 0 .3em .3em 0; font-size: .95em; border-left: .3em solid var(--brass); display: flex; align-items: center; gap: .4em; }
+.nav span.on { background: var(--paper); border-left-color: var(--seal); font-weight: 600; }
+.nav span.new { background: var(--paper); border-left-color: var(--warn); }
+.nav span.new::after { content: "new"; margin-left: auto; font-family: var(--mono); font-size: .65em; color: var(--seal); }
+.nav span.shut { background: color-mix(in srgb, var(--paper2) 35%, var(--desk)); color: color-mix(in srgb, var(--paper) 55%, var(--desk)); border-left-color: transparent; }
+.nav span.shut::before { content: ""; width: .8em; height: .8em; border-radius: 50%; background: var(--seal); box-shadow: inset 0 0 0 .15em color-mix(in srgb, var(--seal) 60%, black); flex: none; }
+.nav .grp { background: none; border: 0; color: var(--map); font-family: var(--mono); font-size: .68em; letter-spacing: .1em; text-transform: uppercase; padding: .6em .2em .1em; }
+.main { grid-area: main; padding: .8em .9em .8em .2em; display: grid; gap: .7em; min-width: 0; min-height: 0; }
+.sheet { background: var(--paper); border-radius: .2em; box-shadow: 0 .3em .8em rgba(0,0,0,.35); padding: .9em 1.1em; min-width: 0; min-height: 0; overflow: hidden; position: relative; }
+.sheet h3 { font-family: var(--title); font-weight: 400; font-size: 1.35em; margin: 0 0 .4em; border-bottom: .08em solid var(--rule); padding-bottom: .2em; display: flex; justify-content: space-between; align-items: baseline; gap: 1em; }
+.sheet h3 small { font-family: var(--mono); font-size: .5em; color: var(--ink2); letter-spacing: .08em; text-transform: uppercase; }
+.letter { font-family: var(--letter); font-size: 1.05em; line-height: 1.45; }
+.letter p { margin: 0 0 .55em; }
+.letter .ini::first-letter { float: left; font-family: var(--title); color: var(--seal); font-size: 3.1em; line-height: .85; padding: .05em .12em 0 0; }
+.sig { font-style: italic; text-align: right; }
+.btns { display: flex; gap: .5em; flex-wrap: wrap; font-family: var(--ledger); }
+.btns span { border: .08em solid var(--ink2); padding: .2em .8em; border-radius: .25em; font-size: .95em; }
+.btns span.pri { background: var(--seal); color: var(--paper); border-color: var(--seal); }
+.note { font-family: var(--mono); font-size: .7em; color: var(--ink2); }
+
+/* Ledger table */
+table { width: 100%; border-collapse: collapse; font-family: var(--ledger); font-size: 1em; font-variant-numeric: tabular-nums; }
+th { text-align: left; font-weight: 400; font-style: italic; color: var(--ink2); font-size: .85em; padding: .15em .4em; border-bottom: .08em solid var(--rule); }
+td { padding: .28em .4em; border-bottom: .06em solid var(--rule); white-space: nowrap; }
+td.n, th.n { text-align: right; }
+.rng { color: var(--ink2); }
+.st { display: inline-flex; align-items: center; gap: .3em; }
+.st i { width: .65em; height: .65em; border-radius: 50%; display: inline-block; }
+.ok i { background: var(--good); } .hurt i { background: var(--warn); border-radius: .1em; transform: rotate(45deg); }
+
+/* Clerk's pencil notes */
+.pen { position: absolute; font-family: var(--letter); font-style: italic; color: var(--pencil); font-size: .95em; line-height: 1.3; max-width: 15em; background: color-mix(in srgb, var(--paper) 85%, white); border: .08em dashed var(--pencil); padding: .35em .55em; border-radius: .2em; transform: rotate(-1.2deg); }
+.pen b { font-style: normal; font-family: var(--mono); font-size: .7em; letter-spacing: .06em; display: block; color: var(--pencil); }
+.circle { position: absolute; border: .12em solid var(--pencil); border-radius: 50%; }
+
+/* Map */
+.mapbox { border-radius: .2em; position: relative; box-shadow: 0 .3em .8em rgba(0,0,0,.35); overflow: hidden; min-height: 0;
+  background: radial-gradient(ellipse 22% 18% at 30% 40%, var(--map2) 0 60%, transparent 62%), radial-gradient(ellipse 18% 26% at 70% 62%, var(--map2) 0 55%, transparent 57%), linear-gradient(160deg, var(--map), color-mix(in srgb, var(--map) 80%, var(--desk))); }
+.mapbox .lbl { position: absolute; left: .8em; top: .5em; font-family: var(--title); font-size: 1.2em; }
+.mini { position: absolute; width: 1em; height: 1.4em; border-radius: .5em .5em .15em .15em; background: var(--seal); box-shadow: 0 .15em .2em rgba(0,0,0,.45); }
+.tag { position: absolute; font-family: var(--ledger); font-size: .8em; background: var(--paper); padding: .05em .45em; border-radius: .2em; white-space: nowrap; }
+.path { position: absolute; border-top: .14em dashed var(--seal); transform-origin: left center; }
+.steps { font-family: var(--ledger); font-size: .95em; display: grid; gap: .25em; margin: 0; padding: 0; list-style: none; }
+.steps li { display: flex; gap: .5em; align-items: baseline; }
+.steps li::before { content: "○"; color: var(--ink2); }
+.steps li.done { color: var(--ink2); text-decoration: line-through; }
+.steps li.done::before { content: "●"; color: var(--good); text-decoration: none; }
+.steps li.now { font-weight: 600; }
+.steps li.now::before { content: "◆"; color: var(--seal); }
+
+@media (prefers-reduced-motion: no-preference) { .frame { transition: box-shadow .2s } .frame:hover { box-shadow: 0 14px 36px rgba(0,0,0,.32) } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>The first season</h1>
+    <p>Three ways to teach the game in its first in-game year (PLAN §6a). The same guild, The Lantern Company, in week 3 of a founded save. Names and numbers are examples.</p>
+  </header>
+
+  <section class="opt" aria-labelledby="a">
+    <h2 id="a">A · Staff open the ledgers <span class="rec">Recommended</span></h2>
+    <p class="lede">Ledgers start sealed and open one by one when they first matter: the first injury opens the Infirmary, the first wages bill opens Finances. A staff member writes a short letter explaining the new ledger. A "veteran start" setting opens everything on day one.</p>
+    <div class="frame" role="img" aria-label="Game screen: sealed ledger tabs on the left; the healer's letter opening the Infirmary ledger in the centre">
+      <div class="scr">
+        <div class="top"><div class="crest">L</div><div class="guild">The Lantern Company</div><div class="date">Spring, week 3, year 1</div><div class="stop">Ledger opened: Infirmary</div><div class="cont">Continue</div></div>
+        <div class="nav">
+          <span class="grp">Desk</span><span>Desk</span><span>Roster</span><span>Parties</span><span>Contracts</span>
+          <span class="grp">Guild</span><span class="new on">Infirmary</span><span class="shut">Staff</span><span class="shut">Guildhall</span><span class="shut">Finances</span><span class="shut">Armoury</span>
+          <span class="grp">World</span><span class="shut">Scouting</span><span class="shut">Ranking</span><span>Chronicle</span>
+        </div>
+        <div class="main" style="grid-template-columns: 1.25fr 1fr;">
+          <div class="sheet letter">
+            <h3>From the healer <small>new ledger</small></h3>
+            <p class="ini">Tobin came back from Hobb's Mill with a broken arm and a bad temper. I have set him a bed. He will want to go out again in a week; he should not go for three.</p>
+            <p>The Infirmary ledger now shows who is hurt, for how long, and what rushing them back would risk. You may leave recovery to me, or overrule me.</p>
+            <p class="sig">Ebba Thorne, healer</p>
+            <div class="btns"><span class="pri">Open the Infirmary</span><span>Leave recovery to Ebba</span></div>
+          </div>
+          <div class="sheet">
+            <h3>First season <small>4 of 11 open</small></h3>
+            <ul class="steps">
+              <li class="done">Desk, Roster, Parties</li>
+              <li class="done">Contracts</li>
+              <li class="now">Infirmary</li>
+              <li>Finances: first wages day</li>
+              <li>Staff, Guildhall: after the first month</li>
+              <li>Armoury: first loot</li>
+              <li>Scouting: first recruitment window</li>
+              <li>Ranking: first Assembly</li>
+            </ul>
+            <p class="note" style="margin-top:.8em">Settings → Veteran start opens all ledgers at once.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="verdict">
+      <div><b>Good</b>Each system arrives with a reason and a person. Matches the "gentle first season" (D-022) and the staff-led delegation the game teaches anyway.</div>
+      <div><b>Cost</b>Each ledger needs an opening trigger and a letter; a fallback date opens it if the trigger never fires.</div>
+      <div><b>Veterans</b>One setting skips it. A veteran who skips loses nothing but the letters.</div>
+    </div>
+  </section>
+
+  <section class="opt" aria-labelledby="b">
+    <h2 id="b">B · Everything open, clerk's notes in the margins</h2>
+    <p class="lede">All ledgers are open from day one, as in FM. The first time a sheet opens, the guild clerk has pencilled two or three notes on it pointing at what matters. Notes can be put away for good.</p>
+    <div class="frame" role="img" aria-label="Game screen: the roster ledger with pencilled margin notes explaining attribute ranges and morale">
+      <div class="scr">
+        <div class="top"><div class="crest">L</div><div class="guild">The Lantern Company</div><div class="date">Spring, week 3, year 1</div><div class="stop">Week report</div><div class="cont">Continue</div></div>
+        <div class="nav">
+          <span class="grp">Desk</span><span>Desk</span><span class="on">Roster</span><span>Parties</span><span>Contracts</span>
+          <span class="grp">Guild</span><span>Infirmary</span><span>Staff</span><span>Guildhall</span><span>Finances</span><span>Armoury</span>
+          <span class="grp">World</span><span>Scouting</span><span>Ranking</span><span>Chronicle</span>
+        </div>
+        <div class="main">
+          <div class="sheet">
+            <h3>Roster <small>5 adventurers</small></h3>
+            <table>
+              <thead><tr><th>Name</th><th>Class</th><th class="n">Lvl</th><th class="n">Might</th><th class="n">Nerve</th><th class="n">Wits</th><th>Morale</th><th>Condition</th></tr></thead>
+              <tbody>
+                <tr><td>Aldith Marrow</td><td>Guardian</td><td class="n">2</td><td class="n">14</td><td class="n">12</td><td class="n">9</td><td>Content</td><td><span class="st ok"><i></i>Fit</span></td></tr>
+                <tr><td>Tobin Reede</td><td>Warrior</td><td class="n">1</td><td class="n">13</td><td class="n">8</td><td class="n">7</td><td>Sour</td><td><span class="st hurt"><i></i>Broken arm, 3 wk</span></td></tr>
+                <tr><td>Maud Cressey</td><td>Cleric</td><td class="n">2</td><td class="n">8</td><td class="n">15</td><td class="n">13</td><td>Content</td><td><span class="st ok"><i></i>Fit</span></td></tr>
+                <tr><td>Osric Fenn</td><td>Rogue</td><td class="n">1</td><td class="n rng">9–13</td><td class="n rng">10–14</td><td class="n rng">11–15</td><td>Eager</td><td><span class="st ok"><i></i>Fit</span></td></tr>
+                <tr><td>Haskel Dunn</td><td>Wizard</td><td class="n">1</td><td class="n">6</td><td class="n">9</td><td class="n">16</td><td>Wary</td><td><span class="st ok"><i></i>Fit</span></td></tr>
+              </tbody>
+            </table>
+            <div class="circle" style="left:53%; top:41%; width:24%; height:9%"></div>
+            <div class="pen" style="left:50%; top:56%"><b>CLERK'S NOTE</b>Ranges, not numbers: we have not watched Osric long. Send him out, or have a scout watch him, and they narrow.</div>
+            <div class="pen" style="left:6%; top:50%; max-width: 14em"><b>CLERK'S NOTE</b>Tobin is sour because you benched him. Promise him the next hunt, or he will grumble to the others.</div>
+            <div class="btns" style="position:absolute; right:1.1em; bottom:.9em"><span>Put away the clerk's notes</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="verdict">
+      <div><b>Good</b>Nothing hidden; suits the management-sim veteran (D-063). Cheapest: notes are text on existing screens.</div>
+      <div><b>Cost</b>A tabletop player faces 14 ledgers on day one. The 70% first-season target (D-065) is at risk for the secondary group.</div>
+      <div><b>Veterans</b>Ideal: they ignore or put away the notes.</div>
+    </div>
+  </section>
+
+  <section class="opt" aria-labelledby="c">
+    <h2 id="c">C · A founding prologue, then the full game</h2>
+    <p class="lede">A short scripted first contract (about 30 minutes): a fixed party clears a mill cellar while a checklist walks through briefing, watching the board and a key moment. Then the full game opens.</p>
+    <div class="frame" role="img" aria-label="Game screen: the map with one party heading to Hobb's Mill and a prologue checklist">
+      <div class="scr">
+        <div class="top"><div class="crest">L</div><div class="guild">The Lantern Company</div><div class="date">Prologue</div><div class="stop">Step 3 of 6: watch the board</div><div class="cont">Continue</div></div>
+        <div class="nav">
+          <span class="grp">Prologue</span><span>Desk</span><span>Roster</span><span class="on">Parties</span>
+          <span class="grp">Opens after</span><span class="shut">Contracts</span><span class="shut">Guild ledgers</span><span class="shut">World ledgers</span>
+        </div>
+        <div class="main" style="grid-template-columns: 1.6fr 1fr;">
+          <div class="mapbox">
+            <div class="lbl">Wendle Fen</div>
+            <div class="mini" style="left:24%; top:56%"></div><div class="mini" style="left:27%; top:58%"></div><div class="mini" style="left:30%; top:55%"></div>
+            <div class="path" style="left:31%; top:60%; width:30%; transform: rotate(-14deg)"></div>
+            <div class="tag" style="left:58%; top:38%">Hobb's Mill · cellar rats, or worse</div>
+            <div class="tag" style="left:16%; top:68%">The Lantern Company</div>
+          </div>
+          <div class="sheet">
+            <h3>Your first contract <small>prologue</small></h3>
+            <ul class="steps">
+              <li class="done">Read the miller's letter</li>
+              <li class="done">Brief the party: plan and risk</li>
+              <li class="now">Watch the board</li>
+              <li>Decide a key moment</li>
+              <li>Read the report</li>
+              <li>Pay wages; the season begins</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="verdict">
+      <div><b>Good</b>A complete, controlled first story; good for the demo's first ten minutes and for trailers.</div>
+      <div><b>Cost</b>Scripted content outside the systems; must be rewritten when systems change; doesn't teach finances, scouting or the Assembly.</div>
+      <div><b>Veterans</b>Skippable, but it is the first thing every new save shows.</div>
+    </div>
+  </section>
+</div>

@@ -54,7 +54,7 @@ Rejected: painted tiles (costly per biome, implies tactics), isometric diorama (
 
 - **Titles, seals, set pieces:** IM Fell English SC.
 - **Letters, notices, Chronicle text:** IM Fell DW Pica.
-- **Ledgers, numbers, buttons:** Sorts Mill Goudy. Measured: its digits are equal-width, so columns line up.
+- **Ledgers, numbers, buttons:** Sorts Mill Goudy. Measured: its digits are equal-width, so columns line up. Clarified 2026-10-26: only with lining figures switched on (`lining-nums`); its default figures are old-style and proportional (PLAN §9c).
 - **Decorated initial:** the first letter of every in-world letter and notice is a large oxblood initial (owner: "I like the large T start of a paragraph thing").
 - **Ornaments:** brass fleurons between sections of letters and notices.
 - All faces are SIL Open Font License (SAFE-05); record sources when the files are added.

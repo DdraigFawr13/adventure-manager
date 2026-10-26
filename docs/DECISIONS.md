@@ -72,12 +72,14 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Armoury with tiered gear, auto-equipped by quartermaster policy; named magic items hand-assigned; crafting by commission. Detail: `docs/design/CONCEPT.md` §9.
+- **Amended:** Commissioning items moves to Early update (D-070).
 - **Why:** Owner's choice; keeps gear meaningful without per-item micromanagement across a large roster.
 
 ## D-013 Four recruitment sources
 
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Scouted free agents (fog of war), poaching from rivals, a training academy, and story/quest recruits. Detail: `docs/design/CONCEPT.md` §10.
+- **Amended:** The training academy moves to Early update; launch has three sources (D-070).
 - **Why:** Owner's choice; mirrors FM's scouting, transfers and youth, plus RPG-style story recruits.
 
 ## D-014 Standing parties with pre-quest plans
@@ -373,3 +375,167 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** `docs/design/PLAN.md` follows the approved 15-section outline: Part A game design (§1–§10), then Part B production (§11–§15), written in order, section by section.
 - **Why:** Owner approved the outline as proposed.
+
+## D-063 Target player: management-sim veterans first
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The primary player is a management-sim veteran (FM, Battle Brothers, Darkest Dungeon, RimWorld, Crusader Kings) with a taste for fantasy. Tabletop RPG fans are secondary, carried by the gentle first season and delegation. Players who want direct combat control or short roguelite sessions are not targeted. Detail: `docs/design/PLAN.md` §1b.
+- **Why:** Owner's choice (Plan Q1b); the concept's depth, Ironman saves and desk-only guildmaster are built for this group, and onboarding the secondary group costs less than diluting depth.
+
+## D-064 Pace: one season takes about 2–2.5 hours
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** A typical player takes about 2–2.5 h per in-game season. Derived targets: adventurer career about 12–30 h, guildmaster career about 40–75 h, first season about 3–4 h with onboarding. Weeks per season are set in PLAN §2. Detail: `docs/design/PLAN.md` §1c.
+- **Why:** Owner's choice (Plan Q1c), between the proposed 3 h (FM-like) and 1.5 h (faster generations); keeps succession within reach of committed players.
+
+## D-065 Design goals and success criteria (starting set)
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Five design goals, one per pillar (PLAN §1a), and six success targets (PLAN §1d): demo conversion ≥ 15%, first-season completion ≥ 70%, median playtime > 20 h, ≥ 25% of 40 h+ players reach a second guildmaster, Steam reviews ≥ 80% positive, no dense screen needing more than one explanation in playtests. Numbers are estimates, revisited in PLAN §10 and §14.
+- **Why:** Owner accepted the proposed starting set (Plan Q1a/d); gives later sections and playtests something measurable to aim at.
+
+## D-066 A season is one in-game year
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** "Season" means one in-game year, opened by the Guild Assembly (D-039), as in FM. With D-064 a year plays in about 2–2.5 h, so a week averages a few minutes, not a session. The core loop's "weekly = a session" is replaced by a stop budget per year (PLAN §2); CONCEPT core loop updated to match. Career ages (D-034) stand.
+- **Why:** Owner's choice (Plan Q2a). Keeps the annual Assembly and in-world ages consistent; resolves the conflict between D-064 and the concept's core-loop line.
+
+## D-067 Shape of the year
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** A 48-week year (12 months of 4 weeks): 4-week Assembly and muster (rankings, patron review, recruitment window, renewals); 32-week campaigning season with a midsummer fair (second, shorter recruitment window and the main tournament); 12-week light winter (slow travel, few contracts, healing, training, building, the odd raid); a year's-end review. Target about 145 min per year. Detail: `docs/design/PLAN.md` §2.
+- **Why:** Owner accepted the proposal (Plan Q2b). Two windows give poaching an FM-like rhythm; heavy decisions cluster in spring; winter is the natural time-skip.
+
+## D-068 Day, week and generation loops; friction budget
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** About 80 stops per year (~145 min). Stops on one day are bundled; every stop has a default (1–3 clicks); a routine week takes 10 clicks or fewer. Three stop classes (Must stop, Digest, Never stop), tunable per category except the non-delegable core (D-038). A rate cap (one event stop a day, about 3 a week) moves only Digest-class items; Must-stop items always stop. Time-skip offered when nothing is out or due. Succession is a year's-end set piece (~10 min); the heir inherits charter, traits and debts. Detail: `docs/design/PLAN.md` §2c–§2f.
+- **Why:** Owner accepted the proposal (Plan Q2c); fits a year into D-064's 2–2.5 h without losing the moments that matter.
+
+## D-069 Ranking by renown earned this year; intrigue later
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Renown is one public number earned by deeds. Each ranking tier is ordered by renown earned in the past year; the Assembly promotes the top and relegates the bottom. Total renown, slowly fading, shapes recruitment and offers. Every renown change is stored as a dated entry with its source so a later intrigue layer can add, contest or strip entries. Detail: `docs/design/PLAN.md` §3d.
+- **Why:** Owner's choice (Plan Q3a): clear, and every deed visibly counts. Owner's note asks for intrigue and underhanded dealings later (Later tier, D-035); its content is not decided.
+
+## D-070 Systems map: 14 launch systems
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Guild resources are money, renown, faction standing and knowledge; adventurers carry morale, fatigue, health, trust and experience. Launch has 14 systems in four groups (People, Quests, Guild, World) with contract → party → quest → results as the spine. Injury, death and recovery fold into Adventurers; knowledge and scouting merge into one Scouting and research department and ledger; the training academy and item commissioning move to Early update. Delegation per PLAN §3e. Detail: `docs/design/PLAN.md` §3.
+- **Why:** Owner accepted the map and asked for merges and deferrals (Plan Q3b); chose merges B and C and deferral D, kept tournaments as their own part of the Rivals system. Fewer concepts and ledgers for the player at launch.
+
+## D-071 Death rate: about 2 a year in a mid-sized guild
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** A mid-sized guild (~15 adventurers, 3 parties) on tier-appropriate work at default risk loses about 2 adventurers a year; about half of careers end in death; turnover about 25% a year. Four danger ratings with starting death rates per adventurer per quest: Routine 0.2%, Hazardous 0.8%, Perilous 2.5%, Deadly 7%; about 5 lasting injuries per death. D-034 career lengths now describe survivors. Updates PLAN §2e turnover. Detail: `docs/design/PLAN.md` §4c.
+- **Why:** Owner's choice (Plan Q4a): brutal enough for Pillar 2 and D-034, while enough adventurers live long enough to become stories (Pillar 1).
+
+## D-072 Money: tight early, steady later
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Wages are about 55–65% of spending. A founded guild starts with about 3 months of running costs plus a small patron grant; a well-run mid-tier guild runs a 10–20% surplus; top-tier star wages and patron demands bring pressure back. Detail: `docs/design/PLAN.md` §4b.
+- **Why:** Owner's choice (Plan Q4b): FM-like pressure that matters without letting coin crowd out the people.
+
+## D-073 Sources and sinks, tournaments, difficulty ladder
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Every source has a sink; total renown fades about 10% a year; failure pays in knowledge; rival guilds play by the same rules with no hidden bonuses. Tournaments are the guild's shop window (renown burst, recruitment draw, rival scouting both ways, low lethality, storied prizes, at the cost of a party for 1–2 weeks). Difficulty comes from the start choice (no slider). Launch ladder: 3 tiers of 6 guilds, 1 up and 1 down per tier each Assembly; ladder size is region data, and bigger ladders come after launch. Detail: `docs/design/PLAN.md` §4a, §4d–§4f.
+- **Why:** Owner accepted (Plan Q4c) and asked for bigger ladders later; gives tournaments the reason §3c asked for.
+
+## D-074 Ten class levels at launch, twenty planned
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Adventurers have 10 class levels at launch: about 1 a year early, slowing; most survivors retire around level 7–9; level 10 is legendary; multiclassing or prestige opens at level 5. 20 levels are planned for later, so level count, experience curve and per-level abilities are class data and level-gated rules use bands. Moving to 20 needs its own pacing decision. Detail: `docs/design/PLAN.md` §5a.
+- **Why:** Owner's choice (Plan Q5a): "Start with 10. Plan for 20 eventually." Ten levels fit 6–12 year careers with each level meaningful.
+
+## D-075 Progression of adventurers, guild and guildmaster
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Attributes grow toward hidden potential and decline with age (ancestry sets the ages, as data); traits change through events. Retirement is a conversation; retirees can become staff, limited by attributes and wages; revival leaves a changed veteran. Facilities (5 at launch) have 3 levels each and are building entries in data; more levels or a compound of separate buildings (city-building style) come later. At most 5 earned guild traits are active at once. The guildmaster has about 8 stats (1–20) that grow only when the player does that work personally, and decline in the last 3–5 years. At succession the guild, charter, traits, roster, debts, rivalries, standing, Chronicle and the old guildmaster's promises pass on; the old guildmaster's stats and contacts do not. Detail: `docs/design/PLAN.md` §5.
+- **Why:** Owner accepted the draft (Plan Q5b) and asked for bigger facility progression or a guild compound later.
+
+## D-076 First season: prologue, staff-opened ledgers, clerk's notes
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** A skippable prologue of about 10–15 min (the guild's first contract, run on the real systems with a fixed seed); then ledgers open through the first season when they first matter, each introduced by a letter from the staff member who runs it, with fallback dates and a checklist; the clerk's pencilled notes appear on relevant documents and can be put away. Veteran start skips the prologue and opens every ledger. Detail: `docs/design/PLAN.md` §6a; mock-up `docs/design/mockups/onboarding.html`.
+- **Why:** Owner's choice (Plan Q6a) combining options A, B and C; teaches through the staff the player later delegates to, while veterans skip it with one setting.
+
+## D-077 Text size slider and clear print
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Dense screens get a 100–150% size slider and a clear-print setting that switches ledgers and letters to a modern book serif (open font licence, chosen in UI work); titles, seals and decorated initials stay old-press. Clear print is also the ready fallback if the ledger face fails the readability check (D-052). Detail: `docs/design/PLAN.md` §6c; mock-up `docs/design/mockups/readability.html`.
+- **Why:** Owner's choice (Plan Q6b): an accessibility option that keeps the old-press look as the default.
+- **Corrected (2026-10-26):** the original Why said the old-press ledger's old-style figures scan worse; that came from a mock-up that left the face's lining figures off. All game numbers use lining figures (`lining-nums`); see PLAN §9c.
+
+## D-078 Screen rules and accessibility
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Seven screen rules: every number shows its breakdown (from the engine); one sheet, one job; fixed top bar; every stop shows its default; confirm only the irreversible (signing, releasing, dismissing staff, revival, Deadly contracts); uncertainty shown as ranges and worded odds; never colour alone. Accessibility: colour-blind-safe statuses and heraldic charges, full remappable keyboard play, no timers, reducible motion, visible counterparts and captions for meaningful sounds; screen readers not promised at launch but the UI is built from labelled controls. Detail: `docs/design/PLAN.md` §6b–§6c.
+- **Why:** Owner accepted the draft (Plan Q6c).
+
+## D-079 Launch ancestries: two familiar, two from the March
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Five launch ancestries: Marchfolk (humans), Stonewrights (stout hill miners), Lanthe (long-lived wood folk), Reedfolk (fen stilt-dwellers) and Barrowborn (born near the barrows, distrusted by the temple). Names, ages and hooks are first drafts. Hearthlings, Grael, Mossbacks and Ashlings are candidates for later, as data. Detail: `docs/design/PLAN.md` §7a; mock-up `docs/design/mockups/ancestries.html`.
+- **Why:** Owner's choice (Plan Q7a, option C): a readable roster plus a setting signature tied to the launch quest types.
+
+## D-080 Launch content volume: standard
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** 36 monster kinds in 7 families, 20 site templates, 20 quest templates, 60 key-moment templates with text variants, about 6,000 written template lines; plus 6 factions, 17 authored rival guilds, 8 settlements, 5 biomes, 3 tournament kinds, 5 facilities, 4 gear tiers, about 30 magic-item templates and 10 legendary items, about 25 guild traits. All data; can grow after launch. Detail: `docs/design/PLAN.md` §7b–§7e.
+- **Why:** Owner's choice (Plan Q7b): repeats stay rare within a guildmaster's career at about half the writing and art cost of the rich option.
+
+## D-081 Launch people content
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** 8 classes with about 15 talents each plus about 30 shared talents; 4 prestige paths and multiclassing from level 5; caster classes carry an empty magic-tradition slot; about 28 attributes; about 40 personality and 60 earned traits; 6 staff roles; 5 guildmaster backgrounds. Detail: `docs/design/PLAN.md` §7a.
+- **Why:** Owner accepted the draft (Plan Q7c).
+
+## D-082 Consequences: in-world first, trace, and numbered histories
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Letters and news tell consequences in the world's voice; a Trace mark on letters and changed values opens the dated cause chain (the player's decisions, what the guild knew, what can be done now). Every value's inspector also shows the signed change prominently and a dated history with a "because" line per entry, linked to its trace. Trace and history text is templated from recorded causes. Detail: `docs/design/PLAN.md` §8c; mock-up `docs/design/mockups/consequences.html`.
+- **Why:** Owner's choice (Plan Q8a): option C with option A's numbered inspector histories; keeps the fiction while teaching the system.
+
+## D-083 Consequence surfaces and rules
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Nine surfaces (quest log and board, party cards, week report, letters, criers and gossip, region map, inspector fields, Chronicle and Hall of Heroes, year in review). Rules: no silent change; every change records its cause, reachable within 2 clicks; delayed consequences name their cause; importance follows the stop classes (D-068); forewarning follows knowledge (D-041); deaths are never quiet; AI flavour rewords but never changes causes or numbers. Detail: `docs/design/PLAN.md` §8a–§8b.
+- **Why:** Owner accepted the draft (Plan Q8b); Pillars 2 and 4 depend on the player seeing what their choices caused.
+
+## D-084 Ledger minimum 15 px with lining figures
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Ledger text is at least 15 px at 100% scale; all numbers use the face's lining figures (`lining-nums`), which are equal width and sit on the line. To be confirmed on real monitors in the desk-density prototype (PLAN §9a R4); fallbacks are D-052 and D-077. Detail: `docs/design/PLAN.md` §9c.
+- **Why:** Owner's choice (Plan Q9b) after real-size specimens at 13–16 px; the measurement showed the default figures are proportional old-style, so lining figures are required for columns.
+
+## D-085 Prototype order: watched quest first
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** After plan approval, prototypes run in this order: 1 one watched quest (is watching fun?); 2 headless year simulator on the same simulation core (balance, pacing, delegation, careers); 3 desk-density mock-ups and the template-writing test, alongside 1 or 2; 4 a two-year attachment playtest. Detail: `docs/design/PLAN.md` §9b.
+- **Why:** Owner's choice (Plan Q9a): test the assumption the whole game rests on first.
+- **Note:** first recorded as "headless simulator first"; the owner reported that answer as a misclick the same day and chose quest first.
+
+## D-086 Riskiest assumptions and their tests
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Nine risks, each with its cheapest test and pass line: R1 watching quests is fun; R2 the simulation hits the §4 targets (±25%); R3 a year fits the friction budget (≤ 100 stops, ≤ 3 h); R4 the desk holds FM density (25+ rows at 1366 px); R5 ledgers readable (D-084); R6 the player's focus beats delegation by 10–25%; R7 attachment despite deaths; R8 template writing stays fresh; R9 guildmaster careers of 20–30 years. Fun and feel pass only on the owner's recorded playtest notes (GAME-06). Detail: `docs/design/PLAN.md` §9a.
+- **Why:** Owner accepted the draft (Plan Q9c).
+
+## D-087 Kingdom map at launch
+
+- **Status:** Accepted (2026-10-26) as a launch goal; design to workshop.
+- **Decision:** Launch includes a kingdom map of the March in a striking, on-theme fantasy style showing areas and locations, the player's and rival guilds, current action, and the deeds done across the region. It builds on the home-screen region map (D-049) and is a consequence surface (PLAN §8a). Style, layers and interactions are workshopped with the art plan (PLAN §12). Detail: `docs/design/PLAN.md` §1a.
+- **Why:** Owner's request: the region should be a place the player wants to look at, where the guild's history is visible (Pillars 3 and 4).
+
+## D-088 Data collection: playtest logs, nothing sent from release
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Playtest builds write a local log of the PLAN §10b measures that testers choose to send. The release sends nothing; §1d targets come from Steam data and achievement unlock rates. Opt-in anonymous telemetry stays open as a future option, decided by the owner as a cost (SAFE-03); the log format allows it. Detail: `docs/design/PLAN.md` §10c.
+- **Why:** Owner's choice (Plan Q10a): no backend or personal data for an offline single-player game, while keeping a path to richer data.
+
+## D-089 Playtest stages, measures and follow-up
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Playtests run owner-only for prototypes, then 6–10 invited vertical-slice players (about two thirds management-sim veterans), a 30–50 closed alpha, the public demo and a 200+ beta. Measures cover pacing, danger and economy, engagement (watched vs auto-resolved, delegation, Trace use), onboarding drop-off, attachment, readability tasks and stability. Each measure has a target; misses become dated findings; the same miss in two rounds goes to the owner as a design problem. Detail: `docs/design/PLAN.md` §10a, §10b, §10d.
+- **Why:** Owner accepted the draft (Plan Q10b).
