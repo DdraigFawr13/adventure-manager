@@ -83,14 +83,14 @@ Phase 1 concept. Each section records what the owner decided, with their own not
 
 - **Decided (2026-10-25):** Guild-level kit. The guild owns an armoury; gear has tiers and a few properties. Notable magic items are named, unique and storied (they gather history as they're used).
 - The quartermaster equips adventurers to a policy the player sets; the player hand-assigns special pieces.
-- Crafting means commissioning items from contacts or the guild workshop; no crafting minigames.
+- Crafting means commissioning items from contacts or the guild workshop; no crafting minigames. Commissioning moved to Early update (D-070).
 
 ## 10. Recruitment
 
 - **Decided (2026-10-25):** Four sources of adventurers:
   1. **Scouted free agents:** scouts report on prospects in towns and taverns through a fog of war (attributes shown as ranges until well known).
   2. **Poaching:** approach adventurers at rival guilds (negotiation, release fees); rivals do the same to the player.
-  3. **Training academy:** apprentices raised over seasons; cheap, slow, loyal homegrown talent.
+  3. **Training academy:** apprentices raised over seasons; cheap, slow, loyal homegrown talent. Moved to Early update (D-070).
   4. **Story and quest recruits:** rescued prisoners, reformed enemies, quest-givers who join; rare and unusual, with built-in backstories.
 
 ## 11. Parties and tactics
@@ -194,7 +194,7 @@ Phase 1 concept. Each section records what the owner decided, with their own not
 - **Decided (review, 2026-10-25):** Every feature is tagged Launch, Early update or Later, and launch is a "minimum lovable" game.
 - **Tiers (confirmed 2026-10-25):**
   - **Launch:** §1–§11, §12 delves/hunts and small-scale defence, §13, §14 templates, §15–§23, §24 launch magic, §25, §26 authored region, §27, §29 saves, §30 guild knowledge, §31 chronicle, §32 news and inbox; content stored as data (§33).
-  - **Early update:** multi-party war campaigns; optional AI flavour (§14); escorts and expeditions.
+  - **Early update:** multi-party war campaigns; optional AI flavour (§14); escorts and expeditions; training academy (§10) and item commissioning (§9) (D-070).
   - **Later:** intrigue and investigation; magic traditions (§24); generated regions (§26); public mod tools (§33); social features (§21).
 
 ## 29. Saves and permadeath

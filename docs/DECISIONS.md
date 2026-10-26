@@ -72,12 +72,14 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Armoury with tiered gear, auto-equipped by quartermaster policy; named magic items hand-assigned; crafting by commission. Detail: `docs/design/CONCEPT.md` §9.
+- **Amended:** Commissioning items moves to Early update (D-070).
 - **Why:** Owner's choice; keeps gear meaningful without per-item micromanagement across a large roster.
 
 ## D-013 Four recruitment sources
 
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Scouted free agents (fog of war), poaching from rivals, a training academy, and story/quest recruits. Detail: `docs/design/CONCEPT.md` §10.
+- **Amended:** The training academy moves to Early update; launch has three sources (D-070).
 - **Why:** Owner's choice; mirrors FM's scouting, transfers and youth, plus RPG-style story recruits.
 
 ## D-014 Standing parties with pre-quest plans
@@ -409,3 +411,15 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** About 80 stops per year (~145 min). Stops on one day are bundled; every stop has a default (1–3 clicks); a routine week takes 10 clicks or fewer. Three stop classes (Must stop, Digest, Never stop), tunable per category except the non-delegable core (D-038). A rate cap (one event stop a day, about 3 a week) moves only Digest-class items; Must-stop items always stop. Time-skip offered when nothing is out or due. Succession is a year's-end set piece (~10 min); the heir inherits charter, traits and debts. Detail: `docs/design/PLAN.md` §2c–§2f.
 - **Why:** Owner accepted the proposal (Plan Q2c); fits a year into D-064's 2–2.5 h without losing the moments that matter.
+
+## D-069 Ranking by renown earned this year; intrigue later
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Renown is one public number earned by deeds. Each ranking tier is ordered by renown earned in the past year; the Assembly promotes the top and relegates the bottom. Total renown, slowly fading, shapes recruitment and offers. Every renown change is stored as a dated entry with its source so a later intrigue layer can add, contest or strip entries. Detail: `docs/design/PLAN.md` §3d.
+- **Why:** Owner's choice (Plan Q3a): clear, and every deed visibly counts. Owner's note asks for intrigue and underhanded dealings later (Later tier, D-035); its content is not decided.
+
+## D-070 Systems map: 14 launch systems
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Guild resources are money, renown, faction standing and knowledge; adventurers carry morale, fatigue, health, trust and experience. Launch has 14 systems in four groups (People, Quests, Guild, World) with contract → party → quest → results as the spine. Injury, death and recovery fold into Adventurers; knowledge and scouting merge into one Scouting and research department and ledger; the training academy and item commissioning move to Early update. Delegation per PLAN §3e. Detail: `docs/design/PLAN.md` §3.
+- **Why:** Owner accepted the map and asked for merges and deferrals (Plan Q3b); chose merges B and C and deferral D, kept tournaments as their own part of the Rivals system. Fewer concepts and ledgers for the player at launch.
