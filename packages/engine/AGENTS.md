@@ -5,7 +5,7 @@ The game rules: pure code with no UI. Full rules: `docs/STANDARDS.md` ("The engi
 - One entry point, `simulate(state, command)`, for preview and commit (GAME-02). Nothing else changes state.
 - No clock, `Math.random`, I/O, DOM, `process`, `Intl`, `localeCompare` or timers; no `Math.sin`, `exp`, `pow`, `log` or `**`. `npm run boundaries` enforces this.
 - Imports nothing outside this package; no external modules.
-- Integers only: pennies, whole stats, chances in basis points (`chance(bp)`).
+- Integers only: money in copper coins, whole stats, chances in basis points (`chance(bp)`).
 - Randomness only from named streams via `streamFor(state, 'system.purpose')`; never share a stream between systems.
 - Every state change emits an event with a cause id; hoverable numbers are `Value`s with parts.
 - Numbers a designer tunes live in content data, not here. No player-facing English here.

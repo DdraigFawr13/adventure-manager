@@ -685,7 +685,7 @@ flowchart LR
 ### 11c. Determinism (Accepted 2026-10-26, D-091)
 
 - Seeded generators (for example PCG or xoshiro), never global: named streams per system kept in the state (§11h, D-114); engine time passed in.
-- Game values are integers (money in pennies, stats as whole numbers, chances in per-ten-thousand), so results do not depend on floating-point differences.
+- Game values are integers (money in copper coins, shown as gold, silver and copper at 10 to 1 each, D-135; stats as whole numbers, chances in per-ten-thousand), so results do not depend on floating-point differences.
 - One determinism test: the same seed and commands give the same events (GAME-06).
 
 ### 11d. Data formats and modding (Accepted 2026-10-26, D-091)

@@ -15,7 +15,7 @@ export interface EngineTestRosterRow {
   readonly condition: string;
   readonly morale: Value;
   readonly attributes: Readonly<Record<Attribute, Value>>;
-  readonly wagePennies: Value;
+  readonly wageCopper: Value;
   readonly contractWeeks: number;
 }
 

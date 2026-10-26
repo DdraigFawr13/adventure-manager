@@ -2,8 +2,9 @@
 // number the engine derives (D-078) read from its Value parts, keyboard play through one roving
 // focus. Level, age and weeks left are plain facts here; they become Values with the roster system.
 import { useMemo, useRef, useState, type KeyboardEvent } from 'react';
-import { ATTRIBUTES, type Value } from '@adventure-manager/engine';
+import { ATTRIBUTES, splitCoins, type Value } from '@adventure-manager/engine';
 import {
+  coinRates,
   engineTestLedgerText as text,
   engineTestRoster as roster,
   type EngineTestRosterRow as Row,
@@ -72,7 +73,7 @@ function cellOf(row: Row, column: ColumnId): Cell {
     case 'morale':
       return { kind: 'value', value: row.morale };
     case 'wage':
-      return { kind: 'value', value: row.wagePennies };
+      return { kind: 'value', value: row.wageCopper };
     default: {
       return { kind: 'value', value: row.attributes[column] };
     }
@@ -88,6 +89,38 @@ function compareKeys(a: string | number, b: string | number): number {
   if (typeof a === 'number' && typeof b === 'number') return a - b;
   // Display order only; the engine never sorts by text (STANDARDS: no localeCompare there).
   return String(a).localeCompare(String(b));
+}
+
+/** Money columns show gold, silver and copper (D-135); the engine splits, the ui joins words. */
+const MONEY_COLUMNS: ReadonlySet<ColumnId> = new Set(['wage']);
+
+function amountText(amount: number, column: ColumnId): string {
+  if (!MONEY_COLUMNS.has(column)) return String(amount);
+  const coins = splitCoins(amount, coinRates);
+  const parts = (['gold', 'silver', 'copper'] as const)
+    .filter((coin, i, all) => coins[coin] > 0 || (i === all.length - 1 && amount === 0))
+    .map((coin) => `${coins[coin]}${text.coins[coin]}`);
+  return parts.join(' ');
+}
+
+/** In the ledger column each coin has its own slot, so gold, silver and copper line up down the page. */
+function CoinSlots({ amount }: { amount: number }) {
+  const coins = splitCoins(amount, coinRates);
+  return (
+    <span className="et-coins">
+      {(['gold', 'silver', 'copper'] as const).map((coin) => (
+        <span key={coin} className="et-coin">
+          {coins[coin] > 0 || (coin === 'copper' && amount === 0)
+            ? `${coins[coin]}${text.coins[coin]}`
+            : ''}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+function signed(amount: number, column: ColumnId): string {
+  return `${amount < 0 ? '−' : '+'}${amountText(Math.abs(amount), column)}`;
 }
 
 function Breakdown({
@@ -112,17 +145,17 @@ function Breakdown({
         <tbody>
           <tr>
             <th scope="row">{text.controls.base}</th>
-            <td>{value.base}</td>
+            <td>{amountText(value.base, column)}</td>
           </tr>
           {value.parts.map((part) => (
             <tr key={part.sourceId}>
               <th scope="row">{text.sources[part.sourceId] ?? part.sourceId}</th>
-              <td>{part.amount > 0 ? `+${part.amount}` : `−${-part.amount}`}</td>
+              <td>{signed(part.amount, column)}</td>
             </tr>
           ))}
           <tr className="et-breakdown-total">
             <th scope="row">{text.controls.total}</th>
-            <td>{value.total}</td>
+            <td>{amountText(value.total, column)}</td>
           </tr>
         </tbody>
       </table>
@@ -261,7 +294,11 @@ export function Ledger() {
                     cell.value
                   ) : (
                     <span className="et-value">
-                      {cell.value.total}
+                      {MONEY_COLUMNS.has(column) ? (
+                        <CoinSlots amount={cell.value.total} />
+                      ) : (
+                        cell.value.total
+                      )}
                       <span className="et-has-parts" aria-hidden="true">
                         {text.controls.breakdownMark}
                       </span>

@@ -238,6 +238,16 @@ body {
   outline-offset: -2px;
 }
 
+.et-coin {
+  display: inline-block;
+  min-width: 2.4ch;
+  text-align: right;
+}
+
+.et-coin + .et-coin {
+  margin-left: 0.4ch;
+}
+
 .et-value {
   position: relative;
 }

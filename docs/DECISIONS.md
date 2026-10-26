@@ -831,3 +831,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26) for the engine test; the size is Claude's default from the owner's request, to confirm when the March is authored (PLAN §7c).
 - **Decision:** The kingdom map shows the March as one land region, not a continent: about 300 × 200 km (3:2), so the farthest sites are about 9–10 days' walk from a central guild hall, which fits quests of 2–4 weeks including travel (PLAN §2a) at about 20–25 km a day on foot. Baked at 1 km a cell (300 × 200 cells) and 8 px a cell (a 2,400 × 1,600 px sheet); it opens fitted at 1366×768 and zooms to about 2×. Sea along one edge, as in the chosen mock-up (`docs/design/mockups/kingdom-map.html`). Finer old-map detail: vector coast, tapered rivers, small regular terrain symbols, drawn towns joined by roads, a neat line, cartouche and scale bar in days on foot, charted ground revealed from blank vellum.
 - **Why:** Owner (2026-10-26), on the engine-test preview: "I like what we have and the animations but the map feels a bit disjointed. Double check the ideal map size for this game and then clean up some of the visuals. I like the generated style but I want more precise detail so it feels like an old drawn map."
+
+## D-135 Money is copper, silver and gold
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** No pennies. Game state keeps money as whole copper coins (integers, PLAN §11c); players read it as gold, silver and copper at 10 copper to the silver and 10 silver to the gold (rates in content, `packages/content/src/base/money.ts`; the engine's `splitCoins` does the split, the ui only adds the words). Names in code use `Copper` (`wageCopper`, `feeCopper`).
+- **Why:** Owner (2026-10-26): "Let's not use pennies as currency let's just use copper silver and gold"; chose 10 and 10 over 12 and 20 or 100 and 100.

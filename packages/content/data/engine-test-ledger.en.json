@@ -42,7 +42,7 @@
     "presence": "Presence",
     "resolve": "Resolve",
     "lore": "Lore",
-    "wage": "Wage in pennies a week",
+    "wage": "Wage a week",
     "level": "Level"
   },
   "ancestries": {
@@ -56,6 +56,7 @@
     "class.rogue": "Rogue",
     "class.cleric": "Cleric"
   },
+  "coins": { "gold": "g", "silver": "s", "copper": "c" },
   "conditions": {
     "fit": "Fit",
     "hurt": "Hurt",

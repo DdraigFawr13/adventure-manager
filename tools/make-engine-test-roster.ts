@@ -18,7 +18,7 @@ const ancestries = [
   ['ancestry.barrowborn', 2],
 ] as const;
 const classes = ['class.warrior', 'class.rogue', 'class.cleric'] as const;
-const classWagePennies: Record<(typeof classes)[number], number> = {
+const classWageCopper: Record<(typeof classes)[number], number> = {
   'class.warrior': 60,
   'class.rogue': 54,
   'class.cleric': 48,
@@ -98,7 +98,7 @@ for (let i = 0; i < ROWS; i += 1) {
     condition,
     morale: makeValue(rng.between(9, 14), CAUSE, moraleParts),
     attributes,
-    wagePennies: makeValue(classWagePennies[classId], CAUSE, wageParts),
+    wageCopper: makeValue(classWageCopper[classId], CAUSE, wageParts),
     contractWeeks: rng.between(2, 60),
   });
 }
