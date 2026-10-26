@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: §1–§6 written; §7..§15 to do.
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: §1–§7 written; §8..§15 to do.
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -12,7 +12,7 @@ Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked
 4. **Economy and balance.** Money, renown, knowledge: sources and sinks; difficulty curve; tuning targets (e.g. death rate by quest tier). Written below.
 5. **Progression.** Adventurers, guild and guildmaster, from first recruit to the next generation. Written below.
 6. **Onboarding, UX and accessibility.** The gentle first season, screen rules, colour-blind, keyboard and text-size support. Written below.
-7. **Launch content list.** Classes, ancestries, monsters, quest templates, sites; all as data.
+7. **Launch content list.** Classes, ancestries, monsters, quest templates, sites; all as data. Written below.
 8. **Making consequences visible.** How every outcome reaches the player (log lines, letters, inspector fields).
 9. **Risks and prototypes.** Riskiest assumptions and the cheapest test for each (quest simulation fun to watch? desk holds FM density? old-press ledgers readable?).
 10. **Playtest and metrics plan.**
@@ -426,3 +426,54 @@ Owner's note: "I like a for the first season but I like having a small prologue 
 - **Motion:** board animations and map drawing can be shortened or turned off; nothing important is shown only in motion.
 - **Sound:** every sound that carries meaning (the death bell, the key-moment drum, D-055) has a visible counterpart; optional captions for vocal sounds (D-060).
 - **Screen readers:** not promised at launch; the UI is built from labelled controls so it can be added later (assumption to check in §11).
+
+---
+
+## 7. Launch content list (Accepted 2026-10-26)
+
+Decisions: D-079..D-081. Every item is a data entry (GAME-04, D-044), so counts can grow after launch without engine work. Names are working names; final names follow STYLE §9a.
+
+### 7a. People (Accepted 2026-10-26, D-079, D-081)
+
+- **Classes: 8** (D-018), one per classic role. Working list: warrior, guardian, rogue, ranger, cleric, wizard, druid, and a bard-like support. Final names and identities are original (D-002).
+  - Per class: abilities across 10 levels (D-074); about 15 class talents, plus a shared pool of about 30 general talents.
+  - **Prestige paths: 4** at launch, opening at level 5 (D-074); multiclassing between any two classes from level 5.
+  - Casters (cleric, wizard, druid, support) draw on limited daily power with risks (D-028); each class's magic is tagged with a tradition slot left empty for later.
+- **Ancestries: 5** (Accepted 2026-10-26, D-079): two familiar peoples, two grown from the March, plus humans. Mock-up: `docs/design/mockups/ancestries.html` (option C). Names, ages and hooks are first drafts:
+  - **Marchfolk** (humans of the March): learn fastest. Prime about 24–32.
+  - **Stonewrights** (stout hill miners): shrug off poison and wounds, slow to heal from trauma. Prime about 40–80.
+  - **Lanthe** (long-lived wood folk): grow slowly, can serve under several guildmasters (Pillar 3). Prime about 60–200.
+  - **Reedfolk** (fen stilt-dwellers): parties with one travel the fens fast. Prime about 22–34.
+  - **Barrowborn** (born near the old barrows): see in the dark, sense the restless dead; the temple faction distrusts them. Prime about 24–32.
+  - Each sets attribute leanings, ageing (D-075), naming rules (D-058) and one or two traits. Later as data: Hearthlings (small folk), Grael (tusked clans), Mossbacks, Ashlings.
+- **Attributes: about 28** on the 1–20 scale (D-007), including hidden ones (potential, consistency, loyalty). Final list during the prototype (§9).
+- **Traits:** about 40 personality traits and about 60 earned traits (scars, trauma, deeds, habits).
+- **Staff roles: 6** (deputy, trainer, scout, librarian, healer, quartermaster), each with about 6 role attributes.
+- **Guildmaster backgrounds: 5** (ex-adventurer, merchant, noble, scholar, temple-raised).
+
+### 7b. Threats (Accepted 2026-10-26, D-080)
+
+- **Monsters: 36 kinds** (D-080) in 7 families (beasts, the restless dead, fen things, goblin-kind, giants and trolls, cultists and bandits, old magic), each kind with a few variants by danger rating.
+- **Named beasts:** generated from monster kinds with a name, a history and a bounty (CONCEPT §12); they remember fights and grow.
+- **Bandit and cult groups** for defence work, tied to the outlaw faction.
+
+### 7c. Places and work (Accepted 2026-10-26, D-080)
+
+- **Region:** one authored region, the March (D-030): **8 settlements**, **5 biomes** (fen, downs and woods, moor, hills and caves, coast), about 12 authored landmarks.
+- **Factions: 6**: the crown, two cities, a temple, a merchant house and the outlaws (CONCEPT §16), each with a crest, colours and naming rules.
+- **Rival guilds: 17** (3 tiers of 6 with the player, D-073), each authored: name, crest, charter, specialty, patron, home town and a few founding adventurers.
+- **Site templates** (seeded, D-030): delve sites (barrows, ruins, mines, caves, sunken chapels and so on), beast lairs, and defence sites (village, fort, bridge, mill). **20 templates** (D-080).
+- **Quest templates:** delves, hunts, bounties on named beasts, defences, plus the prologue contract (D-076). **20 templates** (D-080).
+- **Key-moment templates:** the decisions that stop the calendar (push on, retreat, spare, spend). **60 templates** (D-080), each with several text variants.
+- **Tournaments: 3** kinds (guild trials, a monster-hunt cup, an arena event), with the main one at the midsummer fair (D-067).
+
+### 7d. Guild and gear (Accepted 2026-10-26, D-080)
+
+- **Facilities: 5** × 3 levels (D-075).
+- **Gear:** 4 tiers × about 10 kit types; about 30 magic-item templates that generate storied items, plus about 10 authored legendary items placed in the region.
+- **Guild traits:** about 25 earnable traits (D-020, D-075).
+- **Charter options:** values scale, about 8 specialties, about 12 house rules.
+
+### 7e. Writing (Accepted 2026-10-26, D-080)
+
+- Letters, reports, rumours, criers' notices, Chronicle entries and conversation lines, all as templates with many variants (D-059). Target **about 6,000 template lines** (D-080), costed in §12.

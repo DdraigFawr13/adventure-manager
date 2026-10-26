@@ -471,3 +471,21 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Seven screen rules: every number shows its breakdown (from the engine); one sheet, one job; fixed top bar; every stop shows its default; confirm only the irreversible (signing, releasing, dismissing staff, revival, Deadly contracts); uncertainty shown as ranges and worded odds; never colour alone. Accessibility: colour-blind-safe statuses and heraldic charges, full remappable keyboard play, no timers, reducible motion, visible counterparts and captions for meaningful sounds; screen readers not promised at launch but the UI is built from labelled controls. Detail: `docs/design/PLAN.md` §6b–§6c.
 - **Why:** Owner accepted the draft (Plan Q6c).
+
+## D-079 Launch ancestries: two familiar, two from the March
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Five launch ancestries: Marchfolk (humans), Stonewrights (stout hill miners), Lanthe (long-lived wood folk), Reedfolk (fen stilt-dwellers) and Barrowborn (born near the barrows, distrusted by the temple). Names, ages and hooks are first drafts. Hearthlings, Grael, Mossbacks and Ashlings are candidates for later, as data. Detail: `docs/design/PLAN.md` §7a; mock-up `docs/design/mockups/ancestries.html`.
+- **Why:** Owner's choice (Plan Q7a, option C): a readable roster plus a setting signature tied to the launch quest types.
+
+## D-080 Launch content volume: standard
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** 36 monster kinds in 7 families, 20 site templates, 20 quest templates, 60 key-moment templates with text variants, about 6,000 written template lines; plus 6 factions, 17 authored rival guilds, 8 settlements, 5 biomes, 3 tournament kinds, 5 facilities, 4 gear tiers, about 30 magic-item templates and 10 legendary items, about 25 guild traits. All data; can grow after launch. Detail: `docs/design/PLAN.md` §7b–§7e.
+- **Why:** Owner's choice (Plan Q7b): repeats stay rare within a guildmaster's career at about half the writing and art cost of the rich option.
+
+## D-081 Launch people content
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** 8 classes with about 15 talents each plus about 30 shared talents; 4 prestige paths and multiclassing from level 5; caster classes carry an empty magic-tradition slot; about 28 attributes; about 40 personality and 60 earned traits; 6 staff roles; 5 guildmaster backgrounds. Detail: `docs/design/PLAN.md` §7a.
+- **Why:** Owner accepted the draft (Plan Q7c).

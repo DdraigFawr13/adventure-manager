@@ -1,0 +1,97 @@
+<title>Ancestries of the March</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+DW+Pica:ital@0;1&family=Sorts+Mill+Goudy:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: neutral page chrome; each option is a row of five paper ancestry cards on the walnut desk, in the locked palette and old-press type, with a verdict under it. */
+:root {
+  --bg: #f3f2ef; --fg: #23211e; --muted: #6a655d; --line: #d6d2ca;
+  --desk: #3b2a1e; --desk2: #2c1f16; --paper: #efe4cc; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5; --seal: #8e2a22; --brass: #b8923e; --good: #3f6f8f;
+  --title: "IM Fell English SC", Georgia, serif;
+  --letter: "IM Fell DW Pica", Georgia, serif;
+  --ledger: "Sorts Mill Goudy", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--ledger); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 40px; }
+header h1 { font-family: var(--title); font-weight: 400; font-size: 2.2rem; margin: 0; text-wrap: balance; }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 72ch; }
+.opt { display: grid; gap: 12px; }
+.opt h2 { font-family: var(--title); font-weight: 400; font-size: 1.55rem; margin: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; text-wrap: balance; }
+.rec { font-family: var(--mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; border: 1px solid currentColor; padding: 1px 6px; border-radius: 3px; }
+.lede { margin: 0; color: var(--muted); max-width: 78ch; }
+.verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 8px 24px; font-size: .95rem; }
+.verdict div { min-width: 0; }
+.verdict b { font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; font-weight: 500; }
+.desk { background: repeating-linear-gradient(92deg, var(--desk) 0 34px, var(--desk2) 34px 36px); border-radius: 6px; padding: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.card { background: var(--paper); color: var(--ink); border-radius: 3px; padding: 12px 13px 13px; display: grid; gap: 7px; align-content: start; box-shadow: 0 4px 10px rgba(0,0,0,.35); min-width: 0; position: relative; }
+.card h3 { font-family: var(--title); font-weight: 400; font-size: 1.3rem; margin: 0; line-height: 1.1; padding-right: 2.6em; }
+.kind { position: absolute; right: 9px; top: 10px; font-family: var(--mono); font-size: .6rem; letter-spacing: .08em; text-transform: uppercase; padding: 1px 5px; border-radius: 3px; border: 1px solid var(--ink2); color: var(--ink2); }
+.kind.new { border-color: var(--seal); color: var(--seal); }
+.what { font-family: var(--letter); font-style: italic; margin: 0; font-size: .98rem; line-height: 1.35; color: var(--ink); }
+dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; font-size: .88rem; border-top: 1px solid var(--rule); padding-top: 6px; }
+dt { font-style: italic; color: var(--ink2); }
+dd { margin: 0; min-width: 0; }
+.hook { margin: 0; font-size: .88rem; border-top: 1px solid var(--rule); padding-top: 6px; }
+.hook b { font-family: var(--title); font-weight: 400; color: var(--seal); }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Ancestries of the March</h1>
+    <p>Three directions for the five launch ancestries (PLAN §7a, Q7a). Names, ages and hooks are first drafts to show the direction; nothing here is final. "Prime" is when attributes peak and "decline" when they start to fall (PLAN §5a).</p>
+  </header>
+
+  <section class="opt" aria-labelledby="a">
+    <h2 id="a">A · Familiar folk, our own names</h2>
+    <p class="lede">Humans plus four peoples every fantasy player reads at a glance (stout hill folk, long-lived wood folk, small folk, tusked folk), renamed and given a March twist.</p>
+    <div class="desk">
+      <div class="card"><span class="kind">familiar</span><h3>Marchfolk</h3><p class="what">The fen and farm people of the March. Most of any roster.</p><dl><dt>Prime</dt><dd>24–32</dd><dt>Decline</dt><dd>from 35</dd><dt>Names</dt><dd>Wenna Cray, Odric Hale</dd></dl><p class="hook"><b>Hook:</b> learn fastest; one extra talent pick at level 1.</p></div>
+      <div class="card"><span class="kind">familiar</span><h3>Stonewrights</h3><p class="what">Stout miners of the northern hills, long memories, longer grudges.</p><dl><dt>Prime</dt><dd>40–80</dd><dt>Decline</dt><dd>from 90</dd><dt>Names</dt><dd>Brannoc Delveson, Hild of the Seam</dd></dl><p class="hook"><b>Hook:</b> shrug off poison and wounds; heal slowly from trauma.</p></div>
+      <div class="card"><span class="kind">familiar</span><h3>Lanthe</h3><p class="what">A few long-lived wood folk, the last of an older age.</p><dl><dt>Prime</dt><dd>60–200</dd><dt>Decline</dt><dd>from 250</dd><dt>Names</dt><dd>Isseryn, Calaveth</dd></dl><p class="hook"><b>Hook:</b> grow slowly but can serve under three guildmasters.</p></div>
+      <div class="card"><span class="kind">familiar</span><h3>Hearthlings</h3><p class="what">Small, quick, sociable folk of the market towns.</p><dl><dt>Prime</dt><dd>30–50</dd><dt>Decline</dt><dd>from 60</dd><dt>Names</dt><dd>Pim Tallow, Rosie Brack</dd></dl><p class="hook"><b>Hook:</b> lift party morale; hard to scare, easy to hurt.</p></div>
+      <div class="card"><span class="kind">familiar</span><h3>Grael</h3><p class="what">Tusked frontier clans who trade, raid and hire out their swords.</p><dl><dt>Prime</dt><dd>20–30</dd><dt>Decline</dt><dd>from 34</dd><dt>Names</dt><dd>Urska Two-Fires, Drog Marrowbone</dd></dl><p class="hook"><b>Hook:</b> strongest early; some factions distrust them.</p></div>
+    </div>
+    <div class="verdict">
+      <div><b>Good</b>A roster reads instantly; tabletop players know the roles (D-063 secondary group).</div>
+      <div><b>Cost</b>Least distinctive; easy to read as a generic fantasy game.</div>
+      <div><b>Risk</b>Must avoid any Pathfinder names or traits (D-002); the shapes are folklore, the details must be ours.</div>
+    </div>
+  </section>
+
+  <section class="opt" aria-labelledby="b">
+    <h2 id="b">B · Grown from the March</h2>
+    <p class="lede">Humans plus four peoples invented from the setting itself: the fens, the barrows, the old woods and the eastern ash moors.</p>
+    <div class="desk">
+      <div class="card"><span class="kind">familiar</span><h3>Marchfolk</h3><p class="what">The fen and farm people of the March. Most of any roster.</p><dl><dt>Prime</dt><dd>24–32</dd><dt>Decline</dt><dd>from 35</dd><dt>Names</dt><dd>Wenna Cray, Odric Hale</dd></dl><p class="hook"><b>Hook:</b> learn fastest; one extra talent pick at level 1.</p></div>
+      <div class="card"><span class="kind new">new</span><h3>Reedfolk</h3><p class="what">Quiet stilt-village people of the deep fen, web-fingered and patient.</p><dl><dt>Prime</dt><dd>22–34</dd><dt>Decline</dt><dd>from 38</dd><dt>Names</dt><dd>Sedge, Ottermere Lisk</dd></dl><p class="hook"><b>Hook:</b> parties with one travel the fens fast and never get lost.</p></div>
+      <div class="card"><span class="kind new">new</span><h3>Barrowborn</h3><p class="what">Children born near the old barrows, pale and dark-sighted. Temples watch them.</p><dl><dt>Prime</dt><dd>24–32</dd><dt>Decline</dt><dd>from 36</dd><dt>Names</dt><dd>Morrow Vane, Ashe Unwin</dd></dl><p class="hook"><b>Hook:</b> see in the dark and sense the restless dead; the temple faction distrusts them.</p></div>
+      <div class="card"><span class="kind new">new</span><h3>Mossbacks</h3><p class="what">Slow, broad people of the old woods, part bark, part breath.</p><dl><dt>Prime</dt><dd>50–150</dd><dt>Decline</dt><dd>from 180</dd><dt>Names</dt><dd>Old Haw, Rowan-under-Hill</dd></dl><p class="hook"><b>Hook:</b> outlast anything; slow to learn and slow to anger.</p></div>
+      <div class="card"><span class="kind new">new</span><h3>Ashlings</h3><p class="what">Warm-skinned herders of the eastern ash moors, at home near fire.</p><dl><dt>Prime</dt><dd>20–30</dd><dt>Decline</dt><dd>from 33</dd><dt>Names</dt><dd>Kesra Embry, Tamsin Cole</dd></dl><p class="hook"><b>Hook:</b> resist fire and cold; restless in walls, love the open moor.</p></div>
+    </div>
+    <div class="verdict">
+      <div><b>Good</b>Strongest identity; every ancestry ties into a place, faction or monster family (WS-05).</div>
+      <div><b>Cost</b>Every ancestry must be taught; more art invention for portraits (STYLE §7).</div>
+      <div><b>Risk</b>A roster is harder to read in the first hours.</div>
+    </div>
+  </section>
+
+  <section class="opt" aria-labelledby="c">
+    <h2 id="c">C · Two familiar, two from the March <span class="rec">Recommended</span></h2>
+    <p class="lede">Humans, the two most useful familiar peoples (stout hill folk and long-lived wood folk), and the two new peoples most tied to the launch content: Reedfolk for the fens and Barrowborn for the barrows and the restless dead.</p>
+    <div class="desk">
+      <div class="card"><span class="kind">familiar</span><h3>Marchfolk</h3><p class="what">The fen and farm people of the March. Most of any roster.</p><dl><dt>Prime</dt><dd>24–32</dd><dt>Decline</dt><dd>from 35</dd><dt>Names</dt><dd>Wenna Cray, Odric Hale</dd></dl><p class="hook"><b>Hook:</b> learn fastest; one extra talent pick at level 1.</p></div>
+      <div class="card"><span class="kind">familiar</span><h3>Stonewrights</h3><p class="what">Stout miners of the northern hills, long memories, longer grudges.</p><dl><dt>Prime</dt><dd>40–80</dd><dt>Decline</dt><dd>from 90</dd><dt>Names</dt><dd>Brannoc Delveson, Hild of the Seam</dd></dl><p class="hook"><b>Hook:</b> shrug off poison and wounds; heal slowly from trauma.</p></div>
+      <div class="card"><span class="kind">familiar</span><h3>Lanthe</h3><p class="what">A few long-lived wood folk, the last of an older age.</p><dl><dt>Prime</dt><dd>60–200</dd><dt>Decline</dt><dd>from 250</dd><dt>Names</dt><dd>Isseryn, Calaveth</dd></dl><p class="hook"><b>Hook:</b> grow slowly but can serve under three guildmasters.</p></div>
+      <div class="card"><span class="kind new">new</span><h3>Reedfolk</h3><p class="what">Quiet stilt-village people of the deep fen, web-fingered and patient.</p><dl><dt>Prime</dt><dd>22–34</dd><dt>Decline</dt><dd>from 38</dd><dt>Names</dt><dd>Sedge, Ottermere Lisk</dd></dl><p class="hook"><b>Hook:</b> parties with one travel the fens fast and never get lost.</p></div>
+      <div class="card"><span class="kind new">new</span><h3>Barrowborn</h3><p class="what">Children born near the old barrows, pale and dark-sighted. Temples watch them.</p><dl><dt>Prime</dt><dd>24–32</dd><dt>Decline</dt><dd>from 36</dd><dt>Names</dt><dd>Morrow Vane, Ashe Unwin</dd></dl><p class="hook"><b>Hook:</b> see in the dark and sense the restless dead; the temple faction distrusts them.</p></div>
+    </div>
+    <div class="verdict">
+      <div><b>Good</b>Readable roster plus a setting signature; the new peoples feed the launch quest types (delves, the fens).</div>
+      <div><b>Cost</b>Two peoples to teach; small folk and tusked folk wait for later (as data).</div>
+      <div><b>Note</b>Long-lived Lanthe serving under several guildmasters is a strong Pillar 3 hook, but careers still end mostly by danger (D-071), not age.</div>
+    </div>
+  </section>
+</div>
