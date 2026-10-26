@@ -4,10 +4,11 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Phase
 
-3 of 3: Full plan → `docs/design/PLAN.md`. Concept locked (D-045); style locked (D-061); plan outline approved (D-062). PLAN.md Part A §1–§10 written (D-063..D-089); §11 written (D-090, D-091); §12..§15 to do.
+3 of 3: Full plan → `docs/design/PLAN.md`. Concept locked (D-045); style locked (D-061); plan outline approved (D-062). PLAN.md Part A §1–§10 written (D-063..D-089); §11–§12 written (D-090..D-098); §13..§15 to do.
 
 ## Just done
 
+- 2026-10-26 PLAN.md §12 accepted: kingdom map hand-drawn base now, procedural later, launch layers factions, guilds, action, threats (D-097; D-087 amended; mock-up `kingdom-map.html`); asset lists, rough costs (art $23k–74k, audio $9k–37k) and pipeline (D-098). Story-Generator repo review for map art direction under way.
 - 2026-10-26 Tools review accepted (D-094); fresh session per merged PR or plan section (D-095); deny secret reads and ask before force-push in `.claude/settings.json` (D-096).
 - 2026-10-26 Tools and skills review drafted: `docs/design/TOOLS-REVIEW.md`, page https://claude.ai/artifact/UiwdssAjKy2dnZ73pzJfeB. Adopted: docs checker, mock-up script, one setup audit (D-092); adversarial review before every PR (D-093). Ripgrep: useful, already in use; caveman skill: not adopted.
 - 2026-10-26 PLAN.md §11 accepted: engine chosen after a two-engine test, web tech (Electron, TypeScript) vs Godot 4 (C#), as prototype step 0 (D-090); engine-neutral architecture with the event log as spine, integer determinism, JSON packs, safe versioned saves (D-091).
@@ -31,8 +32,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Next
 
-1. PLAN.md §12 (art and audio production, including the kingdom map workshop, D-087), then §13..§15. Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
-2. In §12 (art and audio production): cost the art (map art, ink renderer, face part library, two icon sizes, painted portraits later). Ledger readability is settled for now (D-084), to confirm on real monitors in prototype R4.
+1. PLAN.md §13 (milestones), then §14 (budget, team, business: turn §12's rough costs into a budget), then §15. Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
 
 ## Open questions
 

@@ -526,6 +526,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-26) as a launch goal; design to workshop.
 - **Decision:** Launch includes a kingdom map of the March in a striking, on-theme fantasy style showing areas and locations, the player's and rival guilds, current action, and the deeds done across the region. It builds on the home-screen region map (D-049) and is a consequence surface (PLAN §8a). Style, layers and interactions are workshopped with the art plan (PLAN §12). Detail: `docs/design/PLAN.md` §1a.
+- **Amended (2026-10-26, D-097):** launch layers are factions, guilds, action and threats; deeds and rumours on the map come later.
 - **Why:** Owner's request: the region should be a place the player wants to look at, where the guild's history is visible (Pillars 3 and 4).
 
 ## D-088 Data collection: playtest logs, nothing sent from release
@@ -581,3 +582,15 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** `.claude/settings.json` denies reading `.env`, `.env.*` and `secrets/**`, and asks before any `git push` with `--force` (including `--force-with-lease`) or `-f`. Limit: a Read deny covers the file tools and input redirects, not a shell program reading the same file; the sandbox would be needed to enforce that. Also allows `node tools/docs-check.mjs` without a prompt.
 - **Why:** Setup audit finding (owner approved): there were 19 allow rules and no deny or ask rules; SAFE-02 and GIT-03 were instructions only.
+
+## D-097 Kingdom map: hand-drawn base, four launch layers
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The launch March has a hand-illustrated base map in layers; live marks and later generated regions use the procedural ink renderer built for the quest board. Launch layers: areas and places, factions, guilds (with tier), action (moving parties, key-moment seals) and threats (spreading stains, closed roads), each linked to its Trace. Deeds and rumours on the map come later (meanwhile Chronicle and inbox). The map is to look better over time; the owner's Story-Generator repository is a lead for its art direction. Detail: `docs/design/PLAN.md` §12d; mock-up `docs/design/mockups/kingdom-map.html`.
+- **Why:** Owner's choice (Plan Q12a): the best-looking launch map with a path to generated regions; a smaller launch layer set.
+
+## D-098 Art and audio production lists and rough costs
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** An artist draws parts and set pieces; code assembles them (portraits ~200 parts, crests, site maps from ~60 stamps per biome); monsters 72 pieces, icons ~240 drawings, 26 initials, ~10 legendary items, a few textures; a ledger font cut only if D-084's real-monitor check fails. Audio: 60–90 min of commissioned early-music ambience, ~150 desk sounds, 5 biome beds, ~10 stingers, ~40 name-free vocal sounds. Rough estimates: art $23,000–74,000, audio $9,000–37,000, refined in PLAN §14 and replaced by quotes. Pipeline: layered sources exported by script, an asset licence ledger, OFL fonts, contracts that transfer the needed rights. AI-generated images for exploration only (D-094). Detail: `docs/design/PLAN.md` §12a–§12c, §12e.
+- **Why:** Owner accepted the draft (Plan Q12b) and asked for a review of the Story-Generator repository's map code for art direction.

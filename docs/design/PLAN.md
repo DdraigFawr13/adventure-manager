@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: Part A (§1–§10) and §11 written; §12..§15 to do.
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: Part A (§1–§10), §11 and §12 written; §13..§15 to do.
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -20,7 +20,7 @@ Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked
 ## Part B: Production
 
 11. **Technology and architecture.** Engine choice, deterministic simulation package, data formats, saves, modding, optional AI flavour. Written below.
-12. **Art and audio production.** What an artist makes vs what is generated, with costs.
+12. **Art and audio production.** What an artist makes vs what is generated, with costs. Written below.
 13. **Milestones.** Prototype, vertical slice, alpha, free demo, beta, launch, post-launch roadmap (painted portraits, standee animations, bardic songs, war campaigns).
 14. **Budget, team and business assumptions.**
 15. **Quality, CI and release process.**
@@ -497,7 +497,7 @@ Each outcome reaches the player through one or more of these, from immediate to 
 | Week report (D-068) | Digest: results, injuries, money, morale moves | Weekly |
 | Letters (D-043) | Consequences that need or deserve attention, from a person in the world | When they land |
 | Criers and gossip (D-043) | Public news: rankings, rivals' deeds, region changes | When they land |
-| Region map (D-049), raised to the kingdom map (D-087) | Areas and locations, guilds, parties and rivals in action, threats, faction colours, rumours, marks of past deeds | Always |
+| Region map (D-049), raised to the kingdom map (D-087, D-097) | Areas and locations, factions, guilds, parties and rivals in action, threats (deeds and rumours on the map later) | Always |
 | Inspector fields | Every person, item, place and faction: value, breakdown (D-078) and dated history | On demand |
 | Chronicle and Hall of Heroes (D-042) | Deeds, deaths, storied items, records | Permanent |
 | Year in review (D-067) | The year's biggest causes and effects | Year's end |
@@ -685,3 +685,72 @@ flowchart LR
 - Minimum screen 1366×768; 60 fps on the map and board on a mid-range laptop from about 2020.
 - A day tick with no stop under 50 ms; a headless simulated year under 1 s (for the 1,000-year runs in §9).
 - Save and load under 1 s for a 30-year save.
+
+---
+
+## 12. Art and audio production (Accepted 2026-10-26)
+
+Decisions: D-097, D-098. Inputs: STYLE §1–§8 (locked), content volume (D-080), kingdom map goal (D-087), tools review (D-094). **All costs are rough estimates** (REP-01) from typical freelance rates; §14 turns them into a budget, and real quotes replace them.
+
+### 12a. Made by hand vs generated (Accepted 2026-10-26, D-098)
+
+The rule: an artist draws **parts and set pieces**; code **assembles** them (GAME-04). Generated images from AI tools are for exploration only, never shipped, until licence and store-disclosure checks pass (D-094).
+
+| Asset | Made by | How much (launch) |
+|---|---|---|
+| Kingdom map of the March (D-087) | Artist (base) + code (live layers) | 1 base map in layers, plus marks and banners (§12d) |
+| Quest-board site maps (STYLE §4) | Code: an ink renderer draws site templates from an artist's stamp library | ~60 stamps per biome × 5 biomes |
+| Portraits (STYLE §7) | Artist draws parts; code assembles by seed | ~200 parts across 5 ancestries |
+| Monsters | Artist | 36 kinds × (standee + hatched card) = 72 pieces |
+| Icons (STYLE §6) | Artist | ~120 icons × 2 levels; ~40 card icons tinted |
+| Crests and seals | Artist draws charges and frames; code assembles | 6 factions, 17 rival guilds, a crest builder for the player |
+| Decorated initials (STYLE §5) | Artist | 26 letters |
+| Legendary items | Artist | ~10 illustrations |
+| Desk, paper, ledgers, seals | Mostly code (CSS or shaders) plus a few textures | ~15 textures |
+| Ledger font cut and symbol font (D-052) | Type designer, only if the ledger fails the real-monitor check (D-084) | 1 cut, ~150 symbols |
+
+### 12b. Audio (Accepted 2026-10-26, D-098)
+
+| Asset | Made by | How much (launch) |
+|---|---|---|
+| Ambient early-music (STYLE §8) | Commissioned composer, small ensemble | 60–90 min of loopable pieces |
+| Desk sounds (quill, pages, seals, candle, rain) | Licensed library plus custom recordings | ~150 sounds |
+| Biome ambience for the board | Licensed library, edited | 5 beds |
+| Big-moment stingers (drum, bell) | Composer | ~10 |
+| Vocal sounds (D-060) | Voice actors, name-free | ~40 short sounds |
+| Bardic songs (D-056) | After launch | — |
+
+### 12c. Cost estimate (rough) (Accepted 2026-10-26, D-098)
+
+| Area | Low | High | Basis (estimate) |
+|---|---|---|---|
+| Kingdom map | $3,000 | $10,000 | Layered illustrated map plus mark and banner sets |
+| Site stamps (5 biomes) | $3,000 | $8,000 | ~300 small ink pieces |
+| Portrait parts | $4,000 | $12,000 | ~200 parts at $20–60 |
+| Monsters | $6,000 | $18,000 | 72 pieces at $80–250 |
+| Icons | $3,000 | $8,000 | ~240 drawings, small |
+| Crests, seals, initials, items | $3,000 | $8,000 | Parts and ~36 set pieces |
+| Textures and UI art | $1,000 | $4,000 | |
+| Type (only if needed) | $0 | $6,000 | D-052 fallback |
+| **Art total** | **$23,000** | **$74,000** | |
+| Music (60–90 min) | $6,000 | $25,000 | Higher end for live players |
+| Sound effects and ambience | $2,000 | $8,000 | Library licences plus custom |
+| Vocal sounds | $1,000 | $4,000 | |
+| **Audio total** | **$9,000** | **$37,000** | |
+
+Ways to bring it down, in order of least harm: fewer monster kinds at launch (D-080 allows growth after), reuse portrait parts across ancestries, library music for winter and menus, one artist for map and icons so the style holds.
+
+### 12d. Kingdom map workshop (Accepted 2026-10-26, D-097)
+
+Mock-up: `docs/design/mockups/kingdom-map.html` (interactive: base style and layer switches).
+
+- **Base: hand-illustrated now, procedural later.** The launch March gets a hand-illustrated base map in layers; live marks and later generated regions (D-030) use the procedural ink renderer built for the quest board. Owner's note: "Go with c. But the map will need to look better eventually. The story generator repo might have some use there because it has a good starting point for a map that I would just want more detail on for a region to give it more life." The `DdraigFawr13/Story-Generator` repository is a lead for the art-direction work (not yet reviewed).
+- **Launch layers:** areas and places (always), **factions** (who holds sway where), **guilds** (banners with ranking tier), **action** (parties and rivals moving, key-moment seals), **threats** (spreading ink stains, closed roads). Each mark links to its Trace (D-082).
+- **Later:** **deeds** on the map (inked cartouches, the fallen with a mourning corner; meanwhile deeds live in the Chronicle, D-042) and **rumours** as pencil notes (meanwhile in the inbox, D-043).
+
+### 12e. Pipeline and licences (Accepted 2026-10-26, D-098)
+
+- Art in layered source files, exported by a script to the sizes the game needs; never edited by hand after export.
+- Every asset gets a line in an asset ledger (`assets/LICENSES.md`): who made it, licence, date, source file (SAFE-05).
+- Fonts: OFL faces only (STYLE §5); check Reserved Font Names before any renamed cut.
+- Contracts with artists and composers transfer the rights the game needs; drafted when hiring (SAFE-01).
