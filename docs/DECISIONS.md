@@ -823,4 +823,24 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** No pull request is created until (1) an independent adversarial review of the whole branch diff has run (D-093, D-107) and its findings are fixed or reported, and (2) the owner has seen the findings and approved. After approval, Claude creates the PR and, once CI is green with no open review thread or conflict, marks it ready and merges it without asking again. Commits added after approval need a fresh review and approval before merging. This overrides the session default of opening a draft PR right after pushing. Amends D-093.
 - **Why:** Owner's rule (2026-10-26), after PR #11 was opened with its second commit reviewed only by the main session: "don't create the PR until after the adversarial review and my approval. Then you can create prs and merge when they are ready."
+- **Amended (2026-10-26):** the review's findings, and what was done about each, are also published as an artifact (a private page) and linked when asking for approval. Owner: "in future I would like to see the results of the adversarial review in an artifact as well".
 
+
+## D-134 Engine-test map: one region, about 300 × 200 km, drawn finer
+
+- **Status:** Accepted (2026-10-26) for the engine test; the size is Claude's default from the owner's request, to confirm when the March is authored (PLAN §7c).
+- **Decision:** The kingdom map shows the March as one land region, not a continent: about 300 × 200 km (3:2), so the farthest sites are about 9–10 days' walk from a central guild hall, which fits quests of 2–4 weeks including travel (PLAN §2a) at about 20–25 km a day on foot. Baked at 1 km a cell (300 × 200 cells) and 8 px a cell (a 2,400 × 1,600 px sheet); it opens fitted at 1366×768 and zooms in about 2.6× from there (to a little past 1:1, where the 8 px a cell atlas stays crisp). Sea along one edge, as in the chosen mock-up (`docs/design/mockups/kingdom-map.html`). Finer old-map detail: vector coast, tapered rivers, small regular terrain symbols, drawn towns joined by roads, a neat line, cartouche and scale bar in days on foot, charted ground revealed from blank vellum.
+- **Why:** Owner (2026-10-26), on the engine-test preview: "I like what we have and the animations but the map feels a bit disjointed. Double check the ideal map size for this game and then clean up some of the visuals. I like the generated style but I want more precise detail so it feels like an old drawn map."
+- **Amended (2026-10-26):** villages between the settlements: 18 hamlets on dry land by a road, river or shore, spread evenly by the bake (`tools/worldgen/layout-villages.ts`), drawn as two or three cottages with a smaller italic name. The 8 settlements stay the launch number and the places contracts come from (PLAN §7c, D-080); villages are scenery until a design gives them a role. Unexplored vellum covers only the far corner the party is bound for. Owner: "I like it but add more towns around the areas."
+
+## D-135 Money is copper, silver and gold
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** No pennies. Game state keeps money as whole copper coins (integers, PLAN §11c); players read it as gold, silver and copper at 10 copper to the silver and 10 silver to the gold (rates in content, `packages/content/src/base/money.ts`; the engine's `splitCoins` does the split, the ui only adds the words). Names in code use `Copper` (`wageCopper`, `feeCopper`).
+- **Why:** Owner (2026-10-26): "Let's not use pennies as currency let's just use copper silver and gold"; chose 10 and 10 over 12 and 20 or 100 and 100.
+
+## D-136 Exploring the wilds (owner's wish, after launch)
+
+- **Status:** Accepted as a goal (2026-10-26); design, tier and timing not decided.
+- **Decision:** Eventually the guild can send explorers into wild, uncharted areas of the March to uncover hidden places, items and other finds. It joins three things already planned and should be designed with them, not bolted on (WS-05): expeditions (Early update, CONCEPT §28), the map's charted and uncharted ground (the engine-test fog revealed in ink, D-134), and the owner's R1 notes on hidden items and multiple pathways (D-132). Finds are content data (GAME-04). Not built now.
+- **Why:** Owner (2026-10-26): "another thing I want eventually is like wild areas to send explorers to and maybe uncover hidden places or items or stuff like that".

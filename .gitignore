@@ -2,3 +2,4 @@ mockup-shots/
 .claude/worktrees/
 node_modules/
 dist/
+dist-engine-test/

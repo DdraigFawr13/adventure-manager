@@ -8,6 +8,13 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Just done
 
+- 2026-10-26 Engine test built (1.8, D-110, branch `ccr-992bbdd5-ilxv36`), awaiting owner approval for the PR (D-133).
+  - Shell: `packages/shell` (Electron 44.9.3; 44.7.0 had a high advisory) opens 1366×768 on the `packages/ui` engine-test page, local OFL fonts (`packages/ui/fonts/SOURCES.md`).
+  - Ledger: 30 generated rows (`tools/make-engine-test-roster.ts`), sorting, engine `Value` breakdowns on hover and keyboard focus, size slider, clear print, wages in gold, silver and copper (D-135).
+  - Map (D-134): the March as one 300 × 200 km sheet cut from a generated world (Story-Generator stages in `tools/worldgen`, bake `node tools/bake-map.ts`, seed march-7), 8 settlements, 18 villages, roads, one vellum corner the party charts; a test checks the committed base equals a fresh bake.
+  - Measured (`xvfb-run -a node tools/engine-test-measure.mjs`, needs the container's global Playwright 1.64.1; software rendering, so fps is a floor): build 1.0 s, map drawn 1.6 s after launch, map 48 fps idle and 44 under pan and zoom, 30 ledger rows at 15 px, no unlabelled controls, ~550–650 MB across Electron's processes. 150% text scrolls the ledger sideways at 1366 px. Real fps needs the owner's Windows machine.
+  - Preview: https://claude.ai/artifact/CyavGB8AYH7WfLR2PFDqYR. Two review rounds (D-093): findings and fixes in the review page linked from the approval ask.
+- 2026-10-26 Year simulator first slice (1.9) built on local worktree branch `worktree-agent-aeb03ac530d41483e` (commit fc36548, not pushed): `packages/engine/src/guild/`, `tools/year-sim.ts`. Bring it onto a fresh branch from `main` after the engine-test PR merges; it still needs review and owner approval. 1,000 years, default plan: deaths 4 a year (target ~2), quests 12.7 per party, surplus +15%, stops 72; bold plan wins money in 92% of seeds (§9d miss). Owner questions to ask: the reference party for death targets, and the dominant bold plan.
 - 2026-10-26 R1 passes with notes (D-132): owner watched 10 quests. Notes: name skills and spells in the log (done: action lines start with the name), make logs more meaningful (UI will change a lot), "a little hollow", hidden items, traps and multiple pathways later. Independent review of tuning pass 2 fixed (D-093): guard-bypass test now has a guard, risk-scope test covers every purpose, D-131 states the ratios plainly.
 - 2026-10-26 Tuning pass 2 (branch `ccr-f4ba6159-q2lwja`): the risk lever was backwards (hazardous, leader's call: cautious 0.91%, steady 0.69%, bold 0.50% deaths). Owner chose overreach (D-131): a bad attack miss lets the foe strike back at once; risk now touches only scene tests and attacks. Retuned death roll 35%, bleed 30%, mill cellar harder. `node tools/resolution-sweep.ts 4000`, prototype party, cautious / default / reckless: hazardous 0.48 / 0.65 / 0.88%, routine 0.14 / 0.18 / 0.18%, perilous 1.21 / 2.31 / 4.96%; injuries per death 4.8 / 6.0 / 2.8 at default. Measured spread between seed sets is about ±15% (barrow reckless 0.88–1.18%). SPEC numbers synced with content.
 - 2026-10-26 Owner's first R1 note: foes never seemed to act. Measured 0–2 foe attacks per fight; fixed with speed order and per-group hits (D-129); fights now ~3 exchanges with 1–5 foe attacks. Then class signature actions (D-130: guard, cleave, scout, strike from shadow, mend, ward) and a retune: sample party at the leader's call now 0.59% / 0.07% / 2.15% deaths on hazardous / routine / perilous (targets 0.8 / 0.2 / 2.5%).
@@ -22,7 +29,8 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 1. R1 passed (D-132). Its notes (meaningful logs, hollowness, traps, hidden items, branching paths) wait for quest template design and the slice; ask the owner before building any of them.
 2. Tuning left: reckless doubles deaths only on the perilous chapel (hazardous ~1.35×, routine ~1×: a never-retreat party wins 99% and 100% there); perilous injuries per death ~3 vs ~5. Deadly needs a template. Decide whether §4c's ratios are per contract or across the year's mix before tuning further.
-3. Web-first engine test (D-110): ledger and kingdom map in Electron + TypeScript, reusing Story-Generator map code (D-116). Godot only if web misses its bar. Time-boxes and stop rules: PLAN §9b (D-111).
+3. Engine test verdict (D-110): the owner judges look and feel from the preview and, ideally, runs `npm start -w @adventure-manager/shell` on Windows for real fps (60 fps bar at 1366×768). Godot only if web misses its bar.
+4. Headless year simulator (1.9) first slice: one guild, no rivals, three classes (`packages/engine/src/guild/`, `tools/year-sim.ts`).
 
 ## Open questions
 
@@ -31,6 +39,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 - Kingdom map art direction continues past §12 (D-097): Story-Generator layout as the artist's base.
 - Later: 20 class levels (D-074) need a pacing decision; facility compound / city-building style guildhall (D-075) not scoped.
 - Intrigue and underhanded dealings (owner's note, D-069): Later tier; content not decided.
+- Exploring the wilds (owner's wish, D-136): explorers uncover hidden places and items; design with expeditions, the map's charting and the R1 hidden-items note; tier not set.
 - Old-press ledger readability: 15 px minimum (D-084), confirm on real monitors in R4; fallback is our own Goudy ledger cut (D-052). Use lining figures (`lining-nums`) for all numbers: the face's default figures are old-style and proportional (measured 13.6–20.8 px wide at 40 px; lining 21.1 px each). Clear print (D-077) is the player-side option. Minimum size asked in PLAN §9c.
 - "More fantasy flair" for the quest board art (STYLE.md §4) needs defining when art direction starts.
 - Bardic songs (after launch, D-056): sung or instrumental not decided.
@@ -39,7 +48,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 ## Working style with the owner
 
 - End the session after each merged PR or finished plan section; the next one starts here (D-095).
-- PRs (D-133): independent adversarial review of the whole branch diff, then the owner's approval, then create the PR; merge it yourself once CI is green. Commits after approval need a new review and approval.
+- PRs (D-133): independent adversarial review of the whole branch diff, its findings and fixes published as an artifact and linked, then the owner's approval, then create the PR; merge it yourself once CI is green. Commits after approval need a new review and approval.
 - Every session updates and republishes `docs/roadmap.html` to https://claude.ai/artifact/FTio9mE7jLaK4Wrn189YAg (D-128); read the live artifact first, then publish with its `url`.
 - Ask one question at a time as a popup (AskUserQuestion) with a recommendation and room for notes; record each answer in the design doc and DECISIONS.md immediately. "[No preference]" means skipped, not approved; show long content in chat, not only in option previews.
 - The owner often combines or extends options in the notes ("B but with more fantasy flair"); record their words as an owner's note and treat unselected extras as Proposed until approved.

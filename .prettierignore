@@ -10,3 +10,4 @@ package-lock.json
 tools/docs-check.mjs
 tools/mockup-shot.mjs
 .github/
+packages/ui/assets/engine-test/map-base.json

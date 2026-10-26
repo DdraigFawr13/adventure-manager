@@ -25,7 +25,9 @@
     "packages/*/test",
     "tools/test",
     "tools/*.ts",
+    "tools/worldgen",
     "vitest.config.ts",
-    "packages/ui/vite.config.ts"
+    "packages/ui/vite.config.ts",
+    "packages/ui/vite.engine-test.config.ts"
   ]
 }

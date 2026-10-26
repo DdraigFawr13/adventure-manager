@@ -14,7 +14,7 @@ Written at the start of M1, before the first line of game code (D-114, PLAN §11
 - One entry point: `simulate(state, command) → { state, events }`, used for preview and commit. Nothing else changes game state.
 - No clock, no `Math.random`, no I/O, no DOM, no `process`, no `Intl` or `localeCompare` (results differ by machine), no timers. Time arrives in commands.
 - Package boundaries are checked by `tools/check-boundaries.mjs`, the project's lint (D-114; it needs no extra dependency under D-117): the engine imports only itself; content imports only itself and the engine; ui, shell and tools import engine and content, never each other. The same script enforces the type rules above, the banned globals and the banned Math functions, and has its own tests. It runs in `npm run check`; CI runs it once `ci.yml` gains that step (HANDOFF Next).
-- **Integers only** in game state (PLAN §11c): money in pennies, stats as whole numbers, chances in basis points (1 bp = 1/10,000). No `Math.sin`, `exp`, `pow`, `log` and similar in the engine (they can differ between JS engines); use integer maths or lookup tables. Rounding is explicit and named (`divRoundDown`, `divRoundHalfUp`).
+- **Integers only** in game state (PLAN §11c): money in copper coins (D-135), stats as whole numbers, chances in basis points (1 bp = 1/10,000). No `Math.sin`, `exp`, `pow`, `log` and similar in the engine (they can differ between JS engines); use integer maths or lookup tables. Rounding is explicit and named (`divRoundDown`, `divRoundHalfUp`).
 - Ordering is explicit: iterate arrays or sorted ids, never rely on object or `Map` insertion order across saves; sort with a comparator on ids.
 
 ## Engine foundations (PLAN §11h)
@@ -42,7 +42,7 @@ Written at the start of M1, before the first line of game code (D-114, PLAN §11
 ## Naming and size
 
 - Files `kebab-case.ts`; types and classes `PascalCase`; functions and variables `camelCase`; constants `UPPER_SNAKE` only for true constants.
-- Units in names when a number has one: `wagePennies`, `hitChanceBp`, `lengthDays`.
+- Units in names when a number has one: `wageCopper`, `hitChanceBp`, `lengthDays`.
 - Content ids are lowercase `kind.name` (`monster.marsh-wight`, `site.old-mill`) and never change once shipped (saves reference them).
 - Files stay under about 300 lines; one system per folder with its rules, its types and its tests side by side.
 - Comments say why, not what. Each system's folder starts with its half-page rules spec (`SPEC.md`), written just before the code (PLAN §11i).

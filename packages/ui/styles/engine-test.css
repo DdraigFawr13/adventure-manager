@@ -1,0 +1,142 @@
+/* Engine-test window (D-110). Fonts are local OFL files (packages/ui/fonts/SOURCES.md) so the
+   desktop shell works offline. The ledger is the clean data layer (STYLE §1): plain paper, no
+   texture behind numbers, 15 px minimum with lining figures (D-084), clear print per D-077. */
+@font-face {
+  font-family: 'IM Fell English SC';
+  src: url('../fonts/IMFeENsc28P.ttf') format('truetype');
+  font-display: block;
+}
+@font-face {
+  font-family: 'IM Fell DW Pica';
+  src: url('../fonts/IMFePIrm28P.ttf') format('truetype');
+  font-display: block;
+}
+@font-face {
+  font-family: 'Sorts Mill Goudy';
+  src: url('../fonts/SortsMillGoudy-Regular.ttf') format('truetype');
+  font-display: block;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('../fonts/SourceSerif4-Variable.ttf') format('truetype');
+  font-weight: 200 900;
+  font-display: block;
+}
+
+:root {
+  --desk: #3b2a1e;
+  --desk-2: #2c1f16;
+  --paper: #efe4cc;
+  --paper-2: #e6d8b9;
+  --sheet: #f6efdf;
+  --ink: #2a2017;
+  --ink-2: #6b5a45;
+  --rule: #d6c6a5;
+  --seal: #8e2a22;
+  --brass: #b8923e;
+  --good: #3f6f8f;
+  --warn: #9a6a0e;
+  --bad: #8e2a22;
+  --title: 'IM Fell English SC', Georgia, serif;
+  --ledger: 'Sorts Mill Goudy', Georgia, serif;
+  --et-scale: 1;
+  --et-text: calc(15px * var(--et-scale));
+  color-scheme: light;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--desk-2);
+  color: var(--ink);
+}
+
+body {
+  font-family: var(--ledger);
+  font-variant-numeric: lining-nums tabular-nums;
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+}
+
+.et-app {
+  height: 100%;
+  max-width: 100vw;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.et-clear-print {
+  --ledger: 'Source Serif 4', Georgia, serif;
+}
+
+.et-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  padding: 6px 16px;
+  background: linear-gradient(var(--desk), var(--desk-2));
+  border-bottom: 2px solid var(--brass);
+  color: var(--paper);
+  font-size: 15px;
+}
+
+.et-tabs {
+  display: flex;
+  gap: 4px;
+  margin-right: auto;
+}
+
+.et-tabs button {
+  font: 17px var(--title);
+  color: var(--paper);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px 3px 0 0;
+  padding: 4px 14px;
+  cursor: pointer;
+}
+
+.et-tabs button[aria-selected='true'] {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--brass);
+}
+
+.et-tabs button:focus-visible,
+.et-setting input:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+.et-setting {
+  accent-color: var(--brass);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.et-setting output {
+  min-width: 3.5ch;
+  text-align: right;
+}
+
+.et-panel {
+  min-height: 0;
+  overflow: auto;
+}
+
+.et-tabpanel {
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
