@@ -170,7 +170,7 @@ tr.sel td:first-child { box-shadow: inset 3px 0 0 var(--seal); }
 <div class="page">
   <div class="intro">
     <h1>Guild desk ledgers</h1>
-    <p><b>Round 3.</b> Your notes: click a name for the person's card (portrait, attributes, kit, record); group the roster by party; a Line column says who stands at the front or back (clerics start at the back, where foes strike less); select a contract for its art panel and details. Round 1 (seed desk-1) had every answer right but none under 10 s. Round 2 added a Find box on every ledger (press /), a roster sorted by name, a column highlight under the pointer, a sortable board, and keys R, F and C for the ledgers; the clock now starts after you have read each question. New seed, so the names and numbers are new.</p>
+    <p><b>Round 3.</b> Your notes: click a name for the person's card (portrait, attributes, kit, record); group the roster by party; a Line column says who stands at the front or back (clerics start at the back, where each member is half as likely to be targeted); select a contract for its art panel and details. Round 1 (seed desk-1) had every answer right but none under 10 s. Round 2 added a Find box on every ledger (press /), a roster sorted by name, a column highlight under the pointer, a sortable board, and keys R, F and C for the ledgers; the clock now starts after you have read each question. New seed, so the names and numbers are new.</p>
     <p>R4 desk-density test (PLAN §9a). Pass line: 25 or more roster rows visible at 1366 px, and you can find 5 set facts in under 10 seconds each. The data is a real simulated guild: 30 adventurers in six parties, played to the start of week 23 by the engine (seed below). Only Roster, Finances and Contracts are built; the other tabs are greyed.</p>
   </div>
   <div class="controls">
@@ -286,7 +286,8 @@ function rosterSheet() {
     const order = [...groups.entries()].sort(([ka, a], [kb, b]) => (ka.startsWith('~') - kb.startsWith('~')) || (b.out - a.out) || (ka === '~dead') - (kb === '~dead') || (a.label < b.label ? -1 : 1));
     body = order.map(([key, g]) => { const away = g.people.find((p) => p.status.kind === 'away');
       // Name a party after its own best-Wits member, so the name is always someone in it.
-      const lead = [...g.people].sort((x, y) => y.attributes.wits - x.attributes.wits || (x.name < y.name ? -1 : 1))[0];
+      const everyone = DATA.roster.filter((p) => p.status.kind !== 'dead' && p.party && p.party.key === key);
+      const lead = [...(everyone.length ? everyone : g.people)].sort((x, y) => y.attributes.wits - x.attributes.wits || (x.name < y.name ? -1 : 1))[0];
       const label = key.startsWith('~') ? g.label : `${lead.name}'s party`;
       return `<tr class="grp"><td colspan="${cols}">${esc(label)} <span class="at">· ${g.people.length} ${g.people.length === 1 ? 'member' : 'members'}${away ? ` · out at ${esc(away.status.where)}, home ${wk(away.status.day)}` : ''}</span></td></tr>` + g.people.map(row).join(''); }).join('');
   } else body = rows.map(row).join('');
@@ -379,12 +380,12 @@ function cameo(p) {
 }
 
 const LINE_NOTE = {
-  front: 'Front line: foes aim at the front line two to one over the back.',
-  back: 'Back line: foes aim at the front line two to one, so the back line is struck less often. Clerics start at the back.',
+  front: 'Front line: each front-line member is twice as likely to be a foe\'s target as each back-line member.',
+  back: 'Back line: each back-line member is half as likely to be a foe\'s target as each front-line member. Clerics start at the back.',
 };
 function personCard(p) {
   const [k, t] = statusText(p);
-  const pron = { she: 'she / her', he: 'he / him', they: 'they / them' }[p.pronouns];
+  const pron = { she: 'she / her', he: 'he / him', they: 'they / them' }[p.pronouns] ?? 'they / them';
   const hist = p.history.slice(-6).reverse();
   const outcome = { won: 'Done', partial: 'Half done', retreated: 'Withdrew', routed: 'Routed' };
   return `<div class="scrim" id="scrim"><div class="card" role="dialog" aria-modal="true" aria-labelledby="card-name" tabindex="-1" id="card">
@@ -439,18 +440,45 @@ function applyFind() {
     tr.hidden = q !== '' && !tr.textContent.toLowerCase().includes(q);
     if (tr.hidden) hidden += 1;
   }
+  // A party header with every member hidden goes too.
+  for (const tr of $('sheet').querySelectorAll('tbody tr.grp')) {
+    let next = tr.nextElementSibling, any = false;
+    while (next && !next.classList.contains('grp')) { if (!next.hidden) any = true; next = next.nextElementSibling; }
+    tr.hidden = !any;
+  }
   const note = $('find-note');
   if (note) note.textContent = hidden ? `${hidden} hidden` : '';
 }
+let shownCard = null;
+let opener = null;
 function renderCard() {
+  if (shownCard === personId) return; // a redraw behind the card leaves it alone
   const host = $('card-host');
   const p = DATA.roster.find((x) => x.id === personId);
+  const opening = p && !shownCard;
+  if (opening) opener = document.activeElement;
+  shownCard = p ? personId : null;
   host.innerHTML = p ? personCard(p) : '';
+  // While the card is open nothing behind it can be reached (aria-modal), and closing it
+  // gives focus back to the name that opened it.
+  for (const el of document.querySelectorAll('.bar, .tabs, .sheet, .tray')) el.inert = Boolean(p);
   if (p) $('card').focus();
+  else if (opener && document.contains(opener)) { opener.focus(); opener = null; }
+  else if (opener) { document.querySelector(`[data-person="${opener.dataset?.person}"]`)?.focus(); opener = null; }
 }
 document.addEventListener('input', (e) => { if (e.target.id === 'find') { query = e.target.value; applyFind(); } });
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && personId) { personId = null; renderCard(); return; }
+  if (e.key === 'Tab' && personId) {
+    // Keep Tab inside the open card (aria-modal).
+    const card = $('card');
+    const stops = [card, ...card.querySelectorAll('button, [href], input, [tabindex]:not([tabindex="-1"])')];
+    const at = stops.indexOf(document.activeElement);
+    const next = stops[(at + (e.shiftKey ? stops.length - 1 : 1) + stops.length) % stops.length];
+    e.preventDefault();
+    next.focus();
+    return;
+  }
   const typing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName) || e.target.isContentEditable;
   if (e.key === 'Escape' && typing && e.target.id === 'find') { query = ''; e.target.value = ''; applyFind(); return; }
   if (typing || e.ctrlKey || e.metaKey || e.altKey || personId) return;
@@ -501,12 +529,16 @@ function questions() {
   const best = [...DATA.board].sort((a, b) => b.feeCopper - a.feeCopper)[0];
   const tied = best && DATA.board.filter((o) => o.feeCopper === best.feeCopper).length > 1;
   if (best && !tied) qs.push({ q: 'Which contract on the board pays the most, and how much?', a: `${cap(best.site)} (${best.monster}), ${plain(money(best.feeCopper))}`, tab: 'contracts' });
-  const strongest = [...living].sort((a, b) => b.attributes.might - a.attributes.might || (a.name < b.name ? -1 : 1))[0];
-  qs.push({ q: 'Who has the highest Might among the living?', a: `${strongest.name} (${strongest.attributes.might})`, tab: 'roster' });
+  // "Who has the highest …" only for an attribute where one living person stands alone at the top.
+  const topOf = (attr) => { const best = Math.max(...living.map((p) => p.attributes[attr])); const tops = living.filter((p) => p.attributes[attr] === best); return tops.length === 1 ? tops[0] : null; };
+  const askTop = (attr, label) => { const top = topOf(attr); return top ? { q: `Who has the highest ${label} among the living?`, a: `${top.name} (${top.attributes[attr]})`, tab: 'roster' } : null; };
+  const firstTop = ATTRS.map(([a]) => askTop(a, a[0].toUpperCase() + a.slice(1))).find(Boolean);
+  if (firstTop) qs.push(firstTop);
   // Five facts always: spares fill in when nobody is recovering or away, or the board is empty.
   const spares = [
     () => { const w10 = DATA.weeks[9]; return { q: `How much was in the chest at the end of week ${w10.week}?`, a: plain(money(w10.chest)), tab: 'finances' }; },
-    () => { const lore = [...living].sort((a, b) => b.attributes.lore - a.attributes.lore || (a.name < b.name ? -1 : 1))[0]; return { q: 'Who has the highest Lore among the living?', a: `${lore.name} (${lore.attributes.lore})`, tab: 'roster' }; },
+    () => { const w5 = DATA.weeks[4]; return { q: `How much did the guild earn in fees in week ${w5.week}?`, a: plain(money(w5.lines.fee || 0)), tab: 'finances' }; },
+    () => { const p = living[Math.floor(living.length * 0.25)]; return { q: `How many quests has ${p.name} been on?`, a: String(p.quests), tab: 'roster' }; },
   ];
   for (const spare of spares) if (qs.length < 5) qs.push(spare());
   return qs.slice(0, 5);
@@ -547,8 +579,10 @@ setInterval(() => {
   if (c && quiz && quiz.phase === 'ask') c.textContent = `${((performance.now() - quiz.started) / 1000).toFixed(1)} s`;
 }, 100);
 
+let pressedOn = null;
+document.addEventListener('mousedown', (e) => { pressedOn = e.target.id; });
 document.addEventListener('click', (e) => {
-  if (e.target.id === 'scrim') { personId = null; renderCard(); return; }
+  if (e.target.id === 'scrim' && pressedOn === 'scrim') { personId = null; renderCard(); return; }
   const t = e.target.closest('button');
   if (!t) return;
   if (t.dataset.tab) { tab = t.dataset.tab; render(); }
@@ -562,7 +596,7 @@ document.addEventListener('click', (e) => {
   else if (t.id === 'tray-toggle') { trayOpen = !trayOpen; renderTray(); }
   else if (t.id === 'w1366' || t.id === 'w1920') { width = t.id === 'w1920' ? 1920 : 1366; try { localStorage.setItem('desk-width', String(width)); } catch {} fit(); }
   else if (t.id === 'quiz-start' || t.id === 'quiz-again') quizStart();
-  else if (t.id === 'quiz-go') { quiz.phase = 'ask'; quiz.started = performance.now(); quizRender(); }
+  else if (t.id === 'quiz-go') { personId = null; renderCard(); quiz.phase = 'ask'; quiz.started = performance.now(); quizRender(); }
   else if (t.id === 'quiz-found') { quiz.last = (performance.now() - quiz.started) / 1000; quiz.phase = 'check'; quizRender(); }
   else if (t.id === 'quiz-right' || t.id === 'quiz-wrong') {
     quiz.results.push({ q: quiz.qs[quiz.at].q, s: quiz.last, ok: t.id === 'quiz-right' });
