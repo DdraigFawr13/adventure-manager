@@ -571,7 +571,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 ## D-093 Adversarial review before every pull request
 
 - **Status:** Accepted (2026-10-26)
-- **Decision:** Before creating any pull request, and again before marking one ready, review the whole branch diff adversarially: what is wrong, inconsistent with DECISIONS, unverified or missing. Fix or report each finding before the PR goes up. Use the `reviewer` agent or `code-review` skill for large diffs. Recorded in AGENTS.md project rules.
+- **Decision:** Before creating any pull request, and again before marking one ready, review the whole branch diff adversarially: what is wrong, inconsistent with DECISIONS, unverified or missing. Fix or report each finding before the PR goes up. Use the `reviewer` agent or `code-review` skill for large diffs. Recorded in AGENTS.md project rules. Amended by D-133: the owner approves before the PR is created.
 - **Why:** Owner's rule (2026-10-26).
 
 ## D-094 Tools review accepted
@@ -816,3 +816,10 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The watched-quest test (R1, PLAN §9a) passes after the owner's 10-quest watch. Owner's notes become work, not blockers: (1) skill and spell names show in the log when used (done the same day: each action line starts with its name); (2) the quest log must feel more meaningful, and the UI will change a lot; (3) it feels "a little hollow"; (4) hidden items, traps and multiple pathways through a quest, later. Notes 2–4 are open for the slice (M2) and the quest template design; how is not decided.
 - **Why:** Owner (2026-10-26): "it feels a little hollow but otherwise it is fine for now"; chose "Pass, with notes".
+
+## D-133 Review, then owner approval, then the pull request
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** No pull request is created until (1) an independent adversarial review of the whole branch diff has run (D-093, D-107) and its findings are fixed or reported, and (2) the owner has seen the findings and approved. After approval, Claude creates the PR and, once CI is green with no open review thread or conflict, marks it ready and merges it without asking again. Commits added after approval need a fresh review and approval before merging. This overrides the session default of opening a draft PR right after pushing. Amends D-093.
+- **Why:** Owner's rule (2026-10-26), after PR #11 was opened with its second commit reviewed only by the main session: "don't create the PR until after the adversarial review and my approval. Then you can create prs and merge when they are ready."
+
