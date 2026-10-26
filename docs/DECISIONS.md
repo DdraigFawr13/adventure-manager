@@ -391,3 +391,21 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Five design goals, one per pillar (PLAN §1a), and six success targets (PLAN §1d): demo conversion ≥ 15%, first-season completion ≥ 70%, median playtime > 20 h, ≥ 25% of 40 h+ players reach a second guildmaster, Steam reviews ≥ 80% positive, no dense screen needing more than one explanation in playtests. Numbers are estimates, revisited in PLAN §10 and §14.
 - **Why:** Owner accepted the proposed starting set (Plan Q1a/d); gives later sections and playtests something measurable to aim at.
+
+## D-066 A season is one in-game year
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** "Season" means one in-game year, opened by the Guild Assembly (D-039), as in FM. With D-064 a year plays in about 2–2.5 h, so a week averages a few minutes, not a session. The core loop's "weekly = a session" is replaced by a stop budget per year (PLAN §2); CONCEPT core loop updated to match. Career ages (D-034) stand.
+- **Why:** Owner's choice (Plan Q2a). Keeps the annual Assembly and in-world ages consistent; resolves the conflict between D-064 and the concept's core-loop line.
+
+## D-067 Shape of the year
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** A 48-week year (12 months of 4 weeks): 4-week Assembly and muster (rankings, patron review, recruitment window, renewals); 32-week campaigning season with a midsummer fair (second, shorter recruitment window and the main tournament); 12-week light winter (slow travel, few contracts, healing, training, building, the odd raid); a year's-end review. Target about 145 min per year. Detail: `docs/design/PLAN.md` §2.
+- **Why:** Owner accepted the proposal (Plan Q2b). Two windows give poaching an FM-like rhythm; heavy decisions cluster in spring; winter is the natural time-skip.
+
+## D-068 Day, week and generation loops; friction budget
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** About 80 stops per year (~145 min). Stops on one day are bundled; every stop has a default (1–3 clicks); a routine week takes 10 clicks or fewer. Three stop classes (Must stop, Digest, Never stop), tunable per category except the non-delegable core (D-038). A rate cap (one event stop a day, about 3 a week) moves only Digest-class items; Must-stop items always stop. Time-skip offered when nothing is out or due. Succession is a year's-end set piece (~10 min); the heir inherits charter, traits and debts. Detail: `docs/design/PLAN.md` §2c–§2f.
+- **Why:** Owner accepted the proposal (Plan Q2c); fits a year into D-064's 2–2.5 h without losing the moments that matter.

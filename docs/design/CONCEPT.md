@@ -16,9 +16,9 @@ Phase 1 concept. Each section records what the owner decided, with their own not
 
 **Core loop:**
 
-- **Daily (minutes):** Continue the calendar → handle stops (key moments, offers, people issues, reports) → adjust.
-- **Weekly (a session):** pick contracts → form and brief parties → watch quests on the board → deal with results (loot, injuries, morale, reputation).
-- **Seasonal (hours):** recruitment windows, contract renewals, facility upgrades, ranking movement, patron review, tournaments.
+- **Daily (seconds, or minutes when it stops):** Continue the calendar → handle stops (key moments, offers, people issues, reports) → adjust.
+- **Weekly (a few minutes; pace set by D-064, D-066):** pick contracts → form and brief parties → watch quests on the board → deal with results (loot, injuries, morale, reputation).
+- **Seasonal (one in-game year, about 2–2.5 h; D-066):** recruitment windows, contract renewals, facility upgrades, ranking movement, patron review, tournaments.
 - **Generational (the save):** heroes age, retire and die; guildmasters succeed one another; the guild's legend and the region change.
 
 ## 1. Player role
