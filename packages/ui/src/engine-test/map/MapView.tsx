@@ -5,15 +5,20 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { engineTestMapText as defaultText } from '@adventure-manager/content';
 import '../../../styles/engine-test-map.css';
-import { atlasSteps, type Atlas } from './atlas.ts';
-import { clampCamera, frameBox, ZOOM_STEP, zoomAt, type Camera } from './map-camera.ts';
+import { atlasSteps } from './map-atlas.ts';
+import {
+  clampCamera,
+  fitCamera,
+  ZOOM_STEP,
+  zoomAt,
+  type Camera,
+  type Sheet2,
+} from './map-camera.ts';
 import { decodeMap } from './map-data.ts';
 import { createScene, type LayerName, type LayerToggles, type Scene } from './map-scene.ts';
 
 const LAYER_ORDER: readonly LayerName[] = ['names', 'guilds', 'factions', 'threat', 'party', 'fog'];
 const MAX_DPR = 2;
-/** Pixels a cell in the atlas; symbols are drawn for 8. */
-const ATLAS_SCALE = 8;
 const PAN_STEP = 90;
 /** With reduced motion (D-078, PLAN §6c) the map holds this moment: the party out on its route. */
 const STILL_SECONDS = 12;
@@ -41,7 +46,7 @@ export function MapView({ text = defaultText }: MapViewProps) {
   layersRef.current = layers;
   const camera = useRef<Camera>({ x: 0, y: 0, z: 1 });
   const size = useRef({ w: 1366, h: 768, dpr: 1 });
-  const mapSize = useRef(1);
+  const sheet = useRef<Sheet2>({ w: 1, h: 1 });
   const scene = useRef<Scene | null>(null);
   const textRef = useRef(text);
   textRef.current = text;
@@ -51,57 +56,24 @@ export function MapView({ text = defaultText }: MapViewProps) {
   useEffect(() => {
     let cancelled = false;
     const data = decodeMap();
-    const { width, height, water } = data.cells;
-    const owner = new Uint16Array(width * height);
-    for (let i = 0; i < owner.length; i += 1) owner[i] = water[i] === 3 ? 0 : 1;
-    const build = atlasSteps(data.cells, data.biomeIds, ATLAS_SCALE, {
-      north: textRef.current['ui.north'] ?? '',
-      labelFont: "'IM Fell English SC', Georgia, serif",
-    });
-    let drawing: Generator<void, unknown, void> | null = null;
-    let atlas: Atlas | null = null;
+    const build = atlasSteps(data);
     const pump = () => {
       if (cancelled) return;
-      if (!atlas) {
-        const r = build.next();
-        if (r.done) {
-          atlas = r.value;
-          drawing = atlas.drawSteps({
-            mode: 'land',
-            key: 1,
-            owner,
-            fillOf: () => null,
-            borderOf: () => [128, 100, 70],
-            towns: [],
-            holy: [],
-          });
-        }
-      } else if (drawing) {
-        const r = drawing.next();
-        if (r.done) {
-          const view = size.current;
-          mapSize.current = atlas.size;
-          scene.current = createScene(data, atlas, textRef.current);
-          const { box, scale } = atlas;
-          frameBox(
-            camera.current,
-            {
-              x0: (box.x0 - 3) * scale,
-              y0: (box.y0 - 3) * scale,
-              x1: (box.x1 + 3) * scale,
-              y1: (box.y1 + 3) * scale,
-            },
-            view.w,
-            view.h,
-            atlas.size,
-          );
-          setReady(true);
-          return;
-        }
+      const r = build.next();
+      if (!r.done) {
+        setTimeout(pump, 0);
+        return;
       }
-      setTimeout(pump, 0);
+      const atlas = r.value;
+      sheet.current = { w: atlas.width, h: atlas.height };
+      scene.current = createScene(data, atlas, textRef.current);
+      const view = size.current;
+      fitCamera(camera.current, view.w, view.h, sheet.current);
+      setReady(true);
     };
-    pump();
+    // The sheet's lettering needs the old-press faces; wait for them so the first frame is right.
+    const faces = ['IM Fell English SC', 'IM Fell DW Pica', 'Sorts Mill Goudy'];
+    void Promise.all(faces.map((f) => document.fonts.load(`16px "${f}"`))).then(pump, pump);
     return () => {
       cancelled = true;
     };
@@ -119,7 +91,7 @@ export function MapView({ text = defaultText }: MapViewProps) {
       size.current = { w, h, dpr };
       el.width = Math.round(w * dpr);
       el.height = Math.round(h * dpr);
-      clampCamera(camera.current, w, h, mapSize.current);
+      clampCamera(camera.current, w, h, sheet.current);
     };
     fit();
     const observer = new ResizeObserver(fit);
@@ -172,7 +144,7 @@ export function MapView({ text = defaultText }: MapViewProps) {
         e.clientY - rect.top,
         w,
         h,
-        mapSize.current,
+        sheet.current,
       );
     };
     box.addEventListener('wheel', wheel, { passive: false });
@@ -182,14 +154,14 @@ export function MapView({ text = defaultText }: MapViewProps) {
   const drag = useRef<{ id: number; x: number; y: number } | null>(null);
   const zoomBy = (factor: number) => {
     const { w, h } = size.current;
-    zoomAt(camera.current, factor, w / 2, h / 2, w, h, mapSize.current);
+    zoomAt(camera.current, factor, w / 2, h / 2, w, h, sheet.current);
   };
   const panBy = (dx: number, dy: number) => {
     const { w, h } = size.current;
     const cam = camera.current;
     cam.x += dx / cam.z;
     cam.y += dy / cam.z;
-    clampCamera(cam, w, h, mapSize.current);
+    clampCamera(cam, w, h, sheet.current);
   };
   const onKey = (e: KeyboardEvent) => {
     const keys: Record<string, () => void> = {
@@ -241,7 +213,7 @@ export function MapView({ text = defaultText }: MapViewProps) {
           {say('ui.loading')}
         </p>
       )}
-      <header className="etm-panel etm-title">
+      <header className="etm-sr">
         <h1>{say('ui.title')}</h1>
         <p>{say('ui.subtitle')}</p>
       </header>

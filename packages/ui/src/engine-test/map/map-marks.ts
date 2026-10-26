@@ -1,48 +1,8 @@
-// Small hand-inked marks drawn in screen pixels on top of the map: settlement dots, guild banners
-// with a ranking numeral, the party's standees and place-name labels. `u` is the mark scale.
-import { INK } from './map-layers.ts';
+// Small hand-inked marks drawn in screen pixels on top of the map: guild banners with a ranking
+// numeral, the party's standees and the closed-road cross. `u` is the mark scale.
+import { INK, PAPER_CSS as PAPER } from './map-palette.ts';
 
-const PAPER = '#efe4cc';
 const TIER_NUMERALS = ['', 'I', 'II', 'III', 'IV', 'V'] as const;
-
-export function drawLabel(
-  ctx: CanvasRenderingContext2D,
-  text: string,
-  x: number,
-  y: number,
-  size: number,
-  spacing: number,
-  align: CanvasTextAlign,
-  alpha = 1,
-): void {
-  ctx.font = `italic ${size}px "Sorts Mill Goudy", "IM Fell DW Pica", Georgia, serif`;
-  ctx.letterSpacing = `${spacing}px`;
-  ctx.textAlign = align;
-  ctx.textBaseline = 'alphabetic';
-  ctx.lineJoin = 'round';
-  ctx.lineWidth = 4;
-  ctx.globalAlpha = alpha * 0.85;
-  ctx.strokeStyle = PAPER;
-  ctx.strokeText(text, x, y);
-  ctx.globalAlpha = alpha;
-  ctx.fillStyle = INK;
-  ctx.fillText(text, x, y);
-  ctx.globalAlpha = 1;
-}
-
-export function drawTown(ctx: CanvasRenderingContext2D, x: number, y: number, u: number): void {
-  ctx.lineWidth = 1.8 * u;
-  ctx.beginPath();
-  ctx.arc(x, y, 6.5 * u, 0, Math.PI * 2);
-  ctx.fillStyle = PAPER;
-  ctx.fill();
-  ctx.strokeStyle = INK;
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(x, y, 2.4 * u, 0, Math.PI * 2);
-  ctx.fillStyle = INK;
-  ctx.fill();
-}
 
 /** A pole and pennant standing above the point (x, y), with the guild's tier as a numeral. */
 export function drawBanner(
@@ -53,30 +13,30 @@ export function drawBanner(
   colour: string,
   tier: number,
 ): void {
-  const top = y - 40 * u;
+  const top = y - 44 * u;
   ctx.lineWidth = 1.8 * u;
   ctx.strokeStyle = INK;
   ctx.beginPath();
-  ctx.moveTo(x, y - 6 * u);
+  ctx.moveTo(x, y);
   ctx.lineTo(x, top);
   ctx.stroke();
   ctx.beginPath();
   ctx.moveTo(x, top);
-  ctx.lineTo(x + 24 * u, top);
-  ctx.lineTo(x + 24 * u, top + 20 * u);
-  ctx.lineTo(x + 12 * u, top + 15 * u);
-  ctx.lineTo(x, top + 20 * u);
+  ctx.lineTo(x + 20 * u, top);
+  ctx.lineTo(x + 20 * u, top + 17 * u);
+  ctx.lineTo(x + 10 * u, top + 12.5 * u);
+  ctx.lineTo(x, top + 17 * u);
   ctx.closePath();
   ctx.fillStyle = colour;
   ctx.fill();
   ctx.lineWidth = 1.2 * u;
   ctx.stroke();
-  ctx.font = `${Math.round(11 * u)}px "IM Fell English SC", Georgia, serif`;
+  ctx.font = `${Math.round(10 * u)}px "IM Fell English SC", Georgia, serif`;
   ctx.letterSpacing = '0px';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
   ctx.fillStyle = PAPER;
-  ctx.fillText(TIER_NUMERALS[tier] ?? String(tier), x + 12 * u, top + 12 * u);
+  ctx.fillText(TIER_NUMERALS[tier] ?? String(tier), x + 10 * u, top + 11 * u);
 }
 
 /** The party: three standees with a shadow, bobbing a little as they walk. */

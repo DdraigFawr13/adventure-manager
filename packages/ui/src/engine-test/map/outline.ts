@@ -1,4 +1,4 @@
-// From Story-Generator src/app/tales/outline.ts @ 8a5c4ef (D-116); unchanged. `contours` is kept unused for a vector coast later.
+// From Story-Generator src/app/tales/outline.ts @ 8a5c4ef (D-116); unchanged. `contourSteps` and `contours` now trace the March coast, lake shores and the sea ripple lines (map-ground.ts); `pathOf` is kept unused.
 // The shore as a vector line: marching squares over the smoothed land mask. The raster map steps
 // at the pixel grid when zoomed in; this line is smooth at any zoom. Pure, no DOM.
 
