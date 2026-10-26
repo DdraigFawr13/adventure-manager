@@ -712,3 +712,15 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** The owner approves the whole plan, `docs/design/PLAN.md` §1–§15 with the plan review's decisions (D-108..D-114). This passes the M0 gate (D-099) and lifts D-001's no-code rule. The build starts at M1: `docs/STANDARDS.md` and resolution v0 first, then the web-first engine test (D-110, D-113, D-114). The plan stays the reference; changes to it go through DECISIONS (SRC-04).
 - **Why:** Owner: "merge it and approve the plan" (2026-10-26).
 
+
+## D-116 Story-Generator code may be reused
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The owner holds the rights to `DdraigFawr13/Story-Generator` (licence field `UNLICENSED`), so its code (seeded worldgen, ink atlas, named random streams, boundary check) may be copied into this project. Copied files name their source path and commit in a first-line comment; licences of any of its dependencies that come along are checked first (SAFE-05). Answers the open point in `docs/design/PLAN.md` §12d. Code rules: `docs/STANDARDS.md`.
+- **Why:** Owner: "I own story generator rights" (2026-10-26).
+
+## D-117 Approved dependency list
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** One approved list (D-114, SAFE-03), all free and open source, versions pinned exactly with the lockfile committed. Dev tools: TypeScript, Vitest, Prettier, `@babel/parser` (package-boundary check), `@types/node`. Game stack for the engine test and after: Electron, Vite with `@vitejs/plugin-react`, React and React DOM, Playwright. Start from Story-Generator's versions where it has the package. Anything else is asked for first. Code rules: `docs/STANDARDS.md`.
+- **Why:** Owner chose "approve plus game stack now" (2026-10-26) so the engine test (D-110) needs no second ask.

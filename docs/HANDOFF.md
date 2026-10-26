@@ -8,6 +8,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Just done
 
+- 2026-10-26 M1 started on branch `ccr-829d90c0-lqu9xa`: owner holds Story-Generator rights, reuse approved (D-116); one dependency list approved incl. the game stack (D-117); `docs/STANDARDS.md` written with the per-package `AGENTS.md` plan; npm workspace with `packages/engine` (named random streams copied from Story-Generator, self-explaining `Value`), boundary check `tools/check-boundaries.mjs`, `npm run check` green (8 tests).
 - 2026-10-26 Owner approved the whole plan (M0, D-115); PR #5 merged.
 - 2026-10-26 Plan review decided: 10–20 h a week, about 31–46 months to launch (D-108); lean launch cut (D-109); web-first engine test (D-110); stop and slip rules (D-111); 3–4 small crises at launch (D-112); all other recommendations adopted (D-113 design and production, D-114 engine foundations and standards). Applied across PLAN.md.
 - 2026-10-26 Plan review before M0 (owner's request): `docs/design/PLAN-REVIEW.md`, page `docs/design/mockups/plan-review.html`. 9 lean, 11 fun, 8 codebase, 4 standards findings and a top-10 action list; all proposals, none decided. Owner's rule: reviewers are independent, briefed without the main session's findings (D-107).
@@ -26,15 +27,12 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 - 2026-10-26 PLAN.md §8 accepted: in-world letters with a Trace to the cause chain, plus numbered inspector histories (D-082, mock-up `consequences.html`); nine surfaces and seven consequence rules (D-083).
 - 2026-10-26 PLAN.md §7 accepted: ancestries Marchfolk, Stonewrights, Lanthe, Reedfolk, Barrowborn (D-079, mock-up `ancestries.html`); standard content volume: 36 monster kinds, 20 sites, 20 quest templates, 60 key moments, ~6,000 lines (D-080); classes, talents, 4 prestige paths, attributes, traits, staff, backgrounds (D-081).
 - 2026-10-26 PLAN.md §6 accepted: prologue + staff-opened ledgers + clerk's notes (D-076); size slider + clear print (D-077); seven screen rules and accessibility list (D-078). Mock-ups published: `onboarding.html`, `readability.html`.
-- 2026-10-26 PLAN.md §5 accepted: 10 class levels at launch, 20 planned (D-074); retirees can become staff, 3-level facilities as data (compound-style building later), max 5 active guild traits, ~8 guildmaster stats grown by doing, succession inheritance (D-075).
-- 2026-10-26 PLAN.md §4 accepted: ~2 deaths a year in a mid guild, death rates by danger rating, turnover ~25% (D-071; §2e updated); money tight early, steady later (D-072); sources/sinks, tournaments as shop window, 3×6 ladder with bigger ladders later (D-073).
-- 2026-10-26 PLAN.md §3 accepted: ranking by renown earned this year, renown stored as sourced entries for a later intrigue layer (D-069); 14 launch systems, injury folded into Adventurers, scouting + knowledge merged, academy and commissioning moved to Early update (D-070; D-012, D-013 amended; CONCEPT §9, §10, §28 notes).
-- 2026-10-26 PLAN.md §2 accepted: a season is one in-game year (D-066); 48-week year with Assembly, campaigning, midsummer fair, winter (D-067); ~80 stops/year, three stop classes, rate cap on Digest items only (D-068). CONCEPT core-loop timings updated to match.
-- 2026-10-26 PLAN.md §1 accepted: management-sim veterans first, tabletop fans second (D-063); one season ≈ 2–2.5 h (D-064); design goals and success targets as a starting set (D-065). Merged via PR #2.
 
 ## Next
 
-1. M1 step one: write `docs/STANDARDS.md` and a per-package `AGENTS.md` plan (D-114), then resolution v0: half a page plus engine code for how party, plan, stats, gear and site become odds and events (PLAN §9b, D-113). Then the web-first engine test (D-110): ledger and kingdom map in Electron + TypeScript, reusing Story-Generator map code (owner to confirm rights, §12d). Ask the owner before adding the stack's dependencies (approve the list once, D-114) and before any Godot tooling. Time-boxes and stop rules: PLAN §9b (D-111).
+1. Resolution v0 (PLAN §9b, D-113): half-page `packages/engine/src/resolution/SPEC.md` (ask the owner the design forks one at a time), then `simulate(state, command)`, events with cause ids and the determinism test, then the resolution code with its numbers in a content pack.
+2. Add `npm run check` to CI (`ci.yml`, path-filtered per D-105) using the `efficient-github-actions` skill.
+3. Web-first engine test (D-110): ledger and kingdom map in Electron + TypeScript, reusing Story-Generator map code (D-116). Godot only if web misses its bar. Time-boxes and stop rules: PLAN §9b (D-111).
 
 ## Open questions
 
@@ -45,7 +43,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 - Old-press ledger readability: 15 px minimum (D-084), confirm on real monitors in R4; fallback is our own Goudy ledger cut (D-052). Use lining figures (`lining-nums`) for all numbers: the face's default figures are old-style and proportional (measured 13.6–20.8 px wide at 40 px; lining 21.1 px each). Clear print (D-077) is the player-side option. Minimum size asked in PLAN §9c.
 - "More fantasy flair" for the quest board art (STYLE.md §4) needs defining when art direction starts.
 - Bardic songs (after launch, D-056): sung or instrumental not decided.
-- Stack and engine: chosen after the engine test (D-090); add the matching `stacks/` layer then.
+- Stack and engine: chosen after the engine test (D-090); add the matching `stacks/` layer then. Engine code is TypeScript already; a Godot outcome would change only ui and shell (STANDARDS.md).
 
 ## Working style with the owner
 
