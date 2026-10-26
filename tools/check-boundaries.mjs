@@ -73,6 +73,8 @@ const unsafeMathNames = new Set([
 export function checkModule(fileName, sourceText) {
   const layer = path.relative(packages, fileName).split(path.sep)[0];
   if (!allowed[layer]) return [`Unknown source layer: ${fileName}`];
+  // A system folder's half-page rules spec sits beside its code (STANDARDS.md "Naming and size").
+  if (path.basename(fileName) === 'SPEC.md') return [];
   // Only TypeScript is checked by typecheck and by this script, so nothing else may hide in src.
   if (!/\.tsx?$/.test(fileName)) return [`Only .ts and .tsx files belong in src: ${fileName}`];
   const errors = [];

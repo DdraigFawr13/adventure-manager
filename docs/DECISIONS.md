@@ -724,3 +724,39 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** One approved list (D-114, SAFE-03), all free and open source, versions pinned exactly with the lockfile committed. Dev tools: TypeScript, Vitest, Prettier, `@babel/parser` (package-boundary check), `@types/node`. Game stack for the engine test and after: Electron, Vite with `@vitejs/plugin-react`, React and React DOM, Playwright. Start from Story-Generator's versions where it has the package. Anything else is asked for first. Code rules: `docs/STANDARDS.md`.
 - **Why:** Owner chose "approve plus game stack now" (2026-10-26) so the engine test (D-110) needs no second ask.
+
+## D-118 Resolution v0: quest shape is a hybrid
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** A quest simulates as a chain of scenes (travel, approach, encounters, lair), each settled by a few rolls from the party members who matter against the scene's difficulty, with key moments between scenes. Only the main fight (the lair or the named beast) runs as short rounds of about 3–6 exchanges. Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Why:** Owner's choice (resolution v0 fork 1, 2026-10-26): tension where it matters at a moderate cost; the price is two systems to tune (scenes and the main fight).
+
+## D-119 Resolution v0: checks are percent chances
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Every scene check and fight exchange is one roll against a chance in basis points: a base for the difficulty, plus a step per attribute point above or below it, plus gear, plan and site modifiers, clamped to 5–95%. The chance is a `Value`, so its parts show on hover. Every number is content data. Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Why:** Owner's choice (resolution v0 fork 2, 2026-10-26): easiest to read, show and tune against the death targets (PLAN §4c); the price is swinginess.
+
+## D-120 Resolution v0: harm is tracked in wound steps
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Each adventurer on a quest moves down five steps: Fit, Hurt, Badly hurt, Down, Dying. A failed exchange or a bad scene moves one step, a bad failure two. Down means being carried; Dying means a death roll unless a healer or a retreat saves them. A lasting injury is rolled at Badly hurt or worse. The step sizes and roll chances are content data, tuned to PLAN §4c. Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Why:** Owner's choice (resolution v0 fork 3, 2026-10-26): readable on the board, personal harm for attachment (R7), maps to injuries, and death targets tune through a few numbers.
+
+## D-121 Resolution v0: the plan's three levers
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The pre-quest plan feeds the rolls through three levers. Approach (stealth, assault, diplomacy) picks the attribute each scene tests and shifts difficulty by the site's tags. Risk tolerance (cautious, steady, bold) trades a bonus to chances against how often a failure is a bad one. Retreat threshold (first Badly hurt, first Down, first Dying, never) sets when the leader pulls out; reaching it on a major moment stops the calendar for the player (D-032). No morale track in v0. Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Why:** Owner's choice (resolution v0 fork 4, 2026-10-26): R1's pass line needs retreat choices to feel real in the watch test.
+
+## D-122 Resolution v0: eight working attributes
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Resolution v0 uses eight attributes on the 1–20 scale (D-007), working names: Might, Agility, Toughness, Stealth, Wits, Presence, Resolve, Lore. Hidden attributes (consistency, potential, loyalty) wait for the year simulator; the rest of the ~16 (D-109) are added when a system needs them. Final names per STYLE §9. Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Why:** Owner's choice (resolution v0 fork 5, 2026-10-26): enough to make the three approaches differ, few enough to tune.
+
+## D-123 Resolution v0: foes fight in groups
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** In the main fight, enemies come in foe groups (a named beast, or a band such as goblins), each with its own wound steps and a few attributes from content data, shown as one standee or cluster on the board. Each exchange, every standing adventurer acts against a group and every group acts against someone. Owner's note: "1 for launch but eventually 2": every enemy as its own token is a later goal, not scoped (Proposed until planned). Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Why:** Owner's choice (resolution v0 fork 6, 2026-10-26): keeps fights to 3–6 exchanges and named beasts individual; per-enemy tokens add tabletop feel later.
