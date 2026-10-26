@@ -462,7 +462,7 @@ const STANDARD_KIT = {
 };
 function kitFor(p) {
   const kit = STANDARD_KIT[p.class] || STANDARD_KIT.Warrior;
-  const fx = { 'Main hand': p.weaponBp ? `+${p.weaponBp / 100}% to hit` : 'no bonus', Armour: p.armourBp ? `−${p.armourBp / 100}% to be hit` : 'no protection' };
+  const fx = { 'Main hand': p.weaponBp ? `+${p.weaponBp / 100}% to hit` : 'no bonus yet', Armour: p.armourBp ? `−${p.armourBp / 100}% to be hit` : 'no bonus yet' };
   return kit.map(([slot, item]) => ({ slot, item, fx: fx[slot] || 'no effect yet', by: 'Standard issue, set by the quartermaster' }));
 }
 

@@ -263,14 +263,20 @@ const baked = JSON.parse(readFileSync('packages/ui/assets/engine-test/map-base.j
 if (
   typeof baked.water !== 'string' ||
   typeof baked.biome !== 'string' ||
+  !(baked.width > 0 && baked.height > 0) ||
   !Number.isInteger(baked.width / 2) ||
   !Number.isInteger(baked.height / 2) ||
   !(baked.dayCells > 0) ||
-  !Number.isInteger(baked.guildCell)
+  !Number.isInteger(baked.guildCell) ||
+  ![baked.placeCells, baked.villageCells, baked.roads, baked.rivers, baked.biomeIds].every(
+    Array.isArray,
+  )
 )
   throw new Error('map-base.json is not the bake this tool expects.');
 const water = Buffer.from(baked.water, 'base64');
 const biome = Buffer.from(baked.biome, 'base64');
+if (water.length !== baked.width * baked.height || biome.length !== baked.width * baked.height)
+  throw new Error('map-base.json water or biome does not cover the whole sheet.');
 const W = baked.width / 2;
 const H = baked.height / 2;
 const xy = (cell: number): [number, number] => [

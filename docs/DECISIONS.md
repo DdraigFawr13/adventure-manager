@@ -185,6 +185,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Launch: hand-made region (6–10 settlements) with seeded procedural sites and contracts. Later: generated regions with authored set pieces, sharing one data format. Detail: `docs/design/CONCEPT.md` §26.
+- **Amended (2026-10-26, D-144):** outposts in the wild are counted apart from the 6–10 settlements; the extra major city counts within them.
 - **Why:** Owner's choice; identity at launch, replayability later.
 
 ## D-031 Guild size: small to mid
@@ -488,6 +489,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** 36 monster kinds in 7 families, 20 site templates, 20 quest templates, 60 key-moment templates with text variants, about 6,000 written template lines; plus 6 factions, 17 authored rival guilds, 8 settlements, 5 biomes, 3 tournament kinds, 5 facilities, 4 gear tiers, about 30 magic-item templates and 10 legendary items, about 25 guild traits. All data; can grow after launch. Detail: `docs/design/PLAN.md` §7b–§7e.
+- **Amended (2026-10-26, D-144):** 8 settlements is a floor: at least one more major city, and outposts in the wild counted apart (D-030).
 - **Amended (2026-10-26, D-109):** lean launch cut: about 24 monster kinds, about 40 key moments, about 4,500 template lines, 1 tournament, about 6 authored rival guilds with the rest generated; region crises added (D-112).
 - **Why:** Owner's choice (Plan Q7b): repeats stay rare within a guildmaster's career at about half the writing and art cost of the rich option.
 
@@ -890,6 +892,6 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 ## D-144 A geography review in the map workshop: towns with reasons, sensible roads and rivers, a second city, outposts
 
-- **Status:** Accepted (2026-10-26) as a workshop step; counts and names are set in the workshop. Amends PLAN §7c's 8 settlements, which becomes a floor.
+- **Status:** Accepted (2026-10-26) as a workshop step; counts and names are set in the workshop. Amends PLAN §7c and D-080's 8 settlements, which becomes a floor; the extra major city counts within D-030's 6–10 settlements and the outposts are counted apart from them.
 - **Decision:** The kingdom map workshop (PLAN §12d) gains a geography review before the March's base map is drawn: (1) rivers run believably from high ground to the sea or lakes, and roads follow sensible lines between places (valleys, fords, passes, bridges); (2) every town sits where it would grow for a reason (a crossroads, a ford or bridge, a harbour, a resource such as ore, timber, salt, fish, wool or peat) and has a specialty that the economy and contracts can use; (3) at least one more major city than the current set; (4) outposts in the wild and harsh areas (moor, mountains, deep fen, forest edges). The engine-test map stays a test until then.
 - **Why:** Owner (2026-10-26): "add a step in the review process ... where we handle roads on the map and rivers on the map and making sure towns are in sensible locations where they would maybe specialize in a resource or at a crossroads type thing. Also at least one more major city and outposts in the more wild or harsh areas"; chose the §12 map workshop over a new M1 step before the gate and over splitting the work.
