@@ -83,3 +83,35 @@ Working document for phase 1. Each section records what the owner decided, with 
   1. **Delves and monster hunts:** dungeons, lairs, bounties on named beasts.
   2. **Defence and warfare:** hold a village against a raid, garrison a fort, join a war campaign; larger, multi-party operations.
 - Not at launch (assumed candidates for later, not cut): escorts and expeditions; intrigue and investigation.
+
+## 13. Platform
+
+- **Decided (2026-10-25):** PC first (desktop, Steam-style): dense information screens, mouse and keyboard, long sessions. Other platforms only later, if at all.
+
+## 14. Generated writing
+
+- **Decided (2026-10-25):** The game ships with rich handwritten templates (quest reports, backstories, rumours, letters) and works fully offline.
+- An optional setting adds AI-written flavour. AI text only describes outcomes the simulation already decided (GAME-03); every AI surface falls back to templates.
+
+## 15. Classes and ancestries
+
+- **Decided (2026-10-25):** About 8 original classes covering the classic roles (working list: warrior, guardian, rogue, ranger, cleric, wizard, druid, bard-like support) and about 5 ancestries at launch.
+- Multiclassing or prestige paths open at higher levels.
+- Names and identities are original (D-002); the working list is placeholder.
+
+## 16. World reactivity
+
+- **Decided (2026-10-25):** A living region. Several factions (crown, cities, temples, merchant houses, outlaws) hold standing toward the guild.
+- Contracts taken or refused change the region: cleared roads open trade, ignored threats spread, a backed faction can rise. Rival guilds align with factions too.
+
+## 17. Guild identity
+
+- **Decided (2026-10-25):** At founding the player writes a charter: values (honourable ↔ mercenary), a specialty and a few rules.
+- The guild earns traits from what it actually does (e.g. "Dragonslayers", "Never Leave a Member Behind", "Bloodied Banner").
+- Charter and traits shape who wants to join, which factions trust the guild, and morale. A successor guildmaster inherits them and can try to change course (§1).
+
+## 18. Adventurers as people
+
+- **Decided (2026-10-25):** Full FM-style personalities. Adventurers have morale, ambitions and opinions; they ask for better contracts, refuse quests that clash with their values, demand a place in the top party, form friendships and feuds, and can leave.
+- The player manages them through conversations (praise, warn, promise, reassure). Success depends on the guildmaster's stats (§1).
+- Promises are tracked; broken promises damage trust and morale.

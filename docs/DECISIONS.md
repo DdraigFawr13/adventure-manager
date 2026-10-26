@@ -91,3 +91,39 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Launch with delves and monster hunts, and defence and warfare. Escorts/expeditions and intrigue/investigation are later candidates. Detail: `docs/design/CONCEPT.md` §12.
 - **Why:** Owner's choice; fewer quest families means each simulation is deeper.
+
+## D-016 PC first
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Desktop PC is the primary platform; UI is designed for mouse, keyboard and long sessions. Detail: `docs/design/CONCEPT.md` §13.
+- **Why:** Owner's choice; data-dense management games play best on desktop.
+
+## D-017 Templates first, optional AI flavour
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Authored templates cover all text offline; AI-written flavour is an optional setting and never affects outcomes. Detail: `docs/design/CONCEPT.md` §14.
+- **Why:** Owner's choice; no required service or running cost (SAFE-03), and GAME-03.
+
+## D-018 About 8 classes and 5 ancestries at launch
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** ~8 original classes, ~5 ancestries, with multiclass or prestige paths at higher levels. Detail: `docs/design/CONCEPT.md` §15.
+- **Why:** Owner's choice; enough variety for squad-building while each class is simulated in depth.
+
+## D-019 Living region with factions
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Factions track standing with the guild; the guild's choices change the region's state and faction power. Detail: `docs/design/CONCEPT.md` §16.
+- **Why:** Owner's choice; makes contract choice strategic and the world feel responsive without full grand strategy.
+
+## D-020 Guild identity: charter plus earned traits
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** A founding charter (values, specialty, rules) plus traits earned from the guild's record; both affect recruitment, faction trust and morale, and pass to successors. Detail: `docs/design/CONCEPT.md` §17.
+- **Why:** Owner's choice; makes the guild a character (D-003) through both intent and history.
+
+## D-021 Adventurers have full FM-style agency
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Morale, ambitions, demands, refusals, relationships and departures; conversations driven by guildmaster stats; tracked promises. Detail: `docs/design/CONCEPT.md` §18.
+- **Why:** Owner's choice; people-management drama is the heart of FM.
