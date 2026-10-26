@@ -545,14 +545,12 @@ Not risks for prototypes (handled elsewhere): engine choice and determinism (§1
 
 ### 9b. Prototype order (Accepted 2026-10-26, D-085)
 
-Owner's choice: balance and pacing numbers first. All prototypes come after the plan is approved (D-001).
+The riskiest question first. All prototypes come after the plan is approved (D-001).
 
-1. **Headless year simulator** (R2, R3, R6, R9): the simulation core with no graphics; 1,000 seeded guild-years reporting deaths, money, ladder movement, stops by class, delegated vs careful play, and guildmaster careers against the §2 and §4 targets.
-2. **One quest, watched** (R1): the same simulation code drives a text log and a plain board with standees; the owner watches 10 quests. Built on an already-tuned core.
+1. **One quest, watched** (R1): a minimal simulation core drives a text log and a plain board with standees; the owner watches 10 quests. If watching isn't tense, Pillar 2 and the core loop need rethinking before anything else is built.
+2. **Headless year simulator** (R2, R3, R6, R9): the same simulation core with no graphics; 1,000 seeded guild-years reporting deaths, money, ladder movement, stops by class, delegated vs careful play, and guildmaster careers against the §2 and §4 targets.
 3. **Desk-density mock-ups and writing test** (R4, R8): HTML mock-ups at 1366 and 1920 px, and one template family generated 200 times. Neither needs the engine, so they can run alongside step 1 or 2.
 4. **Two years in the text prototype** (R7): the attachment check.
-
-Trade-off accepted: the most existential question (is watching fun? R1) is answered second, not first.
 
 ### 9c. Ledger readability check (Accepted 2026-10-26, D-084)
 

@@ -509,11 +509,12 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Ledger text is at least 15 px at 100% scale; all numbers use the face's lining figures (`lining-nums`), which are equal width and sit on the line. To be confirmed on real monitors in the desk-density prototype (PLAN §9a R4); fallbacks are D-052 and D-077. Detail: `docs/design/PLAN.md` §9c.
 - **Why:** Owner's choice (Plan Q9b) after real-size specimens at 13–16 px; the measurement showed the default figures are proportional old-style, so lining figures are required for columns.
 
-## D-085 Prototype order: headless simulator first
+## D-085 Prototype order: watched quest first
 
 - **Status:** Accepted (2026-10-26)
-- **Decision:** After plan approval, prototypes run in this order: 1 headless year simulator (balance, pacing, delegation, careers); 2 one watched quest on the same simulation code; 3 desk-density mock-ups and the template-writing test, alongside 1 or 2; 4 a two-year attachment playtest. Detail: `docs/design/PLAN.md` §9b.
-- **Why:** Owner's choice (Plan Q9a) over the recommended quest-first order: numbers first, so the watched quest is built on a tuned core. Accepted trade-off: the "is watching fun?" question is answered second.
+- **Decision:** After plan approval, prototypes run in this order: 1 one watched quest (is watching fun?); 2 headless year simulator on the same simulation core (balance, pacing, delegation, careers); 3 desk-density mock-ups and the template-writing test, alongside 1 or 2; 4 a two-year attachment playtest. Detail: `docs/design/PLAN.md` §9b.
+- **Why:** Owner's choice (Plan Q9a): test the assumption the whole game rests on first.
+- **Note:** first recorded as "headless simulator first"; the owner reported that answer as a misclick the same day and chose quest first.
 
 ## D-086 Riskiest assumptions and their tests
 
