@@ -179,3 +179,8 @@ Working document for phase 1. Each section records what the owner decided, with 
 - **Decided (2026-10-25):** At launch, one authored region (fixed cities, factions, landmarks and history), about 6–10 settlements and a handful of distinct biomes. Dungeons, lairs, monster spawns and many contracts are generated from seeded templates (GAME-01) for replayability.
 - Later: a generated-region mode (new geography, cities and factions per save) with authored set pieces, key locations and story arcs placed into it. Region data is built so both modes share one format (GAME-04).
 - Owner's note: "1 but eventually 4."
+
+## 27. Guild size
+
+- **Decided (2026-10-25):** A new guild starts with about 4–6 adventurers (one party). A top guild runs about 25–40 adventurers across 4–8 parties, plus apprentices and about 10–15 staff.
+- Sized so squad depth and rotation matter while every adventurer stays a person (Pillar 1).

@@ -181,3 +181,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Launch: hand-made region (6–10 settlements) with seeded procedural sites and contracts. Later: generated regions with authored set pieces, sharing one data format. Detail: `docs/design/CONCEPT.md` §26.
 - **Why:** Owner's choice; identity at launch, replayability later.
+
+## D-031 Guild size: small to mid
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Start ~4–6 adventurers; top guilds ~25–40 across 4–8 parties, plus apprentices and ~10–15 staff. Detail: `docs/design/CONCEPT.md` §27.
+- **Why:** Owner's choice; keeps Pillar 1 (people are the game) with real squad depth.
