@@ -1,0 +1,25 @@
+{
+  "version": "v0.3.0",
+  "commit": "603505d70e799136de4971238ad09de4c224cee5",
+  "manifest": "43ec2ba23beada814b76cc24fa4188bc65ac84694acbc93bf3e49c526917272f",
+  "budget": {
+    "lines": 200,
+    "bytes": 24576
+  },
+  "files": {
+    ".claude/agents/ci-fixer.md": "8386605e148c2d22b067e3fb3b6a2ee84057d1da550656ab02626983d572b55c",
+    ".claude/agents/implementer.md": "05f9e4ea5e8a2e3a2c2cd60b2c14644c9d97087b0aace536851024d3406ca319",
+    ".claude/agents/reader.md": "4a4e94b6f3a383c5934cf98ddafae89757ad0982ca33ce31fc01d204dd352418",
+    ".claude/agents/reviewer.md": "98278f07c43f0ffa5329f50f098c0c8f05d51e29923e9c41a09db675859bdeb2",
+    ".claude/agents/test-runner.md": "f6d59450c2d1e3d82db75d7e6645274c1ce44931ff1bddf02b75b9e45f26d85d",
+    ".claude/hooks/session-start.sh": "a5936b916dffaf98d8ab875600c5ca195d88194053f22b444bf2d8767d57bfd1",
+    ".claude/master/RULES.md": "a5b1ad7d1ff6430650b60fd0a6e7b42682515fb7dd265639f30654fca025a452",
+    ".claude/master/sync.mjs": "b253d8cb3c22780bc00b951b1e9cc024aa5ad615243277a822093f8240544d70",
+    ".claude/skills/efficient-github-actions/references/agent-policy.md": "a45580c978190bbadf21f2977c78936e9ef9aefd9396ca938d2641cf37e484d6",
+    ".claude/skills/efficient-github-actions/references/patterns.md": "1ac338cf8f235b47e3b09999fe9620047dcdd0f23c4d28188af3fc03971d505a",
+    ".claude/skills/efficient-github-actions/scripts/actions-baseline.py": "0195d3ca65d7a822cf95e3eeba783b7beeb39631e3b154ad985a380d9aa4bd3f",
+    ".claude/skills/efficient-github-actions/scripts/ci-scope.template.sh": "de79d6f9ef4dd62a1a8b9465e3168eb0b2bc0cbbeb1aff2d4110d6ee02137fac",
+    ".claude/skills/efficient-github-actions/SKILL.md": "fcd2dbfcc40fd835f423fc6b4f21a42b631debf45f5d709ef30e396b62c6d650",
+    ".github/workflows/prune-merged-branches.yml": "64ef1fe4d4cdfa044caf1ff390284fc916db7489d9ef0fd5da81a3b0ec938e6e"
+  }
+}
