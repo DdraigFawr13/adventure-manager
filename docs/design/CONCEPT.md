@@ -1,6 +1,6 @@
 # Concept
 
-Working document for phase 1. Each section records what the owner decided, with their own notes. Status: in progress.
+Phase 1 concept. Each section records what the owner decided, with their own notes. Status: complete, locked by the owner on 2026-10-25 (D-045). Changes now need a new DECISIONS entry.
 
 ## Pitch, pillars and core loop (Accepted 2026-10-25)
 

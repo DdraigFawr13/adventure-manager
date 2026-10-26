@@ -265,3 +265,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Classes, monsters, regions and quests are data files from the start; mod tools later. Detail: `docs/design/CONCEPT.md` §33.
 - **Why:** Concept review; GAME-04 makes it nearly free and extends the game's life.
+
+## D-045 Concept complete
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** `docs/design/CONCEPT.md` (33 sections, pillars, scope tiers) is the locked phase-1 concept. Phase 2 (style design) begins.
+- **Why:** Owner declared the concept 100% fleshed out after the review pass.
