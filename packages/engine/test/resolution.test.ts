@@ -562,3 +562,104 @@ describe('speed order and sturdier foes (D-129)', () => {
     expect(ofType(events, 'exchange.started').length).toBeGreaterThan(1);
   });
 });
+
+describe('class signature actions (D-130)', () => {
+  const base = game([]).content.rules;
+  const classes = {
+    ...base.classes,
+    warrior: {
+      attackAttribute: 'might',
+      canStabilise: false,
+      actions: [
+        { id: 'action.guard', kind: 'guard', chanceBp: 10_000 },
+        { id: 'action.cleave', kind: 'cleave' },
+      ],
+    },
+    rogue: {
+      attackAttribute: 'agility',
+      canStabilise: false,
+      actions: [
+        { id: 'action.scout', kind: 'scout', bonusBp: 1000 },
+        { id: 'action.shadow-strike', kind: 'shadow-strike', bonusBp: 1500 },
+      ],
+    },
+    cleric: {
+      attackAttribute: 'lore',
+      canStabilise: true,
+      actions: [
+        { id: 'action.mend', kind: 'mend', attribute: 'lore', difficulty: 0 },
+        { id: 'action.ward', kind: 'ward', penaltyBp: 1000 },
+      ],
+    },
+  } as const;
+
+  it('scouts ahead in approach scenes and strikes from shadow at an engaged foe', () => {
+    const roster = [adventurer('a', { might: 10 }), adventurer('r', { agility: 9 }, 'rogue')];
+    const foes = [{ id: 'f', attack: 1, defence: 10, speed: 1, hits: 20 }];
+    const { events } = run(game(roster, { rules: { classes }, quest: { foes } }));
+    const used = ofType(events, 'action.used').map((e) => e.actionId);
+    expect(used).toContain('action.scout');
+    const rogueAttack = ofType(events, 'check.rolled').find(
+      (e) => e.purpose === 'attack' && e.subjectIds[0] === 'r',
+    );
+    expect(rogueAttack?.chance.parts).toContainEqual({
+      sourceId: 'action.shadow-strike',
+      amount: 1500,
+    });
+  });
+
+  it('guards a comrade, so the warrior takes the blow', () => {
+    // The foe only aims at the front line, so every blow is meant for 'b'.
+    const roster = [
+      { ...adventurer('w', { agility: 20 }), position: 'back' as const },
+      adventurer('b', { agility: 1 }),
+    ];
+    const foes = [{ id: 'f', attack: 20, defence: 20, speed: 30, hits: 20 }];
+    const { events } = run(
+      game(roster, {
+        rules: { ...certain, classes, maxExchanges: 1 },
+        quest: { scenes: [], foes },
+      }),
+    );
+    const defence = ofType(events, 'check.rolled').filter((e) => e.purpose === 'defence');
+    expect(defence.every((e) => e.subjectIds[0] === 'w')).toBe(true);
+    expect(ofType(events, 'action.used').some((e) => e.actionId === 'action.guard')).toBe(true);
+  });
+
+  it('cleaves into the next group on a strong hit', () => {
+    const roster = [adventurer('w', { might: 20 })];
+    const foes = [
+      { id: 'f1', attack: 1, defence: 1, speed: 1, hits: 10 },
+      { id: 'f2', attack: 1, defence: 1, speed: 1, hits: 10 },
+    ];
+    const rules = { ...certain, classes, strongHitShareBp: 10_000, maxExchanges: 1 } as const;
+    const { events } = run(game(roster, { rules, quest: { scenes: [], foes } }));
+    expect(ofType(events, 'foe.wounded').map((e) => e.subjectIds[0])).toEqual(['f1', 'f2']);
+  });
+
+  it('wards the party against foe attacks and mends a hurt member', () => {
+    const roster = [
+      adventurer('a', { agility: 1 }),
+      adventurer('c', { lore: 20, agility: 20 }, 'cleric'),
+    ];
+    const scene = {
+      id: 's',
+      kind: 'fixed',
+      attribute: 'agility',
+      difficulty: 20,
+      testers: 'all',
+      onFailure: 'wound',
+    } as const;
+    const foes = [{ id: 'f', attack: 10, defence: 1, speed: 1, hits: 1 }];
+    const { events } = run(
+      game(roster, { rules: { ...certain, classes }, quest: { scenes: [scene], foes } }),
+    );
+    expect(ofType(events, 'wound.changed')).toContainEqual(
+      expect.objectContaining({ subjectIds: ['a'], from: 1, to: 0 }),
+    );
+    const foeAttack = ofType(events, 'check.rolled').find((e) => e.purpose === 'defence');
+    if (foeAttack)
+      expect(foeAttack.chance.parts).toContainEqual({ sourceId: 'action.ward', amount: -1000 });
+    expect(ofType(events, 'action.used').some((e) => e.actionId === 'action.ward')).toBe(true);
+  });
+});

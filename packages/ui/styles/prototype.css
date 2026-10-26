@@ -430,6 +430,11 @@ select:focus-visible {
   margin-top: 6px;
 }
 
+.log .k-action {
+  color: var(--good);
+  font-style: italic;
+}
+
 .log .k-harm {
   color: var(--harm);
 }

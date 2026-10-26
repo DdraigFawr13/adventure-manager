@@ -798,3 +798,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** In each fight exchange everyone acts in order of speed: Agility for adventurers, a speed number for each foe group (content data). Each foe group also has its own number of hits to beat before it is down (a swarm about 3, a pack about 5, a warden or keeper about 7), so fights last the planned 3–6 exchanges (D-118) and foes strike throughout. Death numbers are retuned after. Detail: `packages/engine/src/resolution/SPEC.md`.
 - **Why:** Owner's R1 note (2026-10-26): "I don't see any enemies ever really doing anything at all." Measured over 300 quests per contract: foes got 0–2 attacks per fight and fights lasted 1–2 exchanges, because the whole party acted first and a group fell after 3 wound steps.
+
+## D-130 Resolution v0: classes have signature actions
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Each class has 2–3 signature actions it uses on its own when the situation fits, shown in the log. Starting set: warrior Guard (takes a blow meant for a comrade) and Cleave (a strong hit also strikes the next group); rogue Scout ahead (helps the party's approach scenes) and Strike from shadow (a better hit on a foe already engaged this exchange); cleric Mend (a hurt member steps back up) and Ward (foes hit less often that exchange). Which class has which action, and every number, is content data; each action kind is one engine rule. Owner's note: "1 but room for 2 as well and room for more actions": roles set in the plan (guard, scout, striker, healer) that change which action a member prefers stay open as a later addition, and more actions (and abilities by level, D-074) are added as data. Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Why:** Owner's R1 note (2026-10-26): "there will need to be distinct actions for different classes."

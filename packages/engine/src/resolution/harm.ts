@@ -62,18 +62,21 @@ export function deathRoll(turn: Turn, who: Adventurer, causeId: string): void {
  * End of a scene or exchange (D-120, D-124): each standing healer tends one fallen member,
  * Dying first; untended Down members may bleed to Dying; those already Dying roll for death.
  */
-export function tendTheFallen(turn: Turn, causeId: string): void {
+/** Returns the healers who tended someone this beat, so they don't also mend (D-130). */
+export function tendTheFallen(turn: Turn, causeId: string): Set<string> {
   const { rules, quest } = turn;
   const at = (step: number) => living(turn).filter((a) => stepOf(turn, a.id) === step);
   const dyingAtStart = new Set(at(WOUND.dying).map((a) => a.id));
   const attempted = new Set<string>();
   const tended = new Set<string>();
+  const busy = new Set<string>();
   for (const healer of standing(turn)) {
     if (!rules.classes[healer.classId]?.canStabilise) continue;
     const untended = (step: number) => at(step).filter((a) => !attempted.has(a.id));
     const patient = untended(WOUND.dying)[0] ?? untended(WOUND.down)[0];
     if (!patient) break;
     attempted.add(patient.id);
+    busy.add(healer.id);
     const { attribute, difficulty } = rules.stabilise;
     const { roll: result, eventId } = partyCheck(
       turn,
@@ -111,6 +114,7 @@ export function tendTheFallen(turn: Turn, causeId: string): void {
   for (const patient of at(WOUND.dying)) {
     if (dyingAtStart.has(patient.id)) deathRoll(turn, patient, causeId);
   }
+  return busy;
 }
 
 function bleed(turn: Turn, who: Adventurer, causeId: string): void {

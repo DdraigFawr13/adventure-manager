@@ -3,7 +3,8 @@
 import { fillTemplate, pickVariant, type GameEvent, type Value } from '@adventure-manager/engine';
 import { logTemplates, names } from '@adventure-manager/content';
 
-export type LineKind = 'title' | 'scene' | 'roll' | 'harm' | 'death' | 'moment' | 'end' | 'info';
+export type LineKind =
+  'title' | 'scene' | 'roll' | 'action' | 'harm' | 'death' | 'moment' | 'end' | 'info';
 
 export interface LogLine {
   readonly id: string;
@@ -94,6 +95,12 @@ export function narrate(event: GameEvent): LogLine | null {
           foe: capitalise(nameOf(first)),
           step: nameOf(`foe.wound.${foeStage(event.to, event.hits)}`),
         }),
+      };
+    case 'action.used':
+      return {
+        id,
+        kind: 'action',
+        text: line(event.actionId, id, { actor: nameOf(first), target: nameOf(second) }),
       };
     case 'alarm.raised':
       return { id, kind: 'harm', text: line('alarm.raised', id, {}) };

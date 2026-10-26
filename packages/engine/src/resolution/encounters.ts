@@ -1,5 +1,6 @@
 // Scenes and main-fight exchanges (D-118, D-123, SPEC.md "Scenes" and "Main fight").
 import type { ValuePart } from '../core/value.ts';
+import { actionOf, guardFor, scoutPart, used, wardPart } from './actions.ts';
 import { succeeded } from './check.ts';
 import { wound, woundFoe } from './harm.ts';
 import { foeDown, partyCheck, rankBy, roll, standing, stepOf, type Turn } from './turn.ts';
@@ -26,6 +27,8 @@ export function resolveScene(turn: Turn, scene: SceneTemplate, commandId: string
         : 0;
       if (shift !== 0) extra.push({ sourceId: `site.tag.${tag}`, amount: -rules.stepBp * shift });
     }
+    const scout = scoutPart(turn, sceneEvent);
+    if (scout) extra.push(scout);
   }
   const ranked = rankBy(standing(turn), attribute);
   const count = scene.testers === 'best' ? 1 : scene.testers === 'best-two' ? 2 : ranked.length;
@@ -67,6 +70,8 @@ export function resolveExchange(turn: Turn, commandId: string): void {
     exchange: quest.exchange,
   });
   const alarm = quest.alarm ? rules.alarmFoeBonus : 0;
+  const ward = wardPart(turn, exchangeEvent);
+  const engaged = new Set<string>();
   const order = [
     ...standing(turn).map((a) => ({ id: a.id, speed: a.attributes.agility, who: a, foe: null })),
     ...quest.foes
@@ -75,7 +80,7 @@ export function resolveExchange(turn: Turn, commandId: string): void {
   ].sort((a, b) => b.speed - a.speed || (a.id < b.id ? -1 : 1));
   for (const actor of order) {
     if (actor.foe) {
-      if (!foeDown(actor.foe)) foeStrikes(turn, actor.foe, exchangeEvent);
+      if (!foeDown(actor.foe)) foeStrikes(turn, actor.foe, exchangeEvent, ward);
       continue;
     }
     const attacker = actor.who;
@@ -87,6 +92,9 @@ export function resolveExchange(turn: Turn, commandId: string): void {
     const extra: ValuePart[] = [];
     if (attacker.weaponBp !== 0) extra.push({ sourceId: 'gear.weapon', amount: attacker.weaponBp });
     if (alarm !== 0) extra.push({ sourceId: 'quest.alarm', amount: -rules.stepBp * alarm });
+    const shadow = engaged.has(foe.id) ? actionOf(turn, attacker, 'shadow-strike') : null;
+    if (shadow) extra.push({ sourceId: shadow.id, amount: shadow.bonusBp });
+    engaged.add(foe.id);
     const { roll: result, eventId } = partyCheck(
       turn,
       'attack',
@@ -98,7 +106,15 @@ export function resolveExchange(turn: Turn, commandId: string): void {
       [foe.id],
     );
     if (!succeeded(result.outcome)) continue;
-    woundFoe(turn, foe, result.outcome === 'strong-success' ? steps.strongHit : steps.hit, eventId);
+    if (shadow) used(turn, shadow.id, [attacker.id, foe.id], eventId);
+    const strong = result.outcome === 'strong-success';
+    woundFoe(turn, foe, strong ? steps.strongHit : steps.hit, eventId);
+    const cleave = strong ? actionOf(turn, attacker, 'cleave') : null;
+    const next = cleave ? quest.foes.find((f) => f !== foe && !foeDown(f)) : undefined;
+    if (cleave && next) {
+      const cleaveId = used(turn, cleave.id, [attacker.id, next.id], eventId);
+      woundFoe(turn, next, steps.hit, cleaveId);
+    }
   }
 }
 
@@ -110,20 +126,27 @@ export function foesStrike(turn: Turn, causeId: string): void {
 }
 
 /** One foe group strikes one standing adventurer, front line weighted over back. */
-function foeStrikes(turn: Turn, foe: FoeState, causeId: string): void {
+function foeStrikes(
+  turn: Turn,
+  foe: FoeState,
+  causeId: string,
+  ward: ValuePart | null = null,
+): void {
   const { quest, rules } = turn;
   const steps = rules.woundSteps;
   const alarm = quest.alarm ? rules.alarmFoeBonus : 0;
   const targets = standing(turn);
   if (targets.length === 0) return;
-  const target = turn.stream.weighted(
+  const aimedAt = turn.stream.weighted(
     targets.map((a) => [a, rules.targetWeight[a.position]] as const),
   );
+  const target = guardFor(turn, aimedAt, foe.id, causeId);
   const parts: ValuePart[] = [
     { sourceId: 'foe.attack', amount: rules.stepBp * (foe.attack - target.attributes.agility) },
   ];
   if (alarm !== 0) parts.push({ sourceId: 'quest.alarm', amount: rules.stepBp * alarm });
   if (target.armourBp !== 0) parts.push({ sourceId: 'gear.armour', amount: -target.armourBp });
+  if (ward) parts.push({ ...ward });
   const { roll: result, eventId } = roll(
     turn,
     'defence',

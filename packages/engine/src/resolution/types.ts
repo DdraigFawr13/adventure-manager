@@ -114,10 +114,25 @@ export interface ResolutionRules {
     /** Gap between foes down and party fallen, in basis points, worth one point of difficulty. */
     readonly clarityStepBp: number;
   };
-  readonly classes: Readonly<
-    Record<string, { readonly attackAttribute: Attribute; readonly canStabilise: boolean }>
-  >;
+  readonly classes: Readonly<Record<string, ClassRules>>;
 }
+
+export interface ClassRules {
+  readonly attackAttribute: Attribute;
+  readonly canStabilise: boolean;
+  /** Signature actions (D-130), used on their own when the situation fits. */
+  readonly actions: readonly ClassAction[];
+}
+
+/** One kind per engine rule; content chooses which class has which, and the numbers (D-130). */
+export type ClassAction = { readonly id: string } & (
+  | { readonly kind: 'guard'; readonly chanceBp: number }
+  | { readonly kind: 'cleave' }
+  | { readonly kind: 'scout'; readonly bonusBp: number }
+  | { readonly kind: 'shadow-strike'; readonly bonusBp: number }
+  | { readonly kind: 'mend'; readonly attribute: Attribute; readonly difficulty: number }
+  | { readonly kind: 'ward'; readonly penaltyBp: number }
+);
 
 export interface ResolutionContent {
   readonly rules: ResolutionRules;
@@ -174,7 +189,9 @@ export type CheckPurpose =
   | 'death'
   | 'injury'
   | 'retreat'
-  | 'judgement';
+  | 'judgement'
+  | 'guard'
+  | 'mend';
 export type CheckOutcome = 'strong-success' | 'success' | 'failure' | 'bad-failure';
 export type QuestOutcome = 'won' | 'partial' | 'retreated' | 'routed';
 
@@ -219,6 +236,7 @@ export type GameEvent = EventBase &
         readonly hits: number;
       }
     | { readonly type: 'alarm.raised' }
+    | { readonly type: 'action.used'; readonly actionId: string }
     | { readonly type: 'adventurer.stabilised' }
     | { readonly type: 'adventurer.died' }
     | { readonly type: 'moment.raised'; readonly moment: 'retreat' }

@@ -81,7 +81,15 @@
     "purpose.death": "to die",
     "purpose.injury": "of a lasting injury",
     "purpose.retreat": "to get away cleanly",
-    "purpose.judgement": "to read the fight"
+    "purpose.judgement": "to read the fight",
+    "action.guard": "Guard",
+    "action.cleave": "Cleave",
+    "action.scout": "Scouted ahead",
+    "action.shadow-strike": "Strike from shadow",
+    "action.mend": "Mend",
+    "action.ward": "Ward",
+    "purpose.guard": "to step in",
+    "purpose.mend": "to mend"
   },
   "log": {
     "quest.started": ["The party sets out for {quest}.", "The party takes the road to {quest}."],
@@ -139,7 +147,25 @@
     "quest.retreated": ["They fall back, carrying who they must. ({beats} to cover)"],
     "retreat.beat": ["They keep moving.", "Every step back is hard won."],
     "injury.gained": ["{actor} will carry a lasting injury from this."],
-    "quest.ended": ["{outcome}."]
+    "quest.ended": ["{outcome}."],
+    "action.guard": [
+      "{actor} steps in front of {target}.",
+      "{actor} shoves {target} aside and takes the blow."
+    ],
+    "action.cleave": [
+      "{actor} carries the swing on into {target}.",
+      "The same swing catches {target} too."
+    ],
+    "action.scout": ["{actor} goes ahead and finds the quiet way.", "{actor} scouts ahead first."],
+    "action.shadow-strike": [
+      "{actor} slips in while {target} are busy.",
+      "{actor} finds the gap {target} left."
+    ],
+    "action.mend": ["{actor} patches up {target}.", "{actor} binds {target}'s wounds."],
+    "action.ward": [
+      "{actor} raises a ward over the party.",
+      "{actor} murmurs a ward. The air goes still."
+    ]
   },
   "ui": {
     "title": "Fenn March Quest Watch",

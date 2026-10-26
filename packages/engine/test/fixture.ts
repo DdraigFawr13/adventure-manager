@@ -49,9 +49,9 @@ export const rules: ResolutionRules = {
   },
   leaderCall: { attribute: 'wits', difficulty: 12, clarityStepBp: 2500 },
   classes: {
-    warrior: { attackAttribute: 'might', canStabilise: false },
-    rogue: { attackAttribute: 'agility', canStabilise: false },
-    cleric: { attackAttribute: 'lore', canStabilise: true },
+    warrior: { attackAttribute: 'might', canStabilise: false, actions: [] },
+    rogue: { attackAttribute: 'agility', canStabilise: false, actions: [] },
+    cleric: { attackAttribute: 'lore', canStabilise: true, actions: [] },
   },
 };
 
