@@ -10,6 +10,8 @@ export interface LogLine {
   readonly id: string;
   readonly kind: LineKind;
   readonly text: string;
+  /** The skill or spell's name, shown before the text (owner's R1 note). */
+  readonly label?: string;
   readonly chance?: Value;
   readonly roll?: number;
   /** What the roll was for, e.g. "to hit", from content text. */
@@ -100,6 +102,7 @@ export function narrate(event: GameEvent): LogLine | null {
       return {
         id,
         kind: 'action',
+        label: nameOf(event.actionId),
         text: line(event.actionId, id, { actor: nameOf(first), target: nameOf(second) }),
       };
     case 'alarm.raised':

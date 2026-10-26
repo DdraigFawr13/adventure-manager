@@ -57,7 +57,7 @@ Roles set in the plan and more actions (abilities by level, D-074) are later add
 ## Commands and events
 
 - Commands: `quest.start` (party, plan, quest, day), `quest.step` (one scene or one exchange), `quest.choose` (answer to a raised moment). All go through `simulate(state, command)`.
-- Events: `quest.started`, `scene.started`, `exchange.started`, `check.rolled` (purpose, chance `Value`, roll, outcome; purposes: scene, attack, defence, stabilise, bleed, death, injury, retreat, judgement), `wound.changed`, `foe.wounded`, `alarm.raised`, `adventurer.stabilised`, `adventurer.died`, `moment.raised`, `moment.resolved`, `quest.retreated` (beats), `retreat.beat`, `leader.judged` (situation, call), `injury.gained`, `quest.ended` (won, partial, retreated, routed). Each has a cause id: the command or the event that led to it.
+- Events: `quest.started`, `scene.started`, `exchange.started`, `check.rolled` (purpose, chance `Value`, roll, outcome; purposes: scene, attack, defence, stabilise, bleed, death, injury, retreat, judgement, guard, mend), `wound.changed`, `foe.wounded`, `alarm.raised`, `adventurer.stabilised`, `adventurer.died`, `moment.raised`, `moment.resolved`, `quest.retreated` (beats), `retreat.beat`, `leader.judged` (situation, call), `injury.gained`, `quest.ended` (won, partial, retreated, routed). Each has a cause id: the command or the event that led to it.
 - Balance sweep: `node tools/resolution-sweep.ts [quests]` reports deaths and injuries against PLAN §4c and runs the invariants on every quest.
 - Tests: one rule test per rule above, the determinism test (same seed and commands, same events), and invariants (no step beyond Dying, every event has a cause).
 

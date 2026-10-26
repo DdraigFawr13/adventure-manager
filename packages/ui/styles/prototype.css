@@ -434,6 +434,16 @@ select:focus-visible {
   color: var(--good);
   font-style: italic;
 }
+.log .act-name {
+  font-family: var(--title, inherit);
+  font-style: normal;
+  font-weight: 400;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+}
+.log .act-name::after {
+  content: ' · ';
+}
 
 .log .k-harm {
   color: var(--harm);

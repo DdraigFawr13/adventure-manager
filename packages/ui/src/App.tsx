@@ -290,7 +290,10 @@ export function App() {
           <ol className="log">
             {lines.map((l) => (
               <li key={l.id} className={`k-${l.kind}`}>
-                <span>{l.text}</span>
+                <span>
+                  {l.label ? <b className="act-name">{l.label}</b> : null}
+                  {l.text}
+                </span>
                 {l.chance ? (
                   <button
                     type="button"

@@ -107,7 +107,7 @@ export function resolveExchange(turn: Turn, commandId: string): void {
     );
     if (result.outcome === 'bad-failure') {
       // Overreach (D-131): the foe group swung at strikes the attacker at once, past any guard.
-      if (!foeDown(foe)) foeStrikes(turn, foe, eventId, ward, attacker);
+      foeStrikes(turn, foe, eventId, ward, attacker);
       continue;
     }
     if (!succeeded(result.outcome)) continue;
