@@ -14,7 +14,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Next
 
-1. Next: Style Q7 portraits; then, audio mood, naming and voice.
+1. Next: Style Q7 portraits; then audio mood, naming and voice.
 2. Show visual options as artifacts (mood boards, UI mock-ups) where words aren't enough.
 3. Write `docs/design/STYLE.md` as decisions land; then phase 3 plan.
 
