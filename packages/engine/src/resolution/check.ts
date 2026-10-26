@@ -1,11 +1,11 @@
 // Percent-chance checks (D-119, SPEC.md "Checks"): a chance Value with named parts, one roll.
 import { clamp, divRoundDown } from '../core/math.ts';
 import { BP_CERTAIN, type RngStream } from '../core/rng.ts';
+import { makeValue, type Value, type ValuePart } from '../core/value.ts';
+import type { CheckOutcome } from './types.ts';
 
 /** The one draw a check needs; tests pass a fixed roll. */
 export type Draw = Pick<RngStream, 'int'>;
-import { makeValue, type Value, type ValuePart } from '../core/value.ts';
-import type { CheckOutcome } from './types.ts';
 
 /** Adds a clamp part when the parts push the total outside the limits, so the hover still adds up. */
 export function chanceValue(

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { checkInvariants, simulate } from '../src/index.ts';
 import { chanceValue, rollCheck } from '../src/resolution/check.ts';
-import { adventurer, game, ofType, run, start, steadyPlan } from './fixture.ts';
+import { adventurer, game, ofType, run, steadyPlan } from './fixture.ts';
 
 const fixed = (roll: number) => ({ int: () => roll - 1 });
 const certain = { minChanceBp: 0, maxChanceBp: 10_000 };
@@ -290,10 +290,11 @@ describe('the engine stays deterministic and sound (GAME-01, GAME-06)', () => {
   it('never changes the state it is given, so a preview is safe', () => {
     const state = game(party());
     const before = structuredClone(state);
-    start(state);
+    run(state, { ...steadyPlan, retreat: 'down' });
     expect(state).toEqual(before);
   });
 
+  // An invariant sweep, not a balance battery (GAME-06): many seeds reach more code paths.
   it('keeps the invariants over many seeded quests, and every quest ends', () => {
     const outcomes = new Set<string>();
     for (let seed = 0; seed < 200; seed += 1) {
@@ -320,5 +321,110 @@ describe('the engine stays deterministic and sound (GAME-01, GAME-06)', () => {
         watched: false,
       }),
     ).toThrow(/twice/);
+  });
+});
+
+describe('start checks and rules the review asked to pin down', () => {
+  const startCommand = (partyIds: string[]) =>
+    ({
+      type: 'quest.start',
+      id: 'c',
+      day: 1,
+      questId: 'q',
+      templateId: 'quest.test-barrow',
+      partyIds,
+      plan: steadyPlan,
+      watched: false,
+    }) as const;
+
+  it('rejects a dead member, an unknown class and a second quest', () => {
+    const dead = { ...adventurer('a'), dead: true };
+    expect(() => simulate(game([dead]), startCommand(['a']))).toThrow(/dead/);
+    expect(() => simulate(game([adventurer('a', {}, 'constructor')]), startCommand(['a']))).toThrow(
+      /unknown class/,
+    );
+    const running = simulate(game([adventurer('a')]), startCommand(['a'])).state;
+    expect(() => simulate(running, startCommand(['a']))).toThrow(/still running/);
+  });
+
+  it('tests the best one, the best two or everyone in a scene', () => {
+    const roster = [
+      adventurer('a', { wits: 5 }),
+      adventurer('b', { wits: 15 }),
+      adventurer('c', { wits: 10 }),
+    ];
+    for (const [testers, expected] of [
+      ['best', ['b']],
+      ['best-two', ['b', 'c']],
+      ['all', ['b', 'c', 'a']],
+    ] as const) {
+      const quest = {
+        scenes: [
+          { id: 's', kind: 'fixed', attribute: 'wits', difficulty: 1, testers, onFailure: 'wound' },
+        ],
+      } as const;
+      const { events } = run(game(roster, { rules: certain, quest }));
+      const scene = ofType(events, 'check.rolled').filter((e) => e.purpose === 'scene');
+      expect(scene.map((e) => e.subjectIds[0])).toEqual(expected);
+    }
+  });
+
+  it('moves a stabilised member back to Down with a wound event', () => {
+    const roster = [
+      adventurer('a', { agility: 1 }),
+      adventurer('h', { lore: 20, agility: 20 }, 'cleric'),
+    ];
+    const scene = {
+      id: 's',
+      kind: 'fixed',
+      attribute: 'agility',
+      difficulty: 20,
+      testers: 'all',
+      onFailure: 'wound',
+    } as const;
+    const risk = {
+      ...game([]).content.rules.risk,
+      steady: { chanceBp: 0, badFailureShareBp: 10_000 },
+    };
+    const { state, events, commandIds } = run(
+      game(roster, {
+        rules: { ...certain, risk, stabilise: { attribute: 'lore', difficulty: 0 } },
+        quest: { scenes: [scene, scene] },
+      }),
+    );
+    expect(ofType(events, 'wound.changed')).toContainEqual(
+      expect.objectContaining({ subjectIds: ['a'], from: 4, to: 3 }),
+    );
+    expect(checkInvariants(state, events, commandIds)).toEqual([]);
+  });
+
+  it('pulls out when the player chooses to, with the retreat check', () => {
+    const roster = [adventurer('a', { agility: 1 }), adventurer('b', { agility: 20 })];
+    const scene = {
+      id: 's',
+      kind: 'fixed',
+      attribute: 'agility',
+      difficulty: 20,
+      testers: 'all',
+      onFailure: 'wound',
+    } as const;
+    const risk = {
+      ...game([]).content.rules.risk,
+      steady: { chanceBp: 0, badFailureShareBp: 10_000 },
+    };
+    const paused = run(
+      game(roster, { rules: { ...certain, risk }, quest: { scenes: [scene, scene] } }),
+      { ...steadyPlan, retreat: 'badly-hurt' },
+      true,
+    );
+    const out = simulate(paused.state, {
+      type: 'quest.choose',
+      id: 'cx',
+      day: 1,
+      choice: 'pull-out',
+    });
+    expect(out.events.some((e) => e.type === 'check.rolled' && e.purpose === 'retreat')).toBe(true);
+    expect(ofType([...out.events], 'quest.ended')[0]?.outcome).toBe('retreated');
+    expect(out.state.quest).toBeNull();
   });
 });

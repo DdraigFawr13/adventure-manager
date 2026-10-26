@@ -19,6 +19,14 @@ export const rules: ResolutionRules = {
   minChanceBp: 500,
   maxChanceBp: 9500,
   strongHitShareBp: 2500,
+  woundSteps: {
+    failure: 1,
+    badFailure: 2,
+    alarmBadFailure: 1,
+    hit: 1,
+    strongHit: 2,
+    failedRetreat: 1,
+  },
   risk: {
     cautious: { chanceBp: -500, badFailureShareBp: 1500 },
     steady: { chanceBp: 0, badFailureShareBp: 3000 },

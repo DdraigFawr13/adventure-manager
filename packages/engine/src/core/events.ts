@@ -18,10 +18,13 @@ export type EventInput<E extends EventBase> = E extends EventBase ? Omit<E, 'id'
 export class EventSink<E extends EventBase> {
   readonly events: E[] = [];
 
-  constructor(
-    private readonly counter: { nextEventNo: number },
-    readonly day: number,
-  ) {}
+  private readonly counter: { nextEventNo: number };
+  readonly day: number;
+
+  constructor(counter: { nextEventNo: number }, day: number) {
+    this.counter = counter;
+    this.day = day;
+  }
 
   /** Records an event and returns its id for use as the next cause. */
   emit(input: EventInput<E>): string {

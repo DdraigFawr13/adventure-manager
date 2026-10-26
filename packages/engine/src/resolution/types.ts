@@ -70,11 +70,20 @@ export interface ResolutionRules {
   readonly maxChanceBp: number;
   /** A hit whose roll is in this lowest share of the chance moves two wound steps. */
   readonly strongHitShareBp: number;
+  /** Wound steps each kind of harm costs (D-120). */
+  readonly woundSteps: {
+    readonly failure: number;
+    readonly badFailure: number;
+    readonly alarmBadFailure: number;
+    readonly hit: number;
+    readonly strongHit: number;
+    readonly failedRetreat: number;
+  };
   readonly risk: Readonly<
     Record<Risk, { readonly chanceBp: number; readonly badFailureShareBp: number }>
   >;
   readonly approachAttribute: Readonly<Record<Approach, Attribute>>;
-  /** Difficulty change per site tag and approach, e.g. guarded: stealth -2, assault +2. */
+  /** Difficulty change per site tag and approach; negative is easier (guarded: stealth -2, assault +2). */
   readonly tagShifts: Readonly<Record<string, Readonly<Partial<Record<Approach, number>>>>>;
   /** Added to every foe's attack and defence once the alarm is raised. */
   readonly alarmFoeBonus: number;

@@ -6,7 +6,7 @@ How a party, its plan, stats, gear and the site become odds and events (PLAN §9
 
 - **Party:** 3–6 adventurers, each with the eight working attributes (Might, Agility, Toughness, Stealth, Wits, Presence, Resolve, Lore; 1–20, D-122), a class, a front or back position, a weapon bonus and an armour bonus. v0 classes: warrior, rogue, cleric (default; a healer makes Dying matter).
 - **Plan (D-121):** approach (stealth, assault, diplomacy), risk (cautious, steady, bold), retreat threshold (first Badly hurt, first Down, first Dying, never).
-- **Quest:** a template with 3–7 scenes, then one main fight; the site's tags (e.g. `guarded`, `dark`, `open`) shift scene difficulty per approach; foe groups for the main fight.
+- **Quest:** a template with 3–7 scenes, then one main fight; the site's tags (e.g. `guarded`, `dark`, `open`) shift scene difficulty per approach (negative is easier: a guarded fort favours stealth, guarded = stealth −2, assault +2); foe groups for the main fight.
 
 ## Checks (D-119)
 
@@ -27,9 +27,11 @@ How a party, its plan, stats, gear and the site become odds and events (PLAN §9
 
 ## Wounds, death and injury (D-120)
 
-- Steps: Fit, Hurt, Badly hurt, Down, Dying; foe groups stop at Down. A Down member does nothing. At the end of each scene or exchange, each standing cleric may try to stabilise one Dying member (Lore check, difficulty 10), returning them to Down; then each Dying member makes a **death roll**: 25% − 1% per Toughness and Resolve point above 10. A step past Dying forces a death roll at once.
+- Steps: Fit, Hurt, Badly hurt, Down, Dying; foe groups stop at Down. A Down member does nothing. At the end of each scene or exchange, each standing cleric may try to stabilise one Dying member (Lore check, difficulty 10), returning them to Down (with a `wound.changed` event); then each Dying member makes a **death roll**: 25% − 1% per Toughness and Resolve point above 10. A step past Dying forces a death roll at once.
 - **Rout:** when no member is standing, the quest ends; the party limps home and the contract fails.
 - At the quest's end each member at Badly hurt or worse rolls for a lasting injury: Badly hurt 15%, Down 40%, Dying 70%.
+- Step sizes (failure 1, bad failure 2, alarm bad failure 1, hit 1, strong hit 2, failed retreat 1) are content data too.
+- Lasting injuries are events only in v0; nothing is stored on the adventurer yet.
 - Target: these numbers start where the headless simulator should give PLAN §4c's deaths per danger rating and about 5 injuries per death; R2 tunes them.
 
 ## Retreat and key moments (D-032, D-121)
@@ -41,6 +43,7 @@ How a party, its plan, stats, gear and the site become odds and events (PLAN §9
 
 - Commands: `quest.start` (party, plan, quest, day), `quest.step` (one scene or one exchange), `quest.choose` (answer to a raised moment). All go through `simulate(state, command)`.
 - Events: `quest.started`, `scene.started`, `exchange.started`, `check.rolled` (purpose, chance `Value`, roll, outcome; purposes: scene, attack, defence, stabilise, death, injury, retreat), `wound.changed`, `foe.wounded`, `alarm.raised`, `adventurer.stabilised`, `adventurer.died`, `moment.raised`, `moment.resolved`, `quest.retreated`, `injury.gained`, `quest.ended` (won, partial, retreated, routed). Each has a cause id: the command or the event that led to it.
+- Balance sweep: `node tools/resolution-sweep.ts [quests]` reports deaths and injuries against PLAN §4c and runs the invariants on every quest.
 - Tests: one rule test per rule above, the determinism test (same seed and commands, same events), and invariants (no step beyond Dying, every event has a cause).
 
 ## Not in v0

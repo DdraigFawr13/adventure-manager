@@ -12,11 +12,12 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["packages/*/src", "packages/*/test", "tools/test", "vitest.config.ts"]
+  "include": ["packages/*/src", "packages/*/test", "tools/test", "tools/*.ts", "vitest.config.ts"]
 }
