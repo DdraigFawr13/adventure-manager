@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: Part A (§1–§10) and §11–§13 written; §14 and §15 to do.
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: **approved by the owner on 2026-10-26 (M0, D-115)**, with the plan review's decisions (D-108..D-114). Changes from here go through DECISIONS.
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -22,8 +22,8 @@ Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked
 11. **Technology and architecture.** Engine choice, deterministic simulation package, data formats, saves, modding, optional AI flavour. Written below.
 12. **Art and audio production.** What an artist makes vs what is generated, with costs. Written below.
 13. **Milestones.** Prototype, vertical slice, alpha, free demo, beta, launch, post-launch roadmap (painted portraits, standee animations, bardic songs, war campaigns). Written below.
-14. **Budget, team and business assumptions.**
-15. **Quality, CI and release process.**
+14. **Budget, team and business assumptions.** Written below.
+15. **Quality, CI and release process.** Written below.
 
 ---
 
@@ -77,7 +77,7 @@ Accepted 2026-10-26 as a starting set (D-065); numbers are estimates, revisited 
 
 ## 2. Core loop and pacing (Accepted 2026-10-26)
 
-Decisions: D-066..D-068. All times are targets for a typical player in a mid-sized guild (2–4 parties), to be measured in the prototype (§9) and playtests (§10).
+Decisions: D-066..D-068, D-113. All times are targets for a typical player in a mid-sized guild (2–4 parties), to be measured in the prototype (§9) and playtests (§10).
 
 ### 2a. Units of time (Accepted 2026-10-26, D-066, D-067)
 
@@ -91,7 +91,7 @@ Decisions: D-066..D-068. All times are targets for a typical player in a mid-siz
 |---|---|---|---|
 | Assembly and muster (spring) | 1–4 | Rankings, promotion and relegation, patron review; recruitment window opens; contract renewals; new contract board. | ~30 min |
 | Campaigning (spring–autumn) | 5–36 | Main contract season. Midsummer fair (about weeks 20–21): short second recruitment window and the main tournament. | ~95 min |
-| Winter | 37–48 | Slow travel, few contracts; healing, training, academy, building; the odd winter raid. | ~15 min |
+| Winter | 37–48 | The planning season: next year's budget, building, training plans; healing; slow travel and few contracts; the odd winter raid (D-113). | ~15 min |
 | Year's end | — | Chronicle entry, ageing, retirements, the year in review. | ~5 min |
 
 ### 2c. The day (Accepted 2026-10-26, D-068)
@@ -105,6 +105,7 @@ Decisions: D-066..D-068. All times are targets for a typical player in a mid-siz
 - **Week report** on the first day of each campaigning week: one letter on the desk summarising last week (results, injuries, money, morale changes) and this week's contract board.
 - **Routine week:** take or decline contracts, send a party with its saved plan, continue. Target: 10 clicks or fewer and about 1.5 min.
 - **Parties out:** the player watches one party live on the board; the others are summary cards (D-032). Watching is optional and can be sped up or skipped; the result is the same either way (GAME-02).
+- **A standing tension most weeks** (amended 2026-10-26, D-113): the board is built so most weeks hold one live dilemma, such as a deadline clash between two contracts, a promise to an adventurer coming due, or a rival bidding for the same contract. The hook to play one more week is that dilemma plus a party's quest ending.
 - With contracts delegated (CONCEPT §19) the week report becomes a digest and need not stop at all, except that choosing contracts is never delegated (D-038), so the board stops whenever there is a new contract worth a decision.
 
 ### 2e. The generation (Accepted 2026-10-26, D-068)
@@ -263,7 +264,7 @@ Checks on the map (WS-05), run on the diagram's edges: every system is reached f
 
 ## 4. Economy and balance (Accepted 2026-10-26)
 
-Decisions: D-071..D-073. This section sets shapes, ratios and targets; exact numbers are tuned in the prototype (§9) against these targets. "Mid-sized guild" means about 15 adventurers in 3 parties.
+Decisions: D-071..D-073, D-113. This section sets shapes, ratios and targets; exact numbers are tuned in the prototype (§9) against these targets. "Mid-sized guild" means about 15 adventurers in 3 parties.
 
 ### 4a. Sources and sinks (Accepted 2026-10-26, D-073)
 
@@ -344,6 +345,11 @@ Measured in the prototype and playtests (§9, §10). All are estimates until the
 - Knowledge: a monster kind well researched stays useful for about 3–5 years; a rival scouting report for about 1 year.
 - Tournaments: entering is worth it for a mid-sized guild about once a year, not every time.
 
+### 4g. Prices and recovery (Accepted 2026-10-26, D-113)
+
+- **Every safe choice has a visible price.** Caution (early retreats) costs fees and renown through abandoned contracts; delegating a system shows, when it is handed over, what the guildmaster stops learning (§5d); skipping winter costs the planning it would have held. The headless simulator checks that cautious and bold play, and delegated and hands-on play, each come out ahead in some seeds (§9d).
+- **Recovery without rubber-banding.** A guild in trouble gets visible, costly ways back, all of which rivals can use too: a patron's emergency grant with strings, charity contracts from a faction, and debt paid in service. A "bad first two years" seed set tests them (§9d).
+
 ---
 
 ## 5. Progression (Accepted 2026-10-26)
@@ -355,9 +361,9 @@ Decisions: D-074, D-075. Shapes and targets only; exact curves are tuned in the 
 The four layers (D-037) grow at different speeds, so every year shows some change:
 
 - **Attributes (1–20)** grow through training and quests toward a hidden potential (CONCEPT §5), fastest in the first 3–4 years. They peak in the adventurer's prime and decline with age and lasting injuries; physical attributes fall first, mental ones last. Ancestry sets the ages (a long-lived ancestry peaks later and declines slower), as data (GAME-04).
-- **Class levels** (Accepted 2026-10-26, D-074): **10 levels at launch**, the main visible sign of growth. Each level adds class abilities and one talent pick. Pace: about 1 level a year early in a career, slowing later; most survivors retire around level 7–9; level 10 marks a legend. Multiclassing or a prestige path opens at level 5.
+- **Class levels** (Accepted 2026-10-26, D-074): **10 levels at launch**, the main visible sign of growth. Each level adds class abilities and one talent pick. Pace: about 1 level a year early in a career, slowing later; most survivors retire around level 7–9; level 10 marks a legend. Multiclassing or a prestige path opens at level 5, after launch (D-109).
   - **Planned: 20 levels later** (owner's note: "Start with 10. Plan for 20 eventually"). To keep that open, the level count, experience curve and per-level abilities are class data (GAME-04), and level-gated rules (prestige at 5, danger ratings) refer to bands, not fixed numbers. Going to 20 later needs its own pacing decision (faster levelling or longer careers) and twice the per-class content.
-- **Talents** are chosen at each level: the player picks, or the head trainer picks to a plan (D-070 delegation). Multiclassing or a prestige path opens at a set level (CONCEPT §15).
+- **Talents** are chosen at each level: the player picks, or the head trainer picks to a plan (D-070 delegation). Multiclassing or a prestige path opens at a set level (CONCEPT §15); both come in an update after launch (D-109).
 - **Traits** change through events, not training: scars and trauma from injuries (D-008), deeds ("Survived the Fen Drake"), habits and personality shifts. They are the layer that carries the adventurer's story.
 
 **Shape of a career** (targets): years 1–3 rapid growth; years 4–8 prime, most dangerous work; years 9+ decline, the choice between retiring them, keeping them as a mentor in a quieter role, or one last contract.
@@ -433,29 +439,29 @@ Owner's note: "I like a for the first season but I like having a small prologue 
 
 ## 7. Launch content list (Accepted 2026-10-26)
 
-Decisions: D-079..D-081. Every item is a data entry (GAME-04, D-044), so counts can grow after launch without engine work. Names are working names; final names follow STYLE §9a.
+Decisions: D-079..D-081, D-109, D-112. Every item is a data entry (GAME-04, D-044), so counts can grow after launch without engine work. Names are working names; final names follow STYLE §9a.
 
 ### 7a. People (Accepted 2026-10-26, D-079, D-081)
 
-- **Classes: 8** (D-018), one per classic role. Working list: warrior, guardian, rogue, ranger, cleric, wizard, druid, and a bard-like support. Final names and identities are original (D-002).
+- **Classes: 6 at launch** (lean cut, D-109; 8 planned, D-018). Launch list: warrior, rogue, ranger, cleric, wizard and a bard-like support; guardian and druid follow in updates. Final names and identities are original (D-002).
   - Per class: abilities across 10 levels (D-074); about 15 class talents, plus a shared pool of about 30 general talents.
-  - **Prestige paths: 4** at launch, opening at level 5 (D-074); multiclassing between any two classes from level 5.
-  - Casters (cleric, wizard, druid, support) draw on limited daily power with risks (D-028); each class's magic is tagged with a tradition slot left empty for later.
-- **Ancestries: 5** (Accepted 2026-10-26, D-079): two familiar peoples, two grown from the March, plus humans. Mock-up: `docs/design/mockups/ancestries.html` (option C). Names, ages and hooks are first drafts:
+  - **Prestige paths and multiclassing:** not at launch (D-109); planned for an update, opening at level 5 (D-074).
+  - Casters (cleric, wizard, support) draw on limited daily power with risks (D-028); each class's magic is tagged with a tradition slot left empty for later.
+- **Ancestries: 4 at launch** (D-079; lean cut, D-109): Marchfolk, Stonewrights, Lanthe and Barrowborn; Reedfolk follow in an update (their hook, fen travel speed, is the lightest on other systems). Mock-up: `docs/design/mockups/ancestries.html` (option C). Names, ages and hooks are first drafts:
   - **Marchfolk** (humans of the March): learn fastest. Prime about 24–32.
   - **Stonewrights** (stout hill miners): shrug off poison and wounds, slow to heal from trauma. Prime about 40–80.
   - **Lanthe** (long-lived wood folk): grow slowly, can serve under several guildmasters (Pillar 3). Prime about 60–200.
-  - **Reedfolk** (fen stilt-dwellers): parties with one travel the fens fast. Prime about 22–34.
+  - **Reedfolk** (fen stilt-dwellers; after launch, D-109): parties with one travel the fens fast. Prime about 22–34.
   - **Barrowborn** (born near the old barrows): see in the dark, sense the restless dead; the temple faction distrusts them. Prime about 24–32.
   - Each sets attribute leanings, ageing (D-075), naming rules (D-058) and one or two traits. Later as data: Hearthlings (small folk), Grael (tusked clans), Mossbacks, Ashlings.
-- **Attributes: about 28** on the 1–20 scale (D-007), including hidden ones (potential, consistency, loyalty). Final list during the prototype (§9).
-- **Traits:** about 40 personality traits and about 60 earned traits (scars, trauma, deeds, habits).
+- **Attributes: about 16** (lean cut, D-109) on the 1–20 scale (D-007), including hidden ones (potential, consistency, loyalty). Final list during the prototype (§9).
+- **Traits:** about 30 at launch (D-109): about 15 personality and about 15 earned (scars, trauma, deeds, habits).
 - **Staff roles: 6** (deputy, trainer, scout, librarian, healer, quartermaster), each with about 6 role attributes.
 - **Guildmaster backgrounds: 5** (ex-adventurer, merchant, noble, scholar, temple-raised).
 
 ### 7b. Threats (Accepted 2026-10-26, D-080)
 
-- **Monsters: 36 kinds** (D-080) in 7 families (beasts, the restless dead, fen things, goblin-kind, giants and trolls, cultists and bandits, old magic), each kind with a few variants by danger rating.
+- **Monsters: about 24 kinds** (lean cut, D-109) in 7 families (beasts, the restless dead, fen things, goblin-kind, giants and trolls, cultists and bandits, old magic), each kind with a few variants by danger rating.
 - **Named beasts:** generated from monster kinds with a name, a history and a bounty (CONCEPT §12); they remember fights and grow.
 - **Bandit and cult groups** for defence work, tied to the outlaw faction.
 
@@ -463,11 +469,12 @@ Decisions: D-079..D-081. Every item is a data entry (GAME-04, D-044), so counts 
 
 - **Region:** one authored region, the March (D-030): **8 settlements**, **5 biomes** (fen, downs and woods, moor, hills and caves, coast), about 12 authored landmarks.
 - **Factions: 6**: the crown, two cities, a temple, a merchant house and the outlaws (CONCEPT §16), each with a crest, colours and naming rules.
-- **Rival guilds: 17** (3 tiers of 6 with the player, D-073), each authored: name, crest, charter, specialty, patron, home town and a few founding adventurers.
+- **Rival guilds: 17** (3 tiers of 6 with the player, D-073): about 6 authored (name, crest, charter, specialty, patron, home town, founding adventurers) and the rest generated from templates by seed (D-109).
 - **Site templates** (seeded, D-030): delve sites (barrows, ruins, mines, caves, sunken chapels and so on), beast lairs, and defence sites (village, fort, bridge, mill). **20 templates** (D-080).
 - **Quest templates:** delves, hunts, bounties on named beasts, defences, plus the prologue contract (D-076). **20 templates** (D-080).
-- **Key-moment templates:** the decisions that stop the calendar (push on, retreat, spare, spend). **60 templates** (D-080), each with several text variants.
-- **Tournaments: 3** kinds (guild trials, a monster-hunt cup, an arena event), with the main one at the midsummer fair (D-067).
+- **Key-moment templates:** the decisions that stop the calendar (push on, retreat, spare, spend). **about 40 templates** (lean cut, D-109), each with several text variants.
+- **Tournaments: 1** at launch (D-109): the guild trials at the midsummer fair (D-067); the monster-hunt cup and arena event follow in updates.
+- **Region crises: 3–4 small ones** (D-112): local, data-driven chains of contracts and consequences (for example a plague in one town, a great beast waking in one valley, an outlaw rising on one road) that can start from about year 5 and give the middle years goals. Larger region-wide crises and guild legacy projects come after launch. Owner's note: "Small crisis at launch. Legacy goals and larger crises after launch."
 
 ### 7d. Guild and gear (Accepted 2026-10-26, D-080)
 
@@ -478,7 +485,7 @@ Decisions: D-079..D-081. Every item is a data entry (GAME-04, D-044), so counts 
 
 ### 7e. Writing (Accepted 2026-10-26, D-080)
 
-- Letters, reports, rumours, criers' notices, Chronicle entries and conversation lines, all as templates with many variants (D-059). Target **about 6,000 template lines** (D-080), costed in §12.
+- Letters, reports, rumours, criers' notices, Chronicle entries and conversation lines, all as templates with many variants (D-059). Target **about 4,500 template lines** (lean cut, D-109; was about 6,000), costed in §12.
 
 ---
 
@@ -497,7 +504,7 @@ Each outcome reaches the player through one or more of these, from immediate to 
 | Week report (D-068) | Digest: results, injuries, money, morale moves | Weekly |
 | Letters (D-043) | Consequences that need or deserve attention, from a person in the world | When they land |
 | Criers and gossip (D-043) | Public news: rankings, rivals' deeds, region changes | When they land |
-| Region map (D-049), raised to the kingdom map (D-087, D-097) | Areas and locations, factions, guilds, parties and rivals in action, threats (deeds and rumours on the map later) | Always |
+| Region map (D-049), raised to the kingdom map (D-087, D-097) | Areas and locations, guilds, parties and rivals in action (factions, threats, deeds and rumours on the map after launch, D-109) | Always |
 | Inspector fields | Every person, item, place and faction: value, breakdown (D-078) and dated history | On demand |
 | Chronicle and Hall of Heroes (D-042) | Deeds, deaths, storied items, records | Permanent |
 | Year in review (D-067) | The year's biggest causes and effects | Year's end |
@@ -508,7 +515,7 @@ Each outcome reaches the player through one or more of these, from immediate to 
 2. **Every change records its cause** (the decision or event that started it) and the player can reach that cause in at most 2 clicks. The engine records causes; the UI only shows them (GAME-02).
 3. **Delayed consequences name their cause.** A letter about a raid 8 weeks after a refused contract says so.
 4. **Importance follows the stop classes** (D-068): must-stop outcomes get a stop and a letter; digest outcomes go to the week report; minor ones go to the log and history only.
-5. **Forewarning follows knowledge** (D-041): a spreading threat shows on the map first as a rumour, then sharper as scouts and the library learn more. Nothing important arrives with no warning at all unless the guild chose not to look.
+5. **Forewarning follows knowledge** (D-041): a spreading threat shows first as a rumour (in the inbox until the threats map layer arrives after launch, D-109), then sharper as scouts and the library learn more. Nothing important arrives with no warning at all unless the guild chose not to look.
 6. **Deaths are never quiet:** the bell (STYLE §8), a memorial letter written sincerely (D-059), friends' and rivals' reactions, a Chronicle entry.
 7. **Optional AI flavour** (Early update, D-035) may rewrite the words of a surface, never its causes or numbers (GAME-03).
 
@@ -525,7 +532,7 @@ Each outcome reaches the player through one or more of these, from immediate to 
 
 ## 9. Risks and prototypes (Accepted 2026-10-26)
 
-Decisions: D-084..D-086. A prototype is throwaway code that answers one question cheaply; it is the first build step after the plan is approved (D-001). "Fun" and feel checks pass only on the owner's recorded playtest notes (GAME-06).
+Decisions: D-084..D-086, D-110, D-113. A prototype answers one question cheaply. **The simulation core is kept** (amended 2026-10-26, D-113): it is written as the production engine package from the start (§11b), with tests; only prototype screens are throwaway. Prototyping is the first build step after the plan is approved (D-001). "Fun" and feel checks pass only on the owner's recorded playtest notes (GAME-06).
 
 ### 9a. Riskiest assumptions (Accepted 2026-10-26, D-086)
 
@@ -535,12 +542,12 @@ Ranked by how much of the game fails if the assumption is wrong. "Cheapest test"
 |---|---|---|---|---|
 | R1 | Watching a quest (log and board) is tense and fun | The core loop (Pillar 2) is dull; players auto-resolve everything | One quest, simulated: text log plus a plain board with standees; owner watches 10 quests | Owner wants to watch the next one; auto-resolve feels like a loss; key moments feel like real choices |
 | R2 | The simulation hits the §4 targets: ~2 deaths a year, money tight early, ladder movement | Balance needs rework after art is built | Headless year simulator (no graphics): 1,000 seeded guild-years, report deaths, money, promotions | Medians within ±25% of §4 targets; no runaway rival in 30 simulated years |
-| R3 | A year fits the friction budget: ~80 stops, ~145 min (D-068) | Sessions drag or feel empty | Same headless simulator counts stops by class; then a timed playtest of one year in the text prototype | ≤ 100 stops a year; owner plays a year in ≤ 3 h |
+| R3 | A year fits the friction budget: ~80 stops, ~145 min (D-068) | Sessions drag or feel empty | Same headless simulator counts stops by class; then a timed playtest of one year in the text prototype | ≤ 100 stops a year for the mid-sized guild (top guild: §9d); owner plays a year in ≤ 3 h |
 | R4 | The desk layout holds FM density (30-row roster, finances) on a 1366 px screen | Dense screens need a redesign late | Clickable HTML mock-ups of roster, finances and contract board at 1366 and 1920 px | 25+ roster rows visible at 1366 px; owner finds 5 set facts in under 10 s each |
 | R5 | Old-press ledgers are readable | Dense screens tire players (STYLE §5) | Rendered ledger specimens at real sizes (done, §9c: 15 px, lining figures) | Confirmed on real monitors during R4 |
 | R6 | Staff are competent but limited: the player's own focus visibly beats delegation (D-038) | Delegating everything is optimal; the player becomes a spectator | Headless simulator: same seeds, delegated vs a careful player policy | Player focus 10–25% better on the chosen area; delegation never ruinous |
 | R7 | Players get attached to adventurers who die about twice a year | Deaths feel like stat loss, not loss | Owner plays two years in the text prototype with generated histories and memorial letters | Owner can name and describe 3 adventurers after a session |
-| R8 | Template writing stays fresh at ~6,000 lines (D-080) | Repetition breaks the fiction within a few years | Write one template family (quest reports) with variants; generate 200 reports; count repeated sentences | No sentence repeats more than once in 50 reports |
+| R8 | Template writing stays fresh at ~4,500 lines (D-080, D-109) | Repetition breaks the fiction within a few years | Write one template family (quest reports) with variants; generate 200 reports; count repeated sentences | No sentence repeats more than once in 50 reports |
 | R9 | Players reach a second guildmaster (Pillar 3; D-065: 25% of 40 h+ players) | The generational pillar is invisible | Can only be measured late (beta); early proxy: headless simulator shows patron dismissal or retirement within 20–30 years | Median guildmaster career 20–30 simulated years |
 
 Not risks for prototypes (handled elsewhere): engine choice and determinism (§11), art cost (§12), team and budget (§14).
@@ -549,11 +556,16 @@ Not risks for prototypes (handled elsewhere): engine choice and determinism (§1
 
 The riskiest question first. All prototypes come after the plan is approved (D-001).
 
-0. **Engine test** (D-090): the same ledger and kingdom-map view built in web tech and in Godot; the owner picks the engine (§11a).
+0. **Engine test, web-first** (D-110, amends D-090): the ledger and kingdom-map view built in web tech; Godot is tried only if web misses its bar (§11a).
+0b. **Resolution v0** (D-113): half a page plus code for how a party, its plan, stats, gear and the site become odds and events; every number in data, tuned later. R1 needs it.
 1. **One quest, watched** (R1): a minimal simulation core drives a text log and a plain board with standees; the owner watches 10 quests. If watching isn't tense, Pillar 2 and the core loop need rethinking before anything else is built.
 2. **Headless year simulator** (R2, R3, R6, R9): the same simulation core with no graphics; 1,000 seeded guild-years reporting deaths, money, ladder movement, stops by class, delegated vs careful play, and guildmaster careers against the §2 and §4 targets.
 3. **Desk-density mock-ups and writing test** (R4, R8): HTML mock-ups at 1366 and 1920 px, and one template family generated 200 times. Neither needs the engine, so they can run alongside step 1 or 2.
 4. **Two years in the text prototype** (R7): the attachment check.
+
+**Time-boxes** (D-111, D-113; estimates at 10–20 h a week): engine test 4–6 weeks; resolution v0 and step 1 6–10 weeks; step 2 starts with one guild, no rivals and three classes and widens in steps, 8–12 weeks; step 3 alongside; step 4 (two in-game years played) 4–6 weeks. A step over its box by half goes to the owner at once, not at the gate.
+
+**Stop and slip rules** (D-111): if R1 fails twice (two rounds of the 10-quest watch test miss the pass line, with one round of changes between them), building stops and the core loop is redesigned before anything else. A milestone running 50% over its estimate triggers a cut review at that gate: content is dropped or deferred, quality checks never are. Whether to end the project is the owner's call, not a rule.
 
 ### 9c. Ledger readability check (Accepted 2026-10-26, D-084)
 
@@ -562,6 +574,18 @@ Mock-up: `docs/design/mockups/readability.html` (first section).
 - **Minimum ledger size: 15 px** at 100% (owner's choice); the size slider (D-077) goes up from there.
 - **All numbers use lining figures** (`lining-nums`). Measured at 40 px: the ledger face's default figures are old-style and proportional (13.6–20.8 px wide); lining figures are equal width (21.1 px) and sit on the line.
 - Still to confirm on real monitors at 1366 and 1920 px in the R4 prototype; if it fails there, D-052 (own ledger cut) and clear print (D-077) are the fallbacks.
+
+### 9d. Added checks (Accepted 2026-10-26, D-113)
+
+From the plan review (`docs/design/PLAN-REVIEW.md`). The headless simulator (step 2) also reports:
+
+- **No dominant safe play:** cautious vs bold risk settings and delegated vs hands-on play each come out ahead in some seeds (§4g).
+- **Winter cash:** money through winter with wages running; no guild is ruined by winter alone.
+- **Bad starts:** a set of seeds with two bad first years; most guilds recover through the §4g levers without rubber-banding.
+- **Top guild load:** stops a year and deaths for a 6-party guild, not only the mid guild; target ≤ 130 stops a year (estimate).
+- **Late goals:** in seeds that reach year 10+, at least one crisis or new pressure arrives between years 5 and 15 (D-112).
+
+The writing test (R8) also checks **shape repetition**: across 100 simulated quests, no site × monster × complication combination repeats more than 3 times, using combined modifiers rather than flat templates. A small template previewer in `tools` generates N outputs and counts repeats (D-113).
 
 ---
 
@@ -607,16 +631,16 @@ Owner's note: "1 but leave 2 open as a future option."
 
 ## 11. Technology and architecture (Accepted 2026-10-26)
 
-Decisions: D-090, D-091. Constraints from earlier decisions: PC first, mouse and keyboard, dense screens (D-016); deterministic engine with seeded randomness and injected time (GAME-01); one simulation function, UI never recomputes (GAME-02); content as data (GAME-04, D-044); versioned saves (GAME-05); Ironman autosave each day (D-033); Steam release with achievements as measures (D-088); 15 px old-press ledgers with lining figures (D-084).
+Decisions: D-090, D-091, D-110, D-114. Constraints from earlier decisions: PC first, mouse and keyboard, dense screens (D-016); deterministic engine with seeded randomness and injected time (GAME-01); one simulation function, UI never recomputes (GAME-02); content as data (GAME-04, D-044); versioned saves (GAME-05); Ironman autosave each day (D-033); Steam release with achievements as measures (D-088); 15 px old-press ledgers with lining figures (D-084).
 
-### 11a. Engine and platform (Accepted 2026-10-26, D-090: decide after a test)
+### 11a. Engine and platform (Accepted 2026-10-26, D-090, D-110)
 
-The owner chose to decide between A (web tech in Electron) and B (Godot 4 with C#) after building the same two pieces in both. C (Unity) is out.
+**Web-first** (owner's choice after the plan review, D-110, amends D-090): build the two test pieces in web tech (Electron, TypeScript), reusing Story-Generator's map code (§12d). Godot 4 (C#) is built only if the web ledger or map misses its bar: 60 fps on the map at 1366×768, the 15 px ledger readable, the find-the-fact task (R4) passed. Unity is out. Earlier plan (D-090): build both, then choose; the comparison below still stands as the record.
 
 **Engine test** (prototype step 0, before the watched quest, D-085):
 
-- **Build in both:** (1) one roster ledger: 30 rows, sorting, a hover breakdown on a number (D-078), 15 px old-press type with lining figures (D-084), clear print and the 100–150% size slider (D-077); (2) one kingdom-map view (D-087): layered illustration, zoom and pan, a party moving, faction and guild marks, a threat stain, one ink-reveal effect.
-- **Judged on:** the owner's look-and-feel notes (GAME-06), plus measured build time, frames per second and memory at 1366×768, download size, and the find-the-fact task (R4).
+- **Build (web; Godot only as fallback):** (1) one roster ledger: 30 rows, sorting, a hover breakdown on a number (D-078), 15 px old-press type with lining figures (D-084), clear print and the 100–150% size slider (D-077); (2) one kingdom-map view (D-087): layered illustration, zoom and pan, a party moving, faction and guild marks, a threat stain, one ink-reveal effect. The map piece tests the technique; faction marks and threat stains are not at launch (D-109).
+- **Judged on:** the owner's look-and-feel notes (GAME-06), plus measured build time, frames per second and memory at 1366×768, download size, the find-the-fact task (R4), and whether the ledger works with a screen reader (labelled controls, §6c).
 - The rest of §11 holds for either engine; only the language changes (TypeScript or C#).
 
 Comparison at the time of the choice (2026-10-26):
@@ -637,7 +661,7 @@ What the game mostly is: ledgers, letters and inspectors (dense typography), plu
 
 Packages (one repository):
 
-- **engine**: the rules. Pure code, no UI, no clock, no unseeded randomness (GAME-01). One `simulate(state, command, seed)` used for preview and commit (GAME-02). Every change is an **event** with a cause id.
+- **engine**: the rules. Pure code, no UI, no clock, no unseeded randomness (GAME-01). One `simulate(state, command)` used for preview and commit (GAME-02); random streams live in the state (§11h, D-114). Every change is an **event** with a cause id.
 - **content**: classes, ancestries, monsters, sites, quests, key moments, text templates as data files with schemas (GAME-04).
 - **ui**: screens that read state and events, send commands, never compute rules.
 - **shell**: desktop window, saves on disk, Steam (achievements, cloud saves).
@@ -660,7 +684,7 @@ flowchart LR
 
 ### 11c. Determinism (Accepted 2026-10-26, D-091)
 
-- A seeded generator (for example PCG or xoshiro) passed in, never global; engine time passed in.
+- Seeded generators (for example PCG or xoshiro), never global: named streams per system kept in the state (§11h, D-114); engine time passed in.
 - Game values are integers (money in pennies, stats as whole numbers, chances in per-ten-thousand), so results do not depend on floating-point differences.
 - One determinism test: the same seed and commands give the same events (GAME-06).
 
@@ -686,11 +710,30 @@ flowchart LR
 - A day tick with no stop under 50 ms; a headless simulated guild-year under 1 s, so the 1,000 seeded guild-years in §9b take under about 17 minutes run one after another.
 - Save and load under 1 s for a 30-year save.
 
+### 11h. Engine foundations (Accepted 2026-10-26, D-114)
+
+Four foundations from the plan review (`docs/design/PLAN-REVIEW.md` C1–C4), built before any game rule because adding them later touches every system:
+
+1. **Values explain themselves.** Every game number is a value carrying its parts (base, modifiers, sources) and the cause id of its last change. The breakdown on hover (D-078), the Trace and inspector histories (D-082) read these; the UI never rebuilds them (GAME-02).
+2. **Named random streams.** Randomness comes from streams derived from (seed, name), one per system, with their positions stored in the game state; `simulate(state, command)` takes no separate seed. Adding a roll in recruitment then does not reshuffle quests, so balance runs and replays stay comparable. Story-Generator does the same (§12d).
+3. **Replayable bug reports.** Playtest builds keep the commands since the last daily snapshot in the save (D-033), so a tester's save and log replay the bug exactly on the developer's machine. A replay that diverges is itself a determinism bug.
+4. **Event-log retention.** Recent years keep every event; older years keep events that a history, Trace or Chronicle entry points to, plus yearly summaries; Chronicle-worthy events are kept forever. The rule is tested against the 30-year save target (§11g).
+
+Also: package boundaries are enforced by lint, not only described (the engine imports nothing from ui or shell and cannot reach the clock or `Math.random`); content types and validation come from one schema source; text templates get a grammar (variables, pronouns, plurals, conditional lines) before the writing test (R8); interface labels live in string files like world text, so translation stays cheap (D-104).
+
+### 11i. Code standards (Accepted 2026-10-26, D-114)
+
+- A short `docs/STANDARDS.md` is written at the start of M1, before the first line of game code: strict types and no `any`; a pure engine; a test for every rule; naming; small files; a definition of done per feature (checks green, behaviour tested, docs updated, VER-07).
+- Each package has a short `AGENTS.md` stating its rules (for example "engine: no clock, no `Math.random`, no ui imports"), so AI coding sessions start inside the rules.
+- **Invariant checks** in the engine (money adds up, no negative health, every event has a cause) run in every balance sweep; generated text has golden-file tests.
+- **Rules specs just in time:** a half-page spec per system is written just before that system is coded, with its numbers in data, not all up front.
+- **Dependencies:** the stack's dependency list is approved once when the engine is settled (SAFE-03), not package by package.
+
 ---
 
 ## 12. Art and audio production (Accepted 2026-10-26)
 
-Decisions: D-097, D-098. Inputs: STYLE §1–§8 (locked), content volume (D-080), kingdom map goal (D-087), tools review (D-094). **All costs are rough estimates** (REP-01) from typical freelance rates; §14 turns them into a budget, and real quotes replace them.
+Decisions: D-097, D-098, D-109, D-113. Inputs: STYLE §1–§8 (locked), content volume (D-080), kingdom map goal (D-087), tools review (D-094). **All costs are rough estimates** (REP-01) from typical freelance rates; §14 turns them into a budget, and real quotes replace them.
 
 ### 12a. Made by hand vs generated (Accepted 2026-10-26, D-098)
 
@@ -700,10 +743,10 @@ The rule: an artist draws **parts and set pieces**; code **assembles** them (GAM
 |---|---|---|
 | Kingdom map of the March (D-087) | Artist (base) + code (live layers) | 1 base map in layers, plus marks and banners (§12d) |
 | Quest-board site maps (STYLE §4) | Code: an ink renderer draws site templates from an artist's stamp library | ~60 stamps per biome × 5 biomes |
-| Portraits (STYLE §7) | Artist draws parts; code assembles by seed | ~200 parts across 5 ancestries |
-| Monsters | Artist | 36 kinds × (standee + hatched card) = 72 pieces |
+| Portraits (STYLE §7) | Artist draws parts; code assembles by seed | ~160 parts across 4 ancestries (D-109) |
+| Monsters | Artist | ~24 kinds × (standee + hatched card) = ~48 pieces (D-109) |
 | Icons (STYLE §6) | Artist | ~120 icons × 2 levels; ~40 card icons tinted |
-| Crests and seals | Artist draws charges and frames; code assembles | 6 factions, 17 rival guilds, a crest builder for the player |
+| Crests and seals | Artist draws charges and frames; code assembles | 6 factions, ~6 authored rival crests; the crest builder serves the player and generated rivals (D-109) |
 | Decorated initials (STYLE §5) | Artist | 26 letters |
 | Legendary items | Artist | ~10 illustrations |
 | Desk, paper, ledgers, seals | Mostly code (CSS or shaders) plus a few textures | ~15 textures |
@@ -726,19 +769,19 @@ The rule: an artist draws **parts and set pieces**; code **assembles** them (GAM
 |---|---|---|---|
 | Kingdom map | $3,000 | $10,000 | Layered illustrated map plus mark and banner sets |
 | Site stamps (5 biomes) | $3,000 | $8,000 | ~300 small ink pieces |
-| Portrait parts | $4,000 | $12,000 | ~200 parts at $20–60 |
-| Monsters | $6,000 | $18,000 | 72 pieces at $80–250 |
+| Portrait parts | $3,000 | $10,000 | ~160 parts at $20–60 (D-109) |
+| Monsters | $4,000 | $12,000 | ~48 pieces at $80–250 (D-109) |
 | Icons | $3,000 | $8,000 | ~240 drawings, small |
 | Crests, seals, initials, items | $3,000 | $8,000 | Parts and ~36 set pieces |
 | Textures and UI art | $1,000 | $4,000 | |
 | Type (only if needed) | $0 | $6,000 | D-052 fallback |
-| **Art total** | **$23,000** | **$74,000** | |
+| **Art total** | **$20,000** | **$66,000** | Lean cut (D-109); was $23,000–74,000 |
 | Music (60–90 min) | $6,000 | $25,000 | Higher end for live players |
 | Sound effects and ambience | $2,000 | $8,000 | Library licences plus custom |
 | Vocal sounds | $1,000 | $4,000 | |
 | **Audio total** | **$9,000** | **$37,000** | |
 
-Ways to bring it down, in order of least harm: fewer monster kinds at launch (D-080 allows growth after), reuse portrait parts across ancestries, library music for winter and menus, one artist for map and icons so the style holds.
+Ways to bring it down, in order of least harm: fewer monster kinds at launch (done: about 24, D-109), reuse portrait parts across ancestries, library music for winter and menus, one artist for map and icons so the style holds.
 
 ### 12d. Kingdom map workshop (Accepted 2026-10-26, D-097)
 
@@ -752,7 +795,8 @@ Mock-up: `docs/design/mockups/kingdom-map.html` (interactive: base style and lay
   - Facts above were checked by opening the cited lines in that repository on 2026-10-26.
   - It is written in TypeScript with canvas rendering: reuse fits the web option of the engine test directly; Godot would need a port to C#. Evidence for D-090, not a decision.
   - Licence: `UNLICENSED` (private, `package.json:5`); reuse is fine if the owner holds the rights (owner to confirm); check the licences of any of its dependencies that come along, and record provenance (SAFE-05).
-- **Launch layers:** areas and places (always), **factions** (who holds sway where), **guilds** (banners with ranking tier), **action** (parties and rivals moving, key-moment seals), **threats** (spreading ink stains, closed roads). Each mark links to its Trace (D-082).
+- **Launch layers** (lean cut, D-109): areas and places (always), **guilds** (banners with ranking tier) and **action** (parties and rivals moving, key-moment seals). Each mark links to its Trace (D-082). **Factions** (who holds sway where) and **threats** (spreading ink stains, closed roads) follow in an update; meanwhile faction standing lives in its ledger and threats arrive as rumours and letters.
+- **When it is drawn** (D-113): at M2 the artist draws the slice's corner in final style and the rest as a sketch; the full base is commissioned once alpha balance is stable, so places that move during balancing are not redrawn.
 - **Later:** **deeds** on the map (inked cartouches, the fallen with a mourning corner; meanwhile deeds live in the Chronicle, D-042) and **rumours** as pencil notes (meanwhile in the inbox, D-043).
 
 ### 12e. Pipeline and licences (Accepted 2026-10-26, D-098)
@@ -766,7 +810,7 @@ Mock-up: `docs/design/mockups/kingdom-map.html` (interactive: base style and lay
 
 ## 13. Milestones (Accepted 2026-10-26)
 
-Decisions: D-099..D-101. Inputs: prototype order (§9b, D-085), playtest stages (§10a, D-089), engine test (D-090), scope tiers (CONCEPT §28), launch content (D-080, D-081), art and audio (D-098). **Durations are estimates** (REP-01) for a small team; §14 sets the team and turns them into a schedule.
+Decisions: D-099..D-101, D-108, D-111. Inputs: prototype order (§9b, D-085), playtest stages (§10a, D-089), engine test (D-090), scope tiers (CONCEPT §28), launch content (D-080, D-081), art and audio (D-098). **Durations are estimates** (REP-01), restated on 2026-10-26 for the owner building solo with AI help at 10–20 hours a week (D-108; the first figures assumed a small team) and for the lean launch cut (D-109).
 
 ### 13a. The ladder (Accepted 2026-10-26, D-099)
 
@@ -774,24 +818,24 @@ Each milestone ends at a gate: the owner reviews the exit checks and says go, lo
 
 | # | Milestone | What is built | Who plays (§10a) | Exit checks | Estimate |
 |---|---|---|---|---|---|
-| M0 | Plan approved | PLAN §14–§15 finished | — | Owner approves the whole plan (D-001) | now |
-| M1 | Prototypes | §9b steps 0–4: engine test, one watched quest, headless year simulator, desk mock-ups and writing test, two years in the text prototype. Throwaway code (§9) | Owner | Engine chosen (D-090); R1–R4 and R6–R8 pass lines met (D-086); R9 proxy shows 20–30-year careers | 3–5 months |
-| M2 | Vertical slice | The production engine, content, ui and shell packages (§11b). The prologue and first season (D-076) in one corner of the March: 2 biomes, 3 settlements, 4 classes, ~10 monster kinds, ~6 quest templates; final art and audio for that corner only; kingdom map base with 2 layers | 6–10 invited players | First season in 3–4 h (D-064); no dense screen needs more than one explanation (D-065); testers name 3 adventurers (R7); determinism test and save upgrade test pass (GAME-05, GAME-06) | 4–6 months |
-| M3 | Alpha | All 14 launch systems (D-070) in, playable over many years; whole March with about half the launch content; placeholder art allowed outside the slice | 30–50 closed testers | Medians within ±25% of the §4 targets over real play; ≤ 100 stops a year (D-068); no unreadable saves; feature complete for launch | 6–9 months |
-| M4 | Free demo | The first season as a free build (D-040), cut from the alpha with final art for what it shows; Steam page live since M2 | Public (e.g. a Steam festival) | ≥ 70% of demo starts finish the first season (D-065); crash-free sessions; store feedback logged | 1–2 months, alongside M5 |
-| M5 | Beta | All launch content (D-080, D-081), final art and audio, achievements, Steam Cloud; balance and writing passes | 200+ testers | 30-year saves load and upgrade; succession reached in long saves (R9); §11g performance met on the minimum machine; no known save-losing bug | 4–6 months |
-| M6 | Launch | Release build, store assets, day-one patch plan | Everyone | Release checklist (§15) passes; owner signs off | 1–2 months |
+| M0 | Plan approved | PLAN §1–§15 and the plan review (done 2026-10-26, D-115) | — | Owner approves the whole plan (D-001) | done |
+| M1 | Prototypes | §9b steps 0–4: engine test, one watched quest, headless year simulator, desk mock-ups and writing test, two years in the text prototype. The simulation core is kept; prototype screens are throwaway (§9, D-113) | Owner | Engine settled web-first (D-110); R1–R4 and R6–R8 pass lines met (D-086); R9 proxy shows 20–30-year careers; §9d checks pass | 5–8 months |
+| M2 | Vertical slice | The production engine, content, ui and shell packages (§11b). The prologue and first season (D-076) in one corner of the March: 2 biomes, 3 settlements, 4 classes, ~10 monster kinds, ~6 quest templates; final art and audio for that corner only; the slice's corner of the kingdom map in final style, the rest sketched (D-113) | 6–10 invited players | First season in 3–4 h (D-064); no dense screen needs more than one explanation (D-065); testers name 3 adventurers (R7); determinism test and save upgrade test pass (GAME-05, GAME-06); a tester's bug replays from their save (D-114) | 7–10 months |
+| M3 | Alpha | All 14 launch systems (D-070) in, playable over many years; whole March with about half the launch content; placeholder art allowed outside the slice | 30–50 closed testers | Medians within ±25% of the §4 targets over real play; ≤ 100 stops a year for the mid-sized guild (D-068, §9d); no unreadable saves; feature complete for launch | 10–15 months |
+| M4 | Free demo | The first season as a free build (D-040), cut from the alpha with final art for what it shows; Steam page live since M2 | Public (e.g. a Steam festival) | ≥ 70% of demo starts finish the first season (D-065); crash-free sessions; store feedback logged | 2–3 months, alongside M5 |
+| M5 | Beta | All launch content (D-080, D-081 as cut by D-109), final art and audio, achievements, Steam Cloud; balance and writing passes | 200+ testers | 30-year saves load and upgrade; succession reached in long saves (R9); §11g performance met on the minimum machine; no known save-losing bug | 7–10 months |
+| M6 | Launch | Release build, store assets, day-one patch plan | Everyone | Release checklist (§15) passes; owner signs off | 2–3 months |
 | M7 | Post-launch | Free updates (§13c) | Everyone | Each update keeps old saves loading (GAME-05) | ongoing |
 
-Total to launch: **about 18–28 months** from plan approval (sum of the ranges with the demo run alongside the beta; estimate).
+Total to launch: **about 31–46 months** (about 2.5–4 years) from plan approval, solo at 10–20 h a week with the lean cut (sum of the ranges with the demo run alongside the beta; estimate, D-108). The first estimate, 18–28 months, assumed a small team. Slip and stop rules: §9b (D-111).
 
 ### 13b. Rules across milestones (Accepted 2026-10-26, D-099, D-100)
 
-- **Art money follows proof.** No bulk art or music is commissioned before M1 passes R1 and R2 (the game is fun to watch and the economy holds). M2 commissions only the slice's corner; bulk art starts once alpha balance is stable, so systems that change late don't waste drawings (§12).
+- **Art money follows proof.** No bulk art or music is commissioned before M1 passes R1 and R2 (the game is fun to watch and the economy holds). M2 commissions only the slice's corner, and the map's full base waits for alpha balance (§12d); bulk art starts once alpha balance is stable, so systems that change late don't waste drawings (§12).
 - **The slice sets the bar, the alpha sets the breadth.** The slice is small but final quality, so it tests feel and readability; the alpha is wide but rough, so it tests systems and balance.
 - **Content grows as data.** Content added after M2 is data entries only (GAME-04); the content validator runs in CI from M2.
 - **Saves are protected from M2.** Every build from the slice on keeps older saves loading through migrations (GAME-05); testers' long saves are the beta's best evidence for R9.
-- **Steam page at M2** so wishlists build through the alpha before the demo, and for about 11–17 months before launch (sum of M3, M5 and M6; estimate).
+- **Steam page at M2** so wishlists build through the alpha before the demo, and for about 19–28 months before launch (sum of M3, M5 and M6; estimate). Wishlist targets: §14f.
 - **Launch model: decided at the alpha gate** (owner's choice, Plan Q13a). The plan assumes a full 1.0 after the beta. At the M3 exit the owner looks again, with the budget (§14) and alpha results in hand, at Early Access instead: selling from the alpha's end and growing to 1.0 over 6–12 months. Early Access brings money sooner and gives real 40 h+ saves for R9; it costs early reviews of a rough build, and old saves must survive every big change.
 
 ### 13c. Post-launch roadmap (Accepted 2026-10-26, D-101)
@@ -804,4 +848,143 @@ Free updates, in this order (owner chose war campaigns first, Plan Q13b); each a
 4. **Escorts and expeditions** (Early update, D-035).
 5. **Look and sound upgrades:** painted portraits (D-054), standee animations (D-050), bardic songs (D-056).
 6. **Optional AI flavour** (Early update, D-017, §11f).
-7. **Later tier**, each needing its own decision: 20 class levels (D-074), magic traditions, generated regions (D-030), intrigue (D-069), public mod tools (D-044), social features.
+7. **Restored launch-cut content** (D-109), in batches alongside the above: guardian and druid classes, prestige paths and multiclassing, Reedfolk, more monster kinds and key moments, the monster-hunt cup and arena event, the factions and threats map layers. Then **larger crises and guild legacy projects** (D-112).
+8. **Later tier**, each needing its own decision: 20 class levels (D-074), magic traditions, generated regions (D-030), intrigue (D-069), public mod tools (D-044), social features.
+
+---
+
+## 14. Budget, team and business assumptions (Accepted 2026-10-26)
+
+Decisions: D-102..D-104, D-108, D-113. Inputs: art and audio costs (D-098), milestones and timing (D-099), launch model at the alpha gate (D-100), premium with a free demo (D-040), success targets (D-065), no runtime dependency, paid service or backend without asking (SAFE-03). **Every figure here is an estimate** (REP-01) unless marked as a fact; quotes and real spending replace them.
+
+### 14a. Team (Accepted 2026-10-26, D-102)
+
+Owner's choice (Plan Q14a): **start solo, hire later.**
+
+- **M1–M2:** the owner directs and designs; code is written with AI help (Claude Code, D-094); contractors are paid per job for the slice's art and audio (§12). The owner's own time is unpaid and not in the budget.
+- **Hire gate:** at the M2 (slice) gate, and again at M3 (alpha), the owner decides whether to add paid help, with the slice's results and the funding route (§14d) in view. The most likely first hire is one developer for 12–18 months.
+- **Contractors throughout:** illustrator (map, icons, monsters, portraits; one artist where possible so the style holds, §12c), composer, sound designer, and optionally a writer for the ~4,500 template lines (D-080, D-109).
+- **Risk:** progress depends on the owner's hours. The gates (D-099) are where a slow pace shows up and gets decided on, not hidden.
+
+### 14b. Budget (Accepted 2026-10-26, D-103)
+
+Two cases: solo all the way, and solo plus one developer hired at a gate. Contingency 20%. All figures in US dollars, estimates.
+
+| Item | Low | High | Basis (estimate) |
+|---|---|---|---|
+| Art (D-098, D-109) | 20,000 | 66,000 | §12c |
+| Audio (D-098) | 9,000 | 37,000 | §12c |
+| Writing (optional contractor) | 3,500 | 10,000 | ~4,500 lines (D-109) ≈ 67,500 words at $0.05–0.15 a word; $0 if the owner writes with AI help |
+| Marketing | 5,000 | 15,000 | Trailer, store capsule art, festival build polish; festivals themselves are free |
+| Legal and business | 2,000 | 6,000 | Contractor agreements that transfer rights (§12e), a name and trademark check, company set-up if needed |
+| AI and dev tools | 3,000 | 9,000 | $100–200 a month for 31–46 months (D-108; plan prices to check) |
+| Test hardware | 1,000 | 2,000 | A minimum-spec laptop for §11g |
+| Steam Direct fee | 100 | 100 | Fact: $100 per app, recouped after $1,000 of sales (Steam's terms, to recheck at sign-up) |
+| **Subtotal** | **43,600** | **145,100** | |
+| **Solo total with 20% contingency** | **~52,000** | **~174,000** | |
+| One developer, 12–18 months (if hired) | 60,000 | 144,000 | $5,000–8,000 a month; varies a lot by country |
+| **Total with a hire, with contingency** | **~124,000** | **~347,000** | |
+
+Figures restated on 2026-10-26 for the lean cut and solo timeline (D-108, D-109); first figures: ~$57,000–185,000 solo, ~$128,000–358,000 with a hire.
+
+**Spend before the hire gate (M1–M2):** about $8,000–27,000 (rounded estimate, including 12–18 months of tools): the slice's corner of the map and a sketch of the rest ($1,000–3,000, D-113), about a fifth of the other art and audio for the slice's corner, tools, the Steam fee and first contracts. Bulk art waits for M1 to pass (D-099).
+
+### 14c. Price and revenue (Accepted 2026-10-26, D-104)
+
+- **Launch price: $24.99** (owner's choice, Plan Q14b). Comparable deep management games sit around $25–35 (for example Darkest Dungeon, Wildermyth, Battle Brothers, RimWorld; list prices to recheck at launch); Football Manager is higher with an established brand.
+- **Net per copy: about $12.50–15** (50–60% of the list price, estimate). Steam keeps 30% (fact for the first $10 million of sales); sales tax and VAT come out of prices in many regions, and regional pricing, launch discounts and refunds take more.
+- **Break-even (estimate):** solo budget about **3,500–14,000 copies**; with a hire about **8,000–28,000 copies**. This covers cash costs only: not the owner's time, income tax, company costs or post-launch work (D-113).
+- **Post-launch work** (free updates, D-101) is owner time plus art per update, budgeted after launch from sales.
+- **Demo:** the first season, free (D-040, M4); D-065's 15% demo conversion is the measure.
+- **§1d targets** (D-065) were revisited for this budget and stand unchanged; break-even needs no extra target.
+- **Paid expansions:** stay undecided (D-040); decide after launch on sales and the post-launch plan (D-101). Free updates first.
+- **Languages:** English at launch. Text lives in template files ready for translation (D-091); translation is decided after launch on sales by region.
+
+### 14d. Funding route (Accepted 2026-10-26, D-103)
+
+- **M1–M2: self-funded** (about $8,000–27,000, §14b).
+- **At the slice gate** the slice is the pitch. Routes to choose between then: keep self-funding; a publisher deal (money and marketing for a revenue share and some control); crowdfunding (money and an early audience, but promises to keep); Early Access at the alpha gate (D-100).
+- No publisher, investor or crowdfunding talks before the owner decides (SAFE-01).
+
+### 14e. Assumptions to check (Accepted 2026-10-26, D-103)
+
+Each is an assumption the budget rests on; if one breaks, §14 is revisited at the next gate.
+
+1. Art and audio quotes land within the §12c ranges.
+2. AI-assisted solo development at 10–20 h a week reaches the vertical slice in 12–18 months (M1 + M2, D-108).
+3. Wishlists from the Steam page (live from M2) and the demo carry the launch; no paid advertising in the budget.
+4. The list price and net share above hold at launch.
+5. The owner's time stays at 10–20 h a week (D-108); a lasting change re-plans at the next gate.
+
+### 14f. Wishlists and testers (Accepted 2026-10-26, D-113)
+
+- **Wishlist targets** (estimates, to check against current store data when the page goes up at M2): about 1,000 at the slice gate, about 5,000 after the demo's first festival, 10,000 or more at launch. Missing a target by half goes to the owner at that gate.
+- **Audience:** a short devlog about once a month from M2 (map art, letters, a death in the Chronicle), linked from the Steam page.
+- **Testers:** alpha and beta testers come from a sign-up on the Steam page (Steam's own playtest feature) and the devlog. A community space (such as a Discord server) is the owner's call at M2 (SAFE-01).
+
+---
+
+## 15. Quality, CI and release process (Accepted 2026-10-26)
+
+Decisions: D-105, D-106, D-114. Inputs: tools review (D-092..D-094, `docs/design/TOOLS-REVIEW.md` §3), architecture and saves (D-091), milestones (D-099), playtest logs (D-088), team (D-102), shared rules CI-01..CI-06, VER-01..VER-07, GAME-01..GAME-06. Tool names for the checks follow the engine test (D-090); the shape below holds for either engine.
+
+### 15a. Checks (Accepted 2026-10-26, D-105)
+
+Every check runs locally before a push (VER-02); CI repeats the fast ones.
+
+| Check | What it proves | When |
+|---|---|---|
+| Format, lint, strict types | Code is consistent and type-safe | Every push |
+| Engine unit tests | Each rule does what PLAN and DECISIONS say | Every push |
+| Determinism test | Same seed and commands give the same events (GAME-06) | Every push |
+| Content validator | Every data file matches its schema; ids and references resolve (D-091) | Every push |
+| Invariant checks | Money adds up, no negative health, every event has a cause (D-114) | Every balance run |
+| Save fixtures | A saved game from every released version (and every alpha and beta build) loads and upgrades (GAME-05) | Every push from M2 |
+| Screen tests | Key screens render at 1366×768 and 1920×1080, 15 px ledgers, no clipped text at 150% size (D-077, D-084) | Every push touching ui |
+| Docs and drift checks | Decision ids exist; no draft markers; master rules in sync (D-092) | Every push |
+| Balance run | 1,000 seeded guild-years against the §4 and §9a targets (under ~17 min, §11g) | Before each gate and release, and on demand; not per push |
+| Performance | §11g targets on the minimum machine | Before each gate and release |
+| Review | Adversarial review of the whole diff before a PR and before ready (D-093); `code-review` and `security-review` skills on code PRs (D-094) | Every PR |
+
+### 15b. CI (Accepted 2026-10-26, D-105)
+
+- **Pull requests and `main`:** the "every push" checks above, with path filters so docs-only changes stay free (CI-01, CI-04). One job, time limit, least privilege, per-branch concurrency (CI-06). Added through the `efficient-github-actions` skill with the chosen stack's `stacks/` layer.
+- **Release tags only:** build the game for each launch platform (§15e) and upload it to a Steam branch. Builds never run on ordinary pushes.
+- **Manual:** the balance run and performance run, triggered before gates and releases (CI-04).
+- **Steam credentials** live as repository secrets used only by the release job, set up by the owner (SAFE-01, SAFE-02).
+
+### 15c. Bugs and crashes (Accepted 2026-10-26, D-105)
+
+- **Where:** GitHub issues, one per bug, with the build version, the save and the playtest log (D-088) attached.
+- **Crash log and replay:** the game writes a local crash report next to the playtest log; nothing is sent automatically (D-088). Testers attach it with their save, which carries the commands since the last daily snapshot, so the bug replays exactly (D-114).
+- **Severity:**
+  1. **Blocker:** loses or corrupts a save, or crashes on a common path. Stops a release; fixed before anything else.
+  2. **Major:** a wrong rule result, a stuck screen, or a broken Trace (D-082). Fixed before the next gate.
+  3. **Minor:** text, layout, balance numbers. Batched.
+- Every fixed blocker or major bug gets a test that would have caught it (VER-07), and a LESSONS line if a process let it through (SRC-05).
+
+### 15d. Versions and builds (Accepted 2026-10-26, D-105, D-106)
+
+- **Launch platform: Windows** (owner's choice, Plan Q15a). Linux and Steam Deck players can run the Windows build through Proton, but it is not promised on the store page. Steam Deck support (a 1280×800 layout below the 1366×768 minimum, D-091, and controller play) and a Mac build are decided after launch.
+- **Version:** `major.minor.patch` for the game, plus the save-format and content versions stored in every save (D-091).
+- **Steam branches:** `playtest` for slice and alpha testers (M2, M3), `beta` for M5 and later opt-in previews, `default` for the release. The free demo (D-040) is a separate Steam app, as Steam sets up demos (to recheck at sign-up).
+- **Rollback:** Steam keeps earlier builds; a bad release is rolled back by setting the previous build live, and saves made by the bad build must still load in the next fixed one.
+
+### 15e. Release checklist (Accepted 2026-10-26, D-105)
+
+Used at M4 (demo), M6 (launch, D-099) and for every patch:
+
+1. All "every push" checks green on the release commit; balance and performance runs within targets.
+2. No open blocker; majors reviewed by the owner.
+3. Save fixtures from every earlier public build load.
+4. Fresh install and upgrade install tested on the minimum machine for each launch platform.
+5. Achievements and Steam Cloud work on the release branch (D-088, D-091).
+6. Asset licence ledger complete (`assets/LICENSES.md`, §12e, SAFE-05); store page's AI-content disclosure answered if any generated content shipped (D-094).
+7. Patch notes written in plain words; the version in the game matches the tag.
+8. Owner signs off (SAFE-01); the build is set live.
+
+### 15f. After release (Accepted 2026-10-26, D-105)
+
+- **Hotfix:** a blocker found after release gets a patch release as soon as it is fixed and checked; nothing else rides on it.
+- **Updates:** the free updates (D-101) go to the `beta` branch first, then `default`.
+- **Old saves:** every update keeps every older save loading (GAME-05); save fixtures are never deleted.

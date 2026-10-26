@@ -119,6 +119,7 @@ Phase 1 concept. Each section records what the owner decided, with their own not
 
 - **Decided (2026-10-25):** About 8 original classes covering the classic roles (working list: warrior, guardian, rogue, ranger, cleric, wizard, druid, bard-like support) and about 5 ancestries at launch.
 - Multiclassing or prestige paths open at higher levels.
+- Note (plan review, 2026-10-26, D-109): launch has 6 classes and 4 ancestries; the rest, multiclassing and prestige paths follow in updates (PLAN §7a).
 - Names and identities are original (D-002); the working list is placeholder.
 
 ## 16. World reactivity
