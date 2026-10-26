@@ -563,3 +563,21 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Before creating any pull request, and again before marking one ready, review the whole branch diff adversarially: what is wrong, inconsistent with DECISIONS, unverified or missing. Fix or report each finding before the PR goes up. Use the `reviewer` agent or `code-review` skill for large diffs. Recorded in AGENTS.md project rules.
 - **Why:** Owner's rule (2026-10-26).
+
+## D-094 Tools review accepted
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The rest of the tools review stands as the plan: build-start tooling (engine tools in cloud sessions, per-stack checks, review skills on PRs, the `run` skill, CI checks that stay free for docs-only pushes); art connectors for exploration only (OpenArt with licence, disclosure and cost checks first; Figma if an artist joins; tldraw optional; Canva later); the not-needed list; ripgrep kept as is; the caveman skill not adopted. Detail: `docs/design/TOOLS-REVIEW.md`.
+- **Why:** Owner accepted the list after reviewing the page.
+
+## D-095 A fresh session per merged PR or plan section
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** End a working session after each merged PR or finished plan section; the next session starts from `docs/HANDOFF.md` (CTX-02). If a session must go on, compact at a section boundary, not mid-task.
+- **Why:** Setup audit finding (owner approved): one long session re-read 58.2 million cached tokens, while a fresh session starts near 84,000.
+
+## D-096 Deny secret reads; ask before any force-push
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** `.claude/settings.json` denies reading `.env`, `.env.*` and `secrets/**`, and asks before any `git push` with `--force` (including `--force-with-lease`) or `-f`. Limit: a Read deny covers the file tools and input redirects, not a shell program reading the same file; the sandbox would be needed to enforce that. Also allows `node tools/docs-check.mjs` without a prompt.
+- **Why:** Setup audit finding (owner approved): there were 19 allow rules and no deny or ask rules; SAFE-02 and GIT-03 were instructions only.
