@@ -539,3 +539,15 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Playtests run owner-only for prototypes, then 6–10 invited vertical-slice players (about two thirds management-sim veterans), a 30–50 closed alpha, the public demo and a 200+ beta. Measures cover pacing, danger and economy, engagement (watched vs auto-resolved, delegation, Trace use), onboarding drop-off, attachment, readability tasks and stability. Each measure has a target; misses become dated findings; the same miss in two rounds goes to the owner as a design problem. Detail: `docs/design/PLAN.md` §10a, §10b, §10d.
 - **Why:** Owner accepted the draft (Plan Q10b).
+
+## D-090 Engine chosen after a two-engine test
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The engine is chosen between web tech in Electron (TypeScript) and Godot 4 (C#) after prototype step 0: the same roster ledger and kingdom-map view built in both, judged on the owner's look-and-feel notes plus measured build time, frame rate and memory at 1366×768, download size and the find-the-fact task. Unity is out. The architecture in PLAN §11b–§11g is engine-neutral. Detail: `docs/design/PLAN.md` §11a; adds step 0 to D-085.
+- **Why:** Owner's choice (Plan Q11a) after the trade-off: web tech favours dense ledgers and speed of building; Godot favours the animated map and board.
+
+## D-091 Engine-neutral architecture
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Five packages (engine, content, ui, shell, tools); the engine is pure rules with seeded randomness and injected time, one simulate function, and every change an event with a cause id. The event log feeds the Trace, histories, Chronicle, reports, letters and playtest logs. Game values are integers. Content is JSON with schemas, loaded as packs (mods later). Ironman saves are written safely each day, versioned with migrations, never overwritten when unreadable, synced by Steam Cloud. Optional AI flavour is off by default, player-keyed and never blocks templates. Performance: 1366×768 minimum, 60 fps map, day tick under 50 ms, simulated year under 1 s, save/load under 1 s. Detail: `docs/design/PLAN.md` §11b–§11g.
+- **Why:** Owner accepted the draft (Plan Q11b); holds for either engine in D-090.

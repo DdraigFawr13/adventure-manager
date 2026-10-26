@@ -4,10 +4,11 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Phase
 
-3 of 3: Full plan → `docs/design/PLAN.md`. Concept locked (D-045); style locked (D-061); plan outline approved (D-062). PLAN.md Part A §1–§10 written (D-063..D-089); Part B §11..§15 to do.
+3 of 3: Full plan → `docs/design/PLAN.md`. Concept locked (D-045); style locked (D-061); plan outline approved (D-062). PLAN.md Part A §1–§10 written (D-063..D-089); §11 written (D-090, D-091); §12..§15 to do.
 
 ## Just done
 
+- 2026-10-26 PLAN.md §11 accepted: engine chosen after a two-engine test, web tech (Electron, TypeScript) vs Godot 4 (C#), as prototype step 0 (D-090); engine-neutral architecture with the event log as spine, integer determinism, JSON packs, safe versioned saves (D-091).
 - 2026-10-26 PR #2 (Part A, §1–§10) merged to `main`. Part B work on branch `claude/plan-part-b`.
 - 2026-10-26 PLAN.md §10 accepted: playtest logs only, release sends nothing, opt-in telemetry a future option (D-088); playtest stages, measures and acting on results (D-089). Part A complete.
 - 2026-10-26 Owner added a launch goal: an on-theme fantasy kingdom map showing areas, locations, guilds, action and deeds (D-087); to workshop in §12.
@@ -28,7 +29,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Next
 
-1. Write PLAN.md §11 (technology and architecture): engine choice, deterministic simulation package, data formats, saves, modding, optional AI flavour. Then the tools and skills review (Next 3), then §12..§15. Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
+1. Tools and skills review (Next 3) now that §11 is done, then PLAN.md §12 (art and audio production, including the kingdom map workshop, D-087), then §13..§15. Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
 2. In §12 (art and audio production): cost the art (map art, ink renderer, face part library, two icon sizes, painted portraits later). Ledger readability is settled for now (D-084), to confirm on real monitors in prototype R4.
 3. **Tools and skills review** (owner's request, 2026-10-26): after PLAN §11, before §15, look into tools and skills that improve development (Claude Code skills, agents, hooks; engine and editor tooling; testing, CI and asset pipelines). Adopt only if measured cheaper or equal at the same quality (DEL-07).
 
@@ -40,7 +41,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 - Old-press ledger readability: 15 px minimum (D-084), confirm on real monitors in R4; fallback is our own Goudy ledger cut (D-052). Use lining figures (`lining-nums`) for all numbers: the face's default figures are old-style and proportional (measured 13.6–20.8 px wide at 40 px; lining 21.1 px each). Clear print (D-077) is the player-side option. Minimum size asked in PLAN §9c.
 - "More fantasy flair" for the quest board art (STYLE.md §4) needs defining when art direction starts.
 - Bardic songs (after launch, D-056): sung or instrumental not decided.
-- Stack and engine: decided in PLAN.md §11; add the matching `stacks/` layer then.
+- Stack and engine: chosen after the engine test (D-090); add the matching `stacks/` layer then.
 
 ## Working style with the owner
 

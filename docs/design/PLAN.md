@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: Part A (§1–§10) written; Part B §11..§15 to do.
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: Part A (§1–§10) and §11 written; §12..§15 to do.
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -19,7 +19,7 @@ Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked
 
 ## Part B: Production
 
-11. **Technology and architecture.** Engine choice, deterministic simulation package, data formats, saves, modding, optional AI flavour.
+11. **Technology and architecture.** Engine choice, deterministic simulation package, data formats, saves, modding, optional AI flavour. Written below.
 12. **Art and audio production.** What an artist makes vs what is generated, with costs.
 13. **Milestones.** Prototype, vertical slice, alpha, free demo, beta, launch, post-launch roadmap (painted portraits, standee animations, bardic songs, war campaigns).
 14. **Budget, team and business assumptions.**
@@ -549,6 +549,7 @@ Not risks for prototypes (handled elsewhere): engine choice and determinism (§1
 
 The riskiest question first. All prototypes come after the plan is approved (D-001).
 
+0. **Engine test** (D-090): the same ledger and kingdom-map view built in web tech and in Godot; the owner picks the engine (§11a).
 1. **One quest, watched** (R1): a minimal simulation core drives a text log and a plain board with standees; the owner watches 10 quests. If watching isn't tense, Pillar 2 and the core loop need rethinking before anything else is built.
 2. **Headless year simulator** (R2, R3, R6, R9): the same simulation core with no graphics; 1,000 seeded guild-years reporting deaths, money, ladder movement, stops by class, delegated vs careful play, and guildmaster careers against the §2 and §4 targets.
 3. **Desk-density mock-ups and writing test** (R4, R8): HTML mock-ups at 1366 and 1920 px, and one template family generated 200 times. Neither needs the engine, so they can run alongside step 1 or 2.
@@ -601,3 +602,86 @@ Owner's note: "1 but leave 2 open as a future option."
 - Every measure has the target from §1d, §4 or §9a; a miss produces a dated finding in the playtest log with a proposed change.
 - Changes to settled rules go through DECISIONS (SRC-04); numbers tuned inside the engine's data need no decision entry.
 - Two playtest rounds in a row missing the same target is a design problem, not a tuning problem: it goes to the owner.
+
+---
+
+## 11. Technology and architecture (Accepted 2026-10-26)
+
+Decisions: D-090, D-091. Constraints from earlier decisions: PC first, mouse and keyboard, dense screens (D-016); deterministic engine with seeded randomness and injected time (GAME-01); one simulation function, UI never recomputes (GAME-02); content as data (GAME-04, D-044); versioned saves (GAME-05); Ironman autosave each day (D-033); Steam release with achievements as measures (D-088); 15 px old-press ledgers with lining figures (D-084).
+
+### 11a. Engine and platform (Accepted 2026-10-26, D-090: decide after a test)
+
+The owner chose to decide between A (web tech in Electron) and B (Godot 4 with C#) after building the same two pieces in both. C (Unity) is out.
+
+**Engine test** (prototype step 0, before the watched quest, D-085):
+
+- **Build in both:** (1) one roster ledger: 30 rows, sorting, a hover breakdown on a number (D-078), 15 px old-press type with lining figures (D-084), clear print and the 100–150% size slider (D-077); (2) one kingdom-map view (D-087): layered illustration, zoom and pan, a party moving, deed markers, one ink-reveal effect.
+- **Judged on:** the owner's look-and-feel notes (GAME-06), plus measured build time, frames per second and memory at 1366×768, download size, and the find-the-fact task (R4).
+- The rest of §11 holds for either engine; only the language changes (TypeScript or C#).
+
+Comparison at the time of the choice (2026-10-26):
+
+What the game mostly is: ledgers, letters and inspectors (dense typography), plus two illustrated 2D views (the kingdom map, D-087, and the quest board, D-050). No 3D, no physics.
+
+| | A · Web tech in a desktop shell | B · Godot 4 (C#) | C · Unity |
+|---|---|---|---|
+| Simulation | TypeScript package, also runs headless in Node | C# library, also runs headless in .NET | C# library |
+| Ledgers and letters | HTML/CSS: best-in-class text, tables, OpenType features (lining figures) | Godot Control nodes: workable, more effort for dense typographic tables | uGUI/UI Toolkit: workable, heavy |
+| Map and board | Canvas/WebGL (e.g. PixiJS) | Strong native 2D, animation and shaders | Strong |
+| Steam | Electron + steamworks.js (maintained) | GodotSteam (community, widely used) | Steamworks.NET |
+| Download size (estimate) | ~150 MB shell | ~60–100 MB | ~100 MB+ |
+| Cost and licence | Free, open source | Free, MIT | Paid tiers above a revenue threshold; 2023 runtime-fee episode (current terms to check) |
+| Iteration with AI help | Fastest: one language, and the mock-ups are already HTML | Good | Fair |
+
+### 11b. Architecture (Accepted 2026-10-26, D-091)
+
+Packages (one repository):
+
+- **engine**: the rules. Pure code, no UI, no clock, no unseeded randomness (GAME-01). One `simulate(state, command, seed)` used for preview and commit (GAME-02). Every change is an **event** with a cause id.
+- **content**: classes, ancestries, monsters, sites, quests, key moments, text templates as data files with schemas (GAME-04).
+- **ui**: screens that read state and events, send commands, never compute rules.
+- **shell**: desktop window, saves on disk, Steam (achievements, cloud saves).
+- **tools**: the headless year simulator (§9b step 2), a content validator, a save inspector.
+
+The **event log** is the spine: the Trace and inspector histories (D-082), the Chronicle (D-042), the week report, letters (D-083) and playtest logs (D-088) are all views of the same events, so they can never disagree.
+
+```mermaid
+flowchart LR
+  CONTENT[content: data files] --> ENGINE[engine: simulate + seeded RNG]
+  UI[ui: screens] -->|commands| ENGINE
+  ENGINE -->|state + events| UI
+  ENGINE -->|events| LOG[event log]
+  LOG --> TRACE[Trace and histories]
+  LOG --> CHRON[Chronicle]
+  LOG --> PLAYLOG[playtest log]
+  SHELL[shell: saves, Steam] <--> ENGINE
+  TOOLS[tools: headless simulator, validator] --> ENGINE
+```
+
+### 11c. Determinism (Accepted 2026-10-26, D-091)
+
+- A seeded generator (for example PCG or xoshiro) passed in, never global; engine time passed in.
+- Game values are integers (money in pennies, stats as whole numbers, chances in per-ten-thousand), so results do not depend on floating-point differences.
+- One determinism test: the same seed and commands give the same events (GAME-06).
+
+### 11d. Data formats and modding (Accepted 2026-10-26, D-091)
+
+- Content as JSON files checked against JSON Schema at load and in CI; text templates in their own files for writing and later translation.
+- Content loads as packs in order (base game first), so mods (D-044, Later) are just more packs.
+
+### 11e. Saves (Accepted 2026-10-26, D-091)
+
+- One save per guild in Ironman mode, written each day tick (D-033): write to a temporary file, then swap, keeping the last good save as a backup.
+- Every save carries a save-format version and the content version; older saves upgrade on load through a chain of small migrations; an unreadable save is never overwritten (GAME-05).
+- Steam Cloud syncs the save folder.
+
+### 11f. Optional AI flavour (Early update) (Accepted 2026-10-26, D-091)
+
+- Off by default; the player supplies their own provider key; text only, and only for surfaces that already have templates (GAME-03, D-017).
+- The engine never waits on it: template text shows first and AI text replaces it if it arrives. Provider and cost decided when the feature is built (SAFE-03).
+
+### 11g. Performance targets (Accepted 2026-10-26, D-091)
+
+- Minimum screen 1366×768; 60 fps on the map and board on a mid-range laptop from about 2020.
+- A day tick with no stop under 50 ms; a headless simulated year under 1 s (for the 1,000-year runs in §9).
+- Save and load under 1 s for a 30-year save.
