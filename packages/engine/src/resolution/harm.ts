@@ -59,13 +59,14 @@ export function tendTheFallen(turn: Turn, causeId: string): void {
   const { rules, quest } = turn;
   const at = (step: number) => living(turn).filter((a) => stepOf(turn, a.id) === step);
   const dyingAtStart = new Set(at(WOUND.dying).map((a) => a.id));
+  const attempted = new Set<string>();
   const tended = new Set<string>();
   for (const healer of standing(turn)) {
     if (!rules.classes[healer.classId]?.canStabilise) continue;
-    const untended = (step: number) => at(step).filter((a) => !tended.has(a.id));
+    const untended = (step: number) => at(step).filter((a) => !attempted.has(a.id));
     const patient = untended(WOUND.dying)[0] ?? untended(WOUND.down)[0];
     if (!patient) break;
-    tended.add(patient.id);
+    attempted.add(patient.id);
     const { attribute, difficulty } = rules.stabilise;
     const { roll: result, eventId } = partyCheck(
       turn,
@@ -77,6 +78,7 @@ export function tendTheFallen(turn: Turn, causeId: string): void {
       causeId,
     );
     if (!succeeded(result.outcome)) continue;
+    tended.add(patient.id);
     const stabilised = turn.sink.emit({
       type: 'adventurer.stabilised',
       causeId: eventId,

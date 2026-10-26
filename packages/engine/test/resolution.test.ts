@@ -459,4 +459,28 @@ describe('the fallen bleed out (D-124)', () => {
     expect(rolls.map((e) => e.purpose).slice(0, 2)).toEqual(['bleed', 'death']);
     expect(rolls[0]?.chance.parts).toEqual([{ sourceId: 'attribute.toughness', amount: -400 }]);
   });
+
+  it('keeps a Down member bleeding when the cleric fails to tend them', () => {
+    const roster = [adventurer('a', { agility: 1 }), adventurer('h', { agility: 20 }, 'cleric')];
+    const scene = {
+      id: 's',
+      kind: 'fixed',
+      attribute: 'agility',
+      difficulty: 20,
+      testers: 'all',
+      onFailure: 'wound',
+    } as const;
+    const risk = { ...game([]).content.rules.risk, steady: { chanceBp: 0, badFailureShareBp: 0 } };
+    const rules = {
+      ...certain,
+      risk,
+      stabilise: { attribute: 'lore', difficulty: 20 },
+      bleed: { baseBp: 10_000, stepBp: 0, pivot: 10 },
+    } as const;
+    const { events } = run(game(roster, { rules, quest: { scenes: [scene, scene, scene] } }));
+    const purposes = ofType(events, 'check.rolled')
+      .map((e) => e.purpose)
+      .filter((p) => p === 'stabilise' || p === 'bleed');
+    expect(purposes.slice(0, 2)).toEqual(['stabilise', 'bleed']);
+  });
 });
