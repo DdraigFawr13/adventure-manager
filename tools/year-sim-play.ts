@@ -11,6 +11,8 @@ import {
   type GameState,
   type GuildRules,
   type Plan,
+  type ResolutionContent,
+  weekInYear,
 } from '@adventure-manager/engine';
 import { baseResolution } from '@adventure-manager/content';
 export const POLICIES: Readonly<Record<string, Plan>> = {
@@ -72,6 +74,8 @@ interface Tracked extends PlayedYear {
 export interface RunOptions {
   readonly size?: number;
   readonly lastDay?: number;
+  /** Content to play (the career tool turns careers on); default the base content. */
+  readonly content?: ResolutionContent;
 }
 
 export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tracked {
@@ -82,7 +86,7 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
     seed,
     rng: {},
     nextEventNo: 1,
-    content: baseResolution,
+    content: options.content ?? baseResolution,
     roster: [],
     quest: null,
     calendar: 1,
@@ -109,7 +113,7 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
     play(plan);
     const guild = now();
     lowestChest = Math.min(lowestChest, guild.chestCopper);
-    const week = Math.floor((state.calendar - 1) / rules.daysPerWeek) + 1;
+    const week = weekInYear(state.calendar, rules);
     if ((state.calendar - 1) % rules.daysPerWeek === 0) {
       if (guild.chestCopper < 0) weeksInDebt += 1;
       if (week === rules.winterFromWeek) winterStartChest = guild.chestCopper;
@@ -159,7 +163,8 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
 
   run({ type: 'guild.found', day: 1, size });
   afterDay();
-  for (let day = 2; day <= lastDay; day += 1) {
+  // A career run stops when the guildmaster's career ends (career/SPEC.md).
+  for (let day = 2; day <= lastDay && !state.guild?.career?.ended; day += 1) {
     run({ type: 'day.advance', day });
     afterDay();
   }

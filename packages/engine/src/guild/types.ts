@@ -1,4 +1,5 @@
 // Shapes for guild year v0 (SPEC.md). Content supplies GuildRules; the engine only reads them.
+import type { CareerEnd, CareerRules, CareerState, TargetKind } from '../career/types.ts';
 import type { PronounKey } from '../core/text.ts';
 import type { Adventurer, Attribute, Danger, Plan, QuestOutcome } from '../resolution/types.ts';
 
@@ -42,6 +43,8 @@ export interface NamingRules {
 export interface GuildRules {
   /** Absent: drawn people have no names (tests that don't read text). */
   readonly naming?: NamingRules;
+  /** Absent: one year only, no rivals, ladder or patron (career/SPEC.md). */
+  readonly career?: CareerRules;
   readonly weeksPerYear: number;
   readonly daysPerWeek: number;
   /** Weeks 1..assemblyWeeks are the Assembly; winter starts at winterFromWeek. */
@@ -129,6 +132,8 @@ export interface GuildState {
   readonly board: Offer[];
   readonly parties: Party[];
   readonly prospects: Prospect[];
+  /** Many years, rivals, the ladder and the patron; absent when the rules have no career. */
+  career?: CareerState;
   /** Real shape ids the board drew recently, oldest first, per danger (contract/SPEC.md). Engine-only: it can name a hidden twist, so views never read it. */
   readonly recentShapes: string[];
   /** Counters for ids, so ids stay unique and replayable. */
@@ -137,11 +142,19 @@ export interface GuildState {
   nextPersonNo: number;
 }
 
+export type { CareerEnd, TargetKind };
 export type MoneyReason =
   'founding' | 'grant' | 'wages' | 'upkeep' | 'fee' | 'loot' | 'funeral' | 'sign-on';
 export type StopClass = 'must' | 'digest';
 export type StopReason =
-  'week-report' | 'assembly' | 'new-contracts' | 'death' | 'signing-window' | 'party-home';
+  | 'week-report'
+  | 'assembly'
+  | 'new-contracts'
+  | 'death'
+  | 'signing-window'
+  | 'party-home'
+  | 'retirement'
+  | 'career-ended';
 
 export type GuildCommand =
   | {
@@ -167,7 +180,7 @@ export type GuildCommand =
     };
 
 export type GuildEventBody =
-  | { readonly type: 'week.started'; readonly week: number }
+  | { readonly type: 'week.started'; readonly week: number; readonly year: number }
   | {
       readonly type: 'offer.posted';
       /** The board's view of the contract (`Offer.shownTemplateId`), never the hidden twist. */
@@ -190,6 +203,35 @@ export type GuildEventBody =
   | { readonly type: 'member.recovered' }
   | { readonly type: 'prospect.listed'; readonly classId: string; readonly wageCopper: number }
   | { readonly type: 'recruit.signed'; readonly wageCopper: number }
+  | {
+      readonly type: 'attribute.changed';
+      readonly attribute: Attribute;
+      readonly from: number;
+      readonly to: number;
+      readonly reason: 'growth' | 'age' | 'injury';
+    }
+  | { readonly type: 'adventurer.retired'; readonly age: number }
+  | {
+      readonly type: 'year.settled';
+      readonly year: number;
+      readonly tier: number;
+      /** The player's tier, best first: guild ids and the renown each earned in the year. */
+      readonly standings: readonly { readonly id: string; readonly renown: number }[];
+      /** Each tier's winner, bottom tier first (R2's runaway-rival check reads these). */
+      readonly leaders: readonly string[];
+    }
+  | { readonly type: 'tier.changed'; readonly from: number; readonly to: number }
+  | {
+      readonly type: 'patron.reviewed';
+      readonly target: TargetKind;
+      readonly place: number;
+      readonly met: boolean;
+      readonly inDebt: boolean;
+      readonly change: number;
+      readonly confidence: number;
+    }
+  | { readonly type: 'patron.target'; readonly target: TargetKind; readonly tier: number }
+  | { readonly type: 'career.ended'; readonly reason: CareerEnd; readonly years: number }
   | {
       readonly type: 'stop.raised';
       readonly stopClass: StopClass;

@@ -8,7 +8,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Just done
 
-- 2026-10-26 Step 3 on branch `ccr-7c31ebb2-c4nfh9` (from `main` after PR #13): writing test, contracts from parts, desk mock-ups. Reviewed three times (D-093): 12, 11 and 9 findings, all fixed or answered (the hidden twist leaked through the offer id; deaths were never traced to the foe); findings page linked in the approval ask.
+- 2026-10-26 Step 3 merged as PR #14 (owner approved; CI green): writing test, contracts from parts, desk mock-ups. Reviewed three times (D-093): 12, 11 and 9 findings, all fixed or answered (the hidden twist leaked through the offer id; deaths were never traced to the foe); findings page linked in the approval ask.
   - Grammar (D-114): pronouns, verb and number agreement, nested families, conditional variants, masking (`packages/engine/src/core/text.ts`). Variant picks now pass FNV-1a through a finaliser (keys sharing a suffix had picked the same variants).
   - Quest report (`packages/engine/src/report/`, SPEC.md): a letter home from one quest's events; words in `packages/content/data/reports.en.json`. Drawn people get names and pronouns on their own stream (naming.json; pronoun weights she 45 / he 45 / they 10 are an assumption).
   - Contracts (D-139, owner's choice "one twist rule"): site × monster kind × one twist; 8 sites, 10 kinds, 6 twists in `packages/content/data/contracts.json`; the board leaves out its last 60 shapes of each danger; offers carry a shown id without the hidden twist. `node tools/contract-sweep.ts 60`, reference party, default plan, weighted as the board draws: deaths 0.22 / 0.73 / 1.96 / 5.85% for routine to deadly (targets 0.2 / 0.8 / 2.5 / 7%; perilous −22%, deadly −16%, inside ±25%).
@@ -25,8 +25,8 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Next
 
-1. Step 3 (this branch): independent review (D-093), findings artifact, owner approval (D-133), then PR. The owner also runs the R4 fact test in the published mock-up at 1366 px and pastes the result.
-2. Step 2, wider year simulator, on a fresh branch from `main` after the step-3 merge. Settled: abstract rivals (D-140), the patron's yearly target and confidence (D-141); draft spec in this session's notes is not saved, so re-derive from D-140/D-141 and PLAN §4e, §5. Also add standing parties (D-014, D-142). Still to ask, one at a time: several years with ageing, retirement and careers (R9), rivals and the ladder (R2), delegation (R6), the §9d checks (bad starts, top-guild load, late goals). Bold still wins money (D-138); a multi-year run may change that.
+1. R4: the owner runs the round-3 fact test in the published desk mock-up at 1366 px and pastes the result (round 1 missed the 10 s line).
+2. Step 2, wider year simulator, now on branch `ccr-7c31ebb2-c4nfh9` (restarted from `main` after PR #14); spec `packages/engine/src/career/SPEC.md`. Settled: abstract rivals (D-140), the patron's yearly target and confidence (D-141). Also add standing parties (D-014, D-142). Still to ask, one at a time: several years with ageing, retirement and careers (R9), rivals and the ladder (R2), delegation (R6), the §9d checks (bad starts, top-guild load, late goals). Bold still wins money (D-138); a multi-year run may change that.
 3. Step 4: the two-year text prototype (R7), with histories and memorial letters built on the report grammar.
 4. Engine test verdict (D-110): the owner runs `npm start -w @adventure-manager/shell` on Windows for real fps (60 fps bar at 1366×768; container software rendering gave 48 idle, 44 panning).
 5. Gear (D-143, amends D-012): RPG-style slots per adventurer, hand-equipped or by the quartermaster's policy; a smith's shop for basics; buildings for discounts or rarer stock later. Slot list, item tiers and prices not designed: workshop with the owner before the year simulator uses gear.
