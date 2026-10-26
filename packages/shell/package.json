@@ -1,0 +1,14 @@
+{
+  "name": "@adventure-manager/shell",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "main": "src/main.ts",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "44.9.3"
+  }
+}

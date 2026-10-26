@@ -1,0 +1,314 @@
+/* Engine-test window (D-110). Fonts are local OFL files (packages/ui/fonts/SOURCES.md) so the
+   desktop shell works offline. The ledger is the clean data layer (STYLE §1): plain paper, no
+   texture behind numbers, 15 px minimum with lining figures (D-084), clear print per D-077. */
+@font-face {
+  font-family: 'IM Fell English SC';
+  src: url('../fonts/IMFeENsc28P.ttf') format('truetype');
+  font-display: block;
+}
+@font-face {
+  font-family: 'IM Fell DW Pica';
+  src: url('../fonts/IMFePIrm28P.ttf') format('truetype');
+  font-display: block;
+}
+@font-face {
+  font-family: 'Sorts Mill Goudy';
+  src: url('../fonts/SortsMillGoudy-Regular.ttf') format('truetype');
+  font-display: block;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('../fonts/SourceSerif4-Variable.ttf') format('truetype');
+  font-weight: 200 900;
+  font-display: block;
+}
+
+:root {
+  --desk: #3b2a1e;
+  --desk-2: #2c1f16;
+  --paper: #efe4cc;
+  --paper-2: #e6d8b9;
+  --sheet: #f6efdf;
+  --ink: #2a2017;
+  --ink-2: #6b5a45;
+  --rule: #d6c6a5;
+  --seal: #8e2a22;
+  --brass: #b8923e;
+  --good: #3f6f8f;
+  --warn: #9a6a0e;
+  --bad: #8e2a22;
+  --title: 'IM Fell English SC', Georgia, serif;
+  --ledger: 'Sorts Mill Goudy', Georgia, serif;
+  --et-scale: 1;
+  --et-text: calc(15px * var(--et-scale));
+  color-scheme: light;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--desk-2);
+  color: var(--ink);
+}
+
+body {
+  font-family: var(--ledger);
+  font-variant-numeric: lining-nums tabular-nums;
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+}
+
+.et-app {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.et-clear-print {
+  --ledger: 'Source Serif 4', Georgia, serif;
+}
+
+.et-bar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 6px 16px;
+  background: linear-gradient(var(--desk), var(--desk-2));
+  border-bottom: 2px solid var(--brass);
+  color: var(--paper);
+  font-size: 15px;
+}
+
+.et-tabs {
+  display: flex;
+  gap: 4px;
+  margin-right: auto;
+}
+
+.et-tabs button {
+  font: 17px var(--title);
+  color: var(--paper);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px 3px 0 0;
+  padding: 4px 14px;
+  cursor: pointer;
+}
+
+.et-tabs button[aria-selected='true'] {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--brass);
+}
+
+.et-tabs button:focus-visible,
+.et-setting input:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+.et-setting {
+  accent-color: var(--brass);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.et-setting output {
+  min-width: 3.5ch;
+  text-align: right;
+}
+
+.et-panel {
+  min-height: 0;
+  overflow: auto;
+}
+
+/* The sheet: one job, one question (PLAN §6b). */
+.et-sheet {
+  margin: 10px 16px 16px;
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 0.45);
+  font-size: var(--et-text);
+}
+
+.et-sheet-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 6px 12px 4px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.et-sheet-head h1 {
+  margin: 0;
+  font: 400 calc(22px * var(--et-scale)) var(--title);
+  color: var(--seal);
+}
+
+.et-sheet-head p {
+  margin: 0;
+  color: var(--ink-2);
+  font-style: italic;
+}
+
+.et-status {
+  margin-left: auto !important;
+  font-style: normal !important;
+}
+
+.et-ledger {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--ledger);
+  font-size: var(--et-text);
+  line-height: 1.25;
+}
+
+.et-ledger thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--ink-2);
+  padding: 0;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.et-ledger thead button {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  padding: 3px 6px;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+.et-ledger thead th.et-num,
+.et-ledger thead th:nth-child(n + 4):not(.et-col-condition) {
+  text-align: right;
+}
+
+.et-sort-mark {
+  display: inline-block;
+  width: 1ch;
+  margin-left: 2px;
+  color: var(--seal);
+}
+
+.et-ledger tbody th,
+.et-ledger tbody td {
+  position: relative;
+  padding: 1px 6px;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+  text-align: left;
+  font-weight: 400;
+}
+
+.et-ledger tbody tr:nth-child(5n) > * {
+  border-bottom-color: var(--ink-2);
+}
+
+.et-ledger tbody tr:hover > * {
+  background: rgb(184 146 62 / 0.12);
+}
+
+.et-ledger .et-num {
+  text-align: right;
+}
+
+.et-ledger [tabindex='0']:focus-visible,
+.et-ledger thead button:focus-visible {
+  outline: 2px solid var(--seal);
+  outline-offset: -2px;
+}
+
+.et-value {
+  position: relative;
+}
+
+/* A small mark says "this number has parts"; the breakdown opens on hover or focus. */
+.et-has-parts {
+  position: absolute;
+  top: -1px;
+  right: -5px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--brass);
+}
+
+.et-cond-fit {
+  color: var(--good);
+}
+.et-cond-hurt {
+  color: var(--warn);
+}
+.et-cond-badlyHurt {
+  color: var(--bad);
+}
+.et-cond-resting {
+  color: var(--ink-2);
+}
+
+.et-breakdown {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 2px);
+  right: 0;
+  min-width: 220px;
+  padding: 8px 10px;
+  background: var(--paper);
+  border: 1px solid var(--ink-2);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 0.3);
+  text-align: left;
+  white-space: normal;
+  color: var(--ink);
+}
+
+.et-breakdown-title {
+  font-style: italic;
+  color: var(--ink-2);
+  margin-bottom: 4px;
+}
+
+.et-breakdown table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.et-breakdown th {
+  font-weight: 400;
+  text-align: left;
+  padding: 1px 12px 1px 0;
+}
+
+.et-breakdown td {
+  text-align: right;
+}
+
+.et-breakdown-total > * {
+  border-top: 1px solid var(--ink);
+  font-weight: 600;
+}
+
+.et-ledger tbody tr:nth-last-child(-n + 6) .et-breakdown {
+  top: auto;
+  bottom: calc(100% + 2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

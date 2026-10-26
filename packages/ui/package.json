@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "build:engine-test": "vite build -c vite.engine-test.config.ts"
   },
   "devDependencies": {
     "@types/react": "19.3.0",
