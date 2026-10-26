@@ -97,8 +97,8 @@ Rejected: scout's sketchbook (scribbles at roster size), silhouette cameos (no f
 
 **Period chamber music, desk sounds, and a bard now and then.**
 
-- **Music:** a small early-music ensemble (lute, viol, recorder, hurdy-gurdy, frame drum), sparse, with long silences between pieces so it survives hundreds of hours.
-- **A bard, occasionally (owner's note):** now and then a bard plays, heard as if from the guildhall below, as part of the world rather than the soundtrack.
+- **Music (updated 2026-10-26, D-056):** soft ambient music plays generally, built from a small early-music ensemble (lute, viol, recorder, hurdy-gurdy, frame drum); quiet enough to survive hundreds of hours.
+- **Bardic songs, after launch (owner's note):** now and then the ambient music gives way to a bard's song, heard as if from the guildhall below. Not needed at launch.
 - **Desk ambience carries the game:** quill, pages, seal cracks, candle, rain on the shutters; a guildhall murmur that grows with facilities and changes with the seasons.
 - **Big moments:** a low drum when the calendar stops for a key moment; for a death, the room goes quiet and a single bell tolls.
 - **Quest board:** ambience per biome.
@@ -106,6 +106,10 @@ Rejected: scout's sketchbook (scribbles at roster size), silhouette cameos (no f
 
 Owner's note: "A bit with like a bard playing occasionally."
 
-**Proposed (not yet approved):** tie the bard to the world: the bard plays more often with a tavern (D-011 guildhall upgrades) or a Cantor on the roster; after great deeds or deaths the bard plays a piece titled for them ("The Ballad of the Hollow Barrow"), named in the news and Chronicle. Instrumental only, so no lyrics have to name generated people.
+**Accepted for after launch (D-056):** the bard is tied to the world: the bard plays more often with a tavern (D-011 guildhall upgrades) or a Cantor on the roster; after great deeds or deaths the bard plays a piece titled for them ("The Ballad of the Hollow Barrow"), named in the news and Chronicle.
+
+Open: whether bardic songs are sung or instrumental. If sung, lyrics are authored and never name generated people; the title carries the name.
+
+Owner's note (2026-10-26): "I think there should be soft ambiance music generally but occasionally interrupted with bardic songs. Doesn't need to be at launch."
 
 Rejected: epic orchestral (fatigue, fights the quiet desk), ambience only (no identity), dark folk (too grim for the whimsy asked for).

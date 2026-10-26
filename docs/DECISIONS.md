@@ -331,3 +331,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Sparse early-music ensemble with long silences; rich desk and guildhall ambience; a bard plays now and then as if from the hall; a drum for key moments and a tolling bell for deaths. Detail: `docs/design/STYLE.md` §8.
 - **Why:** Owner's choice (Style Q8) with the bard added; low fatigue over long sessions and fits the woodcut/old-press look.
+
+## D-056 Soft ambient music; bardic songs and bard tie-ins after launch
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Music is soft ambient early-music playing generally (replaces "long silences" in D-055). After launch, bardic songs occasionally interrupt it; the bard plays more with a tavern or a Cantor, and pieces are titled after great deeds and deaths and named in the news and Chronicle. Detail: `docs/design/STYLE.md` §8.
+- **Why:** Owner approved the bard proposal as a later item and set the music direction.
