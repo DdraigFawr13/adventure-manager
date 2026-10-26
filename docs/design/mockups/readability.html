@@ -32,7 +32,7 @@ header p { margin: 6px 0 0; color: var(--muted); max-width: 72ch; }
 .paper { background: var(--paper); color: var(--ink); border-radius: 4px; box-shadow: 0 0 0 10px var(--desk), 0 8px 22px rgba(0,0,0,.3); margin: 10px; padding: 14px 16px; display: grid; gap: 12px; min-width: 0; }
 .paper h3 { font-family: var(--title); font-weight: 400; font-size: 1.35em; margin: 0; border-bottom: 1px solid var(--rule); padding-bottom: 2px; }
 .scroll { overflow-x: auto; }
-table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: lining-nums tabular-nums; }
 th { text-align: left; font-weight: 400; font-style: italic; color: var(--ink2); font-size: .85em; padding: 2px 6px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
 td { padding: 3px 6px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
 .n { text-align: right; } .rng { color: var(--ink2); }
@@ -48,11 +48,16 @@ td { padding: 3px 6px; border-bottom: 1px solid var(--rule); white-space: nowrap
 .clear { font-family: var(--clear); font-size: 15px; } .clear .letter { font-family: var(--clear); font-size: 16px; }
 .hyper { font-family: var(--hyper); font-size: 15px; } .hyper .letter { font-family: var(--hyper); font-size: 16px; }
 .hyper th { font-style: normal; }
+.s13 { font-family: var(--oldledger); font-size: 13px; } .s14 { font-family: var(--oldledger); font-size: 14px; }
+.s15 { font-family: var(--oldledger); font-size: 15px; } .s16 { font-family: var(--oldledger); font-size: 16px; }
+.s13 .letter, .s14 .letter, .s15 .letter, .s16 .letter { display: none; }
+.fix { background: color-mix(in srgb, var(--warn) 14%, transparent); border-left: 3px solid var(--warn); padding: 8px 12px; border-radius: 3px; max-width: 78ch; margin: 0; }
 </style>
 
 <div class="wrap">
   <header>
     <h1>Reading the ledgers</h1>
+    <p class="fix"><b>Corrected 26 Oct:</b> the first version of this page showed the old-press ledger with its default old-style figures, which rise and fall and vary in width. The face also has lining figures (all on the line, equal width), which the game will use for numbers. All specimens now use them.</p>
     <p>Text options for dense screens (PLAN §6c). Every specimen is shown at its real pixel size, as on a 1080p monitor at 100% scaling: a roster ledger and the opening of a letter. Titles stay in the old-press face (STYLE §5) in every option.</p>
   </header>
 
@@ -68,6 +73,17 @@ td { padding: 3px 6px; border-bottom: 1px solid var(--rule); white-space: nowrap
     </table></div>
     <p class="letter">To the guildmaster. The Reeve of Wendle asks whether your company would clear the old sluice-house before the spring floods. He offers 120 crowns and a fifth of whatever is found.</p>
   </template>
+
+  <section class="opt" aria-labelledby="m">
+    <h2 id="m">Minimum ledger size (PLAN §9c)</h2>
+    <p class="lede">The old-press ledger face with lining figures at four sizes, real pixels. Pick the smallest you would read for an hour; the size slider (D-077) only goes up from there.</p>
+    <div class="specs">
+      <div class="spec"><span class="cap">Old press · 13 px</span><div class="paper s13" data-fill><h3>Roster</h3></div></div>
+      <div class="spec"><span class="cap">Old press · 14 px</span><div class="paper s14" data-fill><h3>Roster</h3></div></div>
+      <div class="spec"><span class="cap">Old press · 15 px (style guide's guess)</span><div class="paper s15" data-fill><h3>Roster</h3></div></div>
+      <div class="spec"><span class="cap">Old press · 16 px</span><div class="paper s16" data-fill><h3>Roster</h3></div></div>
+    </div>
+  </section>
 
   <section class="opt" aria-labelledby="a">
     <h2 id="a">A · Text size only</h2>

@@ -464,7 +464,8 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Dense screens get a 100–150% size slider and a clear-print setting that switches ledgers and letters to a modern book serif (open font licence, chosen in UI work); titles, seals and decorated initials stay old-press. Clear print is also the ready fallback if the ledger face fails the readability check (D-052). Detail: `docs/design/PLAN.md` §6c; mock-up `docs/design/mockups/readability.html`.
-- **Why:** Owner's choice (Plan Q6b). The mock-up showed the old-press ledger's old-style figures scan worse than a book serif at the same size and density.
+- **Why:** Owner's choice (Plan Q6b): an accessibility option that keeps the old-press look as the default.
+- **Corrected (2026-10-26):** the original Why said the old-press ledger's old-style figures scan worse; that came from a mock-up that left the face's lining figures off. All game numbers use lining figures (`lining-nums`); see PLAN §9c.
 
 ## D-078 Screen rules and accessibility
 
@@ -501,3 +502,21 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Nine surfaces (quest log and board, party cards, week report, letters, criers and gossip, region map, inspector fields, Chronicle and Hall of Heroes, year in review). Rules: no silent change; every change records its cause, reachable within 2 clicks; delayed consequences name their cause; importance follows the stop classes (D-068); forewarning follows knowledge (D-041); deaths are never quiet; AI flavour rewords but never changes causes or numbers. Detail: `docs/design/PLAN.md` §8a–§8b.
 - **Why:** Owner accepted the draft (Plan Q8b); Pillars 2 and 4 depend on the player seeing what their choices caused.
+
+## D-084 Ledger minimum 15 px with lining figures
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Ledger text is at least 15 px at 100% scale; all numbers use the face's lining figures (`lining-nums`), which are equal width and sit on the line. To be confirmed on real monitors in the desk-density prototype (PLAN §9a R4); fallbacks are D-052 and D-077. Detail: `docs/design/PLAN.md` §9c.
+- **Why:** Owner's choice (Plan Q9b) after real-size specimens at 13–16 px; the measurement showed the default figures are proportional old-style, so lining figures are required for columns.
+
+## D-085 Prototype order: headless simulator first
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** After plan approval, prototypes run in this order: 1 headless year simulator (balance, pacing, delegation, careers); 2 one watched quest on the same simulation code; 3 desk-density mock-ups and the template-writing test, alongside 1 or 2; 4 a two-year attachment playtest. Detail: `docs/design/PLAN.md` §9b.
+- **Why:** Owner's choice (Plan Q9a) over the recommended quest-first order: numbers first, so the watched quest is built on a tuned core. Accepted trade-off: the "is watching fun?" question is answered second.
+
+## D-086 Riskiest assumptions and their tests
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Nine risks, each with its cheapest test and pass line: R1 watching quests is fun; R2 the simulation hits the §4 targets (±25%); R3 a year fits the friction budget (≤ 100 stops, ≤ 3 h); R4 the desk holds FM density (25+ rows at 1366 px); R5 ledgers readable (D-084); R6 the player's focus beats delegation by 10–25%; R7 attachment despite deaths; R8 template writing stays fresh; R9 guildmaster careers of 20–30 years. Fun and feel pass only on the owner's recorded playtest notes (GAME-06). Detail: `docs/design/PLAN.md` §9a.
+- **Why:** Owner accepted the draft (Plan Q9c).

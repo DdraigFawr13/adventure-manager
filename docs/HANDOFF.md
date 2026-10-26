@@ -4,10 +4,11 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Phase
 
-3 of 3: Full plan → `docs/design/PLAN.md`. Concept locked (D-045); style locked (D-061); plan outline approved (D-062). PLAN.md §1–§8 written (D-063..D-083); §9..§15 to do.
+3 of 3: Full plan → `docs/design/PLAN.md`. Concept locked (D-045); style locked (D-061); plan outline approved (D-062). PLAN.md §1–§9 written (D-063..D-086); §10..§15 to do.
 
 ## Just done
 
+- 2026-10-26 PLAN.md §9 accepted: ledger minimum 15 px with lining figures (D-084; corrected the §6 mock-up and D-077 rationale, which had shown old-style figures by mistake); prototype order headless simulator first (D-085); nine risks with tests and pass lines (D-086).
 - 2026-10-26 Roadmap page for the owner: `docs/roadmap.html`, published at https://claude.ai/artifact/FTio9mE7jLaK4Wrn189YAg. A view of HANDOFF and PLAN (HANDOFF wins).
 - 2026-10-26 PLAN.md §8 accepted: in-world letters with a Trace to the cause chain, plus numbered inspector histories (D-082, mock-up `consequences.html`); nine surfaces and seven consequence rules (D-083).
 - 2026-10-26 PLAN.md §7 accepted: ancestries Marchfolk, Stonewrights, Lanthe, Reedfolk, Barrowborn (D-079, mock-up `ancestries.html`); standard content volume: 36 monster kinds, 20 sites, 20 quest templates, 60 key moments, ~6,000 lines (D-080); classes, talents, 4 prestige paths, attributes, traits, staff, backgrounds (D-081).
@@ -24,15 +25,15 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Next
 
-1. Write PLAN.md §9 (risks and prototypes): riskiest assumptions and the cheapest test for each (quest sim fun to watch? desk holds FM density? old-press ledgers readable?). Include the art costing noted in Next 2. Continue in order to §15. Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
-2. Early in phase 3 (§9 risks and prototypes, §12 art production): check old-press ledger readability on a rendered screen (STYLE.md §5, fallback D-052) and cost the art (map art, ink renderer, face part library, two icon sizes, painted portraits later).
+1. Write PLAN.md §10 (playtest and metrics plan): how playtests run and what is measured against the §1 targets and §9 pass lines. Continue in order to §15. Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
+2. In §12 (art and audio production): cost the art (map art, ink renderer, face part library, two icon sizes, painted portraits later). Ledger readability is settled for now (D-084), to confirm on real monitors in prototype R4.
 3. **Tools and skills review** (owner's request, 2026-10-26): after PLAN §11, before §15, look into tools and skills that improve development (Claude Code skills, agents, hooks; engine and editor tooling; testing, CI and asset pipelines). Adopt only if measured cheaper or equal at the same quality (DEL-07).
 
 ## Open questions
 
 - Later: 20 class levels (D-074) need a pacing decision; facility compound / city-building style guildhall (D-075) not scoped.
 - Intrigue and underhanded dealings (owner's note, D-069): Later tier; content not decided.
-- Old-press ledger readability (STYLE.md §5): check minimum size on a rendered ledger; fallback is our own Goudy ledger cut (D-052). Mock-up showed its old-style figures scan worse than a book serif; clear print (D-077) is the player-side fix.
+- Old-press ledger readability: 15 px minimum (D-084), confirm on real monitors in R4; fallback is our own Goudy ledger cut (D-052). Use lining figures (`lining-nums`) for all numbers: the face's default figures are old-style and proportional (measured 13.6–20.8 px wide at 40 px; lining 21.1 px each). Clear print (D-077) is the player-side option. Minimum size asked in PLAN §9c.
 - "More fantasy flair" for the quest board art (STYLE.md §4) needs defining when art direction starts.
 - Bardic songs (after launch, D-056): sung or instrumental not decided.
 - Stack and engine: decided in PLAN.md §11; add the matching `stacks/` layer then.

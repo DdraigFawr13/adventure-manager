@@ -60,10 +60,10 @@ code { font-family: var(--mono); font-size: .85em; }
 
   <section class="now" aria-labelledby="now">
     <span class="pill p-now">Now</span>
-    <h2 id="now">Writing the full plan: section 9 of 15 next</h2>
+    <h2 id="now">Writing the full plan: section 10 of 15 next</h2>
     <ol>
-      <li><b>§9 Risks and prototypes:</b> the riskiest assumptions and the cheapest test for each, including the old-press ledger readability check.</li>
-      <li>Then §10 to §15 in order, one question at a time, with mock-ups where a picture helps.</li>
+      <li><b>§10 Playtest and metrics plan:</b> how playtests run and what is measured against the §1 targets and the §9 pass lines.</li>
+      <li>Then §11 to §15 in order, with the tools and skills review after §11.</li>
       <li>All work so far is in draft pull request #2, waiting to be merged into <code>main</code>.</li>
     </ol>
   </section>
@@ -73,7 +73,7 @@ code { font-family: var(--mono); font-size: .85em; }
     <ul class="phases">
       <li><span class="pill p-done">Done</span><b>1 · Concept</b><small>33 sections, locked 25 Oct (D-045)</small></li>
       <li><span class="pill p-done">Done</span><b>2 · Style</b><small>9 sections, locked 26 Oct (D-061)</small></li>
-      <li><span class="pill p-now">In progress</span><b>3 · Full plan</b><small>8 of 15 sections written</small></li>
+      <li><span class="pill p-now">In progress</span><b>3 · Full plan</b><small>9 of 15 sections written</small></li>
       <li><span class="pill p-wait">After the plan</span><b>Build</b><small>Prototype to launch; stages set in §13</small></li>
     </ul>
   </section>
@@ -91,8 +91,8 @@ code { font-family: var(--mono); font-size: .85em; }
       <li><span class="no">6</span><span class="name">Onboarding, UX and accessibility</span><span class="pill p-done">Done</span><span class="what">Prologue, staff-opened ledgers, clerk's notes; clear print; screen rules. <span class="ids">D-076–078</span></span></li>
       <li><span class="no">7</span><span class="name">Launch content list</span><span class="pill p-done">Done</span><span class="what">Five ancestries; 36 monster kinds, 60 key moments, about 6,000 lines. <span class="ids">D-079–081</span></span></li>
       <li><span class="no">8</span><span class="name">Making consequences visible</span><span class="pill p-done">Done</span><span class="what">In-world letters with a Trace; numbered inspector histories. <span class="ids">D-082–083</span></span></li>
-      <li><span class="no">9</span><span class="name">Risks and prototypes</span><span class="pill p-now">Next</span><span class="what">Is the quest simulation fun to watch? Does the desk hold FM density? Are the ledgers readable?</span></li>
-      <li><span class="no">10</span><span class="name">Playtest and metrics plan</span><span class="pill p-soon">To do</span><span class="what">How playtests run and what is measured against the §1 targets.</span></li>
+      <li><span class="no">9</span><span class="name">Risks and prototypes</span><span class="pill p-done">Done</span><span class="what">Nine risks with tests; ledger minimum 15 px with lining figures; headless simulator first. <span class="ids">D-084–086</span></span></li>
+      <li><span class="no">10</span><span class="name">Playtest and metrics plan</span><span class="pill p-now">Next</span><span class="what">How playtests run and what is measured against the §1 targets.</span></li>
       <li class="part" style="display:block">Part B · Production</li>
       <li><span class="no">11</span><span class="name">Technology and architecture</span><span class="pill p-soon">To do</span><span class="what">Engine, the deterministic simulation package, data formats, saves, modding.</span></li>
       <li class="step"><span class="no">★</span><span class="name">Tools and skills review</span><span class="pill p-soon">To do</span><span class="what">Your request: look into tools and skills that improve development (Claude Code skills, agents and hooks; engine and editor tooling; testing, CI and asset pipelines). Placed here because it depends on the stack chosen in §11, and feeds §15. Each tool is adopted only if measured cheaper or equal at the same quality (DEL-07).</span></li>
@@ -107,7 +107,7 @@ code { font-family: var(--mono); font-size: .85em; }
     <h2 id="build">After the plan: building it</h2>
     <p>No game code until you approve the whole plan (D-001). The build then follows the milestones set in §13. Working outline:</p>
     <ul class="phases">
-      <li><span class="pill p-wait">Build 1</span><b>Prototype</b><small>Test the §9 risks cheaply</small></li>
+      <li><span class="pill p-wait">Build 1</span><b>Prototypes</b><small>Headless simulator, then one watched quest, desk mock-ups, attachment playtest (D-085)</small></li>
       <li><span class="pill p-wait">Build 2</span><b>Vertical slice</b><small>One season, final look</small></li>
       <li><span class="pill p-wait">Build 3</span><b>Alpha and demo</b><small>All launch systems; free demo</small></li>
       <li><span class="pill p-wait">Build 4</span><b>Beta and launch</b><small>Content complete, polish</small></li>
@@ -139,7 +139,7 @@ code { font-family: var(--mono); font-size: .85em; }
   <section aria-labelledby="open">
     <h2 id="open">Open questions</h2>
     <ul class="qs">
-      <li>Old-press ledger readability: needs the check in §9; clear print (D-077) is ready if it fails.</li>
+      <li>Ledger readability: 15 px with lining figures (D-084); confirm on real monitors in the prototypes.</li>
       <li>"More fantasy flair" for the quest board art: defined when art direction starts.</li>
       <li>Bardic songs: sung or instrumental.</li>
       <li>20 class levels: faster levelling or longer careers.</li>

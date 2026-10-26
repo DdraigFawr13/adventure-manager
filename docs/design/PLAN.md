@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: §1–§8 written; §9..§15 to do.
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: §1–§9 written; §10..§15 to do.
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -14,7 +14,7 @@ Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked
 6. **Onboarding, UX and accessibility.** The gentle first season, screen rules, colour-blind, keyboard and text-size support. Written below.
 7. **Launch content list.** Classes, ancestries, monsters, quest templates, sites; all as data. Written below.
 8. **Making consequences visible.** How every outcome reaches the player (log lines, letters, inspector fields). Written below.
-9. **Risks and prototypes.** Riskiest assumptions and the cheapest test for each (quest simulation fun to watch? desk holds FM density? old-press ledgers readable?).
+9. **Risks and prototypes.** Riskiest assumptions and the cheapest test for each (quest simulation fun to watch? desk holds FM density? old-press ledgers readable?). Written below.
 10. **Playtest and metrics plan.**
 
 ## Part B: Production
@@ -420,7 +420,7 @@ Owner's note: "I like a for the first season but I like having a small prologue 
 ### 6c. Accessibility (Accepted 2026-10-26, D-078)
 
 - **Colour-blind:** the fixed status set (D-048) is chosen to stay distinct under the three common types; faction colours always carry a heraldic charge as well.
-- **Text size and readability (Accepted 2026-10-26, D-077):** a size slider from 100% to 150%, plus a **clear print** setting that switches ledgers and letters to a modern book serif (an open-font-licence face, chosen in UI work); titles, seals and the decorated initial keep the old-press faces. Mock-up: `docs/design/mockups/readability.html`. Observed in the mock-up: the old-press ledger face uses old-style figures (3, 4, 7, 9 drop below the line; 6, 8 rise), so columns align but numbers scan worse than clear print at the same size; this feeds the ledger readability check (STYLE §5, D-052).
+- **Text size and readability (Accepted 2026-10-26, D-077):** a size slider from 100% to 150%, plus a **clear print** setting that switches ledgers and letters to a modern book serif (an open-font-licence face, chosen in UI work); titles, seals and the decorated initial keep the old-press faces. Mock-up: `docs/design/mockups/readability.html`. Corrected 2026-10-26: the first mock-up showed the old-press ledger with its default old-style, proportional figures by mistake. The face has lining figures (measured: equal width, all on the line, via `lining-nums`), and all numbers in the game use them. Minimum size: §9c.
 - **Keyboard:** everything playable by keyboard; Space continues; number keys pick stop options; letters jump to ledgers; all bindings can be changed.
 - **No time pressure:** the calendar never moves without Continue; reading a letter or a key moment never has a timer.
 - **Motion:** board animations and map drawing can be shortened or turned off; nothing important is shown only in motion.
@@ -518,3 +518,46 @@ Each outcome reaches the player through one or more of these, from immediate to 
 - **Trace:** a small "Trace" mark on every letter and every changed value opens the plain cause chain: each step dated, the player's own decisions marked, what the guild knew at each step (and what better knowledge would have shown, D-041), and what can be done now.
 - **Inspector histories** (from option A): every value on a person, item, place or faction shows its current number, the change in bold with a sign (−8, +3) in the status colours (D-048), and a dated history where each entry has a "because" line. A history entry links to its trace.
 - Trace and history wording is templated from recorded causes (GAME-02, GAME-04); only letters carry the world's voice.
+
+---
+
+## 9. Risks and prototypes (Accepted 2026-10-26)
+
+Decisions: D-084..D-086. A prototype is throwaway code that answers one question cheaply; it is the first build step after the plan is approved (D-001). "Fun" and feel checks pass only on the owner's recorded playtest notes (GAME-06).
+
+### 9a. Riskiest assumptions (Accepted 2026-10-26, D-086)
+
+Ranked by how much of the game fails if the assumption is wrong. "Cheapest test" is the smallest thing that answers it.
+
+| # | Assumption | If wrong | Cheapest test | Passes when |
+|---|---|---|---|---|
+| R1 | Watching a quest (log and board) is tense and fun | The core loop (Pillar 2) is dull; players auto-resolve everything | One quest, simulated: text log plus a plain board with standees; owner watches 10 quests | Owner wants to watch the next one; auto-resolve feels like a loss; key moments feel like real choices |
+| R2 | The simulation hits the §4 targets: ~2 deaths a year, money tight early, ladder movement | Balance needs rework after art is built | Headless year simulator (no graphics): 1,000 seeded guild-years, report deaths, money, promotions | Medians within ±25% of §4 targets; no runaway rival in 30 simulated years |
+| R3 | A year fits the friction budget: ~80 stops, ~145 min (D-068) | Sessions drag or feel empty | Same headless simulator counts stops by class; then a timed playtest of one year in the text prototype | ≤ 100 stops a year; owner plays a year in ≤ 3 h |
+| R4 | The desk layout holds FM density (30-row roster, finances) on a 1366 px screen | Dense screens need a redesign late | Clickable HTML mock-ups of roster, finances and contract board at 1366 and 1920 px | 25+ roster rows visible at 1366 px; owner finds 5 set facts in under 10 s each |
+| R5 | Old-press ledgers are readable | Dense screens tire players (STYLE §5) | Rendered ledger specimens at real sizes (done, §9c: 15 px, lining figures) | Confirmed on real monitors during R4 |
+| R6 | Staff are competent but limited: the player's own focus visibly beats delegation (D-038) | Delegating everything is optimal; the player becomes a spectator | Headless simulator: same seeds, delegated vs a careful player policy | Player focus 10–25% better on the chosen area; delegation never ruinous |
+| R7 | Players get attached to adventurers who die about twice a year | Deaths feel like stat loss, not loss | Owner plays two years in the text prototype with generated histories and memorial letters | Owner can name and describe 3 adventurers after a session |
+| R8 | Template writing stays fresh at ~6,000 lines (D-080) | Repetition breaks the fiction within a few years | Write one template family (quest reports) with variants; generate 200 reports; count repeated sentences | No sentence repeats more than once in 50 reports |
+| R9 | Players reach a second guildmaster (Pillar 3; D-065: 25% of 40 h+ players) | The generational pillar is invisible | Can only be measured late (beta); early proxy: headless simulator shows patron dismissal or retirement within 20–30 years | Median guildmaster career 20–30 simulated years |
+
+Not risks for prototypes (handled elsewhere): engine choice and determinism (§11), art cost (§12), team and budget (§14).
+
+### 9b. Prototype order (Accepted 2026-10-26, D-085)
+
+Owner's choice: balance and pacing numbers first. All prototypes come after the plan is approved (D-001).
+
+1. **Headless year simulator** (R2, R3, R6, R9): the simulation core with no graphics; 1,000 seeded guild-years reporting deaths, money, ladder movement, stops by class, delegated vs careful play, and guildmaster careers against the §2 and §4 targets.
+2. **One quest, watched** (R1): the same simulation code drives a text log and a plain board with standees; the owner watches 10 quests. Built on an already-tuned core.
+3. **Desk-density mock-ups and writing test** (R4, R8): HTML mock-ups at 1366 and 1920 px, and one template family generated 200 times. Neither needs the engine, so they can run alongside step 1 or 2.
+4. **Two years in the text prototype** (R7): the attachment check.
+
+Trade-off accepted: the most existential question (is watching fun? R1) is answered second, not first.
+
+### 9c. Ledger readability check (Accepted 2026-10-26, D-084)
+
+Mock-up: `docs/design/mockups/readability.html` (first section).
+
+- **Minimum ledger size: 15 px** at 100% (owner's choice); the size slider (D-077) goes up from there.
+- **All numbers use lining figures** (`lining-nums`). Measured at 40 px: the ledger face's default figures are old-style and proportional (13.6–20.8 px wide); lining figures are equal width (21.1 px) and sit on the line.
+- Still to confirm on real monitors at 1366 and 1920 px in the R4 prototype; if it fails there, D-052 (own ledger cut) and clear print (D-077) are the fallbacks.
