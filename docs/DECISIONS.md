@@ -283,3 +283,15 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Warm lamp-lit palette: walnut desk, vellum paper, iron-gall ink, oxblood wax, brass. Detail: `docs/design/STYLE.md` §2.
 - **Why:** Owner's choice (Style Q2) from the swatch board; the most "guild hall" mood.
+
+## D-048 Status and faction colours are separate from the mood
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Status colours (good, warning, bad) are a fixed colour-blind-safe set; factions get their own heraldic set. The palette mood (D-047) governs desk, paper, ink and accents only. Detail: `docs/design/STYLE.md` §2.
+- **Why:** Owner approved the proposal; status must read at a glance in every mood and for colour-blind players.
+
+## D-049 Screen layout: desk home with ledger tabs
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Fixed top bar (date, stop reason, Continue); grouped ledger tabs on the left; the home screen is the region map with parties as miniatures, a weekly strip and the letter tray; ledgers open as full paper sheets. Detail: `docs/design/STYLE.md` §3.
+- **Why:** Owner's choice (Style Q3); keeps FM navigation speed while putting the region at the centre (pillar 4).

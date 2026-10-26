@@ -16,6 +16,20 @@ Rejected: modern FM interface with a fantasy skin (weak identity), illuminated m
 
 Known risk: warm parchment is the common fantasy look, so typography and map art must carry the identity.
 
-**Proposed (not yet approved):** status colours (good, warning, bad) are a fixed colour-blind-safe set kept apart from the mood, and factions get their own heraldic set. The mood governs desk, paper, ink and accents only.
+**Accepted (2026-10-26, D-048):** status colours (good, warning, bad) are a fixed colour-blind-safe set kept apart from the mood, and factions get their own heraldic set. The mood governs desk, paper, ink and accents only.
 
 Rejected: frontier slate, heraldic baize, ash and bone.
+
+## 3. Screen layout (Accepted 2026-10-26)
+
+**Desk home with ledger tabs.** Mock-up: `docs/design/mockups/ui-layouts.html` (option C).
+
+- **Top bar, fixed on every screen:** guild crest, date, why the calendar stopped, Continue. It never moves, so the continue-stop-respond loop stays in one place.
+- **Left:** ledger tabs grouped as Desk, Roster, Parties, Contracts / Guild (Staff, Guildhall, Finances, Armoury) / World (Ranking, Chronicle). Every screen is one click away.
+- **Home (Desk):** the regional map fills the centre, with own parties, rivals and rumours as miniatures; a strip below shows this week's parties, the infirmary and bills due.
+- **Right:** the letter tray (inbox, D-043) is open on the home screen. It folds away for dense ledgers, and becomes a tab on windows below about 1366 px wide.
+- **Opening a ledger** turns the centre into a full paper sheet (the clean data layer from §1).
+
+Known cost: the home screen relies on good map art.
+
+Rejected: ledger tabs with Letters as home (the region gets sidelined), desk-as-menu (an extra step on every trip; doesn't scale to twelve ledgers).
