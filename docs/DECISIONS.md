@@ -724,6 +724,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** One approved list (D-114, SAFE-03), all free and open source, versions pinned exactly with the lockfile committed. Dev tools: TypeScript, Vitest, Prettier, `@babel/parser` (package-boundary check), `@types/node`. Game stack for the engine test and after: Electron, Vite with `@vitejs/plugin-react`, React and React DOM, Playwright. Start from Story-Generator's versions where it has the package. Anything else is asked for first. Code rules: `docs/STANDARDS.md`.
 - **Why:** Owner chose "approve plus game stack now" (2026-10-26) so the engine test (D-110) needs no second ask.
+- **Amended (2026-10-26):** owner approved `@types/react` and `@types/react-dom` (dev-only types for the approved React packages).
 
 ## D-118 Resolution v0: quest shape is a hybrid
 
@@ -778,3 +779,28 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** A retreat lasts beats: 1, plus 1 while carrying the fallen, plus 1 on a failed retreat check (all content data). On each beat foes strike if the party fled a fight, and the fallen bleed and roll for death; a party with no one standing is routed. Replaces the old rule that a failed check costs one wound step and the Dying are carried home safe. Detail: `packages/engine/src/resolution/SPEC.md`.
 - **Why:** Owner (tuning, 2026-10-26): "retreat should take time and have its own risks associated with it." Without it, retreating at a threshold ended the quest before bleeding (D-124) could matter.
+
+## D-127 Watched-quest prototype is a published web page
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The R1 prototype (PLAN §9b step 1) is a private web page published as a claude.ai link: party sheet, a plain board with standees moving scene to scene, the scrolling log, and push-on or pull-out buttons at moments. Built in `packages/ui` with Vite + React (D-117) on the real engine and content; the screens are throwaway (D-113), the engine is kept. The owner watches 10 quests and records notes for the R1 pass line (PLAN §9a).
+- **Why:** Owner's choice (2026-10-26): nothing to install, works on phone or PC.
+
+
+## D-128 The roadmap page is updated every session
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Every working session on this project updates `docs/roadmap.html` and republishes it to the same link (https://claude.ai/artifact/FTio9mE7jLaK4Wrn189YAg), so the owner can follow progress. It stays a view of HANDOFF and PLAN; HANDOFF wins if they disagree.
+- **Why:** Owner (2026-10-26): "I want that updated in every chat for this project so I can see the progress."
+
+## D-129 Resolution v0: speed order and sturdier foes
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** In each fight exchange everyone acts in order of speed: Agility for adventurers, a speed number for each foe group (content data). Each foe group also has its own number of hits to beat before it is down (a swarm about 3, a pack about 5, a warden or keeper about 7), so fights last the planned 3–6 exchanges (D-118) and foes strike throughout. Death numbers are retuned after. Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Why:** Owner's R1 note (2026-10-26): "I don't see any enemies ever really doing anything at all." Measured over 300 quests per contract: foes got 0–2 attacks per fight and fights lasted 1–2 exchanges, because the whole party acted first and a group fell after 3 wound steps.
+
+## D-130 Resolution v0: classes have signature actions
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Each class has 2–3 signature actions it uses on its own when the situation fits, shown in the log. Starting set: warrior Guard (takes a blow meant for a comrade) and Cleave (a strong hit also strikes the next group); rogue Scout ahead (helps the party's approach scenes) and Strike from shadow (a better hit on a foe already engaged this exchange); cleric Mend (a hurt member steps back up) and Ward (foes hit less often that exchange). Which class has which action, and every number, is content data; each action kind is one engine rule. Owner's note: "1 but room for 2 as well and room for more actions": roles set in the plan (guard, scout, striker, healer) that change which action a member prefers stay open as a later addition, and more actions (and abilities by level, D-074) are added as data. Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Why:** Owner's R1 note (2026-10-26): "there will need to be distinct actions for different classes."

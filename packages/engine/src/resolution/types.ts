@@ -52,6 +52,10 @@ export interface FoeGroupTemplate {
   readonly id: string;
   readonly attack: number;
   readonly defence: number;
+  /** Turn order in an exchange, against adventurers' Agility (D-129). */
+  readonly speed: number;
+  /** Hits (wound steps) to beat before the group is down (D-129). */
+  readonly hits: number;
 }
 
 export interface QuestTemplate {
@@ -110,10 +114,25 @@ export interface ResolutionRules {
     /** Gap between foes down and party fallen, in basis points, worth one point of difficulty. */
     readonly clarityStepBp: number;
   };
-  readonly classes: Readonly<
-    Record<string, { readonly attackAttribute: Attribute; readonly canStabilise: boolean }>
-  >;
+  readonly classes: Readonly<Record<string, ClassRules>>;
 }
+
+export interface ClassRules {
+  readonly attackAttribute: Attribute;
+  readonly canStabilise: boolean;
+  /** Signature actions (D-130), used on their own when the situation fits. */
+  readonly actions: readonly ClassAction[];
+}
+
+/** One kind per engine rule; content chooses which class has which, and the numbers (D-130). */
+export type ClassAction = { readonly id: string } & (
+  | { readonly kind: 'guard'; readonly chanceBp: number }
+  | { readonly kind: 'cleave' }
+  | { readonly kind: 'scout'; readonly bonusBp: number }
+  | { readonly kind: 'shadow-strike'; readonly bonusBp: number }
+  | { readonly kind: 'mend'; readonly attribute: Attribute; readonly difficulty: number }
+  | { readonly kind: 'ward'; readonly penaltyBp: number }
+);
 
 export interface ResolutionContent {
   readonly rules: ResolutionRules;
@@ -124,6 +143,8 @@ export interface FoeState {
   readonly id: string;
   readonly attack: number;
   readonly defence: number;
+  readonly speed: number;
+  readonly hits: number;
   step: number;
 }
 
@@ -168,7 +189,9 @@ export type CheckPurpose =
   | 'death'
   | 'injury'
   | 'retreat'
-  | 'judgement';
+  | 'judgement'
+  | 'guard'
+  | 'mend';
 export type CheckOutcome = 'strong-success' | 'success' | 'failure' | 'bad-failure';
 export type QuestOutcome = 'won' | 'partial' | 'retreated' | 'routed';
 
@@ -205,8 +228,15 @@ export type GameEvent = EventBase &
         readonly outcome: CheckOutcome;
       }
     | { readonly type: 'wound.changed'; readonly from: number; readonly to: number }
-    | { readonly type: 'foe.wounded'; readonly from: number; readonly to: number }
+    | {
+        readonly type: 'foe.wounded';
+        readonly from: number;
+        readonly to: number;
+        /** The group is down when `to` reaches this. */
+        readonly hits: number;
+      }
     | { readonly type: 'alarm.raised' }
+    | { readonly type: 'action.used'; readonly actionId: string }
     | { readonly type: 'adventurer.stabilised' }
     | { readonly type: 'adventurer.died' }
     | { readonly type: 'moment.raised'; readonly moment: 'retreat' }

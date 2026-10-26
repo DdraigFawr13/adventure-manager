@@ -8,6 +8,8 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Just done
 
+- 2026-10-26 Owner's first R1 note: foes never seemed to act. Measured 0–2 foe attacks per fight; fixed with speed order and per-group hits (D-129); fights now ~3 exchanges with 1–5 foe attacks. Then class signature actions (D-130: guard, cleave, scout, strike from shadow, mend, ward) and a retune: sample party at the leader's call now 0.59% / 0.07% / 2.15% deaths on hazardous / routine / perilous (targets 0.8 / 0.2 / 2.5%).
+- 2026-10-26 PR #9 merged. Watched-quest prototype (R1) built (D-127; branch `ccr-7f6bf382-zc866n` restarted from `main` after the merge): `packages/ui` (Vite + React; `@types/react` and `@types/react-dom` approved, D-117 amended), English text in `packages/content/data/text.en.json`, two more quests (routine mill cellar, perilous drowned chapel), template helper `fillTemplate`/`pickVariant` (first slice of the D-114 grammar). Build: `npm run build -w @adventure-manager/ui && node tools/build-prototype.mjs`; published privately at https://claude.ai/artifact/3pT1BUqHyKwTRysV9i3jEA. Checked: Playwright clicked through 6 quests with no console errors; desktop and phone screenshots looked at; a narration test plays every quest and fails on raw keys or empty slots. Independent review fixed (D-093).
 - 2026-10-26 PR #8 (CI runs `npm run check`) merged. On branch `ccr-7f6bf382-zc866n` (PR #9): fallen bleed out (D-124), leader's call as default retreat (D-125), retreat takes time (D-126), first tuning pass. `node tools/resolution-sweep.ts 2000` (hazardous delve, 5 mid adventurers): leader's call 0.75% deaths per adventurer (target 0.8%), 5.1 injuries per death (target ~5); first Down 0.67%; first Dying 1.00%; never 1.07%; first Badly hurt 0.07% and abandons 83% of quests.
 - 2026-10-26 PR #7 (resolution v0) merged. CI now runs the drift check, the docs check and `npm run check` in one job (D-105); replayed in a clean clone before pushing (actionlint couldn't be installed in this session).
 - 2026-10-26 Resolution v0 on branch `ccr-7f6bf382-zc866n`: owner settled six forks: hybrid quest shape (D-118), percent chances (D-119), wound steps (D-120), three plan levers (D-121), eight working attributes (D-122), foe groups now and per-enemy tokens later (D-123). Spec `packages/engine/src/resolution/SPEC.md`; `simulate(state, command)` with `quest.start`/`step`/`choose`, events with cause ids, invariants, determinism test; numbers in new `packages/content` (TypeScript typed by engine types until the JSON loader). Boundary check now allows `SPEC.md` in `src`. `npm run check` green (49 tests); independent review fixed (D-093). Measured with `node tools/resolution-sweep.ts 2000` (hazardous barrow delve, 5 mid adventurers, never retreat): deaths 0.18% per adventurer vs 0.8% target, ~43 injuries per death vs ~5, 99% won. Starting numbers are too gentle; tuning is R1/R2's job.
@@ -27,17 +29,16 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 - 2026-10-26 Owner added a launch goal: an on-theme fantasy kingdom map showing areas, locations, guilds, action and deeds (D-087); to workshop in §12.
 - 2026-10-26 PLAN.md §9 accepted: ledger minimum 15 px with lining figures (D-084; corrected the §6 mock-up and D-077 rationale, which had shown old-style figures by mistake); prototype order watched quest first (D-085; an earlier answer was a misclick); nine risks with tests and pass lines (D-086).
 - 2026-10-26 Roadmap page for the owner: `docs/roadmap.html`, published at https://claude.ai/artifact/FTio9mE7jLaK4Wrn189YAg. A view of HANDOFF and PLAN (HANDOFF wins).
-- 2026-10-26 PLAN.md §8 accepted: in-world letters with a Trace to the cause chain, plus numbered inspector histories (D-082, mock-up `consequences.html`); nine surfaces and seven consequence rules (D-083).
-- 2026-10-26 PLAN.md §7 accepted: ancestries Marchfolk, Stonewrights, Lanthe, Reedfolk, Barrowborn (D-079, mock-up `ancestries.html`); standard content volume: 36 monster kinds, 20 sites, 20 quest templates, 60 key moments, ~6,000 lines (D-080); classes, talents, 4 prestige paths, attributes, traits, staff, backgrounds (D-081).
-- 2026-10-26 PLAN.md §6 accepted: prologue + staff-opened ledgers + clerk's notes (D-076); size slider + clear print (D-077); seven screen rules and accessibility list (D-078). Mock-ups published: `onboarding.html`, `readability.html`.
 
 ## Next
 
-1. Watched-quest prototype (R1, PLAN §9b step 1): a plain text log and board driven by `simulate` events, plus the first tuning pass toward §4c (sweep numbers above). Template text for the log needs the template grammar (D-114).
-2. Web-first engine test (D-110): ledger and kingdom map in Electron + TypeScript, reusing Story-Generator map code (D-116). Godot only if web misses its bar. Time-boxes and stop rules: PLAN §9b (D-111).
+1. Owner watches 10 quests on the prototype page and gives R1 notes (PLAN §9a pass line: wants to watch the next one; auto-resolve feels like a loss; moments feel like real choices). R1 fails twice → stop rule D-111.
+2. Second tuning pass: reckless and cautious retreat settings; check the routine and perilous quests against PLAN §4c with `tools/resolution-sweep.ts`.
+3. Web-first engine test (D-110): ledger and kingdom map in Electron + TypeScript, reusing Story-Generator map code (D-116). Godot only if web misses its bar. Time-boxes and stop rules: PLAN §9b (D-111).
 
 ## Open questions
 
+- Reference party for PLAN §4c targets: after D-129 the sample party (`prototype-party.json`) hits 0.95% / 0.08% / 2.76% deaths on hazardous / routine / perilous, but the sweep's weaker mid party dies at 2.15% on hazardous. Using the sample party until the year simulator generates guilds.
 - Tuning still off: "never" is only ~1.4× the default (PLAN §4c says reckless roughly doubles deaths) and first Badly hurt is ~0.1× with 83% of quests abandoned (cautious should roughly halve). Only the hazardous delve exists; Routine, Perilous and Deadly need templates before their targets can be checked.
 - Permissions (from the PR #3 review): tighten the allow list (`cat`/`grep`/`find` can read `.env`; `git branch:*` allows `-D`; `find:*` allows `-delete`) and widen the force-push ask rules (`-fu`, `origin +main`, `git -C`)? Owner to decide; see D-096 limits.
 - Kingdom map art direction continues past §12 (D-097): Story-Generator layout as the artist's base.
@@ -52,7 +53,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 - End the session after each merged PR or finished plan section; the next one starts here (D-095).
 - Before creating any PR, and before marking one ready, do an adversarial review of the whole branch diff (D-093).
-- Keep `docs/roadmap.html` current: update and republish it (same file path, same URL) at every checkpoint where a section or phase changes.
+- Every session updates and republishes `docs/roadmap.html` to https://claude.ai/artifact/FTio9mE7jLaK4Wrn189YAg (D-128); read the live artifact first, then publish with its `url`.
 - Ask one question at a time as a popup (AskUserQuestion) with a recommendation and room for notes; record each answer in the design doc and DECISIONS.md immediately. "[No preference]" means skipped, not approved; show long content in chat, not only in option previews.
 - The owner often combines or extends options in the notes ("B but with more fantasy flair"); record their words as an owner's note and treat unselected extras as Proposed until approved.
 - Show visual choices as HTML mock-ups (published as artifacts, source in `docs/design/mockups/`); screenshot with Playwright and check before publishing.

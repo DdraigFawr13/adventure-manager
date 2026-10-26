@@ -7,6 +7,7 @@ import type {
   Adventurer,
   Attribute,
   CheckPurpose,
+  FoeState,
   GameEvent,
   GameState,
   QuestRun,
@@ -62,6 +63,11 @@ export function standing(turn: Turn): Adventurer[] {
   return living(turn).filter((a) => stepOf(turn, a.id) < WOUND.down);
 }
 
+/** A foe group is down once it has taken its hits (D-129). */
+export function foeDown(foe: FoeState): boolean {
+  return foe.step >= foe.hits;
+}
+
 /** Best first by the attribute; ties by id, so the order never depends on the roster's order. */
 export function rankBy(people: Adventurer[], attribute: Attribute): Adventurer[] {
   return people.sort(
@@ -78,6 +84,8 @@ export function partyCheck(
   difficulty: number,
   extra: readonly ValuePart[],
   causeId: string,
+  /** Others the check is about, e.g. the foe attacked or the member tended. */
+  others: readonly string[] = [],
 ): { roll: Roll; eventId: string } {
   const { rules, quest } = turn;
   const risk = rules.risk[quest.plan.risk];
@@ -90,7 +98,15 @@ export function partyCheck(
   ];
   if (risk.chanceBp !== 0)
     parts.push({ sourceId: `plan.risk.${quest.plan.risk}`, amount: risk.chanceBp });
-  return roll(turn, purpose, [who.id], rules.baseChanceBp, parts, risk.badFailureShareBp, causeId);
+  return roll(
+    turn,
+    purpose,
+    [who.id, ...others],
+    rules.baseChanceBp,
+    parts,
+    risk.badFailureShareBp,
+    causeId,
+  );
 }
 
 export function roll(

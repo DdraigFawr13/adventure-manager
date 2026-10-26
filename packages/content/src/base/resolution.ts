@@ -31,8 +31,8 @@ export const baseResolutionRules: ResolutionRules = {
   alarmFoeBonus: 2,
   maxExchanges: 6,
   targetWeight: { front: 2, back: 1 },
-  deathRoll: { baseBp: 4000, stepBp: 150, pivot: 10 },
-  bleed: { baseBp: 2500, stepBp: 200, pivot: 10 },
+  deathRoll: { baseBp: 5000, stepBp: 150, pivot: 10 },
+  bleed: { baseBp: 3500, stepBp: 200, pivot: 10 },
   stabilise: { attribute: 'lore', difficulty: 10 },
   injuryBp: { badlyHurt: 750, down: 2250, dying: 4100 },
   retreat: {
@@ -44,9 +44,30 @@ export const baseResolutionRules: ResolutionRules = {
   },
   leaderCall: { attribute: 'wits', difficulty: 12, clarityStepBp: 2500 },
   classes: {
-    'class.warrior': { attackAttribute: 'might', canStabilise: false },
-    'class.rogue': { attackAttribute: 'agility', canStabilise: false },
-    'class.cleric': { attackAttribute: 'lore', canStabilise: true },
+    'class.warrior': {
+      attackAttribute: 'might',
+      canStabilise: false,
+      actions: [
+        { id: 'action.guard', kind: 'guard', chanceBp: 2500 },
+        { id: 'action.cleave', kind: 'cleave' },
+      ],
+    },
+    'class.rogue': {
+      attackAttribute: 'agility',
+      canStabilise: false,
+      actions: [
+        { id: 'action.scout', kind: 'scout', bonusBp: 1000 },
+        { id: 'action.shadow-strike', kind: 'shadow-strike', bonusBp: 1500 },
+      ],
+    },
+    'class.cleric': {
+      attackAttribute: 'lore',
+      canStabilise: true,
+      actions: [
+        { id: 'action.mend', kind: 'mend', attribute: 'lore', difficulty: 16 },
+        { id: 'action.ward', kind: 'ward', penaltyBp: 500 },
+      ],
+    },
   },
 };
 
@@ -88,12 +109,81 @@ export const barrowDelve: QuestTemplate = {
     },
   ],
   foes: [
-    { id: 'foe.barrow-hounds', attack: 10, defence: 9 },
-    { id: 'foe.restless-warden', attack: 12, defence: 11 },
+    { id: 'foe.barrow-hounds', attack: 13, defence: 9, speed: 14, hits: 5 },
+    { id: 'foe.restless-warden', attack: 15, defence: 11, speed: 8, hits: 7 },
+  ],
+};
+
+/** A routine job close to home. */
+export const millCellar: QuestTemplate = {
+  id: 'quest.mill-cellar',
+  danger: 'routine',
+  tags: ['dark'],
+  scenes: [
+    {
+      id: 'scene.mill-yard',
+      kind: 'approach',
+      difficulty: 7,
+      testers: 'best',
+      onFailure: 'alarm',
+    },
+    {
+      id: 'scene.flooded-steps',
+      kind: 'fixed',
+      attribute: 'agility',
+      difficulty: 6,
+      testers: 'all',
+      onFailure: 'wound',
+    },
+  ],
+  foes: [{ id: 'foe.cellar-rats', attack: 11, defence: 6, speed: 13, hits: 6 }],
+};
+
+/** A perilous delve: the drowned chapel and what keeps it. */
+export const drownedChapel: QuestTemplate = {
+  id: 'quest.drowned-chapel',
+  danger: 'perilous',
+  tags: ['dark', 'open'],
+  scenes: [
+    {
+      id: 'scene.reed-causeway',
+      kind: 'fixed',
+      attribute: 'agility',
+      difficulty: 9,
+      testers: 'all',
+      onFailure: 'wound',
+    },
+    {
+      id: 'scene.bell-tower',
+      kind: 'approach',
+      difficulty: 12,
+      testers: 'best-two',
+      onFailure: 'alarm',
+    },
+    {
+      id: 'scene.sunken-nave',
+      kind: 'fixed',
+      attribute: 'wits',
+      difficulty: 12,
+      testers: 'best-two',
+      onFailure: 'wound',
+    },
+    {
+      id: 'scene.crypt-stair',
+      kind: 'fixed',
+      attribute: 'resolve',
+      difficulty: 11,
+      testers: 'best-two',
+      onFailure: 'wound',
+    },
+  ],
+  foes: [
+    { id: 'foe.drowned-dead', attack: 13, defence: 10, speed: 7, hits: 6 },
+    { id: 'foe.chapel-keeper', attack: 15, defence: 12, speed: 10, hits: 8 },
   ],
 };
 
 export const baseResolution: ResolutionContent = {
   rules: baseResolutionRules,
-  quests: [barrowDelve],
+  quests: [barrowDelve, millCellar, drownedChapel],
 };

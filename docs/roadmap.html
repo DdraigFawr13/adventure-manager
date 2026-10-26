@@ -25,6 +25,11 @@ section > p { margin: 0 0 10px; max-width: 68ch; }
 .now { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--now); border-radius: 4px; padding: 16px 18px; display: grid; gap: 8px; }
 .now h2 { margin: 0; font-size: 1.35rem; }
 .now ol { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+.now p { margin: 0; max-width: 68ch; }
+.now a { color: var(--accent); }
+.m1 { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.m1 li { display: grid; grid-template-columns: 4.6em 1fr; gap: 10px; align-items: baseline; min-width: 0; }
+.m1 .pill { justify-self: stretch; text-align: center; }
 
 .phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 10px; list-style: none; margin: 0; padding: 0; }
 .phases li { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; }
@@ -39,6 +44,7 @@ section > p { margin: 0 0 10px; max-width: 68ch; }
 .ledger .no { font-family: var(--ledger); color: var(--muted); font-variant-numeric: tabular-nums; }
 .ledger .name { font-family: var(--title); font-size: 1.1rem; }
 .ledger .what { grid-column: 2 / -1; color: var(--muted); font-size: .93rem; min-width: 0; }
+.ledger a { color: var(--accent); }
 .ledger .ids { font-family: var(--mono); font-size: .72rem; color: var(--muted); }
 .ledger li.step { background: color-mix(in srgb, var(--brass) 9%, transparent); border-left: 3px solid var(--brass); padding-left: 8px; margin-left: -11px; }
 .part { font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 14px 0 4px; }
@@ -61,11 +67,19 @@ code { font-family: var(--mono); font-size: .85em; }
   <section class="now" aria-labelledby="now">
     <span class="pill p-now">Now</span>
     <h2 id="now">Building: M1 prototypes</h2>
-    <ol>
-      <li><b>Done:</b> code standards, the engine workspace with named random streams and self-explaining values, and the approved tool list (D-114, D-117).</li>
-      <li><b>Resolution v0:</b> how a party, its plan and the site turn into odds and events; the heart of the watched quest (D-113).</li>
-      <li><b>Engine test, web-first:</b> the ledger and kingdom map in Electron and TypeScript, reusing your Story-Generator map code (rights confirmed, D-116); Godot only if web misses its bar (D-110).</li>
-    </ol>
+    <p><b>Your turn:</b> watch 10 quests on the <a href="https://claude.ai/artifact/3pT1BUqHyKwTRysV9i3jEA">Fenn March Quest Watch</a> page and tell Claude: did you want to watch the next one, did skipping feel like a loss, did the moments feel like real choices? That is the R1 pass line.</p>
+    <ul class="m1">
+      <li><span class="pill p-done">Done</span> Code standards, engine workspace, named random streams, self-explaining values, approved tools (D-114, D-117)</li>
+      <li><span class="pill p-done">Done</span> Resolution v0: scenes and a short main fight, percent chances, wound steps, the plan's levers, foe groups (D-118–123)</li>
+      <li><span class="pill p-done">Done</span> Bleeding out, the leader's call as default retreat, retreats that take time; first tuning hits about 2 deaths a year at the default (D-124–126)</li>
+      <li><span class="pill p-done">Done</span> CI runs format, types, boundaries and tests on every pull request (D-105)</li>
+      <li><span class="pill p-done">Done</span> Your first note: foes now act in speed order and take several hits to beat (D-129)</li>
+      <li><span class="pill p-now">Now</span> Watched-quest prototype page: built and published; waiting on your 10-quest watch (D-127, R1)</li>
+      <li><span class="pill p-done">Done</span> Your second note: each class now has its own actions (D-130)</li>
+      <li><span class="pill p-soon">Next</span> Second tuning pass: reckless and cautious settings, a deadly contract, the reference party</li>
+      <li><span class="pill p-wait">Then</span> Engine test, web-first: ledger and kingdom map in Electron, reusing Story-Generator map code (D-110, D-116)</li>
+      <li><span class="pill p-wait">Then</span> Headless year simulator, desk mock-ups and writing test, two-year attachment playtest (D-085)</li>
+    </ul>
   </section>
 
   <section aria-labelledby="phases">
@@ -104,13 +118,40 @@ code { font-family: var(--mono); font-size: .85em; }
   </section>
 
   <section aria-labelledby="build">
-    <h2 id="build">After the plan: building it</h2>
-    <p>You approved the plan on 26 October (D-115). The build follows the §13 milestones; each ends at a gate where you say go, loop or stop (D-099).</p>
-    <ul class="phases">
-      <li><span class="pill p-now">Build 1 · now</span><b>Prototypes</b><small>M1 · 5–8 months. Standards file (done) and resolution v0; web-first engine test; one watched quest, the headless simulator, desk mock-ups, attachment playtest (D-085, D-110)</small></li>
-      <li><span class="pill p-wait">Build 2</span><b>Vertical slice</b><small>M2 · 7–10 months. Prologue and first season in one corner of the March at final quality; 6–10 players; Steam page goes up</small></li>
-      <li><span class="pill p-wait">Build 3</span><b>Alpha</b><small>M3 · 10–15 months. All 14 launch systems, about half the content, 30–50 testers. Early Access or 1.0 decided here (D-100)</small></li>
-      <li><span class="pill p-wait">Build 4</span><b>Demo, beta and launch</b><small>M4–M6 · 9–13 months. Free demo alongside a 200+ beta with all content and final art; then launch</small></li>
+    <h2 id="build">Building it, task by task</h2>
+    <p>You approved the plan on 26 October (D-115). Each milestone ends at a gate where you say go, loop or stop (D-099). Estimates assume solo work at 10–20 h a week.</p>
+    <ul class="ledger">
+      <li class="part" style="display:block">M0 · Plan approved · done 26 Oct</li>
+      <li><span class="no">0</span><span class="name">Plan and plan review</span><span class="pill p-done">Done</span><span class="what">All 15 plan sections and the review's decisions approved; game code may start. <span class="ids">D-108–115</span></span></li>
+      <li class="part" style="display:block">M1 · Prototypes · now · about 5–8 months</li>
+      <li><span class="no">1.1</span><span class="name">Code standards and engine workspace</span><span class="pill p-done">Done</span><span class="what">Strict TypeScript, package boundaries, named random streams, self-explaining values, approved tools. <span class="ids">D-114, D-116–117</span></span></li>
+      <li><span class="no">1.2</span><span class="name">Resolution v0</span><span class="pill p-done">Done</span><span class="what">How a party, its plan and the site become odds and events: scenes and a short main fight, percent chances, wound steps, three plan levers, foe groups. <span class="ids">D-118–123</span></span></li>
+      <li><span class="no">1.3</span><span class="name">Bleeding, retreats and first tuning</span><span class="pill p-done">Done</span><span class="what">The fallen bleed out; the leader's call is the default retreat; retreats take time. Deaths near the plan's targets on the sample party. <span class="ids">D-124–126</span></span></li>
+      <li><span class="no">1.4</span><span class="name">CI checks</span><span class="pill p-done">Done</span><span class="what">Format, types, package boundaries and tests on every pull request. <span class="ids">D-105</span></span></li>
+      <li><span class="no">1.5</span><span class="name">Watched-quest prototype (R1)</span><span class="pill p-now">Now</span><span class="what">The <a href="https://claude.ai/artifact/3pT1BUqHyKwTRysV9i3jEA">Quest Watch</a> page. Your first note fixed: foes now act in speed order and take several hits. Waiting on your 10-quest watch. <span class="ids">D-127, D-129</span></span></li>
+      <li><span class="no">1.6</span><span class="name">Distinct class actions</span><span class="pill p-done">Done</span><span class="what">Your note: warriors guard and cleave, rogues scout and strike from shadow, clerics mend and ward; room for plan roles and more actions later. <span class="ids">D-130</span></span></li>
+      <li><span class="no">1.7</span><span class="name">Second tuning pass</span><span class="pill p-soon">Next</span><span class="what">Reckless and cautious retreat settings, a deadly contract, and the reference party for the death targets. <span class="ids">D-071</span></span></li>
+      <li><span class="no">1.8</span><span class="name">Engine test, web-first</span><span class="pill p-wait">Soon</span><span class="what">The ledger and kingdom map in Electron and TypeScript, reusing your Story-Generator map code; Godot only if web misses its bar. <span class="ids">D-110, D-116</span></span></li>
+      <li><span class="no">1.9</span><span class="name">Headless year simulator (R2, R3, R6, R9)</span><span class="pill p-wait">Soon</span><span class="what">1,000 seeded guild-years: deaths, money, ladder, stops a year, delegated vs careful play, guildmaster careers; the §9d checks. <span class="ids">D-085, D-113</span></span></li>
+      <li><span class="no">1.10</span><span class="name">Desk mock-ups and writing test (R4, R8)</span><span class="pill p-wait">Soon</span><span class="what">Dense screens at 1366 and 1920 px; one template family generated 200 times; the template previewer. <span class="ids">D-084, D-113</span></span></li>
+      <li><span class="no">1.11</span><span class="name">Two years in the text prototype (R7)</span><span class="pill p-wait">Soon</span><span class="what">The attachment check: can you name and describe 3 adventurers after a session? <span class="ids">D-086</span></span></li>
+      <li><span class="no">1.12</span><span class="name">M1 gate</span><span class="pill p-wait">Later</span><span class="what">Engine settled; R1–R4 and R6–R8 pass; careers of 20–30 years in the simulator. You say go, loop or stop. <span class="ids">D-099, D-111</span></span></li>
+      <li class="part" style="display:block">M2 · Vertical slice · about 7–10 months</li>
+      <li><span class="no">2.1</span><span class="name">Production packages</span><span class="pill p-wait">Later</span><span class="what">Engine, content, ui and shell as the real game; saves protected from here on. <span class="ids">D-091</span></span></li>
+      <li><span class="no">2.2</span><span class="name">Prologue and first season</span><span class="pill p-wait">Later</span><span class="what">One corner of the March: 2 biomes, 3 settlements, 4 classes, about 10 monster kinds, about 6 quest templates. <span class="ids">D-076</span></span></li>
+      <li><span class="no">2.3</span><span class="name">Final art and audio for the corner</span><span class="pill p-wait">Later</span><span class="what">Only the slice's corner, including its part of the kingdom map in final style. <span class="ids">D-098, D-113</span></span></li>
+      <li><span class="no">2.4</span><span class="name">Steam page live</span><span class="pill p-wait">Later</span><span class="what">Wishlists start building. <span class="ids">D-099</span></span></li>
+      <li><span class="no">2.5</span><span class="name">Slice playtest and gate</span><span class="pill p-wait">Later</span><span class="what">6–10 invited players: first season in 3–4 h, testers name 3 adventurers, bugs replay from saves. <span class="ids">D-064, D-089</span></span></li>
+      <li class="part" style="display:block">M3 · Alpha · about 10–15 months</li>
+      <li><span class="no">3.1</span><span class="name">All 14 launch systems</span><span class="pill p-wait">Later</span><span class="what">Playable over many years across the whole March, about half the content, placeholder art outside the slice. <span class="ids">D-070</span></span></li>
+      <li><span class="no">3.2</span><span class="name">Balance against real play</span><span class="pill p-wait">Later</span><span class="what">Medians within ±25% of the §4 targets; at most 100 stops a year. <span class="ids">D-068</span></span></li>
+      <li><span class="no">3.3</span><span class="name">Alpha gate and launch model</span><span class="pill p-wait">Later</span><span class="what">30–50 testers. Early Access or 1.0 decided here. <span class="ids">D-100</span></span></li>
+      <li class="part" style="display:block">M4–M6 · Demo, beta and launch · about 9–13 months</li>
+      <li><span class="no">4</span><span class="name">Free demo</span><span class="pill p-wait">Later</span><span class="what">The first season, alongside the beta; at least 70% of starts finish it. <span class="ids">D-040</span></span></li>
+      <li><span class="no">5</span><span class="name">Beta</span><span class="pill p-wait">Later</span><span class="what">All launch content, final art and audio, achievements, Steam Cloud; 200+ testers; 30-year saves load. <span class="ids">D-109</span></span></li>
+      <li><span class="no">6</span><span class="name">Launch</span><span class="pill p-wait">Later</span><span class="what">Release checklist passes; you sign off. <span class="ids">D-105</span></span></li>
+      <li class="part" style="display:block">M7 · After launch</li>
+      <li><span class="no">7</span><span class="name">Free updates</span><span class="pill p-wait">Later</span><span class="what">War campaigns first, then map deeds and rumours, and the rest of the parked list below. <span class="ids">D-101</span></span></li>
     </ul>
   </section>
 
@@ -148,8 +189,10 @@ code { font-family: var(--mono); font-size: .85em; }
       <li>Bardic songs: sung or instrumental.</li>
       <li>20 class levels: faster levelling or longer careers.</li>
       <li>What the intrigue layer contains.</li>
+      <li>Tuning: "never retreat" gives about 1.4× the default deaths (plan says about 2×); the most cautious retreat abandons 83% of quests.</li>
+      <li>Only three quests exist (routine, hazardous, perilous); deadly work needs a template before its targets can be checked.</li>
     </ul>
   </section>
 
-  <footer>Kept up to date at each checkpoint. Source: <code>docs/roadmap.html</code>.</footer>
+  <footer>Updated in every working session (owner's rule, D-128). Source: <code>docs/roadmap.html</code>.</footer>
 </div>

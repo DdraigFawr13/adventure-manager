@@ -49,9 +49,9 @@ export const rules: ResolutionRules = {
   },
   leaderCall: { attribute: 'wits', difficulty: 12, clarityStepBp: 2500 },
   classes: {
-    warrior: { attackAttribute: 'might', canStabilise: false },
-    rogue: { attackAttribute: 'agility', canStabilise: false },
-    cleric: { attackAttribute: 'lore', canStabilise: true },
+    warrior: { attackAttribute: 'might', canStabilise: false, actions: [] },
+    rogue: { attackAttribute: 'agility', canStabilise: false, actions: [] },
+    cleric: { attackAttribute: 'lore', canStabilise: true, actions: [] },
   },
 };
 
@@ -88,7 +88,7 @@ export const quest: QuestTemplate = {
     },
     { id: 'scene.gate', kind: 'approach', difficulty: 10, testers: 'best', onFailure: 'alarm' },
   ],
-  foes: [{ id: 'foe.wights', attack: 10, defence: 10 }],
+  foes: [{ id: 'foe.wights', attack: 10, defence: 10, speed: 10, hits: 3 }],
 };
 
 export function game(

@@ -1,0 +1,493 @@
+/* Layout: a walnut desk with three vellum sheets (party and plan, the board, the log);
+   stacks to one column on a phone. One deliberate look (STYLE §2 candlelit oak), not themed. */
+:root {
+  --desk: #3b2a1e;
+  --desk-2: #2c1f16;
+  --paper: #efe4cc;
+  --paper-2: #e6d8b9;
+  --ink: #2a2017;
+  --ink-2: #6b5a45;
+  --rule: #d6c6a5;
+  --seal: #8e2a22;
+  --brass: #b8923e;
+  --good: #3f6f8f;
+  --warn: #c08a1e;
+  --bad: #8e2a22;
+  --harm: #7a4a14;
+  --title: 'IM Fell English SC', Georgia, serif;
+  --letter: 'IM Fell DW Pica', Georgia, serif;
+  --ledger: 'Sorts Mill Goudy', Georgia, serif;
+  color-scheme: light;
+}
+
+html {
+  min-height: 100%;
+  background: radial-gradient(ellipse at 50% 0%, var(--desk) 0%, var(--desk-2) 90%) var(--desk-2);
+}
+
+body {
+  background: transparent;
+  color: var(--ink);
+}
+
+body {
+  margin: 0;
+  font-family: var(--ledger);
+  font-size: 16px;
+  font-variant-numeric: lining-nums tabular-nums;
+  background: radial-gradient(ellipse at 50% 0%, var(--desk) 0%, var(--desk-2) 90%) fixed
+    var(--desk);
+}
+
+.desk {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-block: 20px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid;
+  gap: 16px;
+}
+
+.masthead {
+  color: var(--paper);
+  display: grid;
+  gap: 4px;
+}
+
+.masthead h1 {
+  font-family: var(--title);
+  font-weight: 400;
+  font-size: clamp(26px, 4vw, 38px);
+  margin: 0;
+  letter-spacing: 0.02em;
+  text-wrap: balance;
+}
+
+.masthead p {
+  margin: 0;
+  font-family: var(--letter);
+  color: var(--rule);
+  max-width: 65ch;
+}
+
+.masthead .seed {
+  font-size: 15px;
+  color: var(--rule);
+  opacity: 0.8;
+}
+
+.masthead .tally {
+  color: var(--brass);
+  font-family: var(--ledger);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .log-sheet {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 720px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* On a phone the board comes first, so Next is in reach while watching. */
+  .board-sheet {
+    order: -1;
+  }
+}
+
+.sheet {
+  background: var(--paper);
+  border-radius: 3px;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 0.35);
+  padding: 16px 18px 20px;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.sheet h2 {
+  font-family: var(--title);
+  font-weight: 400;
+  font-size: 21px;
+  margin: 0;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 4px;
+}
+
+.where {
+  font-family: var(--letter);
+  font-size: 17px;
+  color: var(--ink-2);
+}
+
+.roster {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.roster li {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+  align-items: baseline;
+  padding: 4px 0;
+  border-bottom: 1px dotted var(--rule);
+}
+
+.roster .who {
+  font-size: 17px;
+}
+
+.roster .cls {
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.state {
+  font-size: 15px;
+  min-width: 6.5em;
+  text-align: right;
+}
+
+.state.s0 {
+  color: var(--good);
+}
+.state.s1,
+.state.s2 {
+  color: var(--warn);
+}
+.state.s3,
+.state.s4,
+.state.sx {
+  color: var(--bad);
+}
+
+.is-dead .who {
+  text-decoration: line-through;
+  color: var(--ink-2);
+}
+
+.plan {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px 10px;
+  align-items: center;
+}
+
+.plan label {
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+select,
+button {
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+select {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 6px 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+button {
+  background: var(--paper-2);
+  border: 1px solid var(--ink-2);
+  border-radius: 2px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+button.primary {
+  background: var(--seal);
+  border-color: var(--seal);
+  color: var(--paper);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+button:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+.notice p {
+  margin: 0 0 8px;
+  font-family: var(--letter);
+}
+
+.hint {
+  margin: 0;
+  color: var(--ink-2);
+  font-family: var(--letter);
+  font-size: 15px;
+}
+
+.board {
+  overflow-x: auto;
+}
+
+.path {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+}
+
+.path li {
+  position: relative;
+  padding: 10px 0 10px 28px;
+  border-left: 2px dashed var(--rule);
+  margin-left: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.path li::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 14px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--rule);
+}
+
+.path li.done {
+  border-left-style: solid;
+  border-left-color: var(--ink-2);
+}
+
+.path li.done::before {
+  background: var(--ink-2);
+  border-color: var(--ink-2);
+}
+
+.path li.here::before {
+  background: var(--seal);
+  border-color: var(--seal);
+}
+
+.path li.ahead .stop-name {
+  color: var(--ink-2);
+  opacity: 0.7;
+}
+
+.stop-name {
+  font-family: var(--letter);
+  font-size: 17px;
+}
+
+.standees {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.standee {
+  width: 40px;
+  height: 40px;
+  border-radius: 50% 50% 4px 4px;
+  display: grid;
+  place-items: center;
+  font-family: var(--title);
+  font-size: 15px;
+  background: var(--paper-2);
+  border: 2px solid var(--good);
+  box-shadow: 0 3px 0 var(--ink-2);
+  transition: transform 300ms ease;
+}
+
+.standee.s1,
+.standee.s2 {
+  border-color: var(--warn);
+}
+
+.standee.s3,
+.standee.s4 {
+  border-color: var(--bad);
+  transform: rotate(80deg) translateY(4px);
+}
+
+.standee.sx {
+  border-color: var(--ink-2);
+  background: var(--rule);
+  color: var(--ink-2);
+  transform: rotate(90deg) translateY(6px);
+  opacity: 0.6;
+}
+
+.standee.foe {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--seal);
+}
+
+.standee.foe.s3 {
+  opacity: 0.5;
+}
+
+.tag {
+  font-family: var(--letter);
+  font-size: 15px;
+  color: var(--seal);
+}
+
+.seal {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 12px;
+  align-items: center;
+  background: var(--paper-2);
+  border: 1px solid var(--seal);
+  padding: 12px;
+}
+
+.seal p {
+  margin: 0;
+  font-family: var(--title);
+  font-size: 19px;
+  color: var(--seal);
+}
+
+.seal .row {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wax {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #b5463b, var(--seal) 60%);
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.log {
+  list-style: none;
+  margin: 0;
+  padding: 0 4px 0 0;
+  max-height: 60vh;
+  overflow-y: auto;
+  display: grid;
+  gap: 4px;
+  font-family: var(--letter);
+  font-size: 16px;
+}
+
+.log li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: baseline;
+}
+
+.log .k-title {
+  font-family: var(--title);
+  font-size: 19px;
+  margin-top: 6px;
+}
+
+.log .k-scene {
+  font-family: var(--title);
+  color: var(--ink-2);
+  margin-top: 6px;
+}
+
+.log .k-action {
+  color: var(--good);
+  font-style: italic;
+}
+
+.log .k-harm {
+  color: var(--harm);
+}
+
+.log .k-death {
+  color: var(--seal);
+  font-weight: 700;
+}
+
+.log .k-moment {
+  color: var(--seal);
+  font-style: italic;
+}
+
+.log .k-end {
+  font-family: var(--title);
+  font-size: 19px;
+  border-top: 1px solid var(--rule);
+  padding-top: 6px;
+}
+
+.pct {
+  padding: 0 6px;
+  font-family: var(--ledger);
+  font-size: 15px;
+  border-color: var(--rule);
+  background: transparent;
+}
+
+.why {
+  flex-basis: 100%;
+  font-family: var(--ledger);
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+.end-marker {
+  height: 1px;
+}
+
+.notes {
+  border-top: 1px solid var(--rule);
+  padding-top: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .standee {
+    transition: none;
+  }
+}
+
+.tag.ended {
+  margin: 0;
+  font-family: var(--title);
+  font-size: 19px;
+}

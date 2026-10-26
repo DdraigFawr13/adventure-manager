@@ -4,9 +4,11 @@ import { divRoundDown } from '../core/math.ts';
 import { BP_CERTAIN } from '../core/rng.ts';
 import { succeeded } from './check.ts';
 import { foesStrike, resolveExchange, resolveScene } from './encounters.ts';
+import { mend } from './actions.ts';
 import { tendTheFallen } from './harm.ts';
 import {
   findTemplate,
+  foeDown,
   living,
   member,
   partyCheck,
@@ -112,10 +114,10 @@ export function chooseMoment(
 /** After a scene or exchange: healing, death rolls, then whether the quest ends or pauses. */
 function afterBeat(turn: Turn, causeId: string, inFight: boolean): void {
   const { quest, rules } = turn;
-  tendTheFallen(turn, causeId);
+  mend(turn, tendTheFallen(turn, causeId), causeId);
   if (standing(turn).length === 0) return endQuest(turn, 'routed', causeId);
   if (inFight) {
-    if (quest.foes.every((f) => f.step >= WOUND.down)) return endQuest(turn, 'won', causeId);
+    if (quest.foes.every(foeDown)) return endQuest(turn, 'won', causeId);
     if (quest.exchange >= rules.maxExchanges) return endQuest(turn, 'partial', causeId);
   }
   let pullOutCause = quest.plan.retreat === 'leader' ? leaderJudges(turn, causeId) : null;
@@ -162,7 +164,7 @@ function leaderJudges(turn: Turn, causeId: string): string | null {
   const call = rules.leaderCall;
   const leader = rankBy(standing(turn), call.attribute)[0];
   if (!leader) return null;
-  const foesDown = quest.foes.filter((f) => f.step >= WOUND.down).length;
+  const foesDown = quest.foes.filter(foeDown).length;
   const foeShareBp = quest.foes.length ? divRoundDown(foesDown * BP_CERTAIN, quest.foes.length) : 0;
   const fallenShareBp = divRoundDown(fallen * BP_CERTAIN, quest.partyIds.length);
   const winning = foeShareBp > fallenShareBp;
@@ -226,7 +228,7 @@ function retreatBeat(turn: Turn, commandId: string): void {
     beatsLeft: quest.retreatBeats,
   });
   if (quest.fledFight) foesStrike(turn, beat);
-  tendTheFallen(turn, beat);
+  mend(turn, tendTheFallen(turn, beat), beat);
   if (standing(turn).length === 0) return endQuest(turn, 'routed', beat);
   if (quest.retreatBeats <= 0) endQuest(turn, 'retreated', beat);
 }
