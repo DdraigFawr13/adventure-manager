@@ -1,4 +1,6 @@
-# Template from AI-Master-Instructions, cut down until a stack is chosen: drift check only.
+# Per-push checks (D-105): drift and docs checks, then npm run check (format, typecheck,
+# package boundaries, tests). Markdown and docs/ are not formatted or compiled, so docs-only
+# changes skip CI; run the docs check locally for those (AGENTS.md).
 name: CI
 
 on:
@@ -19,7 +21,15 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
       - run: node .claude/master/sync.mjs --check
+      - run: node tools/docs-check.mjs
+      # npm 10 crashes on this lockfile's optional peers (AGENTS.md).
+      - run: npx -y npm@11.9.0 ci
+      - run: npm run check
