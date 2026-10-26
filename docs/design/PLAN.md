@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: §1–§7 written; §8..§15 to do.
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: §1–§8 written; §9..§15 to do.
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -13,7 +13,7 @@ Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked
 5. **Progression.** Adventurers, guild and guildmaster, from first recruit to the next generation. Written below.
 6. **Onboarding, UX and accessibility.** The gentle first season, screen rules, colour-blind, keyboard and text-size support. Written below.
 7. **Launch content list.** Classes, ancestries, monsters, quest templates, sites; all as data. Written below.
-8. **Making consequences visible.** How every outcome reaches the player (log lines, letters, inspector fields).
+8. **Making consequences visible.** How every outcome reaches the player (log lines, letters, inspector fields). Written below.
 9. **Risks and prototypes.** Riskiest assumptions and the cheapest test for each (quest simulation fun to watch? desk holds FM density? old-press ledgers readable?).
 10. **Playtest and metrics plan.**
 
@@ -477,3 +477,44 @@ Decisions: D-079..D-081. Every item is a data entry (GAME-04, D-044), so counts 
 ### 7e. Writing (Accepted 2026-10-26, D-080)
 
 - Letters, reports, rumours, criers' notices, Chronicle entries and conversation lines, all as templates with many variants (D-059). Target **about 6,000 template lines** (D-080), costed in §12.
+
+---
+
+## 8. Making consequences visible (Accepted 2026-10-26)
+
+Decisions: D-082, D-083. Pillars 2 and 4 only work if the player can see what their choices caused (GAME-04). Mock-up: `docs/design/mockups/consequences.html`.
+
+### 8a. Surfaces (Accepted 2026-10-26, D-083)
+
+Each outcome reaches the player through one or more of these, from immediate to permanent:
+
+| Surface | Carries | When |
+|---|---|---|
+| Quest log and board (D-004, STYLE §4) | Every simulation event as one line, played on the board | Live |
+| Party summary cards (D-032) | Parties not being watched | Live |
+| Week report (D-068) | Digest: results, injuries, money, morale moves | Weekly |
+| Letters (D-043) | Consequences that need or deserve attention, from a person in the world | When they land |
+| Criers and gossip (D-043) | Public news: rankings, rivals' deeds, region changes | When they land |
+| Region map (D-049) | Roads, threats, faction colours, rumours | Always |
+| Inspector fields | Every person, item, place and faction: value, breakdown (D-078) and dated history | On demand |
+| Chronicle and Hall of Heroes (D-042) | Deeds, deaths, storied items, records | Permanent |
+| Year in review (D-067) | The year's biggest causes and effects | Year's end |
+
+### 8b. Rules (Accepted 2026-10-26, D-083)
+
+1. **No silent change.** Every change to a resource, a person or a place writes at least a log line or an inspector history entry; important ones also send a letter.
+2. **Every change records its cause** (the decision or event that started it) and the player can reach that cause in at most 2 clicks. The engine records causes; the UI only shows them (GAME-02).
+3. **Delayed consequences name their cause.** A letter about a raid 8 weeks after a refused contract says so.
+4. **Importance follows the stop classes** (D-068): must-stop outcomes get a stop and a letter; digest outcomes go to the week report; minor ones go to the log and history only.
+5. **Forewarning follows knowledge** (D-041): a spreading threat shows on the map first as a rumour, then sharper as scouts and the library learn more. Nothing important arrives with no warning at all unless the guild chose not to look.
+6. **Deaths are never quiet:** the bell (STYLE §8), a memorial letter written sincerely (D-059), friends' and rivals' reactions, a Chronicle entry.
+7. **Optional AI flavour** (Early update, D-035) may rewrite the words of a surface, never its causes or numbers (GAME-03).
+
+### 8c. How causes are told (Accepted 2026-10-26, D-082)
+
+**In-world first, with a trace, and numbers that stand out.** Mock-up: `docs/design/mockups/consequences.html` (option C, with option A's inspector). Owner's note: "C but I like seeing the numbers stand out in A so add that feature."
+
+- **The world speaks first:** letters, criers and gossip tell consequences in the speaker's voice (D-059), including blame where a person would give it.
+- **Trace:** a small "Trace" mark on every letter and every changed value opens the plain cause chain: each step dated, the player's own decisions marked, what the guild knew at each step (and what better knowledge would have shown, D-041), and what can be done now.
+- **Inspector histories** (from option A): every value on a person, item, place or faction shows its current number, the change in bold with a sign (−8, +3) in the status colours (D-048), and a dated history where each entry has a "because" line. A history entry links to its trace.
+- Trace and history wording is templated from recorded causes (GAME-02, GAME-04); only letters carry the world's voice.

@@ -1,0 +1,143 @@
+<title>Telling Consequences</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+DW+Pica:ital@0;1&family=Sorts+Mill+Goudy:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: neutral page chrome; each option shows the same consequence as paper sheets on the walnut desk (letter + ledger or trace), locked palette and old-press type, verdict under it. */
+:root {
+  --bg: #f3f2ef; --fg: #23211e; --muted: #6a655d; --line: #d6d2ca;
+  --desk: #3b2a1e; --desk2: #2c1f16; --paper: #efe4cc; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5; --seal: #8e2a22; --brass: #b8923e; --good: #3f6f8f; --warn: #c08a1e;
+  --title: "IM Fell English SC", Georgia, serif;
+  --letter: "IM Fell DW Pica", Georgia, serif;
+  --ledger: "Sorts Mill Goudy", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--ledger); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+.wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 40px; }
+header h1 { font-family: var(--title); font-weight: 400; font-size: 2.2rem; margin: 0; text-wrap: balance; }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 74ch; }
+.chain { display: flex; flex-wrap: wrap; gap: 6px 10px; font-size: .95rem; margin-top: 10px; align-items: center; }
+.chain span { border: 1px solid var(--line); border-radius: 4px; padding: 2px 8px; background: color-mix(in srgb, var(--bg) 85%, var(--fg) 4%); }
+.chain i { color: var(--muted); font-style: normal; }
+.opt { display: grid; gap: 12px; }
+.opt h2 { font-family: var(--title); font-weight: 400; font-size: 1.55rem; margin: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; text-wrap: balance; }
+.rec { font-family: var(--mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; border: 1px solid currentColor; padding: 1px 6px; border-radius: 3px; }
+.lede { margin: 0; color: var(--muted); max-width: 78ch; }
+.verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 8px 24px; font-size: .95rem; }
+.verdict div { min-width: 0; }
+.verdict b { font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; font-weight: 500; }
+
+.desk { background: repeating-linear-gradient(92deg, var(--desk) 0 34px, var(--desk2) 34px 36px); border-radius: 6px; padding: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.25); align-items: start; }
+.sheet { background: var(--paper); color: var(--ink); border-radius: 3px; padding: 14px 16px; box-shadow: 0 4px 10px rgba(0,0,0,.35); display: grid; gap: 10px; min-width: 0; }
+.sheet h3 { font-family: var(--title); font-weight: 400; font-size: 1.3rem; margin: 0; border-bottom: 1px solid var(--rule); padding-bottom: 3px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.sheet h3 small { font-family: var(--mono); font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink2); }
+.letter { font-family: var(--letter); font-size: 1.02rem; line-height: 1.45; display: grid; gap: 8px; }
+.letter p { margin: 0; }
+.ini::first-letter { float: left; font-family: var(--title); color: var(--seal); font-size: 2.9em; line-height: .85; padding: .05em .12em 0 0; }
+.sig { font-style: italic; text-align: right; }
+.trace { font-family: var(--ledger); font-size: .9rem; color: var(--seal); border: 1px solid var(--seal); border-radius: 3px; padding: 1px 9px; justify-self: start; }
+.kv { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; font-size: .95rem; font-variant-numeric: tabular-nums; }
+.kv .big { font-family: var(--title); font-size: 1.15rem; }
+.down { color: var(--seal); } .up { color: var(--good); }
+.hist { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; font-size: .92rem; font-variant-numeric: tabular-nums; }
+.hist li { display: grid; grid-template-columns: 4.6em 1fr auto; gap: 8px; border-top: 1px solid var(--rule); padding: 4px 0; }
+.hist .wk { color: var(--ink2); font-style: italic; }
+.hist .because { grid-column: 2 / -1; font-size: .85rem; color: var(--ink2); margin-top: -2px; }
+.thread { list-style: none; margin: 0; padding: 0 0 0 14px; display: grid; gap: 10px; border-left: 2px solid var(--brass); font-size: .95rem; }
+.thread li { position: relative; display: grid; gap: 1px; }
+.thread li::before { content: ""; position: absolute; left: -20px; top: .45em; width: 10px; height: 10px; border-radius: 50%; background: var(--brass); }
+.thread li.you::before { background: var(--seal); }
+.thread b { font-family: var(--title); font-weight: 400; font-size: 1.05rem; }
+.thread .wk { font-style: italic; color: var(--ink2); font-size: .85rem; }
+.thread .sees { font-size: .85rem; color: var(--ink2); }
+.note { font-family: var(--mono); font-size: .7rem; color: var(--ink2); }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>How the game tells you why</h1>
+    <p>One consequence, told three ways (PLAN §8c, Q8a). Names and numbers are examples.</p>
+    <div class="chain" aria-label="Example chain">
+      <span>Week 6: you decline the crown's contract to clear Hollow Barrow</span><i>→</i>
+      <span>Week 9: rumours of the dead walking at night</span><i>→</i>
+      <span>Week 14: they take the Ashford road</span><i>→</i>
+      <span>Ashford standing −8, trade income −10%</span>
+    </div>
+  </header>
+
+  <section class="opt" aria-labelledby="a">
+    <h2 id="a">A · Plain ledgers, causes spelled out</h2>
+    <p class="lede">A short notice, and the full chain lives in the inspector: every value has a dated history and each entry says what caused it.</p>
+    <div class="desk">
+      <div class="sheet letter">
+        <h3>Notice <small>week 14</small></h3>
+        <p class="ini">The Ashford road is closed. The dead from Hollow Barrow attacked a carter's train at dusk.</p>
+        <p class="note">Caused by: you declined "Clear the barrow at Hollow Barrow" (week 6).</p>
+      </div>
+      <div class="sheet">
+        <h3>Ashford <small>faction inspector</small></h3>
+        <div class="kv"><span>Standing with the guild</span><span class="big">34 <span class="down">−8</span></span></div>
+        <ul class="hist">
+          <li><span class="wk">Week 14</span><span>Road attacked</span><span class="down">−8</span><span class="because">Because the Hollow Barrow threat spread (unchecked since week 6)</span></li>
+          <li><span class="wk">Week 11</span><span>Delivered grain escort fee</span><span class="up">+3</span></li>
+          <li><span class="wk">Week 6</span><span>Declined crown contract</span><span>0</span><span class="because">No direct change; threat left to spread</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="verdict">
+      <div><b>Good</b>Nothing is ever unclear; suits the management-sim veteran (D-063).</div>
+      <div><b>Cost</b>Reads like a spreadsheet; the world feels like a system, not a place (STYLE §1).</div>
+    </div>
+  </section>
+
+  <section class="opt" aria-labelledby="b">
+    <h2 id="b">B · In-world only</h2>
+    <p class="lede">The world tells you, in its own voice. People blame you when they would; the ledger shows the new numbers but not the chain.</p>
+    <div class="desk">
+      <div class="sheet letter">
+        <h3>From the Reeve of Ashford <small>week 14</small></h3>
+        <p class="ini">You will have heard. Three carts burned on the Ashford road, and old Jory Tamm is dead. The crown's men say they offered your company that barrow two months gone, and you would not take it.</p>
+        <p>I do not say it was your fault. I say Ashford will remember who would not come.</p>
+        <p class="sig">Garret Lowe, Reeve of Ashford</p>
+      </div>
+      <div class="sheet">
+        <h3>Ashford <small>faction inspector</small></h3>
+        <div class="kv"><span>Standing with the guild</span><span class="big">34 <span class="down">−8</span></span></div>
+        <p class="note">No history list: the letter is the only explanation.</p>
+      </div>
+    </div>
+    <div class="verdict">
+      <div><b>Good</b>Strongest sense of a living region (Pillar 4); the blame lands on people.</div>
+      <div><b>Cost</b>Causes the world doesn't know (or lies about) stay hidden; players can't learn the system reliably; breaks rule 2 (cause within 2 clicks).</div>
+    </div>
+  </section>
+
+  <section class="opt" aria-labelledby="c">
+    <h2 id="c">C · In-world first, with a trace <span class="rec">Recommended</span></h2>
+    <p class="lede">The same letter, plus a small "Trace" mark on it and on every changed value. Trace opens the plain chain of causes, each step dated and linked, with what the guild knew at each point.</p>
+    <div class="desk">
+      <div class="sheet letter">
+        <h3>From the Reeve of Ashford <small>week 14</small></h3>
+        <p class="ini">You will have heard. Three carts burned on the Ashford road, and old Jory Tamm is dead. The crown's men say they offered your company that barrow two months gone, and you would not take it.</p>
+        <p>I do not say it was your fault. I say Ashford will remember who would not come.</p>
+        <p class="sig">Garret Lowe, Reeve of Ashford</p>
+        <span class="trace">Trace ⟶</span>
+      </div>
+      <div class="sheet">
+        <h3>Trace <small>Ashford standing −8</small></h3>
+        <ul class="thread">
+          <li class="you"><span class="wk">Week 6 · your decision</span><b>Declined "Clear the barrow at Hollow Barrow"</b><span class="sees">You chose the Varrowmere hunt instead (fee 140 crowns).</span></li>
+          <li><span class="wk">Week 9 · rumour</span><b>The dead walk near Hollow Barrow at night</b><span class="sees">Known to you: a crier's notice. A scout would have learned it was spreading.</span></li>
+          <li><span class="wk">Week 14 · event</span><b>Ashford road attacked; road closed</b><span class="sees">Ashford standing −8; Ashford trade −10% until the road reopens.</span></li>
+          <li><span class="wk">Now · open</span><b>"Clear the Ashford road" offered by Ashford</b><span class="sees">Taking it restores the road and half the lost standing.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="verdict">
+      <div><b>Good</b>The world speaks first; the truth is one click away (rule 2). Teaches the system without breaking the fiction, and shows what better knowledge would have warned (D-041).</div>
+      <div><b>Cost</b>Every effect must record its cause chain (the engine already must, rule 2); trace wording is templated, not hand-written.</div>
+    </div>
+  </section>
+</div>

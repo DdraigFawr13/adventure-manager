@@ -489,3 +489,15 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** 8 classes with about 15 talents each plus about 30 shared talents; 4 prestige paths and multiclassing from level 5; caster classes carry an empty magic-tradition slot; about 28 attributes; about 40 personality and 60 earned traits; 6 staff roles; 5 guildmaster backgrounds. Detail: `docs/design/PLAN.md` §7a.
 - **Why:** Owner accepted the draft (Plan Q7c).
+
+## D-082 Consequences: in-world first, trace, and numbered histories
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Letters and news tell consequences in the world's voice; a Trace mark on letters and changed values opens the dated cause chain (the player's decisions, what the guild knew, what can be done now). Every value's inspector also shows the signed change prominently and a dated history with a "because" line per entry, linked to its trace. Trace and history text is templated from recorded causes. Detail: `docs/design/PLAN.md` §8c; mock-up `docs/design/mockups/consequences.html`.
+- **Why:** Owner's choice (Plan Q8a): option C with option A's numbered inspector histories; keeps the fiction while teaching the system.
+
+## D-083 Consequence surfaces and rules
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Nine surfaces (quest log and board, party cards, week report, letters, criers and gossip, region map, inspector fields, Chronicle and Hall of Heroes, year in review). Rules: no silent change; every change records its cause, reachable within 2 clicks; delayed consequences name their cause; importance follows the stop classes (D-068); forewarning follows knowledge (D-041); deaths are never quiet; AI flavour rewords but never changes causes or numbers. Detail: `docs/design/PLAN.md` §8a–§8b.
+- **Why:** Owner accepted the draft (Plan Q8b); Pillars 2 and 4 depend on the player seeing what their choices caused.
