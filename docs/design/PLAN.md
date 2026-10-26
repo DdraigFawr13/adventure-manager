@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: §1–§9 written; §10..§15 to do.
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: Part A (§1–§10) written; Part B §11..§15 to do.
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -15,7 +15,7 @@ Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked
 7. **Launch content list.** Classes, ancestries, monsters, quest templates, sites; all as data. Written below.
 8. **Making consequences visible.** How every outcome reaches the player (log lines, letters, inspector fields). Written below.
 9. **Risks and prototypes.** Riskiest assumptions and the cheapest test for each (quest simulation fun to watch? desk holds FM density? old-press ledgers readable?). Written below.
-10. **Playtest and metrics plan.**
+10. **Playtest and metrics plan.** Written below.
 
 ## Part B: Production
 
@@ -561,3 +561,43 @@ Mock-up: `docs/design/mockups/readability.html` (first section).
 - **Minimum ledger size: 15 px** at 100% (owner's choice); the size slider (D-077) goes up from there.
 - **All numbers use lining figures** (`lining-nums`). Measured at 40 px: the ledger face's default figures are old-style and proportional (13.6–20.8 px wide); lining figures are equal width (21.1 px) and sit on the line.
 - Still to confirm on real monitors at 1366 and 1920 px in the R4 prototype; if it fails there, D-052 (own ledger cut) and clear print (D-077) are the fallbacks.
+
+---
+
+## 10. Playtest and metrics plan (Accepted 2026-10-26)
+
+Decisions: D-088, D-089. Ties the §1 targets (D-065) and the §9 pass lines (D-086) to who plays, when, and what is measured. Milestone names follow §13.
+
+### 10a. Who plays, when (Accepted 2026-10-26, D-089)
+
+| Stage | Players | What it answers |
+|---|---|---|
+| Prototypes (§9b) | The owner | R1–R9; fun and feel pass only on the owner's recorded notes (GAME-06) |
+| Vertical slice | 6–10 invited players: about two thirds management-sim veterans, one third tabletop players (D-063) | First season (D-076), readability (D-084), desk density, attachment |
+| Alpha | 30–50 closed testers | Full year and multi-year play, balance (§4), friction budget (D-068), crashes |
+| Free demo | Public | Demo conversion (D-065), first-season completion, store feedback |
+| Beta | 200+ testers | Long saves, succession (R9), save upgrades (GAME-05), performance |
+
+### 10b. What is measured (Accepted 2026-10-26, D-089)
+
+- **Pacing:** minutes per in-game year, stops per year by class, seconds per stop (D-064, D-068).
+- **Danger and economy:** deaths per year, money runway, promotions and relegations against §4 (D-071..D-073).
+- **Engagement:** share of quests watched vs auto-resolved (R1 proxy), share of areas delegated (R6), Trace and inspector use (D-082), clerk's notes put away (D-076).
+- **Onboarding:** time to finish the prologue and the first season; where players stop playing.
+- **Attachment:** after a session, "name three of your adventurers and something that happened to them" (R7).
+- **Readability and UX:** timed find-the-fact tasks on dense screens (R4); think-aloud sessions at the vertical slice.
+- **Stability:** crashes, unreadable saves (must be zero, GAME-05).
+
+### 10c. How data is collected (Accepted 2026-10-26, D-088)
+
+Owner's note: "1 but leave 2 open as a future option."
+
+- **Playtest builds** write a local log of the §10b measures; testers choose to send it with their feedback. No server.
+- **The release game sends nothing.** §1d targets are measured from Steam's own data (median playtime, reviews, demo-to-purchase) and achievement unlock rates used as measures: for example "Survived the first year" (first-season completion) and "A new guildmaster" (Pillar 3).
+- **Future option:** anonymous, opt-in telemetry from released copies. It needs a backend, a privacy policy and consent handling, so it comes back to the owner as a cost decision (SAFE-03) if ever wanted. The playtest log format is designed so the same events could be sent later.
+
+### 10d. Acting on results (Accepted 2026-10-26, D-089)
+
+- Every measure has the target from §1d, §4 or §9a; a miss produces a dated finding in the playtest log with a proposed change.
+- Changes to settled rules go through DECISIONS (SRC-04); numbers tuned inside the engine's data need no decision entry.
+- Two playtest rounds in a row missing the same target is a design problem, not a tuning problem: it goes to the owner.
