@@ -60,11 +60,11 @@ code { font-family: var(--mono); font-size: .85em; }
 
   <section class="now" aria-labelledby="now">
     <span class="pill p-now">Now</span>
-    <h2 id="now">Part B: §13 milestones next</h2>
+    <h2 id="now">Part B: §14 budget, team and business next</h2>
     <ol>
-      <li><b>§13 Milestones:</b> prototype, vertical slice, alpha, free demo, beta, launch, post-launch roadmap.</li>
-      <li>Then §14 budget (turning §12's rough costs into a budget) and §15.</li>
-      <li>Part A is merged (#2); Part B is in draft pull request #3.</li>
+      <li><b>§14 Budget, team and business:</b> turn §12's rough costs and §13's 18–28 months into a budget and team shape.</li>
+      <li>Then §15 quality, CI and release process, and the whole plan goes to you for approval (M0).</li>
+      <li>§1–§12 are merged (#2, #3); §13 is on its own branch.</li>
     </ol>
   </section>
 
@@ -73,8 +73,8 @@ code { font-family: var(--mono); font-size: .85em; }
     <ul class="phases">
       <li><span class="pill p-done">Done</span><b>1 · Concept</b><small>33 sections, locked 25 Oct (D-045)</small></li>
       <li><span class="pill p-done">Done</span><b>2 · Style</b><small>9 sections, locked 26 Oct (D-061)</small></li>
-      <li><span class="pill p-now">In progress</span><b>3 · Full plan</b><small>12 of 15 sections written</small></li>
-      <li><span class="pill p-wait">After the plan</span><b>Build</b><small>Prototype to launch; stages set in §13</small></li>
+      <li><span class="pill p-now">In progress</span><b>3 · Full plan</b><small>13 of 15 sections written</small></li>
+      <li><span class="pill p-wait">After the plan</span><b>Build</b><small>M1–M7, about 18–28 months to launch (estimate)</small></li>
     </ul>
   </section>
 
@@ -97,20 +97,20 @@ code { font-family: var(--mono); font-size: .85em; }
       <li><span class="no">11</span><span class="name">Technology and architecture</span><span class="pill p-done">Done</span><span class="what">Engine picked after a test: web tech (Electron) vs Godot 4; event log as the spine; safe versioned saves. <span class="ids">D-090–091</span></span></li>
       <li class="step"><span class="no">★</span><span class="name">Tools and skills review</span><span class="pill p-done">Done</span><span class="what">Your request: look into tools and skills that improve development (Claude Code skills, agents and hooks; engine and editor tooling; testing, CI and asset pipelines). Placed here because it depends on the stack chosen in §11, and feeds §15. Each tool is adopted only if measured cheaper or equal at the same quality (DEL-07). Outcome: docs checker, mock-up script, adversarial review before PRs, fresh session per PR or section, deny and ask rules. <span class="ids">D-092–096</span></span></li>
       <li><span class="no">12</span><span class="name">Art and audio production</span><span class="pill p-done">Done</span><span class="what">Kingdom map: hand-drawn base, launch layers factions, guilds, action, threats; rough costs art $23k–74k, audio $9k–37k. <span class="ids">D-097–098</span></span></li>
-      <li><span class="no">13</span><span class="name">Milestones</span><span class="pill p-now">Next</span><span class="what">Prototype, vertical slice, alpha, free demo, beta, launch, post-launch roadmap.</span></li>
-      <li><span class="no">14</span><span class="name">Budget, team and business</span><span class="pill p-soon">To do</span><span class="what">Costs, team shape, and business assumptions behind the §1 targets.</span></li>
+      <li><span class="no">13</span><span class="name">Milestones</span><span class="pill p-done">Done</span><span class="what">Seven gated milestones, about 18–28 months to launch (estimate); no bulk art before the prototypes pass; Early Access or 1.0 decided at the alpha gate; war campaigns first after launch. <span class="ids">D-099–101</span></span></li>
+      <li><span class="no">14</span><span class="name">Budget, team and business</span><span class="pill p-now">Next</span><span class="what">Costs, team shape, and business assumptions behind the §1 targets.</span></li>
       <li><span class="no">15</span><span class="name">Quality, CI and release process</span><span class="pill p-soon">To do</span><span class="what">Checks, CI, release steps; adopts what the tools review recommends.</span></li>
     </ul>
   </section>
 
   <section aria-labelledby="build">
     <h2 id="build">After the plan: building it</h2>
-    <p>No game code until you approve the whole plan (D-001). The build then follows the milestones set in §13. Working outline:</p>
+    <p>No game code until you approve the whole plan (D-001). The build follows the §13 milestones; each ends at a gate where you say go, loop or stop (D-099).</p>
     <ul class="phases">
-      <li><span class="pill p-wait">Build 1</span><b>Prototypes</b><small>Engine test (web vs Godot), then one watched quest, the headless simulator, desk mock-ups, attachment playtest (D-085, D-090)</small></li>
-      <li><span class="pill p-wait">Build 2</span><b>Vertical slice</b><small>One season, final look</small></li>
-      <li><span class="pill p-wait">Build 3</span><b>Alpha and demo</b><small>All launch systems; free demo</small></li>
-      <li><span class="pill p-wait">Build 4</span><b>Beta and launch</b><small>Content complete, polish</small></li>
+      <li><span class="pill p-wait">Build 1</span><b>Prototypes</b><small>M1 · 3–5 months. Engine test (web vs Godot), one watched quest, the headless simulator, desk mock-ups, attachment playtest (D-085, D-090)</small></li>
+      <li><span class="pill p-wait">Build 2</span><b>Vertical slice</b><small>M2 · 4–6 months. Prologue and first season in one corner of the March at final quality; 6–10 players; Steam page goes up</small></li>
+      <li><span class="pill p-wait">Build 3</span><b>Alpha</b><small>M3 · 6–9 months. All 14 launch systems, about half the content, 30–50 testers. Early Access or 1.0 decided here (D-100)</small></li>
+      <li><span class="pill p-wait">Build 4</span><b>Demo, beta and launch</b><small>M4–M6 · 5–8 months. Free demo alongside a 200+ beta with all content and final art; then launch</small></li>
     </ul>
   </section>
 
@@ -118,13 +118,13 @@ code { font-family: var(--mono); font-size: .85em; }
     <h2 id="later">Parked for after launch</h2>
     <p>Ideas you asked for "later". Each is designed so it can be added without reworking the game.</p>
     <ul class="later">
-      <li>Multi-party war campaigns<span>Early update (D-035)</span></li>
+      <li>Multi-party war campaigns<span>First update after launch (D-101)</span></li>
       <li>Escorts and expeditions<span>Early update (D-035)</span></li>
       <li>Optional AI-written flavour<span>Early update (D-017)</span></li>
       <li>Training academy, item commissioning<span>Early update (D-070)</span></li>
       <li>Intrigue and underhanded dealings<span>Later (D-069)</span></li>
       <li>Bigger ranking ladders<span>Later (D-073)</span></li>
-      <li>Deeds and rumours on the kingdom map<span>Later (D-097)</span></li>
+      <li>Deeds and rumours on the kingdom map<span>Second update after launch (D-097, D-101)</span></li>
       <li>20 class levels<span>Later (D-074)</span></li>
       <li>Guild compound, city-building style<span>Later (D-075)</span></li>
       <li>Painted portraits<span>Later (D-054)</span></li>

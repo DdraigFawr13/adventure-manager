@@ -596,3 +596,21 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** An artist draws parts and set pieces; code assembles them (portraits ~200 parts, crests, site maps from ~60 stamps per biome); monsters 72 pieces, icons ~240 drawings, 26 initials, ~10 legendary items, a few textures; a ledger font cut only if D-084's real-monitor check fails. Audio: 60–90 min of commissioned early-music ambience, ~150 desk sounds, 5 biome beds, ~10 stingers, ~40 name-free vocal sounds. Rough estimates: art $23,000–74,000, audio $9,000–37,000, refined in PLAN §14 and replaced by quotes. Pipeline: layered sources exported by script, an asset licence ledger, OFL fonts, contracts that transfer the needed rights. AI-generated images for exploration only (D-094). Detail: `docs/design/PLAN.md` §12a–§12c, §12e.
 - **Why:** Owner accepted the draft (Plan Q12b) and asked for a review of the Story-Generator repository's map code for art direction.
+
+## D-099 Milestones M0–M7 with gates
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Build in seven milestones after plan approval, each ending at an owner gate (go, loop or stop): M1 prototypes (§9b, engine chosen), M2 vertical slice (production packages; prologue and first season in one corner of the March: 2 biomes, 3 settlements, 4 classes, ~10 monster kinds, ~6 quest templates, final art for that corner), M3 alpha (all 14 launch systems, about half the content, 30–50 testers), M4 free demo (the first season, alongside the beta), M5 beta (all content, final art and audio, 200+ testers), M6 launch, M7 free updates. Estimate: about 18–28 months to launch for a small team, scheduled in §14. Rules: no bulk art or music before M1 passes R1 and R2; old saves keep loading from M2; content after M2 is data only; Steam page live from M2. Detail: `docs/design/PLAN.md` §13a, §13b.
+- **Why:** Owner accepted the draft (Plan Q13c); proving fun and balance before paying for bulk art protects the art budget (D-098).
+
+## D-100 Launch model decided at the alpha gate
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The plan assumes a full 1.0 release after the beta. At the M3 (alpha) exit the owner decides again between that and Steam Early Access, with the budget and alpha results in hand. Detail: `docs/design/PLAN.md` §13b.
+- **Why:** Owner's choice (Plan Q13a): Early Access brings money sooner and real long saves, but early reviews of a rough build count; the budget that tips it is not known yet.
+
+## D-101 Post-launch order: war campaigns first
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Free updates after launch, in order: war campaigns; map deeds and rumours; training academy and item commissioning; escorts and expeditions; look and sound upgrades (painted portraits, standee animations, bardic songs); optional AI flavour. Later-tier items each need their own decision. Paid expansions stay undecided (D-040). Detail: `docs/design/PLAN.md` §13c.
+- **Why:** Owner's choice (Plan Q13b): war campaigns are the biggest new play and already an Early update item.
