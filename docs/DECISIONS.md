@@ -69,10 +69,11 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Staff and facilities; finances and patrons; contracts and negotiation; gear, crafting and loot. Detail: `docs/design/CONCEPT.md` §9.
 - **Why:** Owner's choice; together they cover FM's backroom, board, transfers and kit.
 
-## D-012 Guild-level kit, storied magic items
+## D-012 Guild-level kit, storied magic items (amended by D-143: per-adventurer slots)
 
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Armoury with tiered gear, auto-equipped by quartermaster policy; named magic items hand-assigned; crafting by commission. Detail: `docs/design/CONCEPT.md` §9.
+- **Amended (2026-10-26, D-143):** gear is per adventurer in RPG-style slots, equipped by hand or by the quartermaster's policy; basics are bought from a smith's shop.
 - **Amended:** Commissioning items moves to Early update (D-070).
 - **Why:** Owner's choice; keeps gear meaningful without per-item micromanagement across a large roster.
 
@@ -184,6 +185,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Launch: hand-made region (6–10 settlements) with seeded procedural sites and contracts. Later: generated regions with authored set pieces, sharing one data format. Detail: `docs/design/CONCEPT.md` §26.
+- **Amended (2026-10-26, D-144):** outposts in the wild are counted apart from the 6–10 settlements; the extra major city counts within them.
 - **Why:** Owner's choice; identity at launch, replayability later.
 
 ## D-031 Guild size: small to mid
@@ -487,6 +489,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** 36 monster kinds in 7 families, 20 site templates, 20 quest templates, 60 key-moment templates with text variants, about 6,000 written template lines; plus 6 factions, 17 authored rival guilds, 8 settlements, 5 biomes, 3 tournament kinds, 5 facilities, 4 gear tiers, about 30 magic-item templates and 10 legendary items, about 25 guild traits. All data; can grow after launch. Detail: `docs/design/PLAN.md` §7b–§7e.
+- **Amended (2026-10-26, D-144):** 8 settlements is a floor: at least one more major city, and outposts in the wild counted apart (D-030).
 - **Amended (2026-10-26, D-109):** lean launch cut: about 24 monster kinds, about 40 key moments, about 4,500 template lines, 1 tournament, about 6 authored rival guilds with the rest generated; region crises added (D-112).
 - **Why:** Owner's choice (Plan Q7b): repeats stay rare within a guildmaster's career at about half the writing and art cost of the rich option.
 
@@ -856,3 +859,39 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26); amounts are starting assumptions for tuning.
 - **Decision:** A death costs the guild a funeral (200 copper), a share to the family (26 weeks of the dead member's wage) and, when the plan was reckless (bold risk or never retreating), 5 renown. Signing a recruit in a window costs a sign-on fee of 8 weeks of their wage. Numbers live in content (`packages/content/src/base/guild.ts`); rules in `packages/engine/src/guild/SPEC.md`. Measured (1,000 years, fees retuned to scale 135): bold plans now have the most renown in 22% of years (was 55%) but still the most money in 87% (was 92%), because bold wins more contracts; PLAN §9d's "no dominant safe play" is still missed on money.
 - **Why:** Owner's choice (2026-10-26) on the dominant bold plan, over "bold hurts more" and "wait for later slices": every choice needs a visible price (PLAN §4g), and a death had cost nothing and saved a wage.
+
+## D-139 Contracts are a site, a monster kind and one twist
+
+- **Status:** Accepted (2026-10-26); the twist list and every number are starting content, to be tuned.
+- **Decision:** A contract on the board is put together from a site template, a monster kind that lives there (with foe groups per danger rating) and at most one twist from a data list (PLAN §9d's combined modifiers). Each twist kind is one engine rule that changes one rule, scene or clause: foul weather (harder travel scenes), bad information (foes stronger than posted), a trap (an extra scene), cursed ground (the fallen bleed faster), a hostage (a raised alarm caps the contract at half done), a deadline (fewer exchanges before the foes slip away). The board names the twist and its fee change, except bad information, which only the report reveals; the report says what each twist did. The board avoids reposting a shape it posted recently, so shapes repeat rarely (R8 shape check). The fixed quest templates stay for the watched-quest prototype and sweeps. Detail: `packages/engine/src/contract/SPEC.md`.
+- **Why:** Owner's choice (2026-10-26), "One twist rule", over a twist plus an extra scene, no complications yet, or faction state as the third axis. It gives the R1 notes on traps and multiple pathways a home (D-132).
+
+## D-140 Rival guilds are abstract in the simulator
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** In the headless year simulator the 17 rival guilds are abstract: each has a strength (roster quality, money, staff) that drifts year to year with its results, and its contracts are drawn from the same board tables and resolved as quick odds rather than full quests. The player's guild plays real quests. Deaths, poaching and named stars can be layered on later. This is what R2's ladder check ("no runaway rival in 30 simulated years") runs on.
+- **Why:** Owner's choice (2026-10-26), "Abstract rivals", over full simulation (estimated about 18× slower, one real guild per rival, so 30-year balance runs would shrink to a few dozen seeds) and a hybrid (real quests for the player's tier only).
+
+## D-141 The patron sets a yearly target and keeps a confidence score
+
+- **Status:** Accepted (2026-10-26); the targets, confidence steps and retirement ages are starting assumptions for tuning (R9).
+- **Decision:** At each Assembly the patron sets one target from the guild's standing (for example win promotion, finish in the top half of the tier, avoid relegation, stay out of debt). At the next Assembly confidence rises when the target was met and falls when it was missed, by how badly. The guildmaster is dismissed when confidence runs out, so one bad year is survivable and about three are not. The guildmaster also ages and retires on health in their 60s or 70s. These two endings are what the R9 proxy (median career 20–30 simulated years, PLAN §9a) measures.
+- **Why:** Owner's choice (2026-10-26), "Yearly target", over a running weekly satisfaction score and fixed contract terms with renewal reviews. It mirrors FM's board expectations and gives the player one clear goal a year.
+
+## D-142 Desk notes: contract art and map, person card, parties in the roster
+
+- **Status:** Accepted as direction (2026-10-26); shown in the R4 mock-up, built for real with the UI (M2).
+- **Decision:** (1) The contracts screen has an art section: selecting a contract shows a panel with the site's picture over its details (a painted vignette per site, commissioned with the art, PLAN §12). (2) Clicking an adventurer's name opens their card: portrait (woodcut first, STYLE §7), all attributes, kit and abilities, record and recent contracts; equipment, traits and levels join it as those systems arrive. (3) The roster can be grouped by party with a toggle. The mock-up groups people by the party they last went out with, because the simulator does not keep standing parties yet (D-014); the year simulator should add them. (4) A "View on map" button on a selected contract shows the March with the site marked and the way out from the guild hall (owner, 2026-10-26: "I want a view on map button for the contracts just to have an idea of where they are"); sites have no map positions yet, so the mock-up places them at about their travel distance as placeholders. (5) The roster shows a Line column (front or back) instead of "(back)" after the class: clerics start in the back line, where each member is half as likely as each front-line member to be picked as a foe's target, before any guard steps in (target weights front 2 : back 1, resolution SPEC).
+- **Why:** Owner (2026-10-26), after the R4 round-2 mock-up: "for the quests I will want to have a section on that screen that is for art", "when selecting a person ... I want a popup showing more details about them like equipment, other stats, art", "I want parties to be shown in roster. Like group by party as a toggle", and "why do all the clerics say back next to them?"
+
+## D-143 RPG-style equipment with a quartermaster, and a smith's shop
+
+- **Status:** Accepted (2026-10-26) as direction; amends D-012. Slot list, item tiers and prices are not designed yet (to workshop with the gear content, PLAN §7d); the mock-up's slots are placeholders.
+- **Decision:** Each adventurer has RPG equipment slots, and any item can go in any fitting slot by hand. A quartermaster can fill empty or outgrown slots by a policy the player sets (for example best available, save the good gear for parties bound for deadly work, never touch hand-picked items), so a roster of 15–30 stays kitted without a chore (delegation as in D-012; gear is not among D-038's never-delegated choices, except storied items, which stay hand-assigned). Items are RPG-style: tiers and properties, with named storied items still hand-assigned (D-012). Basic gear can be bought from a smith in a shop area of the guild; later, buildings may give discounts or rarer stock (with the guildhall and compound plans, D-075). The character sheet shows equipment as small cards, one per slot, so an unwanted item is easy to spot; until items exist the cards are placeholders.
+- **Why:** Owner (2026-10-26): "I will want to show equipment as little cards on the character sheet. So like I can quickly see if someone has something I don't want them to have"; "I actually want to change things up so that I can add equipment to party members rpg style and have rpg style items. Or I can buy basics from a smith and have a shop area for equipment (maybe I can build buildings for discounts or rarer items in the future". Chose "Slots + quartermaster" over fully hands-on equipping and over keeping guild kit with item slots only. D-012's reason (no per-item micromanagement across a large roster) is kept by the quartermaster policy.
+
+## D-144 A geography review in the map workshop: towns with reasons, sensible roads and rivers, a second city, outposts
+
+- **Status:** Accepted (2026-10-26) as a workshop step; counts and names are set in the workshop. Amends PLAN §7c and D-080's 8 settlements, which becomes a floor; the extra major city counts within D-030's 6–10 settlements and the outposts are counted apart from them.
+- **Decision:** The kingdom map workshop (PLAN §12d) gains a geography review before the March's base map is drawn: (1) rivers run believably from high ground to the sea or lakes, and roads follow sensible lines between places (valleys, fords, passes, bridges); (2) every town sits where it would grow for a reason (a crossroads, a ford or bridge, a harbour, a resource such as ore, timber, salt, fish, wool or peat) and has a specialty that the economy and contracts can use; (3) at least one more major city than the current set; (4) outposts in the wild and harsh areas (moor, mountains, deep fen, forest edges). The engine-test map stays a test until then.
+- **Why:** Owner (2026-10-26): "add a step in the review process ... where we handle roads on the map and rivers on the map and making sure towns are in sensible locations where they would maybe specialize in a resource or at a crossroads type thing. Also at least one more major city and outposts in the more wild or harsh areas"; chose the §12 map workshop over a new M1 step before the gate and over splitting the work.

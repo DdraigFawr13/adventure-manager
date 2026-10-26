@@ -1,0 +1,1180 @@
+{
+  "_note": "Quest reports (R8 writing test, PLAN §9a): the letter a party sends home after a quest. Voice: STYLE §9b, grounded with dry wit; deaths plain. Grammar: packages/engine/src/core/text.ts ({slot}, {who.they}, {who~is|are}, {@family}; variants with if/unless facts). Facts and lists: packages/engine/src/report/SPEC.md. Most sentences are built from three fragment families, so a sentence's shape rarely repeats.",
+  "pronouns": {
+    "she": {
+      "they": "she",
+      "them": "her",
+      "their": "her",
+      "theirs": "hers",
+      "themself": "herself",
+      "plural": false
+    },
+    "he": {
+      "they": "he",
+      "them": "him",
+      "their": "his",
+      "theirs": "his",
+      "themself": "himself",
+      "plural": false
+    },
+    "they": {
+      "they": "they",
+      "them": "them",
+      "their": "their",
+      "theirs": "theirs",
+      "themself": "themself",
+      "plural": true
+    }
+  },
+  "sections": [
+    {
+      "family": "report.salutation",
+      "formula": true
+    },
+    {
+      "family": "report.opening"
+    },
+    {
+      "family": "report.fight"
+    },
+    {
+      "family": "report.twist"
+    },
+    {
+      "list": "deeds",
+      "max": 2
+    },
+    {
+      "list": "deaths"
+    },
+    {
+      "list": "injuries",
+      "max": 3
+    },
+    {
+      "family": "report.closing"
+    },
+    {
+      "family": "report.signoff",
+      "formula": true
+    }
+  ],
+  "deeds": [
+    {
+      "kind": "saved",
+      "family": "report.deed.saved",
+      "min": 1
+    },
+    {
+      "kind": "action:action.guard",
+      "family": "report.deed.guard",
+      "min": 1
+    },
+    {
+      "kind": "striker",
+      "family": "report.deed.striker",
+      "min": 3
+    },
+    {
+      "kind": "action:action.mend",
+      "family": "report.deed.mend",
+      "min": 1
+    },
+    {
+      "kind": "action:action.cleave",
+      "family": "report.deed.cleave",
+      "min": 1
+    },
+    {
+      "kind": "action:action.scout",
+      "family": "report.deed.scout",
+      "min": 1
+    },
+    {
+      "kind": "action:action.shadow-strike",
+      "family": "report.deed.shadow",
+      "min": 2
+    },
+    {
+      "kind": "action:action.ward",
+      "family": "report.deed.ward",
+      "min": 2
+    }
+  ],
+  "library": {
+    "report.salutation": [
+      {
+        "text": "Guildmaster,",
+        "if": ["writer"]
+      },
+      {
+        "text": "To the guildmaster,",
+        "if": ["writer"]
+      },
+      {
+        "text": "Guildmaster, from the road home,",
+        "if": ["writer"]
+      },
+      {
+        "text": "For the guildmaster's hand,",
+        "if": ["writer"]
+      },
+      {
+        "text": "To the guildmaster of the hall:",
+        "if": ["no-writer"]
+      }
+    ],
+    "report.opening": [
+      {
+        "text": "{@o.back} {quest}{@o.won}{@o.tail}.",
+        "if": ["writer", "outcome.won"]
+      },
+      {
+        "text": "{@o.back} {quest}{@o.partial}{@o.tail}.",
+        "if": ["writer", "outcome.partial"]
+      },
+      {
+        "text": "{@o.left} {quest}{@o.retreated}{@o.tail}.",
+        "if": ["writer", "outcome.retreated"]
+      },
+      {
+        "text": "{@o.beaten} {quest}{@o.routed}{@o.tail}.",
+        "if": ["writer", "outcome.routed"]
+      },
+      {
+        "text": "{@o.word} {quest}{@o.none}.",
+        "if": ["no-writer"]
+      }
+    ],
+    "o.back": [
+      "We are back from",
+      "We came home from",
+      "We are a day out from",
+      "We are on the road home from",
+      "Home again from",
+      "We have walked out of",
+      "We are clear of",
+      "We are done with",
+      "This comes to you from the far side of",
+      "We have come back out of"
+    ],
+    "o.left": [
+      "We pulled out of",
+      "We came away from",
+      "We turned back at",
+      "We had to leave",
+      "We gave up on",
+      "We walked away from",
+      "We let go of",
+      "We backed out of"
+    ],
+    "o.beaten": [
+      "We were beaten at",
+      "We were broken at",
+      "We lost at",
+      "We came to grief at",
+      "We were thrown out of",
+      "We came apart at",
+      "We were routed at",
+      "We had the worst of it at"
+    ],
+    "o.word": [
+      "Word has come back from",
+      "This is sent on behalf of the party that went to",
+      "There is no one left to write from",
+      "The reeve nearest the place sends word of",
+      "A carter brought the news back from"
+    ],
+    "o.won": [
+      ", and the contract is met",
+      ", and the work is done",
+      " with the job finished",
+      ", and you can mark it paid",
+      " with nothing left there to trouble anyone",
+      ", and the place is quiet now",
+      ", having done what was asked",
+      ", and it is settled",
+      ", and the reeve can sleep again",
+      ", job done and witnessed"
+    ],
+    "o.partial": [
+      ", with the job half done",
+      ", and we did not finish it",
+      " with the foes broken but not ended",
+      ", and it is half a job at best",
+      " having run the foes off, not down",
+      ", and the rest of them got away",
+      " with the place cleared but not clean",
+      " with the work done by halves"
+    ],
+    "o.retreated": [
+      " before it finished us",
+      " with the work undone",
+      ", and the contract with it",
+      " rather than lose more",
+      " when it turned against us",
+      " on the leader's word",
+      " while we still could",
+      " before the place kept us"
+    ],
+    "o.routed": [
+      " and crawled home",
+      ", and that is the plain truth of it",
+      " and limped back as best we could",
+      "; there is no softer way to say it",
+      " and are home only because they let us go",
+      " and got out by luck, not skill",
+      " and it was not close",
+      " and we are not proud of it"
+    ],
+    "o.none": [
+      ": none of them came home",
+      ": the whole party is lost",
+      ": they are all dead",
+      ": not one of them walked back"
+    ],
+    "o.tail": [
+      {
+        "text": ", none the worse for it",
+        "if": ["unhurt"]
+      },
+      {
+        "text": ", all of us still on our feet",
+        "if": ["unhurt"]
+      },
+      {
+        "text": ", without a scratch worth the name",
+        "if": ["unhurt"]
+      },
+      {
+        "text": ", clean as you like",
+        "if": ["unhurt", "outcome.won"]
+      },
+      {
+        "text": ", though not cheaply",
+        "if": ["hurt", "no-deaths"]
+      },
+      {
+        "text": ", bruised but all here",
+        "if": ["hurt", "no-deaths"]
+      },
+      {
+        "text": ", slower than we went",
+        "if": ["hurt", "no-deaths"]
+      },
+      {
+        "text": ", every one of us alive",
+        "if": ["hurt", "no-deaths"]
+      },
+      {
+        "text": ", but not all of us",
+        "if": ["one-death"]
+      },
+      {
+        "text": ", one fewer than we went",
+        "if": ["one-death"]
+      },
+      {
+        "text": ", carrying one of our own",
+        "if": ["one-death"]
+      },
+      {
+        "text": ", but not all of us",
+        "if": ["deaths"]
+      },
+      {
+        "text": ", and {dead} of us are not coming home",
+        "if": ["deaths"]
+      },
+      {
+        "text": ", a good deal fewer than we went",
+        "if": ["deaths"]
+      },
+      "",
+      {
+        "text": ", and glad of it",
+        "if": ["unhurt"]
+      },
+      {
+        "text": ", fresh enough to grumble",
+        "if": ["unhurt"]
+      },
+      {
+        "text": ", sore in every joint",
+        "if": ["hurt", "no-deaths"]
+      },
+      {
+        "text": ", nobody lost",
+        "if": ["hurt", "no-deaths"]
+      },
+      {
+        "text": ", and we are one short",
+        "if": ["one-death"]
+      },
+      {
+        "text": ", and it cost us a friend",
+        "if": ["one-death"]
+      },
+      {
+        "text": ", and it cost us dearly",
+        "if": ["deaths"]
+      },
+      {
+        "text": ", with too many empty places on the road back",
+        "if": ["deaths"]
+      }
+    ],
+    "report.fight": [
+      {
+        "text": "{@f.met} {foe}, {@f.length}{@f.end}.",
+        "if": ["writer", "fight"]
+      },
+      {
+        "text": "{@f.never.lead}{@f.never} {foe}{@f.why}.",
+        "if": ["writer", "no-fight"]
+      }
+    ],
+    "f.met": [
+      "We met",
+      "We found",
+      "We came up against",
+      "We fought",
+      "We ran into",
+      "We had it out with",
+      "In the end it was us against",
+      "Down at the heart of it we found",
+      "At the very end we faced",
+      "We came at last to",
+      "We had it out at last with",
+      "We stood against"
+    ],
+    "f.length": [
+      {
+        "text": "and it went on far longer than anyone liked",
+        "if": ["long-fight"]
+      },
+      {
+        "text": "and it was a long, grinding business",
+        "if": ["long-fight"]
+      },
+      {
+        "text": "and it was not quick",
+        "if": ["long-fight"]
+      },
+      {
+        "text": "and it dragged on past the point of sense",
+        "if": ["long-fight"]
+      },
+      {
+        "text": "and we were at it until our arms gave out",
+        "if": ["long-fight"]
+      },
+      {
+        "text": "and it was over quickly",
+        "if": ["short-fight"]
+      },
+      {
+        "text": "and it was short",
+        "if": ["short-fight"]
+      },
+      {
+        "text": "and it did not last",
+        "if": ["short-fight"]
+      },
+      {
+        "text": "and it was brief, which suited us",
+        "if": ["short-fight"]
+      },
+      {
+        "text": "and it was done before anyone thought to be afraid",
+        "if": ["short-fight"]
+      },
+      {
+        "text": "and it was hard going",
+        "unless": ["long-fight", "short-fight"]
+      },
+      {
+        "text": "and it was a proper fight",
+        "unless": ["long-fight", "short-fight"]
+      },
+      {
+        "text": "and it was a fair scrap",
+        "unless": ["long-fight", "short-fight"]
+      },
+      {
+        "text": "and it went about as you would expect",
+        "unless": ["long-fight", "short-fight"]
+      },
+      {
+        "text": "and it was close work",
+        "unless": ["long-fight", "short-fight"]
+      },
+      {
+        "text": "and it was quick work",
+        "if": ["short-fight"]
+      },
+      {
+        "text": "and it was over in a few breaths",
+        "if": ["short-fight"]
+      },
+      {
+        "text": "and it wore on and on",
+        "if": ["long-fight"]
+      },
+      {
+        "text": "and it went on until the light changed",
+        "if": ["long-fight"]
+      },
+      {
+        "text": "and it was ugly",
+        "unless": ["long-fight", "short-fight"]
+      },
+      {
+        "text": "and it was a hard hour",
+        "unless": ["long-fight", "short-fight"]
+      }
+    ],
+    "f.end": [
+      {
+        "text": ", after they had heard us coming",
+        "if": ["alarm"]
+      },
+      {
+        "text": ", and they knew we were there before we did",
+        "if": ["alarm"]
+      },
+      {
+        "text": "; someone raised the alarm, and it showed",
+        "if": ["alarm"]
+      },
+      {
+        "text": ", with them ready and us not",
+        "if": ["alarm"]
+      },
+      {
+        "text": ", and we came out on top",
+        "if": ["outcome.won"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": ", and it went our way",
+        "if": ["outcome.won"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": ", on our own terms",
+        "if": ["outcome.won"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": ", and we had the last word",
+        "if": ["outcome.won"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": ", but they slipped off before the end",
+        "if": ["outcome.partial"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": ", until they had had enough and ran",
+        "if": ["outcome.partial"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": ", and we gave ground",
+        "if": ["outcome.retreated"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": ", until we could not hold",
+        "if": ["outcome.retreated"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": ", and they had the better of it",
+        "if": ["outcome.routed"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": ", and we lost, plainly",
+        "if": ["outcome.routed"],
+        "unless": ["alarm"]
+      },
+      "",
+      {
+        "text": ", and we finished it",
+        "if": ["outcome.won"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": ", and they did not get up again",
+        "if": ["outcome.won"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": ", and we broke them but did not end them",
+        "if": ["outcome.partial"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": ", and we had to give it up",
+        "if": ["outcome.retreated"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": ", and it ended badly for us",
+        "if": ["outcome.routed"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": ", with no chance to set ourselves",
+        "if": ["alarm"]
+      }
+    ],
+    "f.never": [
+      "we never reached",
+      "we never got as far as",
+      "we did not come within a stone's throw of",
+      "we saw nothing of",
+      "we turned round before we met"
+    ],
+    "f.why": [
+      "; the road did for us first",
+      ", because the way in was worse than the job",
+      "; the place itself wore us down",
+      ", and I would not call that luck",
+      ", which may be the one kind thing in this letter",
+      "; the way was too much for us",
+      ", and the rest of this letter says why"
+    ],
+    "report.deed.saved": [
+      "{@ds.when}{who} {@ds.verb}{@ds.tail}.",
+      "{@ds.lead} {who}, {patient} {@ds.alive}{@ds.end}."
+    ],
+    "ds.verb": [
+      "kept {patient} alive",
+      "held on to {patient}",
+      "pulled {patient} back",
+      "would not let {patient} go",
+      "dragged {patient} clear",
+      "argued death out of {patient}"
+    ],
+    "ds.tail": [
+      " when it was nearly too late",
+      " with both hands and a deal of swearing",
+      ", which none of us thought could be done",
+      " through the worst of it",
+      ", and {who.they} {who~has|have} not stopped shaking since",
+      ", and wants no thanks for it"
+    ],
+    "ds.lead": ["If not for", "But for", "Without", "Were it not for"],
+    "ds.alive": [
+      "would not be coming home",
+      "would be buried there",
+      "would be a name on the hall wall",
+      "would not have seen another morning",
+      "would have bled out on the floor"
+    ],
+    "report.deed.guard": ["{@dg.lead}{who} {@dg.verb}{@times}{@dg.tail}."],
+    "dg.verb": [
+      "took a blow meant for someone else",
+      "stepped in front of the rest of us",
+      "put {who.themself} between us and harm",
+      "stood in the way of a blow",
+      "shoved one of us clear and took the hurt",
+      "caught a blow on {who.their} own shield that was never aimed at {who.them}",
+      "took the hit so someone else didn't have to"
+    ],
+    "dg.tail": [
+      ", and only grumbled about it once",
+      ", and called it nothing",
+      ", which is more than {who.their} pay covers",
+      ", without being asked",
+      ", and we owe {who.them} for it",
+      ", and would do it again",
+      ", without stopping to think",
+      ", and has the dents to show for it"
+    ],
+    "dg.lead": [
+      "",
+      "Without a word, ",
+      "Without fuss, ",
+      "When it mattered, ",
+      "When it counted, "
+    ],
+    "report.deed.striker": [
+      "{@dk.when}{who} {@dk.verb} {count} blows{@dk.tail}.",
+      "{@dk.lead} {who}, who {@dk.verb} {count} blows{@dk.tail}."
+    ],
+    "dk.verb": [
+      "landed",
+      "put in",
+      "struck home with",
+      "got in",
+      "dealt out",
+      "made good on",
+      "found the mark with"
+    ],
+    "dk.tail": [
+      " and wants it written down",
+      ", and is already telling it in the tavern",
+      " and barely broke a sweat, to hear {who.them} tell it",
+      ", and every one of them counted",
+      " and has the bruises to prove it",
+      ", and kept count, which tells you something"
+    ],
+    "dk.lead": [
+      "Most of the work fell to",
+      "The credit goes to",
+      "Mark it down for",
+      "The honours go to"
+    ],
+    "report.deed.mend": ["{@dm.lead}{who} {@dm.verb}{@times}{@dm.tail}."],
+    "dm.verb": [
+      "patched one of us up",
+      "set someone back on their feet",
+      "got a hurt one standing",
+      "bound up the worst of the cuts",
+      "put a hurt comrade back in the line",
+      "closed a wound that had no business closing"
+    ],
+    "dm.tail": [
+      " and still found time to pray",
+      ", and scolded the patient while doing it",
+      ", steady as a mill wheel",
+      ", which kept the rest of us in it",
+      ", and asked for nothing",
+      ", muttering the whole time"
+    ],
+    "dm.lead": [
+      "",
+      "In the thick of it, ",
+      "Between blows, ",
+      "While it was still going, ",
+      "Under the worst of it, ",
+      "With no time to spare, "
+    ],
+    "report.deed.cleave": ["{@dc.lead}{who} {@dc.verb}{@times}{@dc.tail}."],
+    "dc.verb": [
+      "caught two of them with one swing",
+      "carried a blow through into the next",
+      "cut through one and into another",
+      "made one stroke do twice the work",
+      "swung through the first and kept going"
+    ],
+    "dc.tail": [
+      ", which is a sight worth seeing",
+      " and was smug about it after",
+      ", and we heard about it all the way home",
+      ", to general approval",
+      ", and nobody has heard the end of it",
+      ", which shortened things"
+    ],
+    "dc.lead": [
+      "",
+      "For the record, ",
+      "Worth knowing, ",
+      "Mark this, ",
+      "As you would hope, ",
+      "Credit where due, "
+    ],
+    "report.deed.scout": ["{@dsc.lead}{who} {@dsc.verb}{@dsc.tail}."],
+    "dsc.verb": [
+      "went ahead and found us the quiet way",
+      "scouted the way in before any of us set foot in it",
+      "read the ground for us",
+      "found the path the rest of us would have missed",
+      "crept on ahead and came back with what we needed",
+      "walked the ground ahead and marked it for us"
+    ],
+    "dsc.tail": [
+      ", and it saved us trouble",
+      " and was not seen once",
+      ", and earned {who.their} share twice over",
+      ", which is what we pay {who.them} for",
+      " without being asked twice",
+      ", and said very little about it"
+    ],
+    "dsc.lead": [
+      "",
+      "Before we went in, ",
+      "As ever, ",
+      "First of all, ",
+      "Quietly, ",
+      "While the rest of us waited, "
+    ],
+    "report.deed.shadow": ["{@dsh.lead}{who} {@dsh.verb}{@times}{@dsh.tail}."],
+    "dsh.verb": [
+      "slipped in behind one of them while it was busy with someone else",
+      "struck from the dark while the rest of us kept them looking",
+      "found the gap in their guard",
+      "came at them from the side they were not watching",
+      "got in close while they were looking the wrong way"
+    ],
+    "dsh.tail": [
+      ", which they did not enjoy",
+      ", neat as a tailor",
+      " and was gone again before they turned",
+      ", and they never once saw it coming",
+      ", and enjoyed it rather too much"
+    ],
+    "dsh.lead": [
+      "",
+      "While we kept them busy, ",
+      "Out of sight, ",
+      "From the shadows, ",
+      "Each time they turned, ",
+      "Quiet as a cat, "
+    ],
+    "report.deed.ward": ["{@dw.lead}{who} {@dw.verb}{@times}{@dw.tail}."],
+    "dw.verb": [
+      "raised a ward over us",
+      "called down a blessing that turned their blows",
+      "set a ward that took the edge off them",
+      "prayed us a shelter",
+      "spoke a ward over the line"
+    ],
+    "dw.tail": [
+      ", and I felt it",
+      ", and it held",
+      ", for all the thanks {who.they} got",
+      ", which explains why we are still here",
+      ", and we stood the better for it"
+    ],
+    "dw.lead": [
+      "",
+      "Through the fight, ",
+      "At the worst of it, ",
+      "Over and again, ",
+      "Steady throughout, ",
+      "Without being asked, "
+    ],
+    "report.death": [
+      {
+        "text": "{@dd.lead} {who}{@dd.struck}{@dd.after}.",
+        "if": ["writer", "struck"]
+      },
+      {
+        "text": "{@dd.lead} {who}{@dd.scene}{@dd.after}.",
+        "if": ["writer", "scene"]
+      },
+      {
+        "text": "{@dd.lead} {who}{@dd.retreat}{@dd.after}.",
+        "if": ["writer", "retreat"]
+      },
+      {
+        "text": "{who} {@dd.none}.",
+        "if": ["no-writer"]
+      }
+    ],
+    "dd.lead": [
+      "We lost",
+      "We have lost",
+      "It is my duty to tell you we lost",
+      "I am sorry to write that we lost",
+      "There is no good way to say it: we lost",
+      "I have to tell you that we lost",
+      "It grieves me to write that we lost",
+      "You should hear it from us first: we lost"
+    ],
+    "dd.struck": [
+      " to {killer}",
+      " to a blow from {killer}",
+      " in the fight with {killer}",
+      " when {killer} broke through",
+      " under {killer}",
+      " to {killer}, face to face",
+      " at the hands of {killer}",
+      " when {killer} got past the rest of us"
+    ],
+    "dd.after": [
+      "",
+      "; we did what we could",
+      "; we could not stop it",
+      "; {who.they} {who~was|were} brave to the last",
+      ", and the hall is poorer for it",
+      "; {who.they} deserved better than that place",
+      ", and none of us will forget it",
+      "; {who.their} things are coming home with us"
+    ],
+    "dd.none": [
+      "died there with the rest",
+      "is among the dead",
+      "did not come home",
+      "was found with the others"
+    ],
+    "report.injury": [
+      {
+        "text": "{@di.when}{who} {@di.verb}{@di.tail}.",
+        "unless": ["self"]
+      },
+      {
+        "text": "{@di.lead} {who} {@di.verb}.",
+        "if": ["after-loss"],
+        "unless": ["self"]
+      },
+      {
+        "text": "{@di.self}{@di.selftail}.",
+        "if": ["self"]
+      }
+    ],
+    "di.verb": [
+      "took a wound that will not heal clean",
+      "will carry this one for good",
+      "is hurt in a way that will last",
+      "came out of it with a hurt the surgeon will not like",
+      "will be a long time mending",
+      "took a blow that will stay with {who.them}",
+      "is going to walk differently from now on",
+      "has an arm that does not do what it used to"
+    ],
+    "di.tail": [
+      ", and knows it",
+      "; the surgeon will say how badly",
+      ", though {who.they} won't admit it",
+      ", and won't be fighting for a while",
+      ", and is taking it better than I would",
+      ", and is cross about it",
+      ""
+    ],
+    "di.lead": ["As well as that,", "On top of it,", "Besides,", "And"],
+    "report.closing": [
+      {
+        "text": "{@c.lead}{@c.won}{@c.rest}.",
+        "if": ["writer", "outcome.won"]
+      },
+      {
+        "text": "{@c.lead}{@c.partial}{@c.rest}.",
+        "if": ["writer", "outcome.partial"]
+      },
+      {
+        "text": "{@c.lead}{@c.unpaid}{@c.rest}.",
+        "if": ["writer", "outcome.retreated"]
+      },
+      {
+        "text": "{@c.lead}{@c.unpaid}{@c.rest}.",
+        "if": ["writer", "outcome.routed"]
+      }
+    ],
+    "c.won": [
+      "the fee is yours to collect",
+      "the reeve has the fee counted out for you",
+      "payment is promised in full",
+      "they are paying in full, and gladly",
+      "you will have the fee by the next carter",
+      "the coin is coming, with something extra for the trouble",
+      "they paid what was owed without haggling, which surprised us",
+      "the fee is good, and so is the loot",
+      "the reeve paid on the spot, which never happens",
+      "the money is good and the reeve is grateful",
+      "the fee will be at the hall before we are",
+      "the steward counted it out twice and paid in full",
+      "the coin is good and nobody argued",
+      "they paid the full fee and asked us back"
+    ],
+    "c.partial": [
+      "they will pay half, and say that is generous",
+      "half the fee is coming, and the reeve is not happy about it",
+      "we get half, and we have earned every coin of it",
+      "half pay, for half a job",
+      "they are paying half and grumbling about the rest",
+      "the reeve counted out half and kept the rest back",
+      "the reeve says half and means it"
+    ],
+    "c.unpaid": [
+      "there is no fee in it",
+      "nobody is paying for that",
+      "we will not see a coin for this one",
+      "the contract is lost, and the fee with it",
+      "there is nothing owed to us",
+      "no pay, and no one to ask for it",
+      "do not wait on any money from this",
+      "the ledger gets nothing from this one"
+    ],
+    "c.rest": [
+      {
+        "text": ", and we are ready for the next",
+        "if": ["unhurt"]
+      },
+      {
+        "text": "; give us a day and we will want more work",
+        "if": ["unhurt"]
+      },
+      {
+        "text": ", and we are fit to go again",
+        "if": ["unhurt"]
+      },
+      {
+        "text": "; we need rest before anything else",
+        "if": ["hurt"]
+      },
+      {
+        "text": ", and the infirmary will be busy",
+        "if": ["hurt"]
+      },
+      {
+        "text": "; send the surgeon to meet us",
+        "if": ["hurt"]
+      },
+      {
+        "text": ", and we will need time",
+        "if": ["hurt"]
+      },
+      {
+        "text": "; the rest of us need time, and some of us need a drink",
+        "if": ["one-death"]
+      },
+      {
+        "text": "; we would like a few quiet days",
+        "if": ["deaths"]
+      },
+      {
+        "text": ", and we would take another like it",
+        "if": ["unhurt"]
+      },
+      {
+        "text": "; most of us will mend",
+        "if": ["hurt"]
+      }
+    ],
+    "report.signoff": [
+      {
+        "text": "{writer}",
+        "if": ["writer"]
+      },
+      {
+        "text": "Yours, {writer}",
+        "if": ["writer"]
+      },
+      {
+        "text": "{writer}, for the party",
+        "if": ["writer"]
+      },
+      {
+        "text": "In haste, {writer}",
+        "if": ["writer"]
+      },
+      {
+        "text": "Set down for the hall's records",
+        "if": ["no-writer"]
+      }
+    ],
+    "times": [
+      {
+        "text": "",
+        "if": ["once"]
+      },
+      {
+        "text": " {count} times",
+        "if": ["many"]
+      },
+      {
+        "text": " more than once",
+        "if": ["many"]
+      },
+      {
+        "text": " again and again",
+        "if": ["many"]
+      }
+    ],
+    "dk.when": [
+      "",
+      "By my count, ",
+      "By the end, ",
+      "All told, ",
+      "In the fight, ",
+      "When it was over and we counted, "
+    ],
+    "ds.when": [
+      "",
+      "When it came to it, ",
+      "At the last, ",
+      "In the worst of it, ",
+      "With the fight still on, ",
+      "On the floor of that place, "
+    ],
+    "ds.end": [
+      "",
+      " and that is the truth of it",
+      ", and {patient.they} {patient~knows|know} it",
+      ", plain and simple",
+      ", and I will not hear otherwise"
+    ],
+    "c.lead": [
+      "",
+      "As for money, ",
+      "On the matter of pay, ",
+      "For the ledger, ",
+      "About the money, ",
+      "Since you will ask, ",
+      "To the business end of it, ",
+      "On the money, ",
+      "Now, the money: "
+    ],
+    "di.self": [
+      "I took a wound that will not heal clean",
+      "I will carry this one for good",
+      "I am hurt in a way that will last",
+      "I will be a long time mending",
+      "I came out of it with a hurt the surgeon will not like"
+    ],
+    "di.selftail": [
+      "",
+      ", for what it is worth",
+      ", and I am not pleased about it",
+      "; do not fuss",
+      ", but I can still hold a pen"
+    ],
+    "di.when": [
+      "",
+      "Worse news, ",
+      "I should say that ",
+      "You will want to know that ",
+      "Tell the infirmary that ",
+      "Not all of it will heal, and "
+    ],
+    "report.twist": [
+      {
+        "text": "{@tw.lead}{@tw.weather}{@tw.after}.",
+        "if": ["writer", "twist.foul-weather"]
+      },
+      {
+        "text": "{@tw.lead}{@tw.info}{@tw.after}.",
+        "if": ["writer", "twist.bad-information"]
+      },
+      {
+        "text": "{@tw.lead}{@tw.trap}{@tw.after}.",
+        "if": ["writer", "twist.trap"]
+      },
+      {
+        "text": "{@tw.lead}{@tw.curse}{@tw.after}.",
+        "if": ["writer", "twist.cursed-ground"]
+      },
+      {
+        "text": "{@tw.lead.plain}{@tw.hostage.lost}{@tw.sorry}.",
+        "if": ["writer", "twist.hostage", "alarm"]
+      },
+      {
+        "text": "{@tw.lead.good}{@tw.hostage.saved}{@tw.good}.",
+        "if": ["writer", "twist.hostage", "outcome.won"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": "{@tw.lead}{@tw.deadline}{@tw.after}.",
+        "if": ["writer", "twist.deadline"]
+      }
+    ],
+    "tw.weather": [
+      "the weather was foul the whole way",
+      "it rained sideways for three days",
+      "the roads were mud to the knee",
+      "the wind never let up, and the footing was worse",
+      "we walked through the worst weather of the year",
+      "every path was flooded or frozen",
+      "the fen was half under water",
+      "fog sat on us from the first morning",
+      "the cold got into everything"
+    ],
+    "tw.info": [
+      "what we were told about {foe} was wrong; the contract undersold them",
+      "whoever wrote the contract never saw {foe} up close",
+      "the reeve's description of {foe} was generous to {foe}",
+      "we were told one thing about {foe} and found another",
+      "nobody warned us how strong {foe} had grown"
+    ],
+    "tw.trap": [
+      "someone had set a trap on the way in",
+      "there was a trap waiting for us, and it was not old",
+      "we walked into a trap that nobody had warned us about",
+      "the way in was trapped, and cleverly",
+      "a tripwire and a deadfall met us halfway",
+      "the way in was rigged with spikes and a falling beam",
+      "a pit had been dug and covered on the only path"
+    ],
+    "tw.curse": [
+      "the ground there is cursed; wounds would not close",
+      "something in that place keeps blood flowing",
+      "cuts bled there that should have stopped",
+      "the earth itself was against us, and every wound ran",
+      "wounds wept there long after they should have dried",
+      "the place drank blood; every cut kept running",
+      "an old curse lies on that ground, and it kept our wounds open"
+    ],
+    "tw.hostage.lost": [
+      "they knew we were coming, and the hostage did not live to see us",
+      "the alarm went up, and with it went the hostage",
+      "we were heard, and the hostage paid for it",
+      "once they heard us, the hostage was as good as dead"
+    ],
+    "tw.hostage.saved": [
+      "we brought the hostage out alive",
+      "the hostage is safe and on the cart behind us",
+      "we got the hostage clear before anyone knew we were there",
+      "the hostage walked out with us, shaken but whole"
+    ],
+    "tw.deadline": [
+      "we had no time to do it properly",
+      "the deadline gave us no room to wait them out",
+      "with the clock against us we could not see it through at our own pace",
+      "we were working to the reeve's timetable, not ours",
+      "there was no time to wear them down",
+      "the reeve wanted it done by the market day, and so it was rushed",
+      "the deadline cut the fight short"
+    ],
+    "tw.after": [
+      "",
+      ", and it told",
+      ", which made it harder",
+      ", and you should know it",
+      ", and it cost us",
+      ", and we felt it",
+      ", and it showed"
+    ],
+    "tw.lead": [
+      "",
+      "First, ",
+      "For the record, ",
+      "You should know that ",
+      "As it turned out, ",
+      "To make matters worse, ",
+      "Mark this down: "
+    ],
+    "tw.lead.good": [
+      "",
+      "Better news: ",
+      "For the record, ",
+      "You will be glad to hear ",
+      "As promised, "
+    ],
+    "tw.good": ["", ", and grateful", ", and the family has been told", ", none the worse"],
+    "f.never.lead": ["", "In the end, ", "As it fell out, ", "Truth be told, ", "To be plain, "],
+    "tw.lead.plain": [
+      "",
+      "I have to tell you that ",
+      "You should know that ",
+      "It is hard to write, but "
+    ],
+    "tw.sorry": ["", "; we are sorry for it", "; we could not stop it", "; that is on us"],
+    "dd.scene": [
+      " on the way in, before we ever reached {foe}",
+      " to a fall on the way in",
+      " to the hurt {who.they} took on the way in",
+      " before the real fight had even started",
+      " to the place itself, not to anything that lived there",
+      " on the road in, which is no way to go",
+      " to the way in, which was worse than we were told",
+      " short of the fight {who.they} came for"
+    ],
+    "dd.retreat": [
+      " on the way out",
+      " as we fell back",
+      " during the retreat",
+      " getting out of there",
+      " while we pulled back",
+      " with the way out almost behind us",
+      " in the last stretch of the retreat",
+      " as we carried the others clear"
+    ]
+  }
+}

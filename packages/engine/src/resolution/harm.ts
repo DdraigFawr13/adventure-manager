@@ -122,6 +122,8 @@ function bleed(turn: Turn, who: Adventurer, causeId: string): void {
   const above = Math.max(0, who.attributes.toughness - rule.pivot);
   const parts: ValuePart[] =
     above > 0 ? [{ sourceId: 'attribute.toughness', amount: -rule.stepBp * above }] : [];
+  const twist = turn.template.twist;
+  if (twist?.kind === 'bleed') parts.push({ sourceId: twist.id, amount: twist.amountBp });
   const limits = [0, BP_CERTAIN] as const;
   const { roll: result, eventId } = roll(
     turn,

@@ -42,6 +42,7 @@ export function drawPerson(turn: GuildTurn): Prospect {
   guild.nextPersonNo += 1;
   const adventurer: Adventurer = {
     id: `adv.${guild.nextPersonNo}`,
+    ...drawIdentity(turn),
     classId: leaning.classId,
     position: leaning.position,
     attributes,
@@ -50,6 +51,19 @@ export function drawPerson(turn: GuildTurn): Prospect {
     dead: false,
   };
   return { adventurer, wageCopper: wageFor(rules, leaning.classId, attributes) };
+}
+
+/** Name and pronouns on their own stream, so adding names never moves the recruit rolls. */
+function drawIdentity(turn: GuildTurn): Pick<Adventurer, 'name' | 'pronouns'> {
+  const naming = turn.rules.naming;
+  if (!naming) return {};
+  const rng = streamFor(turn.state, 'guild.names');
+  const pronouns = rng.weighted(naming.pronouns);
+  const given =
+    pronouns === 'they'
+      ? [...naming.given.she, ...naming.given.he, ...naming.given.any]
+      : [...naming.given[pronouns], ...naming.given.any];
+  return { name: { given: rng.pick(given), family: rng.pick(naming.family) }, pronouns };
 }
 
 /** Puts a person on the roster and on wages. */

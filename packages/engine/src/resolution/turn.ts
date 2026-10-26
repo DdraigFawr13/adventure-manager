@@ -1,4 +1,5 @@
 // Shared helpers for one command's resolution: lookups, who can act, and rolling a check.
+import { composeQuest, shapeOf } from '../contract/compose.ts';
 import type { EventSink } from '../core/events.ts';
 import { streamFor, type RngStream } from '../core/rng.ts';
 import type { ValuePart } from '../core/value.ts';
@@ -12,6 +13,7 @@ import type {
   GameState,
   QuestRun,
   QuestTemplate,
+  ResolutionContent,
   ResolutionRules,
 } from './types.ts';
 import { WOUND } from './types.ts';
@@ -40,7 +42,18 @@ export function turnFor(state: GameState, sink: EventSink<GameEvent>): Turn {
 }
 
 export function findTemplate(state: GameState, id: string): QuestTemplate {
-  const template = state.content.quests.find((q) => q.id === id);
+  return templateFor(state.content, id);
+}
+
+/** A fixed quest template, or the contract a shape id names, composed on demand (D-139). */
+export function templateFor(content: ResolutionContent, id: string): QuestTemplate {
+  const shape = shapeOf(id);
+  if (shape) {
+    const contracts = content.contracts;
+    if (!contracts) throw new Error(`This game has no contract content for ${id}.`);
+    return composeQuest(contracts, shape);
+  }
+  const template = content.quests.find((q) => q.id === id);
   if (!template) throw new Error(`Unknown quest template ${id}.`);
   return template;
 }

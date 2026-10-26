@@ -29,6 +29,7 @@ function withReturningParty(run: Run, outcome: QuestOutcome): Run {
     offer: {
       id: 'offer.test',
       templateId: 'quest.test-barrow',
+      shownTemplateId: 'quest.test-barrow',
       danger: 'hazardous',
       feeCopper: 1000,
       travelDays: 2,

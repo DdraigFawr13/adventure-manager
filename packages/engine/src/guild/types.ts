@@ -1,4 +1,5 @@
 // Shapes for guild year v0 (SPEC.md). Content supplies GuildRules; the engine only reads them.
+import type { PronounKey } from '../core/text.ts';
 import type { Adventurer, Attribute, Danger, Plan, QuestOutcome } from '../resolution/types.ts';
 
 export interface DangerRules {
@@ -30,7 +31,17 @@ export interface WeekRange {
   readonly to: number;
 }
 
+/** Naming for drawn people (STYLE §9a): pronouns by weight, then a given name that fits them. */
+export interface NamingRules {
+  readonly pronouns: readonly (readonly [PronounKey, number])[];
+  /** Given names by the pronoun set they suit; 'they' draws from all of them. */
+  readonly given: Readonly<Record<'she' | 'he' | 'any', readonly string[]>>;
+  readonly family: readonly string[];
+}
+
 export interface GuildRules {
+  /** Absent: drawn people have no names (tests that don't read text). */
+  readonly naming?: NamingRules;
   readonly weeksPerYear: number;
   readonly daysPerWeek: number;
   /** Weeks 1..assemblyWeeks are the Assembly; winter starts at winterFromWeek. */
@@ -86,7 +97,10 @@ export interface GuildMember {
 
 export interface Offer {
   readonly id: string;
+  /** The contract as it really is; only the quest reads it (a hidden twist is in here). */
   readonly templateId: string;
+  /** The contract as the board shows it: a hidden twist reads as none (D-139). Views use this. */
+  readonly shownTemplateId: string;
   readonly danger: Danger;
   readonly feeCopper: number;
   readonly travelDays: number;
@@ -115,6 +129,8 @@ export interface GuildState {
   readonly board: Offer[];
   readonly parties: Party[];
   readonly prospects: Prospect[];
+  /** Real shape ids the board drew recently, oldest first, per danger (contract/SPEC.md). Engine-only: it can name a hidden twist, so views never read it. */
+  readonly recentShapes: string[];
   /** Counters for ids, so ids stay unique and replayable. */
   nextOfferNo: number;
   nextPartyNo: number;
@@ -154,6 +170,7 @@ export type GuildEventBody =
   | { readonly type: 'week.started'; readonly week: number }
   | {
       readonly type: 'offer.posted';
+      /** The board's view of the contract (`Offer.shownTemplateId`), never the hidden twist. */
       readonly templateId: string;
       readonly danger: Danger;
       readonly feeCopper: number;

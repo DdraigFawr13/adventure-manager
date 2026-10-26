@@ -1,0 +1,721 @@
+<title>Guild Desk Ledgers</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+DW+Pica:ital@0;1&family=Sorts+Mill+Goudy:ital@0;1&display=swap">
+<style>
+/* Layout: the R4 desk-density test (PLAN §9a). A real-size desktop frame (1366×768 or 1920×1080) drawn in the candlelit-oak style (STYLE §2–§5): fixed top bar, ledger tabs on the left, the open ledger as a clean paper sheet, the letter tray folded at the right. Narrow windows scale the frame down and say so. One deliberate theme: the desk is always lamp-lit. */
+:root {
+  --desk: #3b2a1e; --desk2: #2c1f16; --desk3: #4a3626;
+  --paper: #efe4cc; --paper2: #e5d7b9; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5;
+  --seal: #8e2a22; --brass: #b8923e; --brass2: #d7b66a;
+  --good: #3f6f8f; --warn: #c08a1e; --bad: #8e2a22;
+  --chrome: #f1e6cf; --chrome2: #c8b48f;
+  --title: "IM Fell English SC", "IM Fell English", Georgia, serif;
+  --letter: "IM Fell DW Pica", Georgia, serif;
+  --ledger: "Sorts Mill Goudy", "Goudy Old Style", Georgia, serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--desk2); color: var(--chrome); font-family: var(--ledger); font-size: 16px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 40px; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, [tabindex]:focus-visible, input:focus-visible { outline: 2px solid var(--brass2); outline-offset: 2px; }
+.page { display: grid; gap: 14px; }
+.intro { display: grid; gap: 6px; max-width: 80ch; }
+.intro h1 { font-family: var(--title); font-weight: 400; font-size: 1.9rem; margin: 0; color: var(--brass2); text-wrap: balance; }
+.intro p { margin: 0; color: var(--chrome2); }
+.controls { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--chrome2); border-radius: 4px; overflow: hidden; }
+.seg button { background: transparent; border: 0; padding: 4px 12px; color: var(--chrome); font-variant-numeric: lining-nums; }
+.seg button[aria-pressed="true"] { background: var(--brass); color: var(--desk2); }
+.scale-note { color: var(--chrome2); font-style: italic; font-size: .92rem; }
+.btn { background: var(--seal); color: var(--paper); border: 0; padding: 5px 14px; border-radius: 3px; font-family: var(--title); font-size: 1rem; letter-spacing: .03em; }
+.btn.ghost { background: transparent; border: 1px solid var(--chrome2); color: var(--chrome); }
+
+/* The fact test strip */
+.quiz { background: var(--desk3); border: 1px solid var(--brass); border-radius: 4px; padding: 10px 14px; display: grid; gap: 8px; max-width: 900px; }
+.quiz h2 { font-family: var(--title); font-weight: 400; font-size: 1.2rem; margin: 0; color: var(--brass2); }
+.quiz .q { font-size: 1.15rem; color: var(--paper); }
+.quiz .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.quiz .ans { color: var(--brass2); }
+.quiz table { border-collapse: collapse; font-variant-numeric: lining-nums tabular-nums; }
+.quiz td, .quiz th { padding: 2px 10px 2px 0; text-align: left; font-weight: 400; }
+.quiz .pass { color: #9cc3dc; } .quiz .fail { color: #e7a07a; }
+.clock { font-variant-numeric: lining-nums tabular-nums; color: var(--chrome2); }
+
+/* The frame: real size, scaled down only when the window is narrower */
+.stage { overflow: hidden; }
+.desk { position: relative; width: 1366px; height: 768px; transform-origin: 0 0; display: grid; grid-template-columns: 172px 1fr auto; grid-template-rows: 46px 1fr;
+  background: repeating-linear-gradient(92deg, var(--desk) 0 34px, var(--desk2) 34px 36px); color: var(--ink); font-size: 15px; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+
+/* Top bar: crest, date, why the calendar stopped, Continue (STYLE §3) */
+.bar { grid-column: 1 / -1; display: flex; align-items: center; gap: 18px; padding: 0 14px; background: var(--desk2); color: var(--chrome); border-bottom: 2px solid var(--brass); }
+.crest { width: 28px; height: 32px; flex: none; }
+.guild { font-family: var(--title); font-size: 1.15rem; color: var(--brass2); white-space: nowrap; }
+.date { font-variant-numeric: lining-nums; white-space: nowrap; }
+.stopped { color: var(--chrome2); font-style: italic; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
+.chest { font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
+.continue { background: var(--seal); color: var(--paper); border: 0; border-radius: 3px; padding: 5px 16px; font-family: var(--title); font-size: 1rem; }
+
+/* Ledger tabs */
+.tabs { padding: 12px 0 12px 10px; display: grid; align-content: start; gap: 2px; color: var(--chrome); }
+.tabs h3 { font-family: var(--title); font-weight: 400; font-size: .85rem; letter-spacing: .08em; color: var(--brass); margin: 10px 0 2px 6px; }
+.tab { text-align: left; background: transparent; border: 0; padding: 4px 10px; border-radius: 3px 0 0 3px; color: var(--chrome); }
+.tab[aria-selected="true"] { background: var(--paper); color: var(--ink); }
+.tab:disabled { color: #8a7a62; cursor: default; }
+.tab .n { float: right; font-variant-numeric: lining-nums; color: var(--chrome2); }
+.tab[aria-selected="true"] .n { color: var(--ink2); }
+
+/* The sheet: clean paper, no texture behind numbers (STYLE §1) */
+.sheet { background: var(--paper); margin: 8px 0; padding: 8px 16px 6px; display: grid; grid-template-rows: auto 1fr; gap: 6px; min-width: 0; min-height: 0; font-family: var(--ledger); font-variant-numeric: lining-nums tabular-nums; }
+.sheet-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid var(--rule); padding-bottom: 4px; }
+.sheet-head h2 { font-family: var(--title); font-weight: 400; font-size: 1.45rem; margin: 0; }
+.sheet-head .sub { color: var(--ink2); }
+.find { margin-left: auto; display: inline-flex; gap: 6px; align-items: baseline; color: var(--ink2); font-style: italic; }
+.find input { font: inherit; font-style: normal; color: var(--ink); background: var(--paper2); border: 1px solid var(--rule); border-radius: 3px; padding: 1px 8px; width: 15em; }
+.chips { display: flex; gap: 6px; }
+table.l .colhi { background: var(--paper2); }
+.tab u { text-decoration-color: var(--brass); text-underline-offset: 2px; }
+.chip { border: 1px solid var(--rule); background: transparent; border-radius: 12px; padding: 0 9px; color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.body { overflow: auto; min-height: 0; }
+table.l { border-collapse: collapse; width: 100%; }
+table.l th { position: sticky; top: 0; background: var(--paper); text-align: left; font-weight: 400; font-style: italic; color: var(--ink2); font-size: .9em; padding: 2px 6px; border-bottom: 1px solid var(--ink2); white-space: nowrap; }
+table.l th button { background: none; border: 0; padding: 0; font-style: italic; color: inherit; }
+table.l th[aria-sort] button::after { content: " ▾"; font-style: normal; }
+table.l th[aria-sort="ascending"] button::after { content: " ▴"; }
+table.l td { padding: 0 6px; height: 19px; line-height: 19px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+table.l .r { text-align: right; }
+table.l td.wrap { white-space: normal; line-height: 1.25; padding-block: 2px; }
+table.l tr.dead td { color: var(--ink2); }
+table.l tr.total td { border-top: 1px solid var(--ink2); font-weight: 600; }
+table.l tbody tr:hover td { background: var(--paper2); }
+.neg { color: var(--seal); }
+.at { color: var(--ink2); }
+.hi { font-weight: 700; }
+
+/* Status: shape and word, never colour alone (D-078) */
+.st { display: inline-flex; align-items: center; gap: .4em; }
+.st i { width: .62em; height: .62em; display: inline-block; flex: none; }
+.st.fit i { background: var(--good); border-radius: 50%; }
+.st.away i { width: 0; height: 0; border-left: .36em solid transparent; border-right: .36em solid transparent; border-bottom: .62em solid var(--brass); }
+.st.out i { background: var(--warn); transform: rotate(45deg) scale(.85); }
+.st.dead i { background: none; width: auto; height: auto; font-style: normal; color: var(--bad); line-height: 1; }
+.st.dead i::before { content: "✝"; }
+.danger { font-variant: small-caps; letter-spacing: .03em; }
+.twist { font-style: italic; color: var(--seal); }
+
+/* Finances: ledger left, the year so far right */
+.fin { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; min-height: 0; }
+.year { display: grid; gap: 8px; align-content: start; }
+.year h4 { font-family: var(--title); font-weight: 400; font-size: 1.05rem; margin: 0; border-bottom: 1px solid var(--rule); }
+.kv { display: grid; grid-template-columns: 1fr auto; gap: 1px 10px; }
+.kv span:nth-child(even) { text-align: right; }
+.chart text { font-family: var(--ledger); font-size: 11px; fill: var(--ink2); }
+
+/* Contracts: board, parties out, recent */
+.con { display: grid; gap: 10px; align-content: start; }
+.con h4 { font-family: var(--title); font-weight: 400; font-size: 1.05rem; margin: 4px 0 0; }
+
+/* Names open the person's card */
+.who { background: none; border: 0; padding: 0; color: var(--ink); text-align: left; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+.who:hover { text-decoration-color: var(--seal); }
+tr.dead .who { color: var(--ink2); }
+table.l tr.grp td { background: var(--paper2); font-family: var(--title); font-size: 1rem; padding-top: 4px; color: var(--ink); }
+table.l tr.grp td .at { font-family: var(--ledger); font-size: .9rem; }
+.line-tag { font-variant: small-caps; letter-spacing: .03em; color: var(--ink2); }
+
+/* The person's card, over the sheet */
+#card-host { display: contents; }
+.scrim { position: absolute; inset: 0; background: rgba(28, 19, 12, .55); display: grid; place-items: center; z-index: 5; }
+.card { background: var(--paper); color: var(--ink); width: 880px; max-height: 92%; overflow: auto; padding: 16px 20px; display: grid; grid-template-columns: 170px 1fr; gap: 6px 22px; box-shadow: 0 0 0 8px var(--desk3), 0 18px 40px rgba(0,0,0,.5); font-variant-numeric: lining-nums tabular-nums; }
+.card h2 { font-family: var(--title); font-weight: 400; font-size: 1.7rem; margin: 0; grid-column: 2; }
+.card .close { position: sticky; top: 0; justify-self: end; grid-column: 2; grid-row: 1; background: none; border: 1px solid var(--rule); border-radius: 3px; padding: 0 8px; }
+.cameo { grid-row: 1 / span 6; display: grid; gap: 4px; align-content: start; justify-items: center; }
+.cameo small { color: var(--ink2); font-style: italic; text-align: center; font-size: .82rem; }
+.card .sub { color: var(--ink2); grid-column: 2; }
+.card h3 { font-family: var(--title); font-weight: 400; font-size: 1.05rem; margin: 6px 0 0; border-bottom: 1px solid var(--rule); grid-column: 2; }
+.card .two { grid-column: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 2px 24px; }
+.attr { display: grid; grid-template-columns: 6.5em 1.6em 1fr; gap: 8px; align-items: center; }
+.attr b { font-weight: 400; text-align: right; }
+.attr i { height: 6px; background: var(--rule); position: relative; display: block; }
+.attr i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--w); background: var(--ink2); }
+.card table.l { grid-column: 2; }
+
+.panel .btn { justify-self: start; }
+.card .note { grid-column: 2; color: var(--ink2); font-style: italic; font-size: .9rem; margin: 0; }
+
+/* Equipment cards (D-143): one per slot, so an odd piece stands out */
+.gear { grid-column: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.item { border: 1px solid var(--ink2); background: var(--paper2); padding: 6px 7px; display: grid; gap: 1px; align-content: start; min-height: 74px; box-shadow: inset 0 0 0 2px var(--paper); }
+.item .slot { font-variant: small-caps; letter-spacing: .04em; color: var(--ink2); font-size: .82rem; }
+.item b { font-weight: 400; font-size: .98rem; line-height: 1.2; }
+.item .fx { font-size: .8rem; color: var(--ink); }
+.item .by { font-size: .72rem; color: var(--ink2); font-style: italic; margin-top: auto; }
+.item.empty { background: transparent; border-style: dashed; box-shadow: none; }
+.item.empty b { color: var(--ink2); font-style: italic; }
+
+/* The contract panel, with its art */
+.con-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 290px; gap: 16px; min-height: 0; }
+.panel { display: grid; gap: 8px; align-content: start; overflow: auto; }
+.art { aspect-ratio: 4 / 3; max-width: 100%; background: repeating-linear-gradient(135deg, var(--paper2) 0 10px, var(--paper) 10px 20px); border: 1px solid var(--ink2); box-shadow: inset 0 0 0 5px var(--paper), inset 0 0 0 6px var(--rule); display: grid; place-items: center; text-align: center; padding: 14px; }
+.art b { font-family: var(--title); font-weight: 400; font-size: 1.25rem; display: block; }
+.art small { color: var(--ink2); font-style: italic; }
+.panel h4 { font-family: var(--title); font-weight: 400; font-size: 1.2rem; margin: 0; }
+.pick { background: none; border: 0; padding: 0; color: var(--ink); text-align: left; }
+tr.sel td { background: var(--paper2); }
+tr.sel td:first-child { box-shadow: inset 3px 0 0 var(--seal); }
+.hidden-note { color: var(--ink2); font-style: italic; }
+
+/* The map dialog: one column, sized to fit the 768 px frame */
+.card.mapcard { width: auto; grid-template-columns: auto; justify-items: start; }
+.card.mapcard > * { grid-column: 1; }
+.card.mapcard > .close { grid-row: 1; justify-self: end; }
+.card.mapcard canvas { width: 750px; max-width: 100%; height: auto; aspect-ratio: 3 / 2; border: 1px solid var(--ink2); }
+.card.mapcard .note { max-width: 750px; }
+
+/* The letter tray, folded for dense ledgers */
+.tray { display: flex; }
+.tray-tab { writing-mode: vertical-rl; background: var(--desk3); color: var(--chrome); border: 0; border-left: 2px solid var(--brass); padding: 12px 6px; font-family: var(--title); font-size: 1rem; letter-spacing: .05em; }
+.tray-tab b { color: var(--paper); background: var(--seal); border-radius: 50%; padding: 4px 2px; font-family: var(--ledger); font-weight: 400; margin-top: 8px; }
+.tray-open { width: 320px; background: var(--desk3); padding: 10px; overflow: auto; }
+.letter { background: var(--paper); color: var(--ink); padding: 14px 16px; font-family: var(--letter); font-size: 16px; line-height: 1.45; display: grid; gap: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+.letter p { margin: 0; }
+.letter p.open::first-letter { float: left; font-family: var(--title); color: var(--seal); font-size: 2.8em; line-height: .85; padding: .05em .1em 0 0; }
+.letter .sal, .letter .sig { font-style: italic; }
+.letter .sig { text-align: right; }
+.fleuron { text-align: center; color: var(--brass); }
+</style>
+
+<div class="page">
+  <div class="intro">
+    <h1>Guild desk ledgers</h1>
+    <p><b>Round 3.</b> Your notes: click a name for the person's card (portrait, attributes, kit, record); group the roster by party; a Line column says who stands at the front or back (clerics start at the back, where each member is half as likely to be targeted); select a contract for its art panel and details, and press View on map to see where it is. Round 1 (seed desk-1) had every answer right but none under 10 s. Round 2 added a Find box on every ledger (press /), a roster sorted by name, a column highlight under the pointer, a sortable board, and keys R, F and C for the ledgers; the clock now starts after you have read each question. New seed, so the names and numbers are new.</p>
+    <p>R4 desk-density test (PLAN §9a). Pass line: 25 or more roster rows visible at 1366 px, and you can find 5 set facts in under 10 seconds each. The data is a real simulated guild: 30 adventurers in six parties, played to the start of week 23 by the engine (seed below). Only Roster, Finances and Contracts are built; the other tabs are greyed.</p>
+  </div>
+  <div class="controls">
+    <span class="seg" role="group" aria-label="Screen size">
+      <button type="button" id="w1366" aria-pressed="true">1366 × 768</button>
+      <button type="button" id="w1920" aria-pressed="false">1920 × 1080</button>
+    </span>
+    <button type="button" class="btn" id="quiz-start">Start the fact test</button>
+    <span class="scale-note" id="scale-note"></span>
+  </div>
+  <section class="quiz" id="quiz" hidden aria-live="polite"></section>
+  <div class="stage" id="stage">
+    <div class="desk" id="desk">
+      <header class="bar">
+        <svg class="crest" viewBox="0 0 28 32" aria-hidden="true"><path d="M2 2h24v14c0 8-6 12-12 14C8 28 2 24 2 16z" fill="#8e2a22" stroke="#d7b66a" stroke-width="1.5"/><path d="M14 7l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L6.8 12.3l5-.7z" fill="#d7b66a"/></svg>
+        <span class="guild">The Fenn March Company</span>
+        <span class="date" id="date"></span>
+        <span class="stopped" id="stopped"></span>
+        <span class="chest" id="chest"></span>
+        <button type="button" class="continue" aria-label="Continue (mock-up: does nothing)">Continue</button>
+      </header>
+      <nav class="tabs" aria-label="Ledgers" id="tabs">
+        <h3>Desk</h3>
+        <button type="button" class="tab" disabled>Desk</button>
+        <button type="button" class="tab" data-tab="roster" role="tab"><u>R</u>oster <span class="n" id="n-roster"></span></button>
+        <button type="button" class="tab" disabled>Parties</button>
+        <button type="button" class="tab" data-tab="contracts" role="tab"><u>C</u>ontracts <span class="n" id="n-board"></span></button>
+        <h3>Guild</h3>
+        <button type="button" class="tab" disabled>Staff</button>
+        <button type="button" class="tab" disabled>Guildhall</button>
+        <button type="button" class="tab" data-tab="finances" role="tab"><u>F</u>inances</button>
+        <button type="button" class="tab" disabled>Armoury</button>
+        <h3>World</h3>
+        <button type="button" class="tab" disabled>Ranking</button>
+        <button type="button" class="tab" disabled>Chronicle</button>
+      </nav>
+      <main class="sheet" id="sheet"></main>
+      <aside class="tray" id="tray"></aside>
+      <div id="card-host"></div>
+    </div>
+  </div>
+  <p class="scale-note" id="seed-note"></p>
+</div>
+
+<script>
+const DATA = /*DATA*/ {"seed":"desk-2","today":155,"week":23,"dayOfWeek":1,"chest":{"negative":false,"g":497,"s":5,"c":1,"copper":49751},"renown":80,"roster":[{"id":"adv.1","name":"Rook Ferriby","pronouns":"he","class":"Cleric","position":"back","attributes":{"might":13,"agility":9,"toughness":14,"stealth":8,"wits":10,"presence":9,"resolve":12,"lore":15},"weaponBp":300,"armourBp":300,"actions":["Mend","Ward"],"wage":{"negative":false,"g":0,"s":6,"c":4,"copper":64},"wageCopper":64,"status":{"kind":"out","day":162},"quests":7,"won":7,"hits":13,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":1,"site":"Blackthorn Wood","danger":"hazardous","outcome":"won","hits":1,"injured":false},{"week":4,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":7,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":10,"site":"the Gallows Spire","danger":"perilous","outcome":"won","hits":3,"injured":false},{"week":13,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":18,"site":"Ashford Bridge","danger":"perilous","outcome":"won","hits":3,"injured":false},{"week":21,"site":"the Gallows Spire","danger":"perilous","outcome":"won","hits":3,"injured":false}],"party":{"key":"run.party.38","label":"Simkin Lilley's party"}},{"id":"adv.2","name":"Maud Lockley","pronouns":"they","class":"Warrior","position":"front","attributes":{"might":12,"agility":8,"toughness":14,"stealth":12,"wits":8,"presence":7,"resolve":13,"lore":14},"weaponBp":300,"armourBp":300,"actions":["Guard","Cleave"],"wage":{"negative":false,"g":0,"s":7,"c":2,"copper":72},"wageCopper":72,"status":{"kind":"out","day":161},"quests":4,"won":2,"hits":1,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":3,"site":"the Gallows Spire","danger":"perilous","outcome":"retreated","hits":0,"injured":false},{"week":7,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":1,"injured":true},{"week":18,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":0,"injured":false},{"week":21,"site":"the Drowned Chapel","danger":"hazardous","outcome":"won","hits":0,"injured":false}],"party":{"key":"run.party.39","label":"Kit Ambry's party"}},{"id":"adv.3","name":"Kit Ware","pronouns":"he","class":"Cleric","position":"back","attributes":{"might":12,"agility":11,"toughness":12,"stealth":14,"wits":10,"presence":9,"resolve":14,"lore":12},"weaponBp":300,"armourBp":300,"actions":["Mend","Ward"],"wage":{"negative":false,"g":0,"s":6,"c":0,"copper":60},"wageCopper":60,"status":{"kind":"away","where":"Reedmere Farm","day":159},"quests":7,"won":4,"hits":7,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":1,"site":"Cray's Mill","danger":"routine","outcome":"won","hits":0,"injured":false},{"week":4,"site":"Cray's Mill","danger":"hazardous","outcome":"won","hits":2,"injured":false},{"week":8,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","hits":1,"injured":false},{"week":13,"site":"the Wendle mine","danger":"hazardous","outcome":"won","hits":3,"injured":false},{"week":16,"site":"the Wendle mine","danger":"hazardous","outcome":"retreated","hits":0,"injured":false},{"week":19,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":0,"injured":false},{"week":22,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false}],"party":{"key":"party.42","label":"Teal Thorne's party"}},{"id":"adv.4","name":"Kit Ambry","pronouns":"she","class":"Warrior","position":"front","attributes":{"might":17,"agility":8,"toughness":14,"stealth":14,"wits":14,"presence":14,"resolve":10,"lore":10},"weaponBp":300,"armourBp":300,"actions":["Guard","Cleave"],"wage":{"negative":false,"g":0,"s":8,"c":0,"copper":80},"wageCopper":80,"status":{"kind":"out","day":164},"quests":6,"won":4,"hits":9,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":2,"site":"the Gallows Spire","danger":"perilous","outcome":"won","hits":2,"injured":false},{"week":6,"site":"Blackthorn Wood","danger":"hazardous","outcome":"won","hits":2,"injured":false},{"week":11,"site":"Ashford Bridge","danger":"perilous","outcome":"won","hits":1,"injured":false},{"week":15,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":2,"injured":false},{"week":18,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","hits":0,"injured":false},{"week":21,"site":"the Drowned Chapel","danger":"hazardous","outcome":"won","hits":2,"injured":false}],"party":{"key":"run.party.39","label":"Kit Ambry's party"}},{"id":"adv.5","name":"Teal Gosling","pronouns":"she","class":"Rogue","position":"front","attributes":{"might":7,"agility":13,"toughness":12,"stealth":16,"wits":12,"presence":12,"resolve":11,"lore":8},"weaponBp":300,"armourBp":300,"actions":["Scout ahead","Strike from shadow"],"wage":{"negative":false,"g":0,"s":6,"c":6,"copper":66},"wageCopper":66,"status":{"kind":"out","day":183},"quests":6,"won":5,"hits":6,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":1,"site":"Blackthorn Wood","danger":"hazardous","outcome":"won","hits":1,"injured":false},{"week":4,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":7,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":10,"site":"the Gallows Spire","danger":"perilous","outcome":"won","hits":2,"injured":false},{"week":13,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":16,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":0,"injured":true}],"party":{"key":"run.party.30","label":"Bryn Ketch's party"}},{"id":"adv.6","name":"Bryn Ketch","pronouns":"she","class":"Cleric","position":"back","attributes":{"might":12,"agility":12,"toughness":9,"stealth":14,"wits":14,"presence":13,"resolve":12,"lore":15},"weaponBp":300,"armourBp":300,"actions":["Mend","Ward"],"wage":{"negative":false,"g":0,"s":6,"c":4,"copper":64},"wageCopper":64,"status":{"kind":"out","day":164},"quests":7,"won":6,"hits":12,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":2,"site":"the Gallows Spire","danger":"perilous","outcome":"won","hits":2,"injured":false},{"week":6,"site":"Ashford Bridge","danger":"hazardous","outcome":"won","hits":2,"injured":false},{"week":10,"site":"the Gallows Spire","danger":"perilous","outcome":"won","hits":3,"injured":false},{"week":13,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":16,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":0,"injured":false},{"week":18,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":21,"site":"the Drowned Chapel","danger":"hazardous","outcome":"won","hits":3,"injured":false}],"party":{"key":"run.party.39","label":"Kit Ambry's party"}},{"id":"adv.7","name":"Sabine Oakes","pronouns":"she","class":"Rogue","position":"front","attributes":{"might":11,"agility":16,"toughness":12,"stealth":15,"wits":10,"presence":8,"resolve":13,"lore":9},"weaponBp":300,"armourBp":300,"actions":["Scout ahead","Strike from shadow"],"wage":{"negative":false,"g":0,"s":7,"c":0,"copper":70},"wageCopper":70,"status":{"kind":"away","where":"Reedmere Farm","day":165},"quests":6,"won":2,"hits":9,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":1,"site":"Cray's Mill","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":4,"site":"Cray's Mill","danger":"hazardous","outcome":"won","hits":4,"injured":false},{"week":8,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","hits":0,"injured":false},{"week":11,"site":"the Drowned Chapel","danger":"deadly","outcome":"retreated","hits":3,"injured":false},{"week":16,"site":"the Wendle mine","danger":"hazardous","outcome":"retreated","hits":1,"injured":false},{"week":20,"site":"the Hollow Barrow","danger":"hazardous","outcome":"retreated","hits":0,"injured":false}],"party":{"key":"party.43","label":"Sedge Westry's party"}},{"id":"adv.8","name":"Sabine Cray","pronouns":"she","class":"Warrior","position":"front","attributes":{"might":11,"agility":14,"toughness":12,"stealth":13,"wits":12,"presence":12,"resolve":9,"lore":13},"weaponBp":300,"armourBp":300,"actions":["Guard","Cleave"],"wage":{"negative":false,"g":0,"s":7,"c":2,"copper":72},"wageCopper":72,"status":{"kind":"out","day":214},"quests":6,"won":3,"hits":6,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":1,"site":"Cray's Mill","danger":"routine","outcome":"won","hits":2,"injured":false},{"week":5,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","hits":0,"injured":false},{"week":10,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":2,"injured":false},{"week":13,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":0,"injured":false},{"week":16,"site":"Blackthorn Wood","danger":"hazardous","outcome":"retreated","hits":2,"injured":false},{"week":20,"site":"the Hollow Barrow","danger":"hazardous","outcome":"retreated","hits":0,"injured":true}],"party":{"key":"run.party.36","label":"Teal Thorne's party"}},{"id":"adv.9","name":"Jory Rushmere","pronouns":"he","class":"Rogue","position":"front","attributes":{"might":14,"agility":15,"toughness":13,"stealth":11,"wits":9,"presence":8,"resolve":13,"lore":8},"weaponBp":300,"armourBp":300,"actions":["Scout ahead","Strike from shadow"],"wage":{"negative":false,"g":0,"s":7,"c":0,"copper":70},"wageCopper":70,"status":{"kind":"out","day":162},"quests":7,"won":4,"hits":15,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":1,"site":"Blackthorn Wood","danger":"hazardous","outcome":"won","hits":2,"injured":false},{"week":4,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":2,"injured":false},{"week":8,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","hits":2,"injured":false},{"week":11,"site":"the Drowned Chapel","danger":"deadly","outcome":"retreated","hits":2,"injured":false},{"week":15,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":2,"injured":false},{"week":18,"site":"Ashford Bridge","danger":"perilous","outcome":"won","hits":2,"injured":false},{"week":21,"site":"the Gallows Spire","danger":"perilous","outcome":"won","hits":3,"injured":false}],"party":{"key":"run.party.38","label":"Simkin Lilley's party"}},{"id":"adv.10","name":"Ralf Fenwick","pronouns":"he","class":"Warrior","position":"front","attributes":{"might":15,"agility":8,"toughness":12,"stealth":12,"wits":10,"presence":11,"resolve":10,"lore":9},"weaponBp":300,"armourBp":300,"actions":["Guard","Cleave"],"wage":{"negative":false,"g":0,"s":7,"c":2,"copper":72},"wageCopper":72,"status":{"kind":"out","day":161},"quests":6,"won":3,"hits":8,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":3,"site":"the Gallows Spire","danger":"perilous","outcome":"retreated","hits":0,"injured":false},{"week":7,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":1,"injured":false},{"week":11,"site":"Ashford Bridge","danger":"perilous","outcome":"won","hits":2,"injured":false},{"week":15,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":1,"injured":false},{"week":18,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":21,"site":"the Drowned Chapel","danger":"hazardous","outcome":"won","hits":3,"injured":false}],"party":{"key":"run.party.39","label":"Kit Ambry's party"}},{"id":"adv.11","name":"Isolt Harrow","pronouns":"she","class":"Cleric","position":"back","attributes":{"might":10,"agility":7,"toughness":8,"stealth":8,"wits":11,"presence":10,"resolve":17,"lore":14},"weaponBp":300,"armourBp":300,"actions":["Mend","Ward"],"wage":{"negative":false,"g":0,"s":0,"c":0,"copper":0},"wageCopper":0,"status":{"kind":"dead","day":18,"where":"the Gallows Spire"},"quests":1,"won":0,"hits":0,"injuries":0,"signedDay":1,"diedDay":18,"diedAt":"the Gallows Spire","history":[{"week":3,"site":"the Gallows Spire","danger":"perilous","outcome":"retreated","hits":0,"injured":false}],"party":{"key":"run.party.4","label":"Ralf Fenwick's party"}},{"id":"adv.12","name":"Osric Stour","pronouns":"he","class":"Rogue","position":"front","attributes":{"might":11,"agility":12,"toughness":12,"stealth":15,"wits":10,"presence":9,"resolve":10,"lore":13},"weaponBp":300,"armourBp":300,"actions":["Scout ahead","Strike from shadow"],"wage":{"negative":false,"g":0,"s":6,"c":6,"copper":66},"wageCopper":66,"status":{"kind":"away","where":"Reedmere Farm","day":165},"quests":6,"won":2,"hits":6,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":1,"site":"Cray's Mill","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":4,"site":"Cray's Mill","danger":"hazardous","outcome":"won","hits":3,"injured":false},{"week":8,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","hits":1,"injured":false},{"week":11,"site":"the Drowned Chapel","danger":"deadly","outcome":"retreated","hits":0,"injured":false},{"week":16,"site":"Blackthorn Wood","danger":"hazardous","outcome":"retreated","hits":1,"injured":false},{"week":19,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":0,"injured":false}],"party":{"key":"party.43","label":"Sedge Westry's party"}},{"id":"adv.13","name":"Tobin Wyke","pronouns":"he","class":"Warrior","position":"front","attributes":{"might":18,"agility":13,"toughness":11,"stealth":7,"wits":12,"presence":8,"resolve":7,"lore":7},"weaponBp":300,"armourBp":300,"actions":["Guard","Cleave"],"wage":{"negative":false,"g":0,"s":7,"c":6,"copper":76},"wageCopper":76,"status":{"kind":"out","day":160},"quests":7,"won":4,"hits":15,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":2,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":2,"injured":false},{"week":5,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","hits":2,"injured":false},{"week":9,"site":"Cray's Mill","danger":"routine","outcome":"won","hits":2,"injured":false},{"week":11,"site":"Ashford Bridge","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":14,"site":"Cray's Mill","danger":"hazardous","outcome":"retreated","hits":2,"injured":false},{"week":17,"site":"Blackthorn Wood","danger":"perilous","outcome":"won","hits":4,"injured":false},{"week":21,"site":"Blackthorn Wood","danger":"hazardous","outcome":"retreated","hits":2,"injured":false}],"party":{"key":"run.party.40","label":"Tobin Wyke's party"}},{"id":"adv.14","name":"Kit Hale","pronouns":"he","class":"Rogue","position":"front","attributes":{"might":12,"agility":13,"toughness":12,"stealth":9,"wits":7,"presence":7,"resolve":11,"lore":10},"weaponBp":300,"armourBp":300,"actions":["Scout ahead","Strike from shadow"],"wage":{"negative":false,"g":0,"s":6,"c":2,"copper":62},"wageCopper":62,"status":{"kind":"out","day":166},"quests":7,"won":5,"hits":10,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":2,"site":"Ashford Bridge","danger":"routine","outcome":"won","hits":0,"injured":false},{"week":4,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":2,"injured":false},{"week":7,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":11,"site":"Ashford Bridge","danger":"perilous","outcome":"won","hits":2,"injured":false},{"week":16,"site":"the Wendle mine","danger":"hazardous","outcome":"retreated","hits":2,"injured":false},{"week":18,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":21,"site":"Blackthorn Wood","danger":"hazardous","outcome":"retreated","hits":2,"injured":false}],"party":{"key":"run.party.40","label":"Tobin Wyke's party"}},{"id":"adv.15","name":"Kit Marsh","pronouns":"she","class":"Rogue","position":"front","attributes":{"might":10,"agility":15,"toughness":9,"stealth":14,"wits":8,"presence":10,"resolve":13,"lore":10},"weaponBp":300,"armourBp":300,"actions":["Scout ahead","Strike from shadow"],"wage":{"negative":false,"g":0,"s":7,"c":0,"copper":70},"wageCopper":70,"status":{"kind":"away","where":"the Gallows Spire","day":165},"quests":5,"won":0,"hits":7,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":3,"site":"the Gallows Spire","danger":"perilous","outcome":"retreated","hits":0,"injured":false},{"week":8,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","hits":2,"injured":false},{"week":11,"site":"the Drowned Chapel","danger":"deadly","outcome":"retreated","hits":3,"injured":false},{"week":16,"site":"the Wendle mine","danger":"hazardous","outcome":"retreated","hits":2,"injured":false},{"week":19,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":0,"injured":false}],"party":{"key":"party.41","label":"Wat Mallow's party"}},{"id":"adv.16","name":"Hob Rushmere","pronouns":"he","class":"Rogue","position":"front","attributes":{"might":9,"agility":16,"toughness":13,"stealth":17,"wits":11,"presence":13,"resolve":14,"lore":9},"weaponBp":300,"armourBp":300,"actions":["Scout ahead","Strike from shadow"],"wage":{"negative":false,"g":0,"s":7,"c":4,"copper":74},"wageCopper":74,"status":{"kind":"out","day":162},"quests":7,"won":6,"hits":15,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":2,"site":"the Gallows Spire","danger":"perilous","outcome":"won","hits":1,"injured":false},{"week":6,"site":"Ashford Bridge","danger":"hazardous","outcome":"won","hits":4,"injured":false},{"week":8,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":2,"injured":false},{"week":11,"site":"Ashford Bridge","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":14,"site":"Cray's Mill","danger":"hazardous","outcome":"retreated","hits":2,"injured":false},{"week":17,"site":"Blackthorn Wood","danger":"perilous","outcome":"won","hits":2,"injured":false},{"week":21,"site":"the Gallows Spire","danger":"perilous","outcome":"won","hits":3,"injured":false}],"party":{"key":"run.party.38","label":"Simkin Lilley's party"}},{"id":"adv.17","name":"Teal Thorne","pronouns":"he","class":"Warrior","position":"front","attributes":{"might":16,"agility":9,"toughness":16,"stealth":13,"wits":12,"presence":14,"resolve":9,"lore":8},"weaponBp":300,"armourBp":300,"actions":["Guard","Cleave"],"wage":{"negative":false,"g":0,"s":8,"c":0,"copper":80},"wageCopper":80,"status":{"kind":"away","where":"Reedmere Farm","day":159},"quests":8,"won":6,"hits":7,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":2,"site":"the Gallows Spire","danger":"perilous","outcome":"won","hits":2,"injured":false},{"week":6,"site":"Ashford Bridge","danger":"hazardous","outcome":"won","hits":1,"injured":false},{"week":8,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":11,"site":"Ashford Bridge","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":14,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":16,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":0,"injured":false},{"week":20,"site":"the Hollow Barrow","danger":"hazardous","outcome":"retreated","hits":0,"injured":false},{"week":22,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false}],"party":{"key":"party.42","label":"Teal Thorne's party"}},{"id":"adv.18","name":"Ash Dyke","pronouns":"he","class":"Warrior","position":"front","attributes":{"might":16,"agility":8,"toughness":12,"stealth":7,"wits":8,"presence":9,"resolve":9,"lore":11},"weaponBp":300,"armourBp":300,"actions":["Guard","Cleave"],"wage":{"negative":false,"g":0,"s":7,"c":2,"copper":72},"wageCopper":72,"status":{"kind":"out","day":169},"quests":6,"won":5,"hits":8,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":2,"site":"Ashford Bridge","danger":"routine","outcome":"won","hits":2,"injured":false},{"week":4,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":8,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":13,"site":"the Wendle mine","danger":"hazardous","outcome":"won","hits":0,"injured":false},{"week":18,"site":"Ashford Bridge","danger":"perilous","outcome":"won","hits":2,"injured":false},{"week":21,"site":"Blackthorn Wood","danger":"hazardous","outcome":"retreated","hits":2,"injured":false}],"party":{"key":"run.party.40","label":"Tobin Wyke's party"}},{"id":"adv.19","name":"Ysolde Harrow","pronouns":"she","class":"Cleric","position":"back","attributes":{"might":7,"agility":9,"toughness":7,"stealth":13,"wits":8,"presence":9,"resolve":12,"lore":16},"weaponBp":300,"armourBp":300,"actions":["Mend","Ward"],"wage":{"negative":false,"g":0,"s":6,"c":0,"copper":60},"wageCopper":60,"status":{"kind":"away","where":"the Gallows Spire","day":165},"quests":6,"won":5,"hits":8,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":2,"site":"Ashford Bridge","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":5,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","hits":2,"injured":false},{"week":9,"site":"Cray's Mill","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":11,"site":"Ashford Bridge","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":14,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":18,"site":"Ashford Bridge","danger":"perilous","outcome":"won","hits":2,"injured":false}],"party":{"key":"party.41","label":"Wat Mallow's party"}},{"id":"adv.20","name":"Sedge Marsh","pronouns":"she","class":"Warrior","position":"front","attributes":{"might":13,"agility":8,"toughness":15,"stealth":9,"wits":9,"presence":14,"resolve":9,"lore":7},"weaponBp":300,"armourBp":300,"actions":["Guard","Cleave"],"wage":{"negative":false,"g":0,"s":0,"c":0,"copper":0},"wageCopper":0,"status":{"kind":"dead","day":147,"where":"Blackthorn Wood"},"quests":6,"won":3,"hits":6,"injuries":0,"signedDay":1,"diedDay":147,"diedAt":"Blackthorn Wood","history":[{"week":2,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":6,"site":"Blackthorn Wood","danger":"hazardous","outcome":"won","hits":2,"injured":false},{"week":10,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":14,"site":"Cray's Mill","danger":"hazardous","outcome":"retreated","hits":0,"injured":false},{"week":18,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","hits":0,"injured":false},{"week":21,"site":"Blackthorn Wood","danger":"hazardous","outcome":"retreated","hits":2,"injured":false}],"party":{"key":"run.party.40","label":"Tobin Wyke's party"}},{"id":"adv.21","name":"Odric Mardle","pronouns":"he","class":"Cleric","position":"back","attributes":{"might":12,"agility":14,"toughness":10,"stealth":14,"wits":12,"presence":12,"resolve":16,"lore":16},"weaponBp":300,"armourBp":300,"actions":["Mend","Ward"],"wage":{"negative":false,"g":0,"s":6,"c":8,"copper":68},"wageCopper":68,"status":{"kind":"away","where":"Reedmere Farm","day":159},"quests":8,"won":7,"hits":16,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":2,"site":"the Gallows Spire","danger":"perilous","outcome":"won","hits":3,"injured":false},{"week":6,"site":"Ashford Bridge","danger":"hazardous","outcome":"won","hits":3,"injured":false},{"week":9,"site":"Cray's Mill","danger":"routine","outcome":"won","hits":2,"injured":false},{"week":11,"site":"Ashford Bridge","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":14,"site":"Cray's Mill","danger":"hazardous","outcome":"retreated","hits":2,"injured":false},{"week":17,"site":"Blackthorn Wood","danger":"perilous","outcome":"won","hits":3,"injured":false},{"week":20,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":22,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false}],"party":{"key":"party.42","label":"Teal Thorne's party"}},{"id":"adv.22","name":"Hugh Stour","pronouns":"he","class":"Warrior","position":"front","attributes":{"might":15,"agility":10,"toughness":11,"stealth":10,"wits":14,"presence":10,"resolve":12,"lore":14},"weaponBp":300,"armourBp":300,"actions":["Guard","Cleave"],"wage":{"negative":false,"g":0,"s":0,"c":0,"copper":0},"wageCopper":0,"status":{"kind":"dead","day":76,"where":"the Drowned Chapel"},"quests":4,"won":3,"hits":5,"injuries":0,"signedDay":1,"diedDay":76,"diedAt":"the Drowned Chapel","history":[{"week":1,"site":"Cray's Mill","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":4,"site":"Cray's Mill","danger":"hazardous","outcome":"won","hits":2,"injured":false},{"week":8,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":11,"site":"the Drowned Chapel","danger":"deadly","outcome":"retreated","hits":1,"injured":false}],"party":{"key":"run.party.21","label":"Osric Stour's party"}},{"id":"adv.23","name":"Bryn Mallow","pronouns":"he","class":"Warrior","position":"front","attributes":{"might":18,"agility":9,"toughness":13,"stealth":10,"wits":8,"presence":14,"resolve":8,"lore":11},"weaponBp":300,"armourBp":300,"actions":["Guard","Cleave"],"wage":{"negative":false,"g":0,"s":8,"c":0,"copper":80},"wageCopper":80,"status":{"kind":"fit"},"quests":5,"won":4,"hits":5,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":1,"site":"Blackthorn Wood","danger":"hazardous","outcome":"won","hits":1,"injured":false},{"week":4,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":7,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":0,"injured":true},{"week":17,"site":"Blackthorn Wood","danger":"perilous","outcome":"won","hits":2,"injured":false},{"week":20,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false}],"party":{"key":"run.party.37","label":"Odric Mardle's party"}},{"id":"adv.24","name":"Elfreda Brackwater","pronouns":"she","class":"Rogue","position":"front","attributes":{"might":12,"agility":9,"toughness":7,"stealth":17,"wits":13,"presence":10,"resolve":7,"lore":10},"weaponBp":300,"armourBp":300,"actions":["Scout ahead","Strike from shadow"],"wage":{"negative":false,"g":0,"s":7,"c":0,"copper":70},"wageCopper":70,"status":{"kind":"out","day":189},"quests":5,"won":4,"hits":7,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":2,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":6,"site":"Blackthorn Wood","danger":"hazardous","outcome":"won","hits":1,"injured":false},{"week":10,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":13,"site":"the Wendle mine","danger":"hazardous","outcome":"won","hits":3,"injured":false},{"week":16,"site":"Blackthorn Wood","danger":"hazardous","outcome":"retreated","hits":1,"injured":true}],"party":{"key":"run.party.29","label":"Elfreda Brackwater's party"}},{"id":"adv.25","name":"Wat Mallow","pronouns":"they","class":"Warrior","position":"front","attributes":{"might":9,"agility":7,"toughness":13,"stealth":9,"wits":10,"presence":13,"resolve":9,"lore":11},"weaponBp":300,"armourBp":300,"actions":["Guard","Cleave"],"wage":{"negative":false,"g":0,"s":6,"c":8,"copper":68},"wageCopper":68,"status":{"kind":"away","where":"the Gallows Spire","day":165},"quests":3,"won":1,"hits":1,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":2,"site":"Ashford Bridge","danger":"routine","outcome":"won","hits":0,"injured":false},{"week":5,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","hits":1,"injured":true},{"week":18,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","hits":0,"injured":false}],"party":{"key":"party.41","label":"Wat Mallow's party"}},{"id":"adv.26","name":"Cuthred Dyke","pronouns":"they","class":"Rogue","position":"front","attributes":{"might":10,"agility":15,"toughness":8,"stealth":14,"wits":10,"presence":14,"resolve":7,"lore":8},"weaponBp":300,"armourBp":300,"actions":["Scout ahead","Strike from shadow"],"wage":{"negative":false,"g":0,"s":7,"c":0,"copper":70},"wageCopper":70,"status":{"kind":"away","where":"Reedmere Farm","day":165},"quests":6,"won":3,"hits":4,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":3,"site":"the Gallows Spire","danger":"perilous","outcome":"retreated","hits":0,"injured":false},{"week":7,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":10,"site":"the Gallows Spire","danger":"perilous","outcome":"won","hits":1,"injured":false},{"week":14,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":2,"injured":false},{"week":16,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":0,"injured":false},{"week":20,"site":"the Hollow Barrow","danger":"hazardous","outcome":"retreated","hits":0,"injured":false}],"party":{"key":"party.43","label":"Sedge Westry's party"}},{"id":"adv.27","name":"Simkin Lilley","pronouns":"he","class":"Cleric","position":"back","attributes":{"might":7,"agility":14,"toughness":7,"stealth":8,"wits":13,"presence":7,"resolve":17,"lore":12},"weaponBp":300,"armourBp":300,"actions":["Mend","Ward"],"wage":{"negative":false,"g":0,"s":6,"c":4,"copper":64},"wageCopper":64,"status":{"kind":"out","day":162},"quests":6,"won":5,"hits":11,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":2,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":6,"site":"Blackthorn Wood","danger":"hazardous","outcome":"won","hits":3,"injured":false},{"week":11,"site":"Ashford Bridge","danger":"perilous","outcome":"won","hits":2,"injured":false},{"week":15,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":0,"injured":false},{"week":18,"site":"Ashford Bridge","danger":"perilous","outcome":"won","hits":2,"injured":false},{"week":21,"site":"the Gallows Spire","danger":"perilous","outcome":"won","hits":3,"injured":false}],"party":{"key":"run.party.38","label":"Simkin Lilley's party"}},{"id":"adv.28","name":"Gervase Pike","pronouns":"they","class":"Rogue","position":"front","attributes":{"might":9,"agility":13,"toughness":11,"stealth":16,"wits":9,"presence":10,"resolve":13,"lore":10},"weaponBp":300,"armourBp":300,"actions":["Scout ahead","Strike from shadow"],"wage":{"negative":false,"g":0,"s":7,"c":0,"copper":70},"wageCopper":70,"status":{"kind":"out","day":167},"quests":8,"won":6,"hits":8,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":1,"site":"Blackthorn Wood","danger":"hazardous","outcome":"won","hits":2,"injured":false},{"week":4,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":7,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":1,"injured":false},{"week":10,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":13,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":16,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":0,"injured":false},{"week":18,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":21,"site":"the Drowned Chapel","danger":"hazardous","outcome":"won","hits":1,"injured":false}],"party":{"key":"run.party.39","label":"Kit Ambry's party"}},{"id":"adv.29","name":"Sedge Westry","pronouns":"he","class":"Rogue","position":"front","attributes":{"might":7,"agility":12,"toughness":12,"stealth":14,"wits":11,"presence":7,"resolve":8,"lore":12},"weaponBp":300,"armourBp":300,"actions":["Scout ahead","Strike from shadow"],"wage":{"negative":false,"g":0,"s":6,"c":2,"copper":62},"wageCopper":62,"status":{"kind":"away","where":"Reedmere Farm","day":165},"quests":7,"won":7,"hits":8,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null,"history":[{"week":2,"site":"Ashford Bridge","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":4,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":7,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":10,"site":"the Gallows Spire","danger":"perilous","outcome":"won","hits":1,"injured":false},{"week":14,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":17,"site":"Blackthorn Wood","danger":"perilous","outcome":"won","hits":2,"injured":false},{"week":20,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false}],"party":{"key":"party.43","label":"Sedge Westry's party"}},{"id":"adv.30","name":"Linnet Dunmore","pronouns":"she","class":"Warrior","position":"front","attributes":{"might":17,"agility":7,"toughness":15,"stealth":12,"wits":13,"presence":7,"resolve":7,"lore":7},"weaponBp":300,"armourBp":300,"actions":["Guard","Cleave"],"wage":{"negative":false,"g":0,"s":0,"c":0,"copper":0},"wageCopper":0,"status":{"kind":"dead","day":125,"where":"Reedmere Farm"},"quests":5,"won":2,"hits":4,"injuries":0,"signedDay":1,"diedDay":125,"diedAt":"Reedmere Farm","history":[{"week":2,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":5,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","hits":0,"injured":false},{"week":10,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":14,"site":"Cray's Mill","danger":"hazardous","outcome":"retreated","hits":2,"injured":false},{"week":18,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","hits":0,"injured":false}],"party":{"key":"run.party.33","label":"Kit Ambry's party"}},{"id":"adv.41","name":"Ralf Dunmore","pronouns":"he","class":"Cleric","position":"back","attributes":{"might":10,"agility":13,"toughness":12,"stealth":8,"wits":13,"presence":10,"resolve":18,"lore":12},"weaponBp":300,"armourBp":300,"actions":["Mend","Ward"],"wage":{"negative":false,"g":0,"s":6,"c":4,"copper":64},"wageCopper":64,"status":{"kind":"out","day":208},"quests":6,"won":3,"hits":6,"injuries":1,"signedDay":18,"diedDay":null,"diedAt":null,"history":[{"week":4,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":0,"injured":false},{"week":7,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":1,"injured":false},{"week":9,"site":"Cray's Mill","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":13,"site":"the Wendle mine","danger":"hazardous","outcome":"won","hits":3,"injured":false},{"week":16,"site":"Blackthorn Wood","danger":"hazardous","outcome":"retreated","hits":1,"injured":false},{"week":19,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","hits":0,"injured":true}],"party":{"key":"run.party.35","label":"Ralf Dunmore's party"}},{"id":"adv.49","name":"Wren Carr","pronouns":"he","class":"Rogue","position":"front","attributes":{"might":13,"agility":17,"toughness":7,"stealth":11,"wits":12,"presence":13,"resolve":7,"lore":14},"weaponBp":300,"armourBp":300,"actions":["Scout ahead","Strike from shadow"],"wage":{"negative":false,"g":0,"s":7,"c":0,"copper":70},"wageCopper":70,"status":{"kind":"away","where":"Reedmere Farm","day":159},"quests":2,"won":2,"hits":2,"injuries":0,"signedDay":134,"diedDay":null,"diedAt":null,"history":[{"week":20,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":22,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false}],"party":{"key":"party.42","label":"Teal Thorne's party"}},{"id":"adv.50","name":"Brida Stour","pronouns":"they","class":"Rogue","position":"front","attributes":{"might":13,"agility":15,"toughness":11,"stealth":12,"wits":8,"presence":14,"resolve":12,"lore":9},"weaponBp":300,"armourBp":300,"actions":["Scout ahead","Strike from shadow"],"wage":{"negative":false,"g":0,"s":7,"c":0,"copper":70},"wageCopper":70,"status":{"kind":"away","where":"Reedmere Farm","day":159},"quests":2,"won":2,"hits":2,"injuries":0,"signedDay":134,"diedDay":null,"diedAt":null,"history":[{"week":20,"site":"Blackthorn Wood","danger":"routine","outcome":"won","hits":1,"injured":false},{"week":22,"site":"Reedmere Farm","danger":"routine","outcome":"won","hits":1,"injured":false}],"party":{"key":"party.42","label":"Teal Thorne's party"}},{"id":"adv.54","name":"Aldo Withy","pronouns":"he","class":"Cleric","position":"back","attributes":{"might":9,"agility":8,"toughness":10,"stealth":8,"wits":7,"presence":10,"resolve":10,"lore":11},"weaponBp":300,"armourBp":300,"actions":["Mend","Ward"],"wage":{"negative":false,"g":0,"s":4,"c":8,"copper":48},"wageCopper":48,"status":{"kind":"away","where":"the Gallows Spire","day":165},"quests":0,"won":0,"hits":0,"injuries":0,"signedDay":147,"diedDay":null,"diedAt":null,"history":[],"party":{"key":"party.41","label":"Wat Mallow's party"}}],"weeks":[{"week":1,"lines":{"founding":17000,"grant":4000,"wages":-2098,"upkeep":-500},"chest":18402},{"week":2,"lines":{"wages":-2098,"upkeep":-500,"fee":5083,"loot":1016},"chest":21903},{"week":3,"lines":{"wages":-2098,"upkeep":-500,"fee":8722,"loot":1743,"funeral":-1864,"sign-on":-512},"chest":27394},{"week":4,"lines":{"wages":-2098,"upkeep":-500},"chest":24796},{"week":5,"lines":{"wages":-2098,"upkeep":-500,"fee":5550,"loot":1109},"chest":28857},{"week":6,"lines":{"wages":-2098,"upkeep":-500},"chest":26259},{"week":7,"lines":{"wages":-2098,"upkeep":-500,"fee":5997,"loot":1199},"chest":30857},{"week":8,"lines":{"wages":-2098,"upkeep":-500,"fee":1369,"loot":273},"chest":29901},{"week":9,"lines":{"wages":-2098,"upkeep":-500,"fee":1251,"loot":250},"chest":28804},{"week":10,"lines":{"wages":-2098,"upkeep":-500,"fee":1484,"loot":296},"chest":27986},{"week":11,"lines":{"wages":-2098,"upkeep":-500,"fee":8535,"loot":1706,"funeral":-2176},"chest":33453},{"week":12,"lines":{"wages":-2022,"upkeep":-500,"fee":8132,"loot":1626},"chest":40689},{"week":13,"lines":{"wages":-2022,"upkeep":-500},"chest":38167},{"week":14,"lines":{"wages":-2022,"upkeep":-500,"fee":4499,"loot":899},"chest":41043},{"week":15,"lines":{"wages":-2022,"upkeep":-500,"fee":1464,"loot":292},"chest":40277},{"week":16,"lines":{"wages":-2022,"upkeep":-500},"chest":37755},{"week":17,"lines":{"wages":-2022,"upkeep":-500},"chest":35233},{"week":18,"lines":{"wages":-2022,"upkeep":-500,"funeral":-2280},"chest":30431},{"week":19,"lines":{"wages":-1942,"upkeep":-500,"fee":18475,"loot":3694},"chest":50158},{"week":20,"lines":{"wages":-1942,"upkeep":-500,"sign-on":-1120},"chest":46596},{"week":21,"lines":{"wages":-2082,"upkeep":-500,"fee":1114,"loot":222,"funeral":-2176,"sign-on":-384},"chest":42790},{"week":22,"lines":{"wages":-2054,"upkeep":-500,"fee":3280,"loot":656},"chest":44172},{"week":23,"lines":{"wages":-2054,"upkeep":-500,"fee":6778,"loot":1355},"chest":49751}],"reasons":["grant","fee","loot","wages","upkeep","funeral","sign-on"],"board":[{"id":"offer.81","site":"the Drowned Chapel","monster":"drowned dead","twist":null,"danger":"deadly","fee":{"negative":false,"g":161,"s":2,"c":1,"copper":16121},"feeCopper":16121,"travelDays":9,"expiresWeek":24},{"id":"offer.82","site":"the Gallows Spire","monster":"old magic","twist":null,"danger":"perilous","fee":{"negative":false,"g":62,"s":1,"c":7,"copper":6217},"feeCopper":6217,"travelDays":10,"expiresWeek":24},{"id":"offer.83","site":"the Drowned Chapel","monster":"cultists","twist":null,"danger":"hazardous","fee":{"negative":false,"g":31,"s":5,"c":7,"copper":3157},"feeCopper":3157,"travelDays":8,"expiresWeek":24},{"id":"offer.84","site":"Reedmere Farm","monster":"wolves","twist":"Foul weather","danger":"routine","fee":{"negative":false,"g":12,"s":0,"c":7,"copper":1207},"feeCopper":1207,"travelDays":4,"expiresWeek":24},{"id":"offer.85","site":"Reedmere Farm","monster":"wolves","twist":"A trap","danger":"hazardous","fee":{"negative":false,"g":26,"s":7,"c":5,"copper":2675},"feeCopper":2675,"travelDays":8,"expiresWeek":25},{"id":"offer.86","site":"the Hollow Barrow","monster":"drowned dead","twist":"A hostage","danger":"hazardous","fee":{"negative":false,"g":34,"s":8,"c":9,"copper":3489},"feeCopper":3489,"travelDays":7,"expiresWeek":25},{"id":"offer.87","site":"Blackthorn Wood","monster":"fen things","twist":null,"danger":"hazardous","fee":{"negative":false,"g":33,"s":7,"c":8,"copper":3378},"feeCopper":3378,"travelDays":7,"expiresWeek":25},{"id":"offer.88","site":"Blackthorn Wood","monster":"wolves","twist":"A hostage","danger":"routine","fee":{"negative":false,"g":12,"s":7,"c":9,"copper":1279},"feeCopper":1279,"travelDays":4,"expiresWeek":25}],"parties":[{"id":"party.41","site":"the Gallows Spire","monster":"barrow dead","twist":"A trap","danger":"deadly","members":["Kit Marsh","Ysolde Harrow","Wat Mallow","Aldo Withy"],"arriveDay":156,"homeDay":165,"fee":{"negative":false,"g":228,"s":2,"c":9,"copper":22829}},{"id":"party.42","site":"Reedmere Farm","monster":"bandits","twist":"Cursed ground","danger":"routine","members":["Odric Mardle","Teal Thorne","Kit Ware","Wren Carr","Brida Stour"],"arriveDay":154,"homeDay":159,"fee":{"negative":false,"g":12,"s":0,"c":4,"copper":1204}},{"id":"party.43","site":"Reedmere Farm","monster":"goblins","twist":"A hostage","danger":"hazardous","members":["Sabine Oakes","Osric Stour","Cuthred Dyke","Sedge Westry"],"arriveDay":157,"homeDay":165,"fee":{"negative":false,"g":32,"s":0,"c":7,"copper":3207}}],"quests":[{"week":22,"site":"Reedmere Farm","danger":"routine","outcome":"won","party":["Odric Mardle","Teal Thorne","Kit Ware","Wren Carr","Brida Stour"],"dead":[]},{"week":21,"site":"Blackthorn Wood","danger":"hazardous","outcome":"retreated","party":["Sedge Marsh","Tobin Wyke","Kit Hale","Ash Dyke"],"dead":["Sedge Marsh"]},{"week":21,"site":"the Drowned Chapel","danger":"hazardous","outcome":"won","party":["Kit Ambry","Bryn Ketch","Gervase Pike","Maud Lockley","Ralf Fenwick"],"dead":[]},{"week":21,"site":"the Gallows Spire","danger":"perilous","outcome":"won","party":["Hob Rushmere","Jory Rushmere","Rook Ferriby","Simkin Lilley"],"dead":[]},{"week":20,"site":"Blackthorn Wood","danger":"routine","outcome":"won","party":["Odric Mardle","Wren Carr","Brida Stour","Bryn Mallow","Sedge Westry"],"dead":[]},{"week":20,"site":"the Hollow Barrow","danger":"hazardous","outcome":"retreated","party":["Teal Thorne","Sabine Cray","Sabine Oakes","Cuthred Dyke"],"dead":[]},{"week":19,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","party":["Ralf Dunmore","Kit Ware","Osric Stour","Kit Marsh"],"dead":[]},{"week":18,"site":"Blackthorn Wood","danger":"routine","outcome":"won","party":["Bryn Ketch","Gervase Pike","Maud Lockley","Ralf Fenwick","Kit Hale"],"dead":[]},{"week":18,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","party":["Kit Ambry","Linnet Dunmore","Sedge Marsh","Wat Mallow"],"dead":["Linnet Dunmore"]},{"week":18,"site":"Ashford Bridge","danger":"perilous","outcome":"won","party":["Jory Rushmere","Rook Ferriby","Simkin Lilley","Ysolde Harrow","Ash Dyke"],"dead":[]},{"week":17,"site":"Blackthorn Wood","danger":"perilous","outcome":"won","party":["Odric Mardle","Hob Rushmere","Bryn Mallow","Tobin Wyke","Sedge Westry"],"dead":[]},{"week":16,"site":"Blackthorn Wood","danger":"hazardous","outcome":"retreated","party":["Ralf Dunmore","Sabine Cray","Osric Stour","Elfreda Brackwater"],"dead":[]},{"week":16,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","party":["Bryn Ketch","Teal Thorne","Gervase Pike","Teal Gosling","Cuthred Dyke"],"dead":[]},{"week":16,"site":"the Wendle mine","danger":"hazardous","outcome":"retreated","party":["Kit Ware","Sabine Oakes","Kit Marsh","Kit Hale"],"dead":[]},{"week":15,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","party":["Kit Ambry","Jory Rushmere","Ralf Fenwick","Simkin Lilley"],"dead":[]},{"week":14,"site":"Reedmere Farm","danger":"routine","outcome":"won","party":["Teal Thorne","Cuthred Dyke","Sedge Westry","Ysolde Harrow"],"dead":[]},{"week":14,"site":"Cray's Mill","danger":"hazardous","outcome":"retreated","party":["Odric Mardle","Hob Rushmere","Linnet Dunmore","Sedge Marsh","Tobin Wyke"],"dead":[]},{"week":13,"site":"Blackthorn Wood","danger":"routine","outcome":"won","party":["Bryn Ketch","Sabine Cray","Gervase Pike","Teal Gosling","Rook Ferriby"],"dead":[]},{"week":13,"site":"the Wendle mine","danger":"hazardous","outcome":"won","party":["Ralf Dunmore","Kit Ware","Elfreda Brackwater","Ash Dyke"],"dead":[]},{"week":11,"site":"the Drowned Chapel","danger":"deadly","outcome":"retreated","party":["Hugh Stour","Sabine Oakes","Osric Stour","Jory Rushmere","Kit Marsh"],"dead":["Hugh Stour"]},{"week":11,"site":"Ashford Bridge","danger":"routine","outcome":"won","party":["Odric Mardle","Hob Rushmere","Teal Thorne","Tobin Wyke","Ysolde Harrow"],"dead":[]},{"week":11,"site":"Ashford Bridge","danger":"perilous","outcome":"won","party":["Kit Ambry","Ralf Fenwick","Simkin Lilley","Kit Hale"],"dead":[]},{"week":10,"site":"the Gallows Spire","danger":"perilous","outcome":"won","party":["Bryn Ketch","Teal Gosling","Rook Ferriby","Cuthred Dyke","Sedge Westry"],"dead":[]},{"week":10,"site":"Reedmere Farm","danger":"routine","outcome":"won","party":["Sabine Cray","Gervase Pike","Elfreda Brackwater","Linnet Dunmore","Sedge Marsh"],"dead":[]}],"letter":["Guildmaster,","We are a day out from Reedmere Farm, and the work is done, none the worse for it.","We fought footpads, and it was brief, which suited us, and we finished it.","The earth itself was against us, and every wound ran, which made it harder.","Wren Carr walked the ground ahead and marked it for us without being asked twice.","Now, the money: they are paying in full, and gladly, and we are fit to go again.","In haste, Teal Thorne"],"map":{"w":150,"h":100,"dayCells":11,"biomes":["ocean","coast","lake","tundra","taiga","temperate-forest","grassland","steppe","desert","savanna","jungle","swamp","alpine"],"grid":"gggghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhc~~~~~~~~~hhhhhhhhhhhhhhdmmmmmmmmmmhhhhhhhhhhiiiiiiiiiiiiiiiiiihhiiiiiiiiiiiiiiiiiiiiii~~~~~~~~~~~ggghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~~~~chhhhhhhhhhhhhmmmmmmmmmmmhhhhhhhhhhhiiihhiiiiiiiiiiihhhhhiiiiiiiiiiiiiiiiiiiil~~~~~~~~~~~gghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiihhhhhhhhhhhhhhhhhhhhh~~~~chhhhhhhhhhhdmmmmmmmmmmmhhhhhhhhhhhhhhhhhhhiiiiiiiihhhhhhhiiiiiiiiiiiiiiiiiiil~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiihhhhhhhhhhhhhhhhhhhhh~~~~chhhhhhhhhhmmmmmmmmmmmmhhhhhhhhhhhhhhhhhhhhhhiiiiihhhhhhhhhiiiiiiiiiiiiiiiiiii~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~~chhhhhhhhhmmmmmmmmmmmmdhhhhhhhhhhhhhhhhhhhhhhhiihhhhhhhhhhhiiiiiiiiiiiiiiiiiii~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~hhhhhhhhhdmmmmmmmmmmmmhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiiii~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhchhhhhhhhhdmmmmmmmmmmmmhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiiii~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhdmmmmmmmmmmmhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiiii~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhmmmmmmmmmmmdhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiiii~~~~~~~~~~~hhhhhhh~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhdmmmmmmmmmmhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiii~~~~~~~~~~~hhhh~hhhhhhhhhhhhhh~hhhhhhhhhhhhhhhhhhhhh~hhhhhhhhhhhhhhhhhhhhhhhhhhhhdmmmmmmmmmdhhhhhhhhhhhhhhhhhhiiiiiiihhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiii~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhdmmmmmmmmmdhhhhhhhhhhhhhhhiiiiiiiiiiiiiihhhhhhhhhhhiiiiiiiiiiiiiiiiiii~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhihhhhhhhhhhhhhhhhhiihhhhhhhhhhhhhhhhhhhhhhhhddmmmmmmmdhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiiiiihihhhhhiiiiiiiiiiiiiiiiiiii~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhiiihhhhhhhhhhhhhhhiiihhiihhhhhhhhhhhhhhhhhhhddmmmmmmdhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiiiiiiiiiihiiihiiiiiiiiiiiiiiiiiii~~~~~~~~ghhhhhhhhhhhhhhhhhhhhhhhhhiiiihhhhhhhhhhhhhhi~~iiiiihhhhhhhhhhhhhhhhhhhddmmmmmdhhhhhhhhhhhhhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihhiiiiiiiiiiiiiiiii~~~~~~~~hhhhhhhhhhhhhhhhhhhhh~hhhiiiiiihhhhhhhhhhhhhhiiiiiiiihhhihhhhhhhhhhhhhhddmmmddhhhhhhhhhhhhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiih~~~~~~~~hhhhhhhhhhhhhhhhhhhhhh~hiiiiiiiihhhhhhhhhhhhhhhhhiiiihihihhhhhhhhhhhhhhddddddhhhhhhhhhhhhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii~~~~~~~~~hhhhhhhhhhhhhhhhhhiiiii~iiiiiiiiihhhhhhhhhhhhhhhhhh~hhhhhhhhhhhhhhhhhhhhhdddhhhhhhhhhhhiiiiiiiii~iiiiii~iiiiiii~iiiiiiiiiiiiiiiiiiiiiiiihhhhh~~~~~~~~~hhhhhhhhhhhhhhhiiiiiiiii~iiiiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiiiiii~iiiiiiiiiiiiiiiiiiiiiiiiiiihhhhhh~~~~~~~~~~hhhhhhhhhhhhhiiiiiiiiiiii~iiiiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiiiiiiiilliiiiiiiiiiiiiiiiiiiiiiiiiiiiiihhhhhhhhhhhhhg~~~~~~~~~~~hhhhhhhhhhhiiiiiiiiiiiiiii~iiiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiiiiiiiilliliiiiiiiiiiiiiiiiiiiihhhhhhhhhhhhhhhhhhhhh~~~~~~~~~~~~~hhhhhhhhiiiiiiiiiiiiiiiiiii~iiiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiihhhhhhhhhiiiiiiihhlililliiiiiiiiiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhh~~~~~~~~~~~~~~hhhhiiiiiiiiiiiiiiiiiiiiiiii~iiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiiiiiiiiiiiiiiihhhhhlllllhllhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhlhlhllg~~~~~~~~~~~~~~~hhhiiiiiiiiiiiiiiiiiiiiiiiiii~iiiiiiiihhhhhhhhhhhhhhhhhhhhihhhhiiiiiiiiiiiiiiiiihhhhhhhlhllll~llhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhllll~~l~~~~~~~~~~~~~~~~~hhiiiiiiiiiiiiiiiiiiiiiiiiiiii~iiiiiiihhhhhhhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiihhhhhhhhhhhlllhlllhllhllllhhhhhhhhhhhhhhhhhhhhhhhgllllgll~~~~~~~~~~~~~~~~~~hiiiiiiiiiiiiiiiiiiiiiiiiiiiiii~iii~iihhhhhhhhhhhhhhhhhhiiiiiiiiiiihhhhhhhhhhhhhhhllllllhh~llhlllllhlhhhhhhhhhhhhhhhhhhhhgggggglllllg~~~~~~~~~~~~~~~~~hhi~iiiiiiiiiiiiiiiiiiiiiiiiiiiii~iiiihhhhhhhhhhhhhhhhhiiiiiiiihhhhhhhhh~h~hhhhhllllllhhlllh~lllllhlhhhhhhhhhhhhhhhggggggggggllllllglf~~~~~~~~~~~~~~~~hliiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihhhhhhhhhhhhhhhhiihhhhhhhhhhhhhhhhhhhhhhhlhll~hlllllllhhllhllhhhhhhhhhhhhhggggggggggggglllllgll~~~~~~~~~~~~~~~~lliiliiiiiiiiiiiiiiiiiiiiiiiihiiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhggglglgllglgglllllg~~llhhhhhggggggggggggggggggggllllllglg~~~~~~~~~~~~~~~~ll~llil~iiiiiiiiiiiiiiiiihhhhhhhhhiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhgggggggglllllgggggllll~lhggggggggggggggggggggggggglllllgglg~~~~~~~~~~~~~~~~llillilliiiiiiiiiiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhggggggg~ggglllggggggff~~fllgggggg~gggggggggggggggggglllllglf~~~~~~~~~~~~~~~~lliiilliiiiiiiihhiiihiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~hhhhhgggggggggggggggggggggff~~~llgggggglgggggggggggggggggggllllgff~~~~~~~~~~~~~~~~lillllliiiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhggggggggggggggggggggllf~bllggggglllggggggggggggggggggl~llgff~~~~~~~~~~~~~~~~lllliiiiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhiiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhggggggggggggglgggggglllgllggggllglgggggggggggggggggggllgffff~~~~~~~~~~~~~~~lllilllhhiiihhhhhhhhhhhhhhhhhhhhhhhhhhhiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhgggggggggglllllllllllllglgggllllllgggggggggggggggggggggfff~~~~~~~~~~~~~~~~l~glllhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhggggggggglgggggll~llllllllgllllllgggllglgggggggggggggffffl~~~~~~~~~~~~~~~~~bhllhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhgggggggggggglllllgl~llllllllgllgllllllllllggggggggggggfffffl~~~~~~~~~~~~~~~lbllllhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhggggggggggggggggggglglllllgl~lllllllllgllllllglgggggggggggfffffff~~~~~~~~~~~~~~~~iillliiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhgggggggggggggggggggggglllffffl~~lllgllllll~lglglllggggggggggffffffffl~~~~~~~~~~~~~~~llliiiiiihhhhhhhhhhhhhhhhhhhhhihiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhgggggggggggggggggggggggffffffff~~~~~lllllllllllllgggggggggggggfffffffff~~~~~~~~~~~~~~~lliiiiiiihhhhhhhhhhhhhhhhhhhhiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhgggggggggggggggggggggggf~fffff~~~~~~flllllgllllgggggglggggggggfffffffff~~~~~~~~~~~~~~~iiiiiiiihhhhhhhhhhhhhhhhhhhihiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhgggggggggggggggggggggggglffffflb~~~~llllllglllgggggglllgggggggfffffffff~~~~~~~~~~~~~~~iiiiiiihhhhhhhhhhhhhhhhhhhhhhiiiiiiiihhhhhhhhhhhhhhhhhhh~~hhhhhhhhg~gggggggggggggggggggglllgllllfffflllllllglllgggggll~lllgggffffffffffk~~~~~~~~~~~~~~iiiihhhhhhhhhhhhhhhhhhhhhhhhhiiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~ggggggg~gggggggggggglllllllggggllllllllglllgggglllglllggfffffffffff~~~~~~~~~~~~~~ihhhhhhhhhiihihhhhhhhhhhhhhhhiiiiiiiihhhhhhhhhhhhhhhhhhhhhhhh~hhhhhhh~hhhhhgg~gggggggggggggggllggggggllglllllglllgggglll~lllffffffffffff~~~~~~~~~~~~~~hhhhhhhhhhiiiiihhhhhhhhhhhhhiiiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhh~hhhhhhh~hhhhhhhhhhhhhggggggllglgggggllllgllglllglllllgglllll~fffffffffffk~~~~~~~~~~~~~~hhhhhhhhhhiiiiihhhhhhhhhhhhhhiiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhh~hhhhhhhh~hhhhhhhhhhhhhgggggllllgggggllllllllglllglllllglgll~ffffffffffffk~~~~~~~~~~~~~~hhhhhhhhhhhiiihhhhhhhhhhhhhhhiiiiiiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~hhhhh~hllhhhhggggggggggggllglllgllgllllggllllllllfffffffllffffk~~~~~~~~~~~~~~hhhhhhhhhhiiihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~hhhhhhllhhhhggggllllllglllllllglllllglllllllllll~f~ffff~lffffl~~~~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhllhlhgllllllllllllglllllgllllllgllllllllfffffffllllfff~~~~~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhlhllhgglllgllglgllllllllllllllgggllllllllfffffffffllfffl~~~~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~hgllglllllllg~gllllllgl~llggggllllllffffffffffflfffk~~~~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhlggglllllllgllllllgllglllgggglllllllfffffffffffffffk~~~~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhggggggggggggggggggggglggggggggllggggfffffffffffffff~~~~~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhggggggggggggggggggggggggggggggggllllffffffffffffffff~~~~~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~hh~hhhhhhhhh~~~~hhhhhhhhhhggggggggggggggggggggggggggggggggggggffffffffffffflff~~~~~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~hhhhh~~~~~~~hhhhhhhhggggggggggggggggggggggggggggggggggggfffffffffffffflff~~~~~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~~~hchhhhhhhhggggggggggggggggggggggggggggggggggglfffffffffflllllfff~~~~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~hhhh~~~hhhhhhhhhhhgggggggggggggggggggggggggggggggggggff~ffffffffffffffff~~~~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~hhh~~~chhhhhhhhhhggggggggggggggggggggggggggggggggggggff~cfffffffffffffff~~~~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~h~~~~~chhhhhhhhhhggggggggggggggggggggggggg~ggggggggg~~~~~ffffffffffllff~~~~~~~~~~~~~~~hhhhhhhhhhhh~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~~~~~~~hhhhhhhhhhgggggggggggggggggggggggggggggggggl~~~~~~cfffffffffllff~~~~~~~~~~~~~~~hhhhhhhhhhhh~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~~~~~~~~~hhhhhhhhhgggggggggggggggggggggggggglgggggg~~~~~~~~fffllfffllfff~~~~~~~~~~~~~~~hhhhhhhhhhhh~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~~~~~~~~~~~~hhhhhhhgggggggggggggggggggg~gggggggl~glgg~~~~~~~~clllllllllfff~~~~~~~~~~~~~~~hhhhhhhhhhhhhc~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~~~~~~~~~~~~~hhhhhhhggggggggggggggggggggg~gggggggg~lg~~~~~~~~~lfffffllfffff~~~~~~~~~~~~~~~hhhhhhhhhhhhhhh~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~~~~~~~~~~~~~~hhhhhgggggggggggggggggg~gggggggggggg~~~~~~~~~~~lffffffffffff~~~~~~~~~~~~~~~hhhhhhhhhhhhhhh~~~~~hhhhhhhhhhhhhhhhhhhhhhhh~hhhhhhhhhhhhhhhh~~~~~~~~~~~~~~~~hhhgggggggggggggggggggggggggggggggg~~~~~~~~~ffffffffffffff~~~~~~~~~~~~~~~hhhhhhhhhhhhhhh~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~~~~~~~~~ch~~~chhggggggggggggggggggggggggggggggggg~~~~~~~~~lffffffffflfff~~~~~~~~~~~~~~~hhhhhhhhhhhhhhh~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~h~c~~~~hhhhhhhhhgggggggggggggggggggggggggggggggggg~~~~~~~~cffffffffflfff~~~~~~~~~~~~~~~hhhhhhhhhhhhh~~~~~~chhhhhhh~~~hh~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhchh~hhhhhhhhhhggggggggggggggggggggggggggggggggggff~~~~~~~lfffffffffffff~~~~~~~~~~~~~~~hhhhhhhhhhhhh~cc~~~~hhhhhh~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhggggggggggggggggggggggggggg~ggggggfff~~~~~~lfffffflffffff~~~~~~~~~~~~~~~hhhhhhhhhhhhh~hhhcc~hh~~~~~~~~~~chhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhggggggggggggggggggggggggggggggggggffff~~~~~lffffffllllff~~~~~~~~~~~~~~~~hhhhhhhllhhhhhhhhhh~~~~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhgggggggggggggggggggggggggggggggggggffff~~~~~~lffffl~lllff~~~~~~~~~~~~~~~~hhhhhhhlhlhhhhhhhh~~~~~~~~~~~~~~~hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhgggggggggggggggggggggggggggggggggggfffff~~~~clfffffllllff~~~~~~~~~~~~~~~~hhhhhhhlhlhhhhhhh~~~~~~~~~~~~~~~~hhhhhhhhhhhhhdhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhgggg~ggggggggggggggggggggggggggggggffffff~llffffl~~lfffff~~~~~~~~~~~~~~~hhhhhhhlhllhhhhhh~~~~~~~~~~~~~~~~hhhhhhhhhhddddddhhhhhhhhhhhhhhhhhhhhhhhhhhhhhggggg~gggggggggggggggggggggeeeeegegffffffflfffffflllfffff~~~~~~~~~~~~~~~ggggggglgllf~ghlh~~~~~~~~~~~~~~~~chhhhhhhhdddddddhhhhhhhhhhhhhhhhddhhhhhhhhhhhgggggg~ggggggeggggggggggegeeeeeeeeeffffffffffllfllllfffff~~~~~~~~~~~~~~~gggffffffll~~~hlh~~~~~~~~~~~~~~~~hhhhhhddddddddddhhhhhhhhhhhhhddddddhhhhhhhhhhhgggggg~gggggeggggggggggeeeeeeeeeeeeffffff~lffllfl~~lffff~~~~~~~~~~~~~~~effffffffff~~~glh~~~~~~~~~~~~~~~chhhhhhhdddddddddhh~hhhhdhhhhdddddddhhhhhhhhhhhggggggg~ggggeegggggggggeeeeeeeeeeeeefff~ffffffffffllffff~~~~~~~~~~~~~~~eggffffllll~~bllh~~~~~~~~~~~~~~~hhhhhhhhhdddddddddhhhhddddddhdddddddddhhhhhhhhggggggggg~gggeeeeggggeeeeeeeeeeeeeeeeffffffffffffffffffff~~~~~~~~~~~~~~~eeggg~lllllffglhhh~~~~~~~~~~~~~hhhh~~~~~hdddddddddddhddddddddhddddddddddddhhddeeeegggggg~~eeeeeeeeeeeeeeeeeeeeeeeeeeffffffffffffffffff~~~~~~~~~~~~~~~~dddhhlhlhhhhlhllhh~~~~~~~~~chhhhhh~~~~~~~ddddddddddddddddddddddddddddddddddddeeeeeee~geee~eeeeeeee~eeeeeeeeeeeeeeeeeefeffffffff~ffffff~~~~~~~~~~~~~~~~dddddhhhhhhhlhllhhhc~~chhchhddhddd~~~~~~~~~~~~~dddddd~~ddddddddddddddddddddddeeeeeeeeeeeee~eeeeeeeeeeeeeeeeeeeeeeeeeeeeeffffffffffffff~~~~~~~~~~~~~~~~ddddddddddhhllhlhhhddhdddddddddddd~~~~~~~~~~~~~~ddddd~~dddddddddddddddddddddeeeeeeeeeeeeeeeeeeee~eeeeeeeeeeeeeeeeeeeeeeefeffffffffffff~~~~~~~~~~~~~~~~dddddddddddhhhlllhdddddddddddddddddd~~~~~~~~~~~~~~~~~~ddddddddd~ddddddddddddeeeeeeeeeeeeeeeeeeeee~~eeeeeeeeeeeeeeeeeeeeeeeefefff~bffff~~~~~~~~~~~~~~~~dddddddddddddddddddddddddddddddddddd~~~~~~~~~~~~~~~~~cddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeee~eeeeeeeeeeeeeeeeeeeeeeeeeeef~~~efe~~~~~~~~~~~~~~~~~ddddddddddddddddddddddddddddddddddddd~~~~~~~~~~~~~~~~cddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee~eeeeeeeeeeeee~eee~~~~~~~~~~~~~~~~~dddddddddddddddddddddddddddddddddddddd~~~~~cdd~~~~~~~dddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee~~~~~~~~~~~~~~~~~dddddddddddddddddddddddddddddddddddddd~~~~cddd~~~~~~cdddddddddddddddddddddddeeeeeeeeeeeeeee~eeeeeeeeeeeeeeeeeeeeeeeeeeeee~eeeee~ee~~e~~~~~~~~~~~~~~~~~ddddddddddddddddddddddddddddddddddddddd~ccdddddd~~~cdddddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeee~eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee~~e~~~~~~~~~~~~~~~~~dddddddddddddddddddddddddddddddddddddddddddddddddccdddddddddddddddd~dddddddddeeeeeeeeeeeeeeeeeeee~eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeebbe~~~~~~~~~~~~~~~~~ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee~~~~~~~~~~~~~~~~d~~~~~~~~~~~~ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee~eeeeeeeeeeeee~~~~~~~~~~~~~~~~~~~~~~~cd~~~~~ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee~~~~~~~~~~~~~~~~~~~~cddddc~~~dddddddddddddddddddddddddddddddddddddddddddddddddddddd~ddddddddddddddeeeeeeeeeeeee~eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee~~~~~~~~~~~~~~~~~~~cddddddd~~ddddddddddddddddddddddddddddddddddddddddddddd~~~ddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee~~~~~~~~~~~~~~~cdccdddddddddcdddddddddddd~dddddddddddddddddddddddddddddddd~~~~ddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee~~~~~~~~~~~~~~~ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd~~~~~dddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee~eeeee~~~~~~~~~~~~~~~","roads":[[[75,50],[74,50],[73,49],[72,49],[71,49],[70,49],[69,49],[68,49],[67,49],[66,49],[65,49],[64,50],[63,50],[62,50],[61,50],[60,50],[59,50],[58,50],[57,50],[56,50],[55,50]],[[117,56],[118,55],[119,55],[120,55],[121,55],[122,54],[123,54],[124,53],[125,52],[126,52],[127,52],[128,51],[129,51],[130,51],[131,51],[132,51],[133,50],[134,50]],[[117,56],[118,55],[119,55],[119,54],[119,53],[119,52],[119,51],[118,50],[117,49],[116,48],[115,47],[114,46],[113,47],[112,47],[111,46],[110,45],[109,44],[108,43],[107,42],[106,41],[105,40],[104,39],[103,38],[103,37],[103,36],[103,35],[102,34],[101,34]],[[115,14],[115,15],[115,16],[115,17],[114,18],[114,19],[114,20],[113,21],[112,22],[111,23],[110,24],[110,25],[109,26],[108,26],[107,27],[106,28],[105,29],[105,30],[105,31],[104,32],[103,33],[102,33],[101,34]],[[75,50],[76,50],[77,50],[78,50],[79,51],[80,52],[81,53],[82,53],[83,53],[84,53],[85,53],[86,53],[87,53],[88,54],[89,54],[90,54],[91,54],[92,54],[93,54],[94,54],[95,54],[96,54],[97,54],[98,54],[99,54],[100,55],[101,55],[102,55],[103,55],[104,55],[105,55],[106,55],[107,55],[108,55],[109,55],[110,55],[111,55],[112,55],[113,55],[114,56],[115,56],[116,56],[117,56]],[[75,50],[76,50],[77,50],[78,50],[79,51],[80,52],[81,53],[82,53],[83,53],[84,53],[85,53],[86,53],[87,53],[88,54],[89,54],[90,54],[91,54],[92,54],[93,54],[94,54],[95,54],[96,54],[97,54],[98,54],[99,54],[100,55],[101,55],[102,55],[103,55],[104,55],[105,55],[106,55],[107,55],[108,55],[109,55],[110,55],[111,55],[112,55],[113,55],[114,56],[115,56],[116,56],[117,56],[118,55],[119,55],[119,54],[119,53],[119,52],[118,51],[117,50],[116,49],[115,48],[114,47],[113,46],[112,47],[111,46],[110,45],[109,44],[108,43],[107,42],[106,41],[105,40],[104,40],[103,39],[103,38],[103,37],[103,36],[102,35],[101,34]],[[55,50],[54,50],[53,50],[52,50],[51,50],[50,50],[49,51],[48,52],[47,53],[46,53],[45,53],[44,53],[43,54],[42,55],[41,56],[40,57],[39,58],[38,58],[37,58],[36,58],[35,58],[34,58],[33,57],[32,58],[31,58],[30,58],[29,58],[28,58],[27,58],[26,58],[25,58],[24,58],[23,57],[22,57],[21,57],[20,57],[19,57],[18,57],[17,57],[16,58],[15,58],[14,58],[13,58]],[[115,14],[115,15],[115,16],[115,17],[114,18],[114,19],[114,20],[113,21],[112,22],[111,23],[110,24],[110,25],[109,26],[108,26],[107,27],[106,28],[105,29],[105,30],[105,31],[104,32],[103,33],[102,33],[101,34],[102,35],[103,36],[103,37],[103,38],[103,39],[104,40],[105,40],[106,41],[107,42],[108,43],[109,44],[110,45],[111,46],[112,47],[113,46],[114,47],[115,48],[116,49],[117,50],[118,51],[119,52],[119,53],[119,54],[120,55],[121,55],[122,54],[123,54],[124,53],[125,52],[126,52],[127,52],[128,51],[129,51],[130,51],[131,51],[132,51],[133,50],[134,50]],[[13,58],[14,58],[15,58],[16,58],[17,57],[18,57],[19,57],[20,57],[21,57],[21,57],[21,56],[21,55],[21,54],[21,53],[22,52],[22,51],[22,50],[22,49],[22,48],[22,47],[22,46],[22,45],[22,44],[22,43],[22,42],[22,41],[22,40],[22,39],[22,38],[22,37],[23,36],[24,35],[24,34],[24,33],[25,32],[25,31],[25,30],[26,29],[26,28],[27,27],[27,26],[27,25],[28,24],[28,23],[28,22],[28,21],[28,20],[29,19],[29,18],[29,17],[29,16],[29,15]]],"rivers":[[[36,4],[36,5],[36,6],[37,7],[38,8],[39,9],[40,10],[41,10],[42,11],[43,12],[44,13],[45,14],[46,14],[47,14],[48,15],[49,16],[50,17],[51,18],[52,19],[53,18],[54,18],[55,19],[56,20],[57,21],[58,22],[58,23],[59,24],[59,25],[59,26],[60,27],[60,28],[60,29],[60,30],[61,31],[62,30],[63,30],[64,30],[65,31],[66,31],[67,31],[68,31],[69,32],[68,33],[69,34],[70,35],[70,36],[71,37],[70,38],[70,39],[71,40],[72,41],[73,42],[74,43],[75,44],[76,45],[77,46],[78,47],[79,48],[80,49],[81,50],[82,51],[83,51],[83,50],[84,49],[85,50],[86,50],[87,50],[88,50],[89,50],[90,49],[91,49],[92,50],[93,49],[94,50],[95,50],[96,51],[97,51],[98,50],[98,49],[99,49],[99,48],[100,47],[101,46],[102,45],[103,44],[102,43],[102,42],[101,41],[100,40],[99,41]],[[61,40],[60,41],[61,42],[61,43],[61,44],[62,45],[62,46],[62,47],[62,48],[63,49],[64,49],[65,48],[66,48],[67,48],[68,49],[69,50],[70,50],[71,50],[72,50],[73,49],[74,49],[75,48],[76,48],[77,48],[78,47]],[[59,55],[60,56],[61,56],[61,55],[62,54],[62,53],[62,52],[63,51],[64,50],[64,49]],[[58,42],[59,43],[60,44],[61,45],[62,46],[62,47]],[[41,38],[41,39],[40,40],[39,41],[39,42],[38,43],[38,44],[38,45],[38,46],[37,47],[36,47],[35,47],[34,47],[33,47],[32,48],[31,48],[30,48],[29,49],[28,50],[28,51],[27,51],[26,52],[25,53],[24,54],[24,55],[23,56],[24,57],[23,58],[23,59],[23,60],[24,61],[24,62],[23,62],[22,62],[21,62],[20,61],[19,60],[18,59],[17,59],[16,60],[15,61],[15,62]],[[44,46],[43,46],[42,46],[41,45],[40,45],[39,46],[38,47],[37,47]],[[79,42],[78,43],[78,44],[78,45],[78,46],[78,47]],[[84,67],[84,66],[84,65],[83,64],[83,63],[84,62],[85,63],[86,64],[87,63],[87,62],[88,62],[89,62],[90,61],[90,60],[91,59],[91,58],[91,57],[91,56],[92,55],[93,54],[94,53],[95,52],[96,51],[96,51]],[[35,25],[34,26],[33,26],[32,26],[31,25],[30,25],[29,25],[28,24],[27,23],[26,22],[25,21],[24,20],[23,19],[22,19],[21,18],[20,17],[19,16],[18,15],[17,14],[16,13],[15,13],[14,12],[13,12],[12,12],[11,11],[10,11],[9,11],[8,10],[7,9],[6,10],[5,10],[4,10],[3,11],[2,12],[1,13],[0,13],[0,13]],[[76,78],[77,78],[78,78],[79,78],[80,78],[81,77],[82,78],[83,79],[84,80],[85,81],[86,81],[87,81],[88,82],[89,83],[90,84],[91,85],[91,86],[91,87],[91,88],[92,88],[93,88],[94,87],[95,88],[96,89],[96,90],[95,91],[94,92],[94,93],[95,94],[96,95],[96,96],[95,97],[95,98],[96,99],[96,99]],[[128,48],[127,48],[126,48],[125,48],[124,48],[123,48],[122,48],[122,49],[121,50],[121,51],[121,52],[120,52],[119,51],[118,50],[117,49],[116,48],[115,47],[114,46],[113,47],[112,47],[111,46],[110,45],[109,44],[108,43],[107,42],[106,41],[105,40],[104,39],[103,38],[102,38],[101,38],[100,38],[99,39]],[[120,44],[119,45],[119,46],[120,47],[121,48],[122,49]],[[106,86],[106,87],[105,88],[105,89],[106,90],[107,91],[108,92],[109,92],[110,91],[111,90],[112,89],[113,89],[114,88],[114,87],[115,86],[116,86],[117,87],[118,88],[119,87],[120,88],[121,88],[122,89],[123,89],[124,89],[125,89],[126,88],[127,88],[127,87],[128,86],[128,85]],[[122,46],[122,47],[122,48],[122,49]],[[23,4],[22,5],[22,6],[21,7],[20,8],[20,9],[19,10],[18,11],[18,12],[17,13],[16,13]],[[89,78],[89,79],[89,80],[90,81],[90,82],[90,83],[90,84]],[[107,93],[108,93],[109,93],[109,92]],[[119,28],[119,29],[118,30],[118,31],[117,32],[116,33],[115,34],[115,35],[114,36],[114,37],[113,37],[112,37],[111,38],[110,38],[109,38],[108,39],[107,39],[106,40],[105,40]],[[73,26],[74,26],[75,26],[76,26],[77,26],[78,27],[79,27],[80,27],[81,27],[82,27],[83,28],[84,27],[85,27],[86,26],[87,26],[88,25],[89,25],[90,25],[91,26],[92,26],[93,27],[94,27],[95,28],[96,28],[96,29]],[[116,53],[117,53],[118,53],[119,52],[119,52]],[[106,18],[105,17],[104,17],[103,17],[102,18],[101,17],[100,17],[99,17],[98,17],[97,18],[96,18],[95,19],[94,20],[93,21],[93,22],[93,23],[93,24],[93,25],[92,26],[93,27]],[[19,29],[18,29],[17,29],[16,28],[15,27],[14,27],[13,27],[12,28],[11,28],[10,29],[9,29],[8,29],[7,29],[6,29],[5,29],[4,30],[3,31],[2,31],[1,31],[0,32],[0,33],[1,34],[1,35]],[[19,50],[20,51],[21,52],[22,53],[23,54],[24,55]],[[11,48],[10,49],[10,50],[10,51],[10,52],[10,53],[10,54],[10,55],[9,56],[9,57],[9,58],[9,59],[9,60],[8,60],[7,60],[6,59],[5,58],[4,57],[3,56],[2,56],[1,55],[0,55]],[[43,58],[42,58],[41,58],[40,58],[39,58],[38,59],[38,60],[39,61],[40,62],[40,63],[39,64],[39,65],[38,65],[37,64],[36,64],[35,65],[34,65],[33,66],[33,67],[33,68],[32,69],[32,69]],[[97,73],[98,72],[97,71],[97,70],[97,69],[97,68],[97,67],[98,66],[99,65],[100,65],[101,64],[102,65],[103,64],[104,64],[105,63],[106,63],[107,63],[108,63],[109,63],[110,64],[111,65],[111,65]],[[110,85],[111,86],[112,87],[113,88],[114,88]],[[90,11],[91,12],[92,13],[93,14],[94,15],[95,16],[96,17],[96,18]],[[129,40],[129,39],[129,38],[130,37],[130,36],[129,35],[128,34],[128,33],[128,32],[128,31],[128,30],[128,29],[129,28],[130,29],[131,29],[131,28],[131,27],[131,26],[132,25],[132,24],[133,24]],[[97,82],[97,83],[98,84],[98,85],[98,86],[98,87],[98,88],[98,89],[97,90],[96,90]],[[115,98],[116,97],[117,96],[118,96],[119,96],[120,95],[121,94],[122,93],[123,94],[124,94],[125,93],[125,92],[125,91],[125,90],[126,89],[127,88],[128,87],[127,87]],[[107,30],[107,31],[107,32],[107,33],[106,34],[105,35],[106,36],[107,37],[108,38],[108,39]],[[61,82],[62,83],[63,84],[63,85],[63,86],[64,87],[65,88],[66,89],[67,90],[67,91],[67,92],[67,93],[68,94],[68,95],[68,96],[67,97],[67,98],[66,99]],[[122,99],[122,98],[123,97],[123,96],[122,95],[122,94],[123,94]],[[47,67],[48,67],[49,67],[50,68],[51,69],[52,69],[53,68],[54,67],[55,68],[56,68],[57,69],[58,69],[59,68],[60,67],[61,67]],[[105,70],[104,69],[103,68],[104,67],[104,66],[103,65],[103,64]],[[130,71],[129,72],[128,73],[128,74],[128,75],[128,76],[128,77],[127,78],[126,79],[127,80],[127,81],[126,82],[126,83],[127,84],[127,85]],[[119,74],[119,75],[119,76],[120,77],[121,77],[122,78],[123,79],[124,80],[125,80],[126,81],[127,82]],[[67,87],[68,88],[67,89],[67,90],[67,90]],[[102,0],[103,0],[104,1],[105,2],[106,3],[107,4],[108,4],[109,3],[109,2],[109,1],[110,0],[111,0],[111,0]],[[105,51],[105,50],[105,49],[104,48],[104,47],[103,46],[103,45],[103,44]],[[3,26],[3,27],[3,28],[2,29],[2,30],[2,31]],[[130,62],[129,63],[128,64],[127,63],[126,63],[125,62],[124,63],[123,63],[122,63],[122,63]],[[87,93],[88,93],[89,94],[90,94],[91,95],[92,96],[91,97],[92,98],[92,99],[93,99]],[[78,91],[79,92],[80,93],[79,94],[78,95],[77,96],[77,97],[77,98],[77,99]],[[17,86],[17,85],[16,84],[15,83],[14,83],[13,82],[13,81],[13,80],[13,79]],[[72,99],[71,98],[70,98],[69,97],[68,96],[68,96]],[[17,81],[16,82],[15,83],[15,83]],[[129,99],[130,98],[129,97],[130,96],[130,95],[131,94],[132,93],[133,93]],[[88,40],[89,40],[90,41],[91,42],[92,43],[93,42],[94,41],[95,41]],[[90,35],[91,35],[92,36],[93,36],[94,36],[95,37],[96,38]],[[126,2],[127,1],[128,2],[129,2],[130,1],[130,0],[131,0]],[[5,80],[6,79],[7,79],[8,79],[9,79],[10,79],[10,79]],[[33,83],[32,83],[31,82],[31,81],[30,80],[29,80]],[[129,24],[130,23],[131,23],[132,24],[132,24]],[[131,57],[132,56],[133,55],[134,55],[135,55]],[[123,83],[124,83],[125,83],[126,83]],[[8,76],[9,77],[10,77],[11,77]]],"hall":{"name":"Wendle","x":75,"y":50},"towns":[{"name":"Ashford","x":55,"y":50},{"name":"Kingsholm","x":117,"y":56},{"name":"Varrowmere","x":13,"y":58},{"name":"Thornbury","x":115,"y":14},{"name":"Saltmouth","x":134,"y":50},{"name":"Sedgecombe","x":101,"y":34},{"name":"Delvenhold","x":29,"y":15}],"villages":[{"name":"Marrowby","x":90,"y":87},{"name":"Dunmere","x":133,"y":93},{"name":"Gullet Weir","x":43,"y":87},{"name":"Holmfen","x":67,"y":22},{"name":"Ketterby","x":6,"y":31},{"name":"Withymead","x":15,"y":85},{"name":"Lowstock","x":141,"y":14},{"name":"Brackley Cross","x":64,"y":73},{"name":"Saltings","x":31,"y":41},{"name":"Fennick Staithe","x":6,"y":5},{"name":"Owlsgate","x":114,"y":80},{"name":"Hobb's Hythe","x":35,"y":65},{"name":"Wrenwick","x":95,"y":64},{"name":"Tallow Fen","x":93,"y":13},{"name":"Blackmere","x":133,"y":71},{"name":"Sallowby","x":128,"y":30},{"name":"Nettlehurst","x":84,"y":29},{"name":"Thistlecote","x":46,"y":32}],"sites":[{"name":"the Hollow Barrow","x":134,"y":79},{"name":"Cray's Mill","x":96,"y":93},{"name":"the Drowned Chapel","x":45,"y":93},{"name":"the Gallows Spire","x":8,"y":87},{"name":"Reedmere Farm","x":24,"y":29},{"name":"the Wendle mine","x":46,"y":6},{"name":"Ashford Bridge","x":96,"y":6},{"name":"Blackthorn Wood","x":122,"y":29}]}} /*END*/;
+const ATTRS = [['might','Mi'],['agility','Ag'],['toughness','To'],['stealth','St'],['wits','Wi'],['presence','Pr'],['resolve','Re'],['lore','Lo']];
+const DAYS = 7;
+const ROUND = 3;
+const $ = (id) => document.getElementById(id);
+const cap = (s) => String(s).charAt(0).toUpperCase() + String(s).slice(1);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const wk = (day) => `w${Math.floor((day - 1) / DAYS) + 1} d${((day - 1) % DAYS) + 1}`;
+function money(copper, opts = {}) {
+  if (!copper && opts.blank) return '';
+  const neg = copper < 0; let left = Math.abs(copper);
+  const g = Math.floor(left / 100), s = Math.floor((left % 100) / 10), c = left % 10;
+  const parts = [];
+  if (g) parts.push(`${g}g`); if (s) parts.push(`${s}s`); if (c || !parts.length) parts.push(`${c}c`);
+  const text = (neg ? '−' : '') + parts.join(' ');
+  return neg ? `<span class="neg">${text}</span>` : text;
+}
+const plain = (html) => html.replace(/<[^>]+>/g, '');
+
+let tab = 'roster';
+let filter = 'all';
+let sort = { key: 'name', dir: 1 };
+let bsort = { key: 'fee', dir: -1 };
+let query = '';
+let grouped = false;
+let personId = null;
+let offerId = null;
+let trayOpen = false;
+let width = 1366;
+try { const saved = localStorage.getItem('desk-width'); if (saved === '1920') width = 1920; } catch {}
+
+function statusText(p) {
+  const s = p.status;
+  if (s.kind === 'fit') return ['fit', 'Fit'];
+  if (s.kind === 'away') return ['away', `Away, ${s.where}, home ${wk(s.day)}`];
+  if (s.kind === 'out') return ['out', `Recovering, fit ${wk(s.day)}`];
+  return ['dead', `Dead ${wk(s.day)}, ${s.where}`];
+}
+const ORDER = { fit: 0, away: 1, out: 2, dead: 3 };
+
+function rosterSheet() {
+  const counts = { all: DATA.roster.length, fit: 0, away: 0, out: 0, dead: 0 };
+  for (const p of DATA.roster) counts[p.status.kind] += 1;
+  let rows = DATA.roster.filter((p) => filter === 'all' || p.status.kind === filter);
+  const val = {
+    name: (p) => p.name, class: (p) => p.class, line: (p) => p.position, status: (p) => ORDER[p.status.kind] * 1000 + (p.status.day || 0),
+    wage: (p) => p.wageCopper, quests: (p) => p.quests, won: (p) => p.won, hits: (p) => p.hits, injuries: (p) => p.injuries, signed: (p) => p.signedDay,
+  };
+  for (const [a] of ATTRS) val[a] = (p) => p.attributes[a];
+  const f = val[sort.key];
+  rows = [...rows].sort((a, b) => { const x = f(a), y = f(b); return (x < y ? -1 : x > y ? 1 : 0) * sort.dir || (a.name < b.name ? -1 : 1); });
+  const head = (key, label, cls = '') => `<th class="${cls}" ${sort.key === key ? `aria-sort="${sort.dir > 0 ? 'ascending' : 'descending'}"` : ''}><button type="button" data-sort="${key}">${label}</button></th>`;
+  const chip = (k, label) => `<button type="button" class="chip" data-filter="${k}" aria-pressed="${filter === k}">${label} ${counts[k]}</button>`;
+  const cols = 10 + ATTRS.length;
+  const row = (p) => { const [k, t] = statusText(p); const best = Math.max(...ATTRS.map(([a]) => p.attributes[a]));
+      return `<tr class="${k === 'dead' ? 'dead' : ''}"><td><button type="button" class="who" data-person="${p.id}">${esc(p.name)}</button></td><td>${esc(p.class)}</td><td class="line-tag">${p.position}</td><td><span class="st ${k}"><i></i>${esc(t)}</span></td>
+      ${ATTRS.map(([a]) => `<td class="r${p.attributes[a] === best ? ' hi' : ''}">${p.attributes[a]}</td>`).join('')}<td class="r">${k === 'dead' ? '' : money(p.wageCopper)}</td><td class="r">${p.quests}</td><td class="r">${p.won}</td><td class="r">${p.hits}</td><td class="r">${p.injuries || ''}</td><td class="r">${p.signedDay === 1 ? 'founding' : wk(p.signedDay)}</td></tr>`; };
+  let body;
+  if (grouped) {
+    // Standing parties are not simulated yet (D-014): people sit under the party they last went out with.
+    const groups = new Map();
+    for (const p of rows) {
+      const key = p.status.kind === 'dead' ? '~dead' : p.party ? p.party.key : '~none';
+      const label = p.status.kind === 'dead' ? 'The fallen' : p.party ? p.party.label : 'Not yet out with a party';
+      if (!groups.has(key)) groups.set(key, { label, out: p.status.kind === 'away', people: [] });
+      groups.get(key).people.push(p);
+    }
+    const order = [...groups.entries()].sort(([ka, a], [kb, b]) => (ka.startsWith('~') - kb.startsWith('~')) || (b.out - a.out) || (ka === '~dead') - (kb === '~dead') || (a.label < b.label ? -1 : 1));
+    body = order.map(([key, g]) => { const away = g.people.find((p) => p.status.kind === 'away');
+      // Name a party after its own best-Wits member, so the name is always someone in it.
+      const everyone = DATA.roster.filter((p) => p.status.kind !== 'dead' && p.party && p.party.key === key);
+      const lead = [...(everyone.length ? everyone : g.people)].sort((x, y) => y.attributes.wits - x.attributes.wits || (x.name < y.name ? -1 : 1))[0];
+      const label = key.startsWith('~') ? g.label : `${lead.name}'s party`;
+      return `<tr class="grp"><td colspan="${cols}">${esc(label)} <span class="at">· ${g.people.length} ${g.people.length === 1 ? 'member' : 'members'}${away ? ` · out at ${esc(away.status.where)}, home ${wk(away.status.day)}` : ''}</span></td></tr>` + g.people.map(row).join(''); }).join('');
+  } else body = rows.map(row).join('');
+  return `<div class="sheet-head"><h2>Roster</h2><span class="sub">${counts.all - counts.dead} on the books · wages ${money(DATA.roster.reduce((s, p) => s + p.wageCopper, 0))} a week</span>
+    <label class="find"><span>Find</span><input id="find" type="search" autocomplete="off" value="${esc(query)}"><span id="find-note"></span></label>${grouped ? '<span class="sub">The simulator does not keep standing parties yet (D-014), so each person sits under the party they last went out with; some groups are small.</span>' : ''}<span class="chips"><button type="button" class="chip" id="group" aria-pressed="${grouped}">Group by party</button>${chip('all', 'All')}${chip('fit', 'Fit')}${chip('away', 'Away')}${chip('out', 'Recovering')}${chip('dead', 'Dead')}</span></div>
+    <div class="body"><table class="l"><thead><tr>${head('name', 'Name')}${head('class', 'Class')}${head('line', 'Line')}${head('status', 'Status')}
+    ${ATTRS.map(([a, s]) => head(a, s, 'r')).join('')}${head('wage', 'Wage / wk', 'r')}${head('quests', 'Quests', 'r')}${head('won', 'Won', 'r')}${head('hits', 'Hits', 'r')}${head('injuries', 'Inj.', 'r')}${head('signed', 'Signed', 'r')}</tr></thead>
+    <tbody>${body}</tbody></table></div>`;
+}
+
+const LINES = [['grant', 'Grant'], ['fee', 'Fees'], ['loot', 'Loot'], ['wages', 'Wages'], ['upkeep', 'Upkeep'], ['funeral', 'Funerals'], ['sign-on', 'Sign-on']];
+function financeSheet() {
+  const weeks = DATA.weeks;
+  const tot = {}; for (const [k] of LINES) tot[k] = weeks.reduce((s, w) => s + (w.lines[k] || 0), 0);
+  const net = (w) => LINES.reduce((s, [k]) => s + (w.lines[k] || 0), 0);
+  const income = tot.grant + tot.fee + tot.loot;
+  const spend = -(tot.wages + tot.upkeep + tot.funeral + tot['sign-on']);
+  const max = Math.max(...weeks.map((w) => w.chest), 1), min = Math.min(0, ...weeks.map((w) => w.chest));
+  const W = 290, H = 150, L = 34, B = 18;
+  const x = (i) => L + (i * (W - L - 6)) / Math.max(1, weeks.length - 1);
+  const y = (v) => 6 + ((max - v) * (H - B - 6)) / (max - min || 1);
+  const pts = weeks.map((w, i) => `${x(i).toFixed(1)},${y(w.chest).toFixed(1)}`).join(' ');
+  const tick = (v) => `<line x1="${L}" x2="${W - 6}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule)"/><text x="${L - 4}" y="${y(v) + 4}" text-anchor="end">${Math.round(v / 100)}g</text>`;
+  const chart = `<svg class="chart" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Chest at the end of each week">
+    ${tick(max)}${tick(Math.round((max + min) / 2))}${tick(min)}
+    <polyline points="${L},${y(min)} ${pts} ${x(weeks.length - 1)},${y(min)}" fill="var(--paper2)" stroke="none"/>
+    <polyline points="${pts}" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+    <circle cx="${x(weeks.length - 1)}" cy="${y(weeks[weeks.length - 1].chest)}" r="3" fill="var(--seal)"/>
+    <text x="${L}" y="${H - 3}">w1</text><text x="${W - 6}" y="${H - 3}" text-anchor="end">w${weeks.length}</text></svg>`;
+  return `<div class="sheet-head"><h2>Finances</h2><span class="sub">This year, weeks 1–${weeks.length} · money in copper, silver and gold (10 to the next)</span><label class="find"><span>Find</span><input id="find" type="search" autocomplete="off" value="${esc(query)}"><span id="find-note"></span></label></div>
+    <div class="fin"><div class="body"><table class="l"><thead><tr><th>Week</th>${LINES.map(([, l]) => `<th class="r">${l}</th>`).join('')}<th class="r">Net</th><th class="r">Chest at end</th></tr></thead>
+    <tbody>${weeks.map((w) => `<tr><td>${w.week}${w.week === DATA.week ? ' <span class="at">(this week)</span>' : ''}</td>${LINES.map(([k]) => `<td class="r">${money(w.lines[k] || 0, { blank: true })}</td>`).join('')}<td class="r">${money(net(w))}</td><td class="r">${money(w.chest)}</td></tr>`).join('')}
+    <tr class="total"><td>Year so far</td>${LINES.map(([k]) => `<td class="r">${money(tot[k], { blank: true })}</td>`).join('')}<td class="r">${money(income - spend)}</td><td class="r">${money(DATA.chest.copper)}</td></tr></tbody></table></div>
+    <div class="year"><h4>The year so far</h4><div class="kv">
+      <span>Starting chest</span><span>${money(weeks[0].lines.founding || 0)}</span>
+      <span>Money in</span><span>${money(income)}</span><span>Money out</span><span>${money(-spend)}</span>
+      <span>Wages, share of spending</span><span>${Math.round((-100 * tot.wages) / spend)}%</span>
+      <span>Weekly wage bill now</span><span>${money(DATA.roster.reduce((s, p) => s + p.wageCopper, 0))}</span>
+      <span>Renown</span><span>${DATA.renown}</span></div>
+      <h4>Chest, week by week</h4>${chart}</div></div>`;
+}
+
+const DANGER_ORDER = { routine: 0, hazardous: 1, perilous: 2, deadly: 3 };
+function boardRows() {
+  const val = { site: (o) => o.site.replace(/^the /, ''), monster: (o) => o.monster, danger: (o) => DANGER_ORDER[o.danger], twist: (o) => o.twist || '', fee: (o) => o.feeCopper, travel: (o) => o.travelDays, expires: (o) => o.expiresWeek };
+  const f = val[bsort.key];
+  return [...DATA.board].sort((a, b) => { const x = f(a), y = f(b); return (x < y ? -1 : x > y ? 1 : 0) * bsort.dir || (a.id < b.id ? -1 : 1); });
+}
+const bh = (key, label, cls = '') => `<th class="${cls}" ${bsort.key === key ? `aria-sort="${bsort.dir > 0 ? 'ascending' : 'descending'}"` : ''}><button type="button" data-bsort="${key}">${label}</button></th>`;
+const TWIST_NOTE = {
+  'Foul weather': 'The roads and paths are harder: every travel test is tougher. The fee is a little higher.',
+  'A trap': 'Someone has rigged the way in: one extra test on the way, before the last stretch. The fee is a little higher.',
+  'Cursed ground': 'Wounds stay open there: the fallen bleed faster. The fee is higher.',
+  'A hostage': 'If the alarm goes up, the hostage is lost and the job counts as half done. A quiet approach matters. The fee is much higher.',
+  'A deadline': 'The fight must be over sooner, or the foes slip away and the job is half done. The fee is a little higher.',
+};
+function contractPanel() {
+  const o = DATA.board.find((x) => x.id === offerId) || boardRows()[0];
+  if (!o) return '<aside class="panel"><p class="hidden-note">Nothing on the board.</p></aside>';
+  return `<aside class="panel" aria-label="The contract"><div class="art"><div><b>${esc(cap(o.site))}</b><small>${esc(o.monster)} · site art goes here: a painted vignette of the place, commissioned later (PLAN §12)</small></div></div>
+    <h4>${esc(cap(o.site))}</h4>
+    <div class="kv"><span>Work</span><span>${esc(o.monster)}</span><span>Danger</span><span class="danger">${esc(o.danger)}</span><span>Fee</span><span>${money(o.feeCopper)}</span>
+      <span>Days each way</span><span>${o.travelDays}</span><span>Leaves the board</span><span>week ${o.expiresWeek}</span></div>
+    <button type="button" class="btn" id="view-map" data-map="${o.id}">View on map</button>
+    ${o.twist ? `<p><span class="twist">${esc(o.twist)}.</span> ${esc(TWIST_NOTE[o.twist] || '')}</p>` : '<p class="hidden-note">No twist posted. The board shows what the reeve told us; that is not always everything.</p>'}
+  </aside>`;
+}
+
+function contractSheet() {
+  if (!offerId || !DATA.board.some((o) => o.id === offerId)) offerId = boardRows()[0]?.id ?? null;
+  const outcome = { won: 'Done', partial: 'Half done', retreated: 'Withdrew', routed: 'Routed' };
+  return `<div class="sheet-head"><h2>Contracts</h2><span class="sub">${DATA.board.length} on the board · ${DATA.parties.length} parties out</span><label class="find"><span>Find</span><input id="find" type="search" autocomplete="off" value="${esc(query)}"><span id="find-note"></span></label></div>
+    <div class="con-wrap"><div class="body con"><h4>On the board</h4><table class="l"><thead><tr>${bh('site', 'Site')}${bh('monster', 'Work')}${bh('danger', 'Danger')}${bh('twist', 'Twist')}${bh('fee', 'Fee', 'r')}${bh('travel', 'Days out', 'r')}${bh('expires', 'Until', 'r')}</tr></thead>
+    <tbody>${boardRows().map((o) => `<tr class="${o.id === offerId ? 'sel' : ''}"><td><button type="button" class="pick" data-offer="${o.id}">${esc(cap(o.site))}</button></td><td>${esc(o.monster)}</td><td class="danger">${esc(o.danger)}</td><td>${o.twist ? `<span class="twist">${esc(o.twist)}</span>` : ''}</td><td class="r">${money(o.feeCopper)}</td><td class="r">${o.travelDays}</td><td class="r">w${o.expiresWeek}</td></tr>`).join('')}</tbody></table>
+    <h4>Parties out</h4><table class="l"><thead><tr><th>Site</th><th>Work</th><th>Danger</th><th>Party</th><th class="r">Arrives</th><th class="r">Home</th></tr></thead>
+    <tbody>${DATA.parties.map((p) => `<tr><td>${esc(cap(p.site))}</td><td>${esc(p.monster)}</td><td class="danger">${esc(p.danger)}</td><td class="wrap">${esc(p.members.join(', '))}</td><td class="r">${wk(p.arriveDay)}</td><td class="r">${wk(p.homeDay)}</td></tr>`).join('')}</tbody></table>
+    <h4>Recent contracts</h4><table class="l"><thead><tr><th class="r">Week</th><th>Site</th><th>Danger</th><th>Outcome</th><th>Lost</th></tr></thead>
+    <tbody>${DATA.quests.map((q) => `<tr><td class="r">${q.week}</td><td>${esc(cap(q.site))}</td><td class="danger">${esc(q.danger)}</td><td>${outcome[q.outcome]}</td><td>${q.dead.length ? `<span class="st dead"><i></i>${esc(q.dead.join(', '))}</span>` : ''}</td></tr>`).join('')}</tbody></table></div>${contractPanel()}</div>`;
+}
+
+function cameo(p) {
+  const initials = p.name.split(' ').map((w) => w[0]).join('');
+  const dead = p.status.kind === 'dead';
+  return `<div class="cameo"><svg viewBox="0 0 140 170" width="150" role="img" aria-label="Portrait placeholder for ${esc(p.name)}">
+    <ellipse cx="70" cy="85" rx="64" ry="80" fill="var(--paper2)" stroke="var(--ink2)" stroke-width="3"/>
+    <ellipse cx="70" cy="85" rx="56" ry="72" fill="none" stroke="var(--rule)" stroke-width="1.5"/>
+    <path d="M70 40c-18 0-28 13-28 30 0 12 6 22 14 27-16 5-28 16-32 32h92c-4-16-16-27-32-32 8-5 14-15 14-27 0-17-10-30-28-30z" fill="none" stroke="var(--ink2)" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text x="70" y="78" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="22" fill="var(--ink)">${esc(initials)}</text>
+    ${dead ? '<path d="M100 8 L136 8 L136 44 Z" fill="var(--ink)"/>' : ''}</svg>
+    <small>Woodcut portrait goes here, built from drawn parts (STYLE §7)</small></div>`;
+}
+
+/* The March, drawn from the engine test's baked map (D-134), with the contract's site marked. */
+function mapCard(o) {
+  const site = DATA.map.sites.find((x) => x.name === o.site);
+  const days = o.travelDays;
+  return `<div class="scrim" id="scrim"><div class="card mapcard" role="dialog" aria-modal="true" aria-labelledby="card-name" tabindex="-1" id="card">
+    <button type="button" class="close" id="card-close" aria-label="Close">Close ✕</button>
+    <h2 id="card-name">${esc(cap(o.site))} on the map</h2>
+    <span class="sub">${esc(o.monster)} · <span class="danger">${esc(o.danger)}</span> · ${days} days each way from ${esc(DATA.map.hall.name)}${o.twist ? ` · <span class="twist">${esc(o.twist)}</span>` : ''}</span>
+    <canvas id="map-canvas" width="750" height="500" role="img" aria-label="Map of the March with ${esc(cap(o.site))} marked"></canvas>
+    <p class="note">The guild hall is ${esc(DATA.map.hall.name)}. ${site ? '' : 'This site has no place on the map yet. '}Sites are not placed on the map yet (PLAN §7c): each one is shown at about its travel distance from the hall, so its spot is a placeholder. Parties out are marked with their banners.</p>
+  </div></div>`;
+}
+const MAP_TINT = { 'temperate-forest': '#c2d2a4', taiga: '#becfb0', swamp: '#b2c8b2', grassland: '#e6e5c4', steppe: '#e8e0be', tundra: '#e6e4d6', alpine: '#d8d2c6' };
+function drawMap(o) {
+  const c = $('map-canvas');
+  if (!c) return;
+  const g = c.getContext('2d');
+  const M = DATA.map, k = c.width / M.w;
+  const P = (x, y) => [(x + 0.5) * k, (y + 0.5) * k];
+  g.fillStyle = '#f0e7d0'; g.fillRect(0, 0, c.width, c.height);
+  for (let y = 0; y < M.h; y += 1)
+    for (let x = 0; x < M.w; x += 1) {
+      const ch = M.grid[y * M.w + x];
+      g.fillStyle = ch === '~' ? '#c9d4d0' : MAP_TINT[M.biomes[ch.charCodeAt(0) - 97]] || '#f0e7d0';
+      g.fillRect(x * k, y * k, k + 0.5, k + 0.5);
+    }
+  const path = (pts, style, width, dash = []) => { g.beginPath(); pts.forEach(([x, y], i) => { const [px, py] = P(x, y); i ? g.lineTo(px, py) : g.moveTo(px, py); }); g.strokeStyle = style; g.lineWidth = width; g.setLineDash(dash); g.stroke(); g.setLineDash([]); };
+  for (const r of M.rivers) path(r, 'rgba(70,100,110,.75)', 1.6);
+  for (const r of M.roads) path(r, 'rgba(58,44,30,.55)', 1.4, [5, 3]);
+  // Labels stay inside the sheet: one near an edge slides in rather than being cut off.
+  const label = (text, x, y, font, color = '#3a2c1e', dy = -9) => { const [px, py] = P(x, y); g.font = font; g.fillStyle = color; g.textAlign = 'center'; const half = g.measureText(text).width / 2 + 4; g.fillText(text, Math.min(c.width - half, Math.max(half, px)), Math.max(14, py + dy)); };
+  for (const v of M.villages) { const [px, py] = P(v.x, v.y); g.fillStyle = 'rgba(58,44,30,.6)'; g.fillRect(px - 2, py - 2, 4, 4); }
+  for (const t of M.towns) { const [px, py] = P(t.x, t.y); g.fillStyle = '#3a2c1e'; g.beginPath(); g.arc(px, py, 4.5, 0, Math.PI * 2); g.fill(); label(t.name, t.x, t.y, 'italic 15px "Sorts Mill Goudy", Georgia, serif'); }
+  // Every site, faint; the parties out with a banner; the chosen one sealed, with the way out.
+  const site = M.sites.find((x) => x.name === o.site);
+  for (const s2 of M.sites) { if (s2 === site) continue; const [px, py] = P(s2.x, s2.y); g.strokeStyle = 'rgba(58,44,30,.5)'; g.lineWidth = 1.2; g.strokeRect(px - 4, py - 4, 8, 8); label(cap(s2.name), s2.x, s2.y, '13px "Sorts Mill Goudy", Georgia, serif', 'rgba(58,44,30,.7)', 18); }
+  for (const party of DATA.parties) { const s3 = M.sites.find((x) => x.name === party.site); if (!s3) continue; const [px, py] = P(s3.x, s3.y); g.fillStyle = '#b8923e'; g.beginPath(); g.moveTo(px + 6, py - 4); g.lineTo(px + 6, py - 22); g.lineTo(px + 18, py - 17); g.lineTo(px + 6, py - 12); g.fill(); g.strokeStyle = '#3a2c1e'; g.beginPath(); g.moveTo(px + 6, py - 2); g.lineTo(px + 6, py - 22); g.stroke(); }
+  const [hx, hy] = P(M.hall.x, M.hall.y);
+  g.fillStyle = '#8e2a22'; g.fillRect(hx - 6, hy - 6, 12, 12); g.strokeStyle = '#d7b66a'; g.lineWidth = 2; g.strokeRect(hx - 6, hy - 6, 12, 12);
+  label(`${M.hall.name} (the guild hall)`, M.hall.x, M.hall.y, '16px "IM Fell English SC", Georgia, serif', '#8e2a22', -12);
+  if (site) {
+    path([[M.hall.x, M.hall.y], [site.x, site.y]], '#8e2a22', 2, [8, 5]);
+    const [sx, sy] = P(site.x, site.y);
+    g.fillStyle = '#8e2a22'; g.beginPath(); g.arc(sx, sy, 10, 0, Math.PI * 2); g.fill();
+    g.strokeStyle = '#d7b66a'; g.lineWidth = 2; g.stroke();
+    label(cap(site.name), site.x, site.y, '18px "IM Fell English SC", Georgia, serif', '#8e2a22', -16);
+    const mx = (M.hall.x + site.x) / 2, my = (M.hall.y + site.y) / 2;
+    label(`about ${o.travelDays} days each way`, mx, my, 'italic 14px "Sorts Mill Goudy", Georgia, serif', '#8e2a22', -6);
+  }
+  // Scale: a day's walk.
+  const [bx, by] = P(4, M.h - 4);
+  g.strokeStyle = '#3a2c1e'; g.lineWidth = 2; g.beginPath(); g.moveTo(bx, by); g.lineTo(bx + M.dayCells * k, by); g.stroke();
+  g.font = 'italic 13px "Sorts Mill Goudy", Georgia, serif'; g.fillStyle = '#3a2c1e'; g.textAlign = 'left'; g.fillText("one day's walk", bx, by - 6);
+}
+
+/* Placeholder kit by class (D-143): the guild's standard issue, matching the engine's flat weapon and armour bonuses. */
+const STANDARD_KIT = {
+  Warrior: [['Main hand', 'Arming sword'], ['Off hand', 'Round shield'], ['Armour', 'Mail shirt'], ['Head', null], ['Trinket', null], ['Pack', 'Bandages']],
+  Rogue: [['Main hand', 'Long knife'], ['Off hand', 'Parrying dagger'], ['Armour', 'Leather jerkin'], ['Head', 'Hood'], ['Trinket', null], ['Pack', 'Lockpicks']],
+  Cleric: [['Main hand', 'Mace'], ['Off hand', 'Holy symbol'], ['Armour', 'Padded jack'], ['Head', null], ['Trinket', null], ['Pack', 'Healing herbs']],
+};
+function kitFor(p) {
+  const kit = STANDARD_KIT[p.class] || STANDARD_KIT.Warrior;
+  const fx = { 'Main hand': p.weaponBp ? `+${p.weaponBp / 100}% to hit` : 'no bonus yet', Armour: p.armourBp ? `−${p.armourBp / 100}% to be hit` : 'no bonus yet' };
+  return kit.map(([slot, item]) => ({ slot, item, fx: fx[slot] || 'no effect yet', by: 'Standard issue, set by the quartermaster' }));
+}
+
+const LINE_NOTE = {
+  front: 'Front line: each front-line member is twice as likely as each back-line member to be picked as a foe\'s target (a guard may still step in).',
+  back: 'Back line: each back-line member is half as likely as each front-line member to be picked as a foe\'s target (a guard may still step in). Clerics start at the back.',
+};
+function personCard(p) {
+  const [k, t] = statusText(p);
+  const pron = { she: 'she / her', he: 'he / him', they: 'they / them' }[p.pronouns] ?? 'they / them';
+  const hist = p.history.slice(-6).reverse();
+  const outcome = { won: 'Done', partial: 'Half done', retreated: 'Withdrew', routed: 'Routed' };
+  return `<div class="scrim" id="scrim"><div class="card" role="dialog" aria-modal="true" aria-labelledby="card-name" tabindex="-1" id="card">
+    ${cameo(p)}
+    <button type="button" class="close" id="card-close" aria-label="Close">Close ✕</button>
+    <h2 id="card-name">${esc(p.name)}</h2>
+    <span class="sub">${esc(p.class)} · ${p.position} line · ${pron} · <span class="st ${k}"><i></i>${esc(t)}</span></span>
+    <p class="note">${LINE_NOTE[p.position]}</p>
+    <h3>Attributes</h3>
+    <div class="two">${ATTRS.map(([a]) => `<div class="attr"><span>${a[0].toUpperCase() + a.slice(1)}</span><b>${p.attributes[a]}</b><i style="--w:${(p.attributes[a] / 20) * 100}%"></i></div>`).join('')}</div>
+    <h3>Equipment</h3>
+    <div class="gear">${kitFor(p).map((k) => k.item
+      ? `<div class="item"><span class="slot">${k.slot}</span><b>${esc(k.item)}</b><span class="fx">${esc(k.fx)}</span><span class="by">${esc(k.by)}</span></div>`
+      : `<div class="item empty"><span class="slot">${k.slot}</span><b>Empty</b><span class="fx">nothing equipped</span></div>`).join('')}</div>
+    <p class="note">Placeholder cards (D-143): slots and items come with the gear design. Real items will show their tier, properties and story, so a piece you don't want someone to have stands out.</p>
+    <h3>Abilities and pay</h3>
+    <div class="two"><div>Signature actions: ${esc(p.actions.join(', ') || 'none')}</div><div>Wage: ${p.status.kind === 'dead' ? '—' : money(p.wageCopper) + ' a week'}</div></div>
+    <p class="note">Traits, levels and age come with later slices (PLAN §5).</p>
+    <h3>Record</h3>
+    <div class="two"><div>Quests ${p.quests} · won ${p.won}</div><div>Blows landed ${p.hits}</div><div>Lasting injuries ${p.injuries}</div><div>Signed ${p.signedDay === 1 ? 'at the founding' : wk(p.signedDay)}</div></div>
+    ${hist.length ? `<h3>Last contracts</h3><table class="l"><thead><tr><th class="r">Week</th><th>Site</th><th>Danger</th><th>Outcome</th><th class="r">Blows</th><th></th></tr></thead>
+      <tbody>${hist.map((h) => `<tr><td class="r">${h.week}</td><td>${esc(cap(h.site))}</td><td class="danger">${h.danger}</td><td>${outcome[h.outcome]}</td><td class="r">${h.hits}</td><td>${h.injured ? 'injured' : ''}</td></tr>`).join('')}</tbody></table>` : ''}
+  </div></div>`;
+}
+
+function renderTray() {
+  const tray = $('tray');
+  if (!trayOpen) { tray.innerHTML = `<button type="button" class="tray-tab" id="tray-toggle" aria-expanded="false">Letters <b>1</b></button>`; return; }
+  const lines = DATA.letter;
+  const sal = lines[0], sig = lines[lines.length - 1], body = lines.slice(1, -1);
+  tray.innerHTML = `<button type="button" class="tray-tab" id="tray-toggle" aria-expanded="true">Letters</button><div class="tray-open"><div class="letter">
+    <p class="sal">${esc(sal)}</p>${body.map((l, i) => `<p class="${i === 0 ? 'open' : ''}">${esc(l)}</p>`).join('')}<p class="fleuron">❦</p><p class="sig">${esc(sig)}</p></div></div>`;
+}
+
+function render() {
+  for (const t of document.querySelectorAll('.tab[data-tab]')) t.setAttribute('aria-selected', String(t.dataset.tab === tab));
+  const active = document.activeElement;
+  const hadFocus = active && active.id === 'find';
+  // Re-rendering replaces the buttons: remember which one had focus and give it back.
+  const focusKey = active && active.dataset ? ['sort', 'bsort', 'filter', 'offer', 'tab'].map((k) => active.dataset[k] ? `[data-${k}="${active.dataset[k]}"]` : '').join('') || (active.id === 'group' ? '#group' : '') : '';
+  $('sheet').innerHTML = tab === 'roster' ? rosterSheet() : tab === 'finances' ? financeSheet() : contractSheet();
+  $('find').placeholder = tab === 'roster' ? 'a name ( / )' : tab === 'finances' ? 'a week number ( / )' : 'a site or name ( / )';
+  applyFind();
+  if (hadFocus) { const f = $('find'); f.focus(); f.setSelectionRange(f.value.length, f.value.length); }
+  else if (focusKey) document.querySelector(focusKey)?.focus();
+  renderTray();
+  renderCard();
+}
+
+/* Find: hides body rows that don't contain the text; totals stay. */
+function applyFind() {
+  const q = query.trim().toLowerCase();
+  let hidden = 0;
+  for (const tr of $('sheet').querySelectorAll('tbody tr')) {
+    if (tr.classList.contains('total') || tr.classList.contains('grp')) continue;
+    tr.hidden = q !== '' && !tr.textContent.toLowerCase().includes(q);
+    if (tr.hidden) hidden += 1;
+  }
+  // A party header with every member hidden goes too.
+  for (const tr of $('sheet').querySelectorAll('tbody tr.grp')) {
+    let next = tr.nextElementSibling, any = false;
+    while (next && !next.classList.contains('grp')) { if (!next.hidden) any = true; next = next.nextElementSibling; }
+    tr.hidden = !any;
+  }
+  const note = $('find-note');
+  if (note) note.textContent = hidden ? `${hidden} hidden` : '';
+}
+let shownCard = null;
+let opener = null;
+function renderCard() {
+  if (shownCard === personId) return; // a redraw behind the card leaves it alone
+  const host = $('card-host');
+  // The dialog shows a person's card, or the map for a contract ('map:<offer id>').
+  const mapOffer = typeof personId === 'string' && personId.startsWith('map:') ? DATA.board.find((o) => `map:${o.id}` === personId) : null;
+  const p = mapOffer || DATA.roster.find((x) => x.id === personId);
+  if (!p && personId) personId = null; // a stale id opens nothing
+  const opening = p && !shownCard;
+  if (opening) opener = document.activeElement;
+  shownCard = p ? personId : null;
+  host.innerHTML = !p ? '' : mapOffer ? mapCard(mapOffer) : personCard(p);
+  if (mapOffer) drawMap(mapOffer);
+  // While the card is open nothing behind it can be reached (aria-modal), and closing it
+  // gives focus back to the name that opened it.
+  for (const el of document.querySelectorAll('.bar, .tabs, .sheet, .tray, .controls, #quiz, .intro')) el.inert = Boolean(p);
+  if (p) $('card').focus();
+  else if (opener && document.contains(opener)) { opener.focus(); opener = null; }
+  else if (opener) {
+    const again = document.querySelector(`[data-person="${opener.dataset?.person}"]`);
+    const twin = opener.dataset?.map ? document.querySelector(`[data-map="${opener.dataset.map}"]`) : null;
+    if (again && again.offsetParent) again.focus(); else if (twin) twin.focus(); else document.querySelector('.tab[aria-selected="true"]')?.focus();
+    opener = null;
+  }
+}
+document.addEventListener('input', (e) => { if (e.target.id === 'find') { query = e.target.value; applyFind(); } });
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && personId) { personId = null; renderCard(); return; }
+  if (e.key === 'Tab' && personId) {
+    // Keep Tab inside the open card (aria-modal).
+    const card = $('card');
+    if (!card) return;
+    const stops = [card, ...card.querySelectorAll('button, [href], input, [tabindex]:not([tabindex="-1"])')];
+    const at = stops.indexOf(document.activeElement);
+    const next = at < 0 ? (e.shiftKey ? stops[stops.length - 1] : stops[0]) : stops[(at + (e.shiftKey ? stops.length - 1 : 1)) % stops.length];
+    e.preventDefault();
+    next.focus();
+    return;
+  }
+  const typing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName) || e.target.isContentEditable;
+  if (e.key === 'Escape' && typing && e.target.id === 'find') { query = ''; e.target.value = ''; applyFind(); return; }
+  if (typing || e.ctrlKey || e.metaKey || e.altKey || personId) return;
+  if (e.key === '/') { e.preventDefault(); $('find')?.focus(); return; }
+  const key = { r: 'roster', f: 'finances', c: 'contracts' }[e.key.toLowerCase()];
+  if (key) { tab = key; render(); }
+});
+/* Crosshair: hovering a cell lights its column as well as its row. */
+document.addEventListener('mouseover', (e) => {
+  const cell = e.target.closest('table.l td, table.l th');
+  for (const c of document.querySelectorAll('.colhi')) c.classList.remove('colhi');
+  if (!cell) return;
+  const i = cell.cellIndex;
+  for (const row of cell.closest('table').rows) row.cells[i]?.classList.add('colhi');
+});
+
+document.addEventListener('mouseleave', () => { for (const c of document.querySelectorAll('.colhi')) c.classList.remove('colhi'); });
+$('sheet').addEventListener('mouseleave', () => { for (const c of document.querySelectorAll('.colhi')) c.classList.remove('colhi'); });
+
+function fit() {
+  const desk = $('desk'), stage = $('stage');
+  const h = width === 1920 ? 1080 : 768;
+  desk.style.width = `${width}px`; desk.style.height = `${h}px`;
+  desk.style.gridTemplateColumns = width === 1920 ? '190px 1fr auto' : '172px 1fr auto';
+  const room = stage.clientWidth;
+  const scale = Math.min(1, room / width);
+  desk.style.transform = scale < 1 ? `scale(${scale})` : '';
+  stage.style.height = `${h * scale}px`;
+  $('scale-note').textContent = scale < 1
+    ? `Your window is narrower than ${width} px, so the frame is shown at ${Math.round(scale * 100)}%. For the real test, open it on a screen at least ${width} px wide.`
+    : `Shown at real size, ${width} × ${h} px.`;
+  $('w1366').setAttribute('aria-pressed', String(width === 1366));
+  $('w1920').setAttribute('aria-pressed', String(width === 1920));
+}
+
+/* The fact test: five set facts from this guild's own data, timed (pass: each under 10 s and right). */
+function questions() {
+  const living = DATA.roster.filter((p) => p.status.kind !== 'dead');
+  const qs = [];
+  const p1 = living[Math.floor(living.length * 0.6)];
+  qs.push({ q: `What is ${p1.name}'s weekly wage?`, a: plain(money(p1.wageCopper)), tab: 'roster' });
+  const hurt = DATA.roster.find((p) => p.status.kind === 'out');
+  const away = DATA.roster.find((p) => p.status.kind === 'away');
+  if (hurt) qs.push({ q: `${hurt.name} is recovering. In which week and day are they fit again?`, a: wk(hurt.status.day), tab: 'roster' });
+  else if (away) qs.push({ q: `${away.name} is away. When are they home?`, a: wk(away.status.day), tab: 'roster' });
+  const w = DATA.weeks[13];
+  qs.push({ q: `How much did the guild pay in wages in week ${w.week}?`, a: plain(money(-(w.lines.wages || 0))), tab: 'finances' });
+  const best = [...DATA.board].sort((a, b) => b.feeCopper - a.feeCopper)[0];
+  const tied = best && DATA.board.filter((o) => o.feeCopper === best.feeCopper).length > 1;
+  if (best && !tied) qs.push({ q: 'Which contract on the board pays the most, and how much?', a: `${cap(best.site)} (${best.monster}), ${plain(money(best.feeCopper))}`, tab: 'contracts' });
+  // "Who has the highest …" only for an attribute where one living person stands alone at the top.
+  const topOf = (attr) => { const best = Math.max(...living.map((p) => p.attributes[attr])); const tops = living.filter((p) => p.attributes[attr] === best); return tops.length === 1 ? tops[0] : null; };
+  const askTop = (attr, label) => { const top = topOf(attr); return top ? { q: `Who has the highest ${label} among the living?`, a: `${top.name} (${top.attributes[attr]})`, tab: 'roster' } : null; };
+  const firstTop = ATTRS.map(([a]) => askTop(a, a[0].toUpperCase() + a.slice(1))).find(Boolean);
+  if (firstTop) qs.push(firstTop);
+  // Five facts always: spares fill in when nobody is recovering or away, or the board is empty.
+  const spares = [
+    () => { const w10 = DATA.weeks[9]; return { q: `How much was in the chest at the end of week ${w10.week}?`, a: plain(money(w10.chest)), tab: 'finances' }; },
+    () => { const w5 = DATA.weeks[4]; return { q: `How much did the guild earn in fees in week ${w5.week}?`, a: plain(money(w5.lines.fee || 0)), tab: 'finances' }; },
+    () => { const p = living[Math.floor(living.length * 0.25)]; return { q: `How many quests has ${p.name} been on?`, a: String(p.quests), tab: 'roster' }; },
+  ];
+  for (const spare of spares) if (qs.length < 5) qs.push(spare());
+  return qs.slice(0, 5);
+}
+let quiz = null;
+function quizRender() {
+  const box = $('quiz');
+  box.hidden = false;
+  if (quiz.at >= quiz.qs.length) {
+    const rows = quiz.results.map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r.q)}</td><td>${r.s.toFixed(1)} s</td><td class="${r.ok && r.s < 10 ? 'pass' : 'fail'}">${r.ok ? (r.s < 10 ? 'pass' : 'right, too slow') : 'wrong'}</td></tr>`).join('');
+    const passed = quiz.results.filter((r) => r.ok && r.s < 10).length;
+    const scale = Math.round(Math.min(1, $('stage').clientWidth / width) * 100);
+    const summary = `R4 fact test round ${ROUND}, ${width} px shown at ${scale}%, seed ${DATA.seed}: ${passed} of ${quiz.results.length} under 10 s. ` + quiz.results.map((r, i) => `Q${i + 1} ${r.s.toFixed(1)} s ${r.ok ? 'right' : 'wrong'}`).join('; ') + '.';
+    box.innerHTML = `<h2>Fact test done: ${passed} of ${quiz.results.length} passed</h2><table>${rows}</table>
+      <div class="row"><input id="quiz-summary" readonly value="${esc(summary)}" style="flex:1;min-width:0;font:inherit;padding:3px 6px"><button type="button" class="btn" id="quiz-copy">Copy results</button><button type="button" class="btn ghost" id="quiz-again">Run again</button></div>
+      <p class="clock">Paste the results into the chat; they become the R4 evidence.</p>`;
+    return;
+  }
+  const cur = quiz.qs[quiz.at];
+  if (quiz.phase === 'read') {
+    box.innerHTML = `<h2>Question ${quiz.at + 1} of ${quiz.qs.length}</h2><p class="q">${esc(cur.q)}</p>
+      <div class="row"><button type="button" class="btn" id="quiz-go">Start timing</button><span class="clock">Read the question, then start; the clock times the finding.</span></div>`;
+  } else if (quiz.phase === 'ask') {
+    box.innerHTML = `<h2>Question ${quiz.at + 1} of ${quiz.qs.length}</h2><p class="q">${esc(cur.q)}</p>
+      <div class="row"><button type="button" class="btn" id="quiz-found">Found it</button><span class="clock" id="quiz-clock">0.0 s</span><span class="clock">Find it in the frame below, then press Found it.</span></div>`;
+  } else {
+    box.innerHTML = `<h2>Question ${quiz.at + 1} of ${quiz.qs.length}</h2><p class="q">${esc(cur.q)}</p>
+      <p>Answer: <span class="ans">${esc(cur.a)}</span> · you took ${quiz.last.toFixed(1)} s</p>
+      <div class="row"><button type="button" class="btn" id="quiz-right">I had it right</button><button type="button" class="btn ghost" id="quiz-wrong">I had it wrong</button></div>`;
+  }
+}
+function quizStart() {
+  quiz = { qs: questions(), at: 0, phase: 'read', started: 0, results: [], last: 0 };
+  quizRender();
+}
+setInterval(() => {
+  const c = document.getElementById('quiz-clock');
+  if (c && quiz && quiz.phase === 'ask') c.textContent = `${((performance.now() - quiz.started) / 1000).toFixed(1)} s`;
+}, 100);
+
+let pressedOn = null;
+document.addEventListener('mousedown', (e) => { pressedOn = e.target.id; });
+document.addEventListener('click', (e) => {
+  if (e.target.id === 'scrim' && pressedOn === 'scrim') { personId = null; renderCard(); return; }
+  const t = e.target.closest('button');
+  if (!t) return;
+  if (t.dataset.tab) { tab = t.dataset.tab; render(); }
+  else if (t.dataset.sort) { const k = t.dataset.sort; sort = sort.key === k ? { key: k, dir: -sort.dir } : { key: k, dir: k === 'name' || k === 'class' || k === 'status' ? 1 : -1 }; render(); }
+  else if (t.dataset.filter) { filter = t.dataset.filter; render(); }
+  else if (t.id === 'group') { grouped = !grouped; render(); }
+  else if (t.dataset.person) { personId = t.dataset.person; renderCard(); }
+  else if (t.dataset.map) { personId = `map:${t.dataset.map}`; renderCard(); }
+  else if (t.id === 'card-close') { personId = null; renderCard(); }
+  else if (t.dataset.offer) { offerId = t.dataset.offer; render(); }
+  else if (t.dataset.bsort) { const k = t.dataset.bsort; bsort = bsort.key === k ? { key: k, dir: -bsort.dir } : { key: k, dir: k === 'fee' ? -1 : 1 }; render(); }
+  else if (t.id === 'tray-toggle') { trayOpen = !trayOpen; renderTray(); }
+  else if (t.id === 'w1366' || t.id === 'w1920') { width = t.id === 'w1920' ? 1920 : 1366; try { localStorage.setItem('desk-width', String(width)); } catch {} fit(); }
+  else if (t.id === 'quiz-start' || t.id === 'quiz-again') quizStart();
+  else if (t.id === 'quiz-go') { personId = null; renderCard(); quiz.phase = 'ask'; quiz.started = performance.now(); quizRender(); $('quiz-found')?.focus(); }
+  else if (t.id === 'quiz-found') { quiz.last = (performance.now() - quiz.started) / 1000; quiz.phase = 'check'; quizRender(); }
+  else if (t.id === 'quiz-right' || t.id === 'quiz-wrong') {
+    quiz.results.push({ q: quiz.qs[quiz.at].q, s: quiz.last, ok: t.id === 'quiz-right' });
+    quiz.at += 1; quiz.phase = 'read'; quizRender();
+  } else if (t.id === 'quiz-copy') {
+    const input = $('quiz-summary');
+    navigator.clipboard?.writeText(input.value).then(() => { t.textContent = 'Copied'; }, () => { input.select(); t.textContent = 'Select and copy'; });
+  }
+});
+
+$('date').textContent = `Week ${DATA.week}, day ${DATA.dayOfWeek} · Year 1`;
+$('stopped').textContent = 'Stopped: the week report, and new contracts on the board';
+$('chest').innerHTML = `Chest ${money(DATA.chest.copper)}`;
+$('n-roster').textContent = DATA.roster.filter((p) => p.status.kind !== 'dead').length;
+$('n-board').textContent = DATA.board.length;
+$('seed-note').textContent = `Data: tools/make-desk-data.ts, seed ${DATA.seed}, 30 adventurers, default plan; every number comes from the engine.`;
+window.addEventListener('resize', fit);
+render();
+fit();
+</script>
