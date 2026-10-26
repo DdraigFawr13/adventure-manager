@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: §1–§3 written; §4 in progress; §5..§15 to do.
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: §1–§4 written; §5..§15 to do.
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -9,7 +9,7 @@ Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked
 1. **Goals and target player.** Who it's for, session lengths, measurable success criteria. Written below.
 2. **Core loop and pacing.** Day, week, season, generation in detail; a friction budget (clicks and stops per in-game week). Written below.
 3. **Systems map.** Per system: pillar served, inputs and outputs, the player's real decisions, delegation; a diagram of how systems feed each other. Written below.
-4. **Economy and balance.** Money, renown, knowledge: sources and sinks; difficulty curve; tuning targets (e.g. death rate by quest tier). Drafted below.
+4. **Economy and balance.** Money, renown, knowledge: sources and sinks; difficulty curve; tuning targets (e.g. death rate by quest tier). Written below.
 5. **Progression.** Adventurers, guild and guildmaster, from first recruit to the next generation.
 6. **Onboarding, UX and accessibility.** The gentle first season, screen rules, colour-blind, keyboard and text-size support.
 7. **Launch content list.** Classes, ancestries, monsters, quest templates, sites; all as data.
@@ -259,11 +259,11 @@ Checks on the map (WS-05), run on the diagram's edges: every system is reached f
 
 ---
 
-## 4. Economy and balance (Draft 2026-10-26)
+## 4. Economy and balance (Accepted 2026-10-26)
 
-Subsections are **Proposed** until marked Accepted. This section sets shapes, ratios and targets; exact numbers are tuned in the prototype (§9) against these targets. "Mid-sized guild" means about 15 adventurers in 3 parties.
+Decisions: D-071..D-073. This section sets shapes, ratios and targets; exact numbers are tuned in the prototype (§9) against these targets. "Mid-sized guild" means about 15 adventurers in 3 parties.
 
-### 4a. Sources and sinks
+### 4a. Sources and sinks (Accepted 2026-10-26, D-073)
 
 | Resource | Sources | Sinks |
 |---|---|---|
@@ -313,7 +313,7 @@ Check (computed): 3 parties × ~10 quests × 5 adventurers = 150 adventurer-ques
 | ~2.5 | ~4.2 | ~28% | ~60% | ~0.9 h |
 | ~5 | ~6.7 | ~44% | ~75% | ~0.5 h |
 
-### 4d. Tournaments: why they matter
+### 4d. Tournaments: why they matter (Accepted 2026-10-26, D-073)
 
 §3c flagged tournaments as the thinnest link. Proposal: tournaments are the guild's **shop window**.
 
@@ -323,15 +323,15 @@ Check (computed): 3 parties × ~10 quests × 5 adventurers = 150 adventurer-ques
 - **Low lethality:** trials and cups are rarely deadly, so they are where young adventurers get experience and nerves are tested in front of a crowd; the main tournament prize is often a storied item.
 - **Cost:** a party entered is a party not on contracts for 1–2 weeks at the busiest time of year (midsummer).
 
-### 4e. Difficulty curve
+### 4e. Difficulty curve (Accepted 2026-10-26, D-073)
 
 - **Start choice sets difficulty** (D-026): founding (tiny roster, bottom tier, low expectations) or taking over a guild from a list that runs from a struggling bottom-tier hall to an established top guild with a demanding patron. No separate difficulty slider at launch.
-- **Ladder:** 3 tiers of 6 guilds (18 guilds in the region, including the player's). At each Assembly the top 1 of a tier goes up and the bottom 1 goes down; top tiers get bigger, deadlier and better-paid contracts. Estimate: a well-run founded guild reaches the middle tier in 3–5 years and the top in 8–12.
+- **Ladder:** 3 tiers of 6 guilds (18 guilds in the region, including the player's). At each Assembly the top 1 of a tier goes up and the bottom 1 goes down; top tiers get bigger, deadlier and better-paid contracts. The number of tiers and guilds is region data (GAME-04). Owner's note: "1 but bigger ladders later": larger ladders come after launch (tier and size not set). Estimate: a well-run founded guild reaches the middle tier in 3–5 years and the top in 8–12.
 - **Danger tracks ambition:** the player always chooses contracts (D-038), so difficulty within a tier is the player's own risk appetite.
 - **Early protection:** the first season (gentle onboarding, CONCEPT §19) offers mostly Routine and Hazardous work and the patron expects little.
 - **Late pressure:** a top guild faces rivals poaching its stars, high wages, a demanding patron and Deadly contracts; staying on top is harder than getting there (as in FM).
 
-### 4f. Tuning targets
+### 4f. Tuning targets (Accepted 2026-10-26, D-073)
 
 Measured in the prototype and playtests (§9, §10). All are estimates until then:
 
