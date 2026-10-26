@@ -1,0 +1,114 @@
+<title>Ledger Readability</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+DW+Pica:ital@0;1&family=Sorts+Mill+Goudy&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: neutral page chrome; real-size paper specimens (no scaling) of one ledger and one letter under each text setting, grouped by the option that ships them. */
+:root {
+  --bg: #f3f2ef; --fg: #23211e; --muted: #6a655d; --line: #d6d2ca;
+  --paper: #efe4cc; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5; --seal: #8e2a22; --good: #3f6f8f; --warn: #c08a1e; --desk: #3b2a1e;
+  --title: "IM Fell English SC", Georgia, serif;
+  --oldletter: "IM Fell DW Pica", Georgia, serif;
+  --oldledger: "Sorts Mill Goudy", Georgia, serif;
+  --clear: "Source Serif 4", Georgia, serif;
+  --hyper: "Atkinson Hyperlegible", Verdana, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--clear); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+.wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 40px; }
+header h1 { font-family: var(--title); font-weight: 400; font-size: 2.2rem; margin: 0; text-wrap: balance; }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 72ch; }
+.opt { display: grid; gap: 14px; }
+.opt h2 { font-family: var(--title); font-weight: 400; font-size: 1.55rem; margin: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; text-wrap: balance; }
+.rec { font-family: var(--mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; border: 1px solid currentColor; padding: 1px 6px; border-radius: 3px; }
+.lede { margin: 0; color: var(--muted); max-width: 75ch; }
+.verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 8px 24px; font-size: .95rem; }
+.verdict div { min-width: 0; }
+.verdict b, .cap { font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; font-weight: 500; }
+.specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 18px; }
+.spec { display: grid; gap: 6px; min-width: 0; }
+.paper { background: var(--paper); color: var(--ink); border-radius: 4px; box-shadow: 0 0 0 10px var(--desk), 0 8px 22px rgba(0,0,0,.3); margin: 10px; padding: 14px 16px; display: grid; gap: 12px; min-width: 0; }
+.paper h3 { font-family: var(--title); font-weight: 400; font-size: 1.35em; margin: 0; border-bottom: 1px solid var(--rule); padding-bottom: 2px; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th { text-align: left; font-weight: 400; font-style: italic; color: var(--ink2); font-size: .85em; padding: 2px 6px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+td { padding: 3px 6px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.n { text-align: right; } .rng { color: var(--ink2); }
+.st { display: inline-flex; align-items: center; gap: .35em; }
+.st i { width: .6em; height: .6em; display: inline-block; flex: none; }
+.ok i { background: var(--good); border-radius: 50%; } .hurt i { background: var(--warn); transform: rotate(45deg); }
+.letter { margin: 0; line-height: 1.45; }
+.letter::first-letter { float: left; font-family: var(--title); color: var(--seal); font-size: 2.9em; line-height: .85; padding: .05em .12em 0 0; }
+
+/* The four text settings */
+.old { font-family: var(--oldledger); font-size: 15px; } .old .letter { font-family: var(--oldletter); font-size: 16px; }
+.old150 { font-family: var(--oldledger); font-size: 22px; } .old150 .letter { font-family: var(--oldletter); font-size: 24px; }
+.clear { font-family: var(--clear); font-size: 15px; } .clear .letter { font-family: var(--clear); font-size: 16px; }
+.hyper { font-family: var(--hyper); font-size: 15px; } .hyper .letter { font-family: var(--hyper); font-size: 16px; }
+.hyper th { font-style: normal; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Reading the ledgers</h1>
+    <p>Text options for dense screens (PLAN §6c). Every specimen is shown at its real pixel size, as on a 1080p monitor at 100% scaling: a roster ledger and the opening of a letter. Titles stay in the old-press face (STYLE §5) in every option.</p>
+  </header>
+
+  <template id="body">
+    <div class="scroll"><table>
+      <thead><tr><th>Name</th><th>Class</th><th class="n">Lvl</th><th class="n">Might</th><th class="n">Nerve</th><th class="n">Wits</th><th class="n">Wage</th><th>Condition</th></tr></thead>
+      <tbody>
+        <tr><td>Aldith Marrow</td><td>Guardian</td><td class="n">4</td><td class="n">14</td><td class="n">12</td><td class="n">9</td><td class="n">38</td><td><span class="st ok"><i></i>Fit</span></td></tr>
+        <tr><td>Tobin Reede</td><td>Warrior</td><td class="n">3</td><td class="n">13</td><td class="n">8</td><td class="n">7</td><td class="n">31</td><td><span class="st hurt"><i></i>Arm, 3 wk</span></td></tr>
+        <tr><td>Osric Fenn</td><td>Rogue</td><td class="n">2</td><td class="n rng">9–13</td><td class="n rng">10–14</td><td class="n rng">11–15</td><td class="n">24</td><td><span class="st ok"><i></i>Fit</span></td></tr>
+        <tr><td>Haskel Dunn</td><td>Wizard</td><td class="n">3</td><td class="n">6</td><td class="n">9</td><td class="n">16</td><td class="n">45</td><td><span class="st ok"><i></i>Fit</span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="letter">To the guildmaster. The Reeve of Wendle asks whether your company would clear the old sluice-house before the spring floods. He offers 120 crowns and a fifth of whatever is found.</p>
+  </template>
+
+  <section class="opt" aria-labelledby="a">
+    <h2 id="a">A · Text size only</h2>
+    <p class="lede">The old-press faces everywhere (as locked), with a size slider from 100% to 150%. Readability problems are solved by making things bigger.</p>
+    <div class="specs">
+      <div class="spec"><span class="cap">Old press · 100% · ledger 15 px</span><div class="paper old" data-fill><h3>Roster</h3></div></div>
+      <div class="spec"><span class="cap">Old press · 150% · ledger 22 px</span><div class="paper old150" data-fill><h3>Roster</h3></div></div>
+    </div>
+    <div class="verdict">
+      <div><b>Good</b>One look for everyone; no second set of fonts to test.</div>
+      <div><b>Cost</b>At 150% a dense screen shows about a third fewer rows, so players who need it scroll more. The old-press roughness stays (the risk noted in STYLE §5).</div>
+    </div>
+  </section>
+
+  <section class="opt" aria-labelledby="b">
+    <h2 id="b">B · Size slider plus "clear print" <span class="rec">Recommended</span></h2>
+    <p class="lede">As A, plus a clear-print setting that swaps ledgers and letters to a modern book serif. Titles, seals and the decorated initial keep the old-press look, so the game still looks like itself.</p>
+    <div class="specs">
+      <div class="spec"><span class="cap">Old press · 100% (default)</span><div class="paper old" data-fill><h3>Roster</h3></div></div>
+      <div class="spec"><span class="cap">Clear print · 100%</span><div class="paper clear" data-fill><h3>Roster</h3></div></div>
+    </div>
+    <div class="verdict">
+      <div><b>Good</b>Fixes the main readability risk without giving up density; also the fallback if the ledger face fails the check (D-052).</div>
+      <div><b>Cost</b>A second body face to license (open font licence) and test on every screen; letters lose some period flavour in clear print.</div>
+    </div>
+  </section>
+
+  <section class="opt" aria-labelledby="c">
+    <h2 id="c">C · B plus a high-legibility face</h2>
+    <p class="lede">As B, plus a third choice built for low vision and reading difficulties. It is the most readable and the least in period.</p>
+    <div class="specs">
+      <div class="spec"><span class="cap">Clear print · 100%</span><div class="paper clear" data-fill><h3>Roster</h3></div></div>
+      <div class="spec"><span class="cap">High legibility · 100%</span><div class="paper hyper" data-fill><h3>Roster</h3></div></div>
+    </div>
+    <div class="verdict">
+      <div><b>Good</b>Widest reach; distinct letter shapes (I l 1, 0 O) help with dense numbers.</div>
+      <div><b>Cost</b>Three body faces to test on every screen; looks least like the game's style.</div>
+    </div>
+  </section>
+</div>
+<script>
+  const t = document.getElementById('body');
+  document.querySelectorAll('[data-fill]').forEach(el => el.append(t.content.cloneNode(true)));
+</script>

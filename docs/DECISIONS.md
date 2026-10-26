@@ -453,3 +453,21 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Attributes grow toward hidden potential and decline with age (ancestry sets the ages, as data); traits change through events. Retirement is a conversation; retirees can become staff, limited by attributes and wages; revival leaves a changed veteran. Facilities (5 at launch) have 3 levels each and are building entries in data; more levels or a compound of separate buildings (city-building style) come later. At most 5 earned guild traits are active at once. The guildmaster has about 8 stats (1–20) that grow only when the player does that work personally, and decline in the last 3–5 years. At succession the guild, charter, traits, roster, debts, rivalries, standing, Chronicle and the old guildmaster's promises pass on; the old guildmaster's stats and contacts do not. Detail: `docs/design/PLAN.md` §5.
 - **Why:** Owner accepted the draft (Plan Q5b) and asked for bigger facility progression or a guild compound later.
+
+## D-076 First season: prologue, staff-opened ledgers, clerk's notes
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** A skippable prologue of about 10–15 min (the guild's first contract, run on the real systems with a fixed seed); then ledgers open through the first season when they first matter, each introduced by a letter from the staff member who runs it, with fallback dates and a checklist; the clerk's pencilled notes appear on relevant documents and can be put away. Veteran start skips the prologue and opens every ledger. Detail: `docs/design/PLAN.md` §6a; mock-up `docs/design/mockups/onboarding.html`.
+- **Why:** Owner's choice (Plan Q6a) combining options A, B and C; teaches through the staff the player later delegates to, while veterans skip it with one setting.
+
+## D-077 Text size slider and clear print
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Dense screens get a 100–150% size slider and a clear-print setting that switches ledgers and letters to a modern book serif (open font licence, chosen in UI work); titles, seals and decorated initials stay old-press. Clear print is also the ready fallback if the ledger face fails the readability check (D-052). Detail: `docs/design/PLAN.md` §6c; mock-up `docs/design/mockups/readability.html`.
+- **Why:** Owner's choice (Plan Q6b). The mock-up showed the old-press ledger's old-style figures scan worse than a book serif at the same size and density.
+
+## D-078 Screen rules and accessibility
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Seven screen rules: every number shows its breakdown (from the engine); one sheet, one job; fixed top bar; every stop shows its default; confirm only the irreversible (signing, releasing, dismissing staff, revival, Deadly contracts); uncertainty shown as ranges and worded odds; never colour alone. Accessibility: colour-blind-safe statuses and heraldic charges, full remappable keyboard play, no timers, reducible motion, visible counterparts and captions for meaningful sounds; screen readers not promised at launch but the UI is built from labelled controls. Detail: `docs/design/PLAN.md` §6b–§6c.
+- **Why:** Owner accepted the draft (Plan Q6c).

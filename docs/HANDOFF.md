@@ -4,10 +4,11 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Phase
 
-3 of 3: Full plan → `docs/design/PLAN.md`. Concept locked (D-045); style locked (D-061); plan outline approved (D-062). PLAN.md §1–§5 written (D-063..D-075); §6..§15 to do.
+3 of 3: Full plan → `docs/design/PLAN.md`. Concept locked (D-045); style locked (D-061); plan outline approved (D-062). PLAN.md §1–§6 written (D-063..D-078); §7..§15 to do.
 
 ## Just done
 
+- 2026-10-26 PLAN.md §6 accepted: prologue + staff-opened ledgers + clerk's notes (D-076); size slider + clear print (D-077); seven screen rules and accessibility list (D-078). Mock-ups published: `onboarding.html`, `readability.html`.
 - 2026-10-26 PLAN.md §5 accepted: 10 class levels at launch, 20 planned (D-074); retirees can become staff, 3-level facilities as data (compound-style building later), max 5 active guild traits, ~8 guildmaster stats grown by doing, succession inheritance (D-075).
 - 2026-10-26 PLAN.md §4 accepted: ~2 deaths a year in a mid guild, death rates by danger rating, turnover ~25% (D-071; §2e updated); money tight early, steady later (D-072); sources/sinks, tournaments as shop window, 3×6 ladder with bigger ladders later (D-073).
 - 2026-10-26 PLAN.md §3 accepted: ranking by renown earned this year, renown stored as sourced entries for a later intrigue layer (D-069); 14 launch systems, injury folded into Adventurers, scouting + knowledge merged, academy and commissioning moved to Early update (D-070; D-012, D-013 amended; CONCEPT §9, §10, §28 notes).
@@ -20,14 +21,14 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Next
 
-1. Write PLAN.md §6 (onboarding, UX and accessibility): the gentle first season, screen rules, colour-blind, keyboard and text-size support. Continue in order to §15. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
+1. Write PLAN.md §7 (launch content list): classes, ancestries, monsters, quest templates, sites; all as data. Continue in order to §15. Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
 2. Early in phase 3 (§9 risks and prototypes, §12 art production): check old-press ledger readability on a rendered screen (STYLE.md §5, fallback D-052) and cost the art (map art, ink renderer, face part library, two icon sizes, painted portraits later).
 
 ## Open questions
 
 - Later: 20 class levels (D-074) need a pacing decision; facility compound / city-building style guildhall (D-075) not scoped.
 - Intrigue and underhanded dealings (owner's note, D-069): Later tier; content not decided.
-- Old-press ledger readability (STYLE.md §5): check minimum size on a rendered ledger; fallback is our own Goudy ledger cut (D-052).
+- Old-press ledger readability (STYLE.md §5): check minimum size on a rendered ledger; fallback is our own Goudy ledger cut (D-052). Mock-up showed its old-style figures scan worse than a book serif; clear print (D-077) is the player-side fix.
 - "More fantasy flair" for the quest board art (STYLE.md §4) needs defining when art direction starts.
 - Bardic songs (after launch, D-056): sung or instrumental not decided.
 - Stack and engine: decided in PLAN.md §11; add the matching `stacks/` layer then.

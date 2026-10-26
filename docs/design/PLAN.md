@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: §1–§5 written; §6..§15 to do.
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: §1–§6 written; §7..§15 to do.
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -11,7 +11,7 @@ Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked
 3. **Systems map.** Per system: pillar served, inputs and outputs, the player's real decisions, delegation; a diagram of how systems feed each other. Written below.
 4. **Economy and balance.** Money, renown, knowledge: sources and sinks; difficulty curve; tuning targets (e.g. death rate by quest tier). Written below.
 5. **Progression.** Adventurers, guild and guildmaster, from first recruit to the next generation. Written below.
-6. **Onboarding, UX and accessibility.** The gentle first season, screen rules, colour-blind, keyboard and text-size support.
+6. **Onboarding, UX and accessibility.** The gentle first season, screen rules, colour-blind, keyboard and text-size support. Written below.
 7. **Launch content list.** Classes, ancestries, monsters, quest templates, sites; all as data.
 8. **Making consequences visible.** How every outcome reaches the player (log lines, letters, inspector fields).
 9. **Risks and prototypes.** Riskiest assumptions and the cheapest test for each (quest simulation fun to watch? desk holds FM density? old-press ledgers readable?).
@@ -389,3 +389,40 @@ The guild grows on four tracks, each visible on the desk:
 - **What passes on:** guild, charter, traits, facilities, roster, debts, rivalries, faction standing and the Chronicle. **What doesn't:** the old guildmaster's stats and personal contacts; promises the old guildmaster made are remembered, and the new one inherits the trust or resentment.
 - **Adventurers react** to the new guildmaster: some loyal to the old one may leave or test the new one (D-021).
 - **Later (Early update, D-070):** the academy adds a home-grown line, including the children of guild heroes.
+
+---
+
+## 6. Onboarding, UX and accessibility (Accepted 2026-10-26)
+
+Decisions: D-076..D-078. Mock-ups: `docs/design/mockups/onboarding.html`, `docs/design/mockups/readability.html`.
+
+### 6a. The first season (Accepted 2026-10-26, D-076)
+
+Goal: a new player finishes the first season in about 3–4 h (D-064) and 70% of new saves do (D-065), without slowing down the management-sim veteran (D-063). Mock-up: `docs/design/mockups/onboarding.html`.
+
+Owner's note: "I like a for the first season but I like having a small prologue as an intro to the system and I really like having on theme clerks notes on relevant documents."
+
+1. **A small prologue** (about 10–15 min): the guild's first contract, a small job near home with the starting party, walking through briefing, the board, one key moment and the report. It runs on the real systems with a fixed seed (GAME-01), not a separate script, so it stays correct as systems change. Skippable.
+2. **Staff open the ledgers** through the first season: ledgers start sealed and open when they first matter (first injury opens the Infirmary, first wages day opens Finances, first window opens Scouting, first Assembly opens Ranking), each with a short letter from the staff member who runs it. A fallback date opens any ledger whose trigger never fires. A checklist shows what is open and what comes next.
+3. **The clerk's notes:** pencilled, in-world notes on relevant documents, the first time a ledger opens and whenever a document has something unusual (a contract with a harsh clause, a prospect seen only once). The player can put them away for good, or per ledger.
+4. **Veteran start** (a setting at new game) skips the prologue and opens every ledger on day one; the clerk's notes stay on unless put away.
+
+### 6b. Screen rules (Accepted 2026-10-26, D-078)
+
+1. **Every number explains itself.** Hovering or focusing any number shows how it was made (base, modifiers, sources), in plain words. The engine produces the breakdown (GAME-02); the UI never recomputes it.
+2. **One sheet, one job.** Each ledger answers one question (who is fit? what do we owe?); comparisons open side by side instead of in a new mode.
+3. **The top bar never moves** (STYLE §3): date, why the calendar stopped, Continue.
+4. **Every stop has a default** (D-068) and the default is shown on the button.
+5. **Confirm only what can't be undone:** signing and releasing, dismissing staff, revival, sending a party on a Deadly contract. Everything else (plans, kit, training focus) can be changed freely until Continue.
+6. **Uncertainty looks uncertain:** scouted attributes show as ranges until known (CONCEPT §10); predictions show odds in words and numbers ("likely, about 70%").
+7. **Never colour alone:** every status has an icon or word as well as its colour (D-048).
+
+### 6c. Accessibility (Accepted 2026-10-26, D-078)
+
+- **Colour-blind:** the fixed status set (D-048) is chosen to stay distinct under the three common types; faction colours always carry a heraldic charge as well.
+- **Text size and readability (Accepted 2026-10-26, D-077):** a size slider from 100% to 150%, plus a **clear print** setting that switches ledgers and letters to a modern book serif (an open-font-licence face, chosen in UI work); titles, seals and the decorated initial keep the old-press faces. Mock-up: `docs/design/mockups/readability.html`. Observed in the mock-up: the old-press ledger face uses old-style figures (3, 4, 7, 9 drop below the line; 6, 8 rise), so columns align but numbers scan worse than clear print at the same size; this feeds the ledger readability check (STYLE §5, D-052).
+- **Keyboard:** everything playable by keyboard; Space continues; number keys pick stop options; letters jump to ledgers; all bindings can be changed.
+- **No time pressure:** the calendar never moves without Continue; reading a letter or a key moment never has a timer.
+- **Motion:** board animations and map drawing can be shortened or turned off; nothing important is shown only in motion.
+- **Sound:** every sound that carries meaning (the death bell, the key-moment drum, D-055) has a visible counterpart; optional captions for vocal sounds (D-060).
+- **Screen readers:** not promised at launch; the UI is built from labelled controls so it can be added later (assumption to check in §11).
