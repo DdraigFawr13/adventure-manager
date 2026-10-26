@@ -248,7 +248,7 @@
       },
       {
         "text": ", clean as you like",
-        "if": ["unhurt"]
+        "if": ["unhurt", "outcome.won"]
       },
       {
         "text": ", though not cheaply",
@@ -549,16 +549,16 @@
       ", and the rest of this letter says why"
     ],
     "report.deed.saved": [
-      "{@ds.when}{who} {@ds.verb} {patient}{@ds.tail}.",
+      "{@ds.when}{who} {@ds.verb}{@ds.tail}.",
       "{@ds.lead} {who}, {patient} {@ds.alive}{@ds.end}."
     ],
     "ds.verb": [
-      "kept",
-      "held on to",
-      "pulled back",
-      "would not let go of",
-      "pulled clear",
-      "argued death out of"
+      "kept {patient} alive",
+      "held on to {patient}",
+      "pulled {patient} back",
+      "would not let {patient} go",
+      "dragged {patient} clear",
+      "argued death out of {patient}"
     ],
     "ds.tail": [
       " when it was nearly too late",
@@ -583,14 +583,18 @@
       "put {who.themself} between us and harm",
       "stood in the way of a blow",
       "shoved one of us clear and took the hurt",
-      "caught a blow on {who.their} own shield that was never aimed at {who.them}"
+      "caught a blow on {who.their} own shield that was never aimed at {who.them}",
+      "took the hit so someone else didn't have to"
     ],
     "dg.tail": [
       ", and only grumbled about it once",
       ", and called it nothing",
       ", which is more than {who.their} pay covers",
       ", without being asked",
-      ", and we owe {who.them} for it"
+      ", and we owe {who.them} for it",
+      ", and would do it again",
+      ", without stopping to think",
+      ", and has the dents to show for it"
     ],
     "dg.lead": [
       "",
@@ -613,12 +617,12 @@
       "found the mark with"
     ],
     "dk.tail": [
-      " and had the most to do with how it ended",
-      ", more than the rest of us together, or near enough",
       " and wants it written down",
       ", and is already telling it in the tavern",
-      ", which was the difference",
-      " and barely broke a sweat, to hear {who.them} tell it"
+      " and barely broke a sweat, to hear {who.them} tell it",
+      ", and every one of them counted",
+      " and has the bruises to prove it",
+      ", and kept count, which tells you something"
     ],
     "dk.lead": [
       "Most of the work fell to",
@@ -752,8 +756,12 @@
         "if": ["writer", "struck"]
       },
       {
-        "text": "{@dd.lead} {who}{@dd.bled}{@dd.after}.",
-        "if": ["writer", "bled"]
+        "text": "{@dd.lead} {who}{@dd.scene}{@dd.after}.",
+        "if": ["writer", "scene"]
+      },
+      {
+        "text": "{@dd.lead} {who}{@dd.retreat}{@dd.after}.",
+        "if": ["writer", "retreat"]
       },
       {
         "text": "{who} {@dd.none}.",
@@ -779,16 +787,6 @@
       " to {killer}, face to face",
       " at the hands of {killer}",
       " when {killer} got past the rest of us"
-    ],
-    "dd.bled": [
-      " to {who.their} wounds, on the way out",
-      " after the fight, to bleeding we could not stop",
-      " in the night, quietly",
-      " before we could get {who.them} home",
-      " to the wounds {who.they} took",
-      " while we were still carrying {who.them}",
-      " on the road, to the hurt {who.they} took in there",
-      " in the dark, with the healer's hands on {who.them}"
     ],
     "dd.after": [
       "",
@@ -870,7 +868,10 @@
       "the fee is good, and so is the loot",
       "the reeve paid on the spot, which never happens",
       "the money is good and the reeve is grateful",
-      "the fee will be at the hall before we are"
+      "the fee will be at the hall before we are",
+      "the steward counted it out twice and paid in full",
+      "the coin is good and nobody argued",
+      "they paid the full fee and asked us back"
     ],
     "c.partial": [
       "they will pay half, and say that is generous",
@@ -1009,7 +1010,7 @@
       "Since you will ask, ",
       "To the business end of it, ",
       "On the money, ",
-      "Now, the fee: "
+      "Now, the money: "
     ],
     "di.self": [
       "I took a wound that will not heal clean",
@@ -1154,6 +1155,26 @@
       "You should know that ",
       "It is hard to write, but "
     ],
-    "tw.sorry": ["", "; we are sorry for it", "; we could not stop it", "; that is on us"]
+    "tw.sorry": ["", "; we are sorry for it", "; we could not stop it", "; that is on us"],
+    "dd.scene": [
+      " on the way in, before we ever reached {foe}",
+      " to a fall on the way in",
+      " to the hurt {who.they} took on the way in",
+      " before the real fight had even started",
+      " to the place itself, not to anything that lived there",
+      " on the road in, which is no way to go",
+      " to the way in, which was worse than we were told",
+      " short of the fight {who.they} came for"
+    ],
+    "dd.retreat": [
+      " on the way out",
+      " as we fell back",
+      " during the retreat",
+      " getting out of there",
+      " while we pulled back",
+      " with the way out almost behind us",
+      " in the last stretch of the retreat",
+      " as we carried the others clear"
+    ]
   }
 }

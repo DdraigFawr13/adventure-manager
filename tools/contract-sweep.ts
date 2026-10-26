@@ -1,6 +1,7 @@
 // Contract sweep (D-139, R2 preview): every composed shape the board can post, played by the
 // reference party (the prototype party, D-137) at the default plan, pooled by danger, by twist,
-// and the spread across site × monster pairs. Runs the invariants on every quest.
+// and the spread across site × monster pairs. The danger's headline rate weights each shape as
+// the board does (pairs equally, twists by their weight); the plain mean is printed beside it. Runs the invariants on every quest.
 // Usage: node tools/contract-sweep.ts [quests per shape=60] [approach=stealth]
 import {
   checkInvariants,
@@ -85,6 +86,8 @@ console.log(
 );
 for (const danger of DANGERS) {
   const total = empty();
+  let weightedDeaths = 0;
+  let weightedQuests = 0;
   const byTwist = new Map<string, Tally>();
   const byPair: [string, number][] = [];
   let shapes = 0;
@@ -103,6 +106,9 @@ for (const danger of DANGERS) {
         for (let s = 0; s < perShape; s += 1) {
           const t = play(id, s);
           add(total, t);
+          const w = twist ? twist.weight : contracts.plainWeight;
+          weightedDeaths += w * t.deaths;
+          weightedQuests += w * t.quests;
           add(tw, t);
           add(pair, t);
         }
@@ -113,7 +119,8 @@ for (const danger of DANGERS) {
     }
   byPair.sort((a, b) => a[1] - b[1]);
   console.log(
-    `\n${danger}: ${shapes} shapes, deaths ${pct(total).toFixed(2)}% per adventurer-quest [target ${TARGET[danger]}%], ` +
+    `\n${danger}: ${shapes} shapes, deaths ${((100 * weightedDeaths) / Math.max(1, weightedQuests * partySize)).toFixed(2)}% per adventurer-quest as the board weights shapes ` +
+      `(plain mean over shapes ${pct(total).toFixed(2)}%) [target ${TARGET[danger]}%], ` +
       `injuries per death ${(total.injuries / Math.max(1, total.deaths)).toFixed(1)} [~5], won ${((100 * total.won) / total.quests).toFixed(0)}%`,
   );
   console.log(

@@ -64,7 +64,7 @@ export interface TextContext {
   readonly pronouns: Readonly<Record<PronounKey, PronounForms>>;
   readonly vars: Readonly<Record<string, SlotValue>>;
   readonly facts: ReadonlySet<string>;
-  /** Writes slot names (‹quest›) instead of names and numbers, so repeated sentences can be counted. */
+  /** Writes slot names (‹quest›, ‹who.their›, ‹holds|hold›) instead of names, numbers and pronouns, so repeated sentence shapes can be counted. */
   readonly mask?: boolean;
 }
 
@@ -109,7 +109,8 @@ export function renderText(ctx: TextContext, template: string, key: string, dept
     const agree = /^([a-z][a-zA-Z]*)~([^|]*)\|(.*)$/.exec(body);
     if (agree) {
       const [, name = '', singular = '', plural = ''] = agree;
-      return isPlural(ctx, name, slot) ? plural : singular;
+      const chosen = isPlural(ctx, name, slot) ? plural : singular;
+      return ctx.mask ? `‹${singular}|${plural}›` : chosen;
     }
     const [name = '', form, ...rest] = body.split('.');
     if (rest.length > 0 || !Object.hasOwn(ctx.vars, name)) return slot;
@@ -123,6 +124,7 @@ export function renderText(ctx: TextContext, template: string, key: string, dept
     const lower = form.toLowerCase();
     const known = FORMS.find((f) => f === lower);
     if (!known) return slot;
+    if (ctx.mask) return `‹${name}.${form}›`;
     const word = ctx.pronouns[value.pronouns][known];
     return form === lower ? word : capitalise(word);
   });

@@ -15,6 +15,8 @@ import { runYear } from './year-sim-play.ts';
 import { baseResolution, names, reportText } from '@adventure-manager/content';
 
 const total = Number(process.argv[2] ?? 200);
+if (!(total >= 100))
+  throw new Error('Give at least 100 reports: the checks need two blocks of 50 and 100 quests.');
 const show = Number(process.argv[3] ?? 3);
 const BLOCK = 50;
 const SHAPE_BLOCK = 100;
@@ -113,7 +115,9 @@ console.log(
 );
 for (const [s, n] of body.over.slice(0, 10)) console.log(`  ×${n}: ${s}`);
 const formula = maxRepeats(formulaBlocks);
-console.log(`Letter formulas (not counted): most uses of one in a block ${formula.worst}`);
+console.log(
+  `Letter formulas (salutations and sign-offs, not counted; owner to confirm the reading): most uses of one in a block ${formula.worst}`,
+);
 
 const shapeCounts = new Map<string, number>();
 for (const r of reports.slice(0, SHAPE_BLOCK))
@@ -123,3 +127,4 @@ console.log(
   `Quest shapes in the first ${Math.min(SHAPE_BLOCK, reports.length)} quests: ${shapeCounts.size} distinct, most repeats ${worstShape} [pass: at most 3] ${worstShape <= 3 ? 'PASS' : 'FAIL'}`,
 );
 console.log('  A shape is site × monster kind × twist at one danger (D-139, PLAN §9d).');
+if (body.worst > 2 || worstShape > 3 || gaps.length > 0) process.exitCode = 1;

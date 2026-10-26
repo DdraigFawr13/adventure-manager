@@ -97,9 +97,10 @@ export interface GuildMember {
 
 export interface Offer {
   readonly id: string;
+  /** The contract as it really is; only the quest reads it (a hidden twist is in here). */
   readonly templateId: string;
-  /** The twist the board shows; null when there is none or it is hidden (D-139). */
-  readonly shownTwistId: string | null;
+  /** The contract as the board shows it: a hidden twist reads as none (D-139). Views use this. */
+  readonly shownTemplateId: string;
   readonly danger: Danger;
   readonly feeCopper: number;
   readonly travelDays: number;
@@ -169,8 +170,8 @@ export type GuildEventBody =
   | { readonly type: 'week.started'; readonly week: number }
   | {
       readonly type: 'offer.posted';
+      /** The board's view of the contract (`Offer.shownTemplateId`), never the hidden twist. */
       readonly templateId: string;
-      readonly shownTwistId: string | null;
       readonly danger: Danger;
       readonly feeCopper: number;
       readonly travelDays: number;

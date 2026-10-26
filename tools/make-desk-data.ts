@@ -115,7 +115,7 @@ const away = new Map<string, { site: string; homeDay: number }>();
 for (const p of guild.parties)
   if (p.homeDay > today)
     for (const id of p.memberIds)
-      away.set(id, { site: contractName(p.offer.templateId).site, homeDay: p.homeDay });
+      away.set(id, { site: contractName(p.offer.shownTemplateId).site, homeDay: p.homeDay });
 
 const roster = state.roster.map((a) => {
   const m = guild.members.find((x) => x.id === a.id);
@@ -158,8 +158,7 @@ for (const e of events) {
 
 const board = guild.board.map((o) => ({
   id: o.id,
-  ...contractName(o.templateId),
-  twist: o.shownTwistId ? (names[o.shownTwistId] ?? o.shownTwistId) : null,
+  ...contractName(o.shownTemplateId),
   fee: coins(o.feeCopper),
   feeCopper: o.feeCopper,
   travelDays: o.travelDays,
@@ -169,7 +168,7 @@ const parties = guild.parties
   .filter((p) => p.homeDay > today)
   .map((p) => ({
     id: p.id,
-    ...contractName(p.offer.templateId),
+    ...contractName(p.offer.shownTemplateId),
     members: p.memberIds.map(fullName),
     arriveDay: p.arriveDay,
     homeDay: p.homeDay,

@@ -10,8 +10,10 @@ import {
   type PersonSlot,
   type QuestSummary,
   type Variant,
+  shapeId,
+  shapeOf,
 } from '@adventure-manager/engine';
-import { baseGuildRules, baseResolution, names, reportText } from '../src/index.ts';
+import { baseContracts, baseGuildRules, baseResolution, names, reportText } from '../src/index.ts';
 
 const SLOTS = new Set([
   'quest',
@@ -50,7 +52,21 @@ describe('quest report text (R8)', () => {
   });
 
   it('opens and closes every letter, whatever happened', () => {
-    const person = (id: string): PersonSlot => ({ name: id, pronouns: 'they' });
+    // Pronouns vary by case, so she, he and they letters are all written.
+    const sets = ['she', 'he', 'they'] as const;
+    let pronounRound = 0;
+    const person = (id: string): PersonSlot => ({
+      name: id,
+      pronouns: sets[(pronounRound + id.charCodeAt(0)) % 3]!, // non-null: modulo three.
+    });
+    const twisted = [null, ...baseContracts.twists.map((t) => t.id)].map((twistId) =>
+      shapeId({
+        siteId: 'site.hollow-barrow',
+        monsterId: 'monster.barrow-dead',
+        twistId,
+        danger: 'hazardous',
+      }),
+    );
     const base: QuestSummary = {
       questId: 'q',
       templateId: 'quest.barrow-delve',
@@ -62,44 +78,47 @@ describe('quest report text (R8)', () => {
       exchanges: 3,
       alarm: false,
       retreated: false,
-      hits: {},
-      actions: {},
-      saves: [],
+      hits: { b: 4 },
+      actions: { c: { 'action.mend': 2 }, a: { 'action.guard': 1 } },
+      saves: [['c', 'b']],
       deaths: [],
-      injuries: [],
+      injuries: ['a', 'c'],
       worst: { a: 0, b: 0, c: 0 },
     };
     const cases: QuestSummary[] = [];
-    for (const outcome of ['won', 'partial', 'retreated', 'routed'] as const)
-      for (const exchanges of [0, 1, 3, 5])
-        for (const deaths of [
-          [],
-          [{ id: 'b', foeId: null }],
-          [
-            { id: 'b', foeId: 'foe.barrow-hounds' },
-            { id: 'c', foeId: null },
-          ],
-        ])
-          for (const worst of [
-            { a: 0, b: 0, c: 0 },
-            { a: 2, b: 4, c: 1 },
+    for (const templateId of twisted)
+      for (const outcome of ['won', 'partial', 'retreated', 'routed'] as const)
+        for (const exchanges of [0, 1, 3, 5])
+          for (const deaths of [
+            [],
+            [{ id: 'b', foeId: null, cause: 'retreat' as const }],
+            [
+              { id: 'b', foeId: 'foe.barrow-hounds', cause: 'foe' as const },
+              { id: 'c', foeId: null, cause: 'scene' as const },
+            ],
           ])
-            cases.push({
-              ...base,
-              outcome,
-              exchanges,
-              deaths,
-              worst,
-              alarm: exchanges === 5,
-              retreated: outcome === 'retreated',
-            });
+            for (const worst of [
+              { a: 0, b: 0, c: 0 },
+              { a: 2, b: 4, c: 1 },
+            ])
+              cases.push({
+                ...base,
+                templateId,
+                outcome,
+                exchanges,
+                deaths,
+                worst,
+                alarm: exchanges === 5,
+                retreated: outcome === 'retreated',
+              });
     cases.push({
       ...base,
       outcome: 'routed',
       writerId: null,
-      deaths: ['a', 'b', 'c'].map((id) => ({ id, foeId: null })),
+      deaths: ['a', 'b', 'c'].map((id) => ({ id, foeId: null, cause: 'scene' as const })),
     });
     for (const [n, summary] of cases.entries()) {
+      pronounRound = n;
       const lines = writeQuestReport({ ...summary, questId: `q${n}` }, reportText, {
         personOf: person,
         nameOf: (id) => names[id] ?? id,
@@ -109,8 +128,31 @@ describe('quest report text (R8)', () => {
       expect(lines[0]?.formula, `case ${n} salutation`).toBe(true);
       expect(lines.at(-1)?.formula, `case ${n} sign-off`).toBe(true);
       expect(body.length, `case ${n} body`).toBeGreaterThanOrEqual(summary.writerId ? 2 : 1);
-      for (const l of lines) expect(l.text, `case ${n}`).not.toMatch(/[{}]|\s,|\s\s|^\s|\s$/);
+      for (const l of lines)
+        expect(l.text, `case ${n}`).not.toMatch(/[{}‹›]|\s,|\s\s|^\s|\s$|[,;:][.,;]|\.\./);
+      // A twisted contract says what its twist did (a hostage only when it mattered).
+      const shape = shapeOf(summary.templateId);
+      if (shape?.twistId && summary.writerId) {
+        const plain = writeQuestReport(
+          { ...summary, questId: `q${n}`, templateId: twisted[0]! }, // non-null: the plain shape.
+          reportText,
+          { personOf: person, nameOf: (id) => names[id] ?? id, seed: 'cases' },
+        );
+        const silent =
+          shape.twistId === 'twist.hostage' && !summary.alarm && summary.outcome !== 'won';
+        expect(lines.length, `case ${n} ${shape.twistId}`).toBe(plain.length + (silent ? 0 : 1));
+      }
     }
+    expect(cases.length).toBeGreaterThan(600);
+  });
+
+  it('uses no + in content ids, which shape ids use as a separator', () => {
+    const ids = [
+      ...baseContracts.sites.map((x) => x.id),
+      ...baseContracts.monsters.map((x) => x.id),
+      ...baseContracts.twists.map((x) => x.id),
+    ];
+    expect(ids.filter((id) => id.includes('+'))).toEqual([]);
   });
 
   it('matches the golden letters (change them only in a commit that says why)', async () => {

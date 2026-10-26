@@ -52,7 +52,7 @@ const text: ReportText = {
     striker: ['{who} landed {count} {count~blow|blows}.'],
     'report.death': [
       { text: 'we lost {who} to {killer}.', if: ['struck'] },
-      { text: 'we lost {who}.', if: ['bled'] },
+      { text: 'we lost {who}.', if: ['scene'] },
     ],
     'report.injury': [
       { text: 'I am hurt.', if: ['self'] },
@@ -97,6 +97,34 @@ describe('quest report (report SPEC.md)', () => {
     expect(lines.at(-1)).toEqual({ text: 'Wenna', formula: true });
   });
 
+  it('traces each death to the foe whose blow knocked the member down, even when a later death roll kills', () => {
+    // a and b are always hit; c is never hit and cannot win, so the fight runs on while the
+    // fallen bleed (certain) and die on a later beat's death roll (certain).
+    const roster = [
+      adventurer('a', { agility: 1 }),
+      adventurer('b', { agility: 1 }),
+      adventurer('c', { agility: 60, might: 1 }),
+    ];
+    const certain = { baseBp: 10_000, stepBp: 0, pivot: 10 };
+    const { events, state } = run(
+      game(roster, {
+        rules: { minChanceBp: 0, maxChanceBp: 10_000, bleed: certain, deathRoll: certain },
+        quest: {
+          scenes: [],
+          foes: [{ id: 'foe.wights', attack: 30, defence: 30, speed: 30, hits: 9 }],
+        },
+      }),
+    );
+    const byId = new Map(events.map((e) => [e.id, e]));
+    const died = events.filter((e) => e.type === 'adventurer.died');
+    expect(died.map((e) => e.subjectIds[0]).sort()).toEqual(['a', 'b']);
+    // Each death roll was caused by a step command, not by the blow: the old trace found no killer.
+    for (const e of died) expect(byId.get(byId.get(e.causeId)?.causeId ?? '')).toBeUndefined();
+    const summary = summariseQuest(events, state.roster, state.content);
+    for (const d of summary.deaths)
+      expect(d).toEqual({ id: d.id, foeId: 'foe.wights', cause: 'foe' });
+  });
+
   it('refuses events that are not one whole quest', () => {
     expect(() => summariseQuest([], [], game([]).content)).toThrow(/start to end/);
   });
@@ -115,7 +143,7 @@ describe('quest report (report SPEC.md)', () => {
     hits: { a: 1, b: 2 },
     actions: {},
     saves: [],
-    deaths: [{ id: 'a', foeId: 'foe.wights' }],
+    deaths: [{ id: 'a', foeId: 'foe.wights', cause: 'foe' }],
     injuries: ['b'],
     worst: { a: 4, b: 2 },
   };
@@ -137,8 +165,8 @@ describe('quest report (report SPEC.md)', () => {
         ...base,
         writerId: null,
         deaths: [
-          { id: 'a', foeId: null },
-          { id: 'b', foeId: null },
+          { id: 'a', foeId: null, cause: 'scene' },
+          { id: 'b', foeId: null, cause: 'scene' },
         ],
         injuries: [],
       },

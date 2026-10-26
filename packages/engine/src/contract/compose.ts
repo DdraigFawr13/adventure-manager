@@ -14,9 +14,11 @@ export function shapeId(shape: Shape): string {
 /** The shape a composed template id names, or null for a fixed quest template. */
 export function shapeOf(templateId: string): Shape | null {
   if (!templateId.startsWith(PREFIX)) return null;
-  const [siteId, monsterId, twist, danger] = templateId.slice(PREFIX.length).split('+');
+  const parts = templateId.slice(PREFIX.length).split('+');
+  const [siteId, monsterId, twist, danger] = parts;
   const known = DANGERS.find((d) => d === danger);
-  if (!siteId || !monsterId || !twist || !known) throw new Error(`Bad shape id ${templateId}.`);
+  if (parts.length !== 4 || !siteId || !monsterId || !twist || !known)
+    throw new Error(`Bad shape id ${templateId}.`);
   return { siteId, monsterId, twistId: twist === PLAIN ? null : twist, danger: known };
 }
 

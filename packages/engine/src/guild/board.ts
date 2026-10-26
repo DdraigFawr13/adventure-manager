@@ -2,7 +2,7 @@
 import type { EventSink } from '../core/events.ts';
 import { divRoundDown } from '../core/math.ts';
 import { BP_CERTAIN, streamFor, type RngStream } from '../core/rng.ts';
-import { fits, shapeId } from '../contract/compose.ts';
+import { fits, shapeId, shapeOf } from '../contract/compose.ts';
 import type { Twist } from '../contract/types.ts';
 import type { Danger } from '../resolution/types.ts';
 import type { Command, GameEvent } from '../resolution/types.ts';
@@ -30,7 +30,7 @@ export function postOffers(turn: GuildTurn, week: number, causeId: string): void
     const offer: Offer = {
       id: `offer.${guild.nextOfferNo}`,
       templateId: drawn.templateId,
-      shownTwistId: drawn.shownTwist?.id ?? null,
+      shownTemplateId: drawn.shownTemplateId,
       danger: dangerRules.danger,
       feeCopper: divRoundDown(
         dangerRules.feeCopper * (BP_CERTAIN + spreadBp + (drawn.shownTwist?.feeBp ?? 0)),
@@ -44,8 +44,7 @@ export function postOffers(turn: GuildTurn, week: number, causeId: string): void
       type: 'offer.posted',
       causeId,
       subjectIds: [offer.id],
-      templateId: offer.templateId,
-      shownTwistId: offer.shownTwistId,
+      templateId: offer.shownTemplateId,
       danger: offer.danger,
       feeCopper: offer.feeCopper,
       travelDays: offer.travelDays,
@@ -62,12 +61,13 @@ function drawWork(
   turn: GuildTurn,
   rng: RngStream,
   danger: Danger,
-): { templateId: string; shownTwist: Twist | null } {
+): { templateId: string; shownTemplateId: string; shownTwist: Twist | null } {
   const contracts = turn.state.content.contracts;
   if (!contracts) {
     const templates = turn.state.content.quests.filter((q) => q.danger === danger);
     if (templates.length === 0) throw new Error(`No quest template is ${danger}.`);
-    return { templateId: rng.pick(templates).id, shownTwist: null };
+    const id = rng.pick(templates).id;
+    return { templateId: id, shownTemplateId: id, shownTwist: null };
   }
   const pairs = contracts.sites.flatMap((site) =>
     contracts.monsters.filter((m) => fits(site, m, danger)).map((m) => [site, m] as const),
@@ -91,11 +91,17 @@ function drawWork(
   const fresh = all.filter(([d]) => !recent.includes(d.templateId));
   const drawn = rng.weighted(fresh.length > 0 ? fresh : all);
   recent.push(drawn.templateId);
-  if (recent.length > contracts.recentShapes)
-    recent.splice(0, recent.length - contracts.recentShapes);
+  // The memory is per danger: drop this danger's oldest shapes past the limit.
+  const mine = recent.filter((id) => shapeOf(id)?.danger === danger);
+  for (const old of mine.slice(0, Math.max(0, mine.length - contracts.recentShapes)))
+    recent.splice(recent.indexOf(old), 1);
+  const shownTwist = drawn.twist && !drawn.twist.hidden ? drawn.twist : null;
+  const shape = shapeOf(drawn.templateId);
+  if (!shape) throw new Error(`Drew a fixed template ${drawn.templateId} from contracts.`);
   return {
     templateId: drawn.templateId,
-    shownTwist: drawn.twist && !drawn.twist.hidden ? drawn.twist : null,
+    shownTemplateId: shapeId({ ...shape, twistId: shownTwist?.id ?? null }),
+    shownTwist,
   };
 }
 

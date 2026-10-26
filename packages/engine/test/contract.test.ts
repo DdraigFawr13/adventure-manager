@@ -90,6 +90,7 @@ describe('contracts (contract SPEC.md, D-139)', () => {
     expect(shapeOf(shapeId(shape(null)))?.twistId).toBeNull();
     expect(shapeOf('quest.barrow-delve')).toBeNull();
     expect(() => shapeOf('shape:a+b')).toThrow(/Bad shape/);
+    expect(() => shapeOf('shape:a+b+plain+hazardous+extra')).toThrow(/Bad shape/);
   });
 
   it('shifts site scenes by danger and fights the kind’s groups', () => {
@@ -120,8 +121,11 @@ describe('contracts (contract SPEC.md, D-139)', () => {
     twistId: string,
     roster = [adventurer('a'), adventurer('b')],
     approach: 'assault' | 'stealth' = 'assault',
+    certain = false,
   ) {
-    let state: GameState = { ...game(roster), content: { ...game(roster).content, contracts } };
+    // `certain` lets chances reach 0% and 100%, so a rule shows without depending on a draw.
+    const base = game(roster, certain ? { rules: { minChanceBp: 0, maxChanceBp: 10_000 } } : {});
+    let state: GameState = { ...base, content: { ...base.content, contracts } };
     const events = [];
     let result = simulate(state, {
       type: 'quest.start',
@@ -155,6 +159,42 @@ describe('contracts (contract SPEC.md, D-139)', () => {
       expect(b.chance.parts).toContainEqual({ sourceId: 'twist.curse', amount: 1000 });
   });
 
+  it('a deadline of two ends a long fight at exchange four instead of six', () => {
+    const short = {
+      ...contracts,
+      twists: contracts.twists.map((t) => (t.kind === 'deadline' ? { ...t, exchanges: 2 } : t)),
+    };
+    // Nobody can hurt anybody: the fight runs until the deadline.
+    const stone = [
+      adventurer('a', { agility: 30, might: 1 }),
+      adventurer('b', { agility: 30, might: 1 }),
+    ];
+    let state: GameState = { ...game(stone, { rules: { minChanceBp: 0, maxChanceBp: 10_000 } }) };
+    state = {
+      ...state,
+      content: { ...state.content, contracts: short, quests: state.content.quests },
+    };
+    const events = [];
+    let result = simulate(state, {
+      type: 'quest.start',
+      id: 'c0',
+      day: 1,
+      questId: 'q',
+      templateId: shapeId(shape('twist.deadline')),
+      partyIds: ['a', 'b'],
+      plan: { approach: 'assault', risk: 'steady', retreat: 'never' },
+      watched: false,
+    });
+    for (let n = 1; ; n += 1) {
+      events.push(...result.events);
+      state = result.state;
+      if (!state.quest) break;
+      result = simulate(state, { type: 'quest.step', id: `c${n}`, day: 1 });
+    }
+    expect(Math.max(...ofType(events, 'exchange.started').map((e) => e.exchange))).toBe(4);
+    expect(ofType(events, 'quest.ended')[0]?.outcome).toBe('partial');
+  });
+
   it('a deadline ends the fight sooner, and the foes slip away', () => {
     const tough = [
       adventurer('a', { agility: 20, toughness: 20, might: 1 }),
@@ -165,15 +205,19 @@ describe('contracts (contract SPEC.md, D-139)', () => {
     expect(ofType(events, 'quest.ended')[0]?.outcome).toBe('partial');
   });
 
-  it('a hostage turns a win into half done once the alarm is up', () => {
-    const strong = [
-      adventurer('a', { might: 20, agility: 20, stealth: 1 }),
-      adventurer('b', { might: 20, agility: 20, stealth: 1 }),
+  it('a hostage turns a win into half done once the alarm is up, and not otherwise', () => {
+    const loud = [
+      adventurer('a', { might: 30, agility: 30, stealth: -100 }),
+      adventurer('b', { might: 30, agility: 30, stealth: -100 }),
     ];
-    const events = play('twist.hostage', strong, 'stealth');
-    expect(ofType(events, 'alarm.raised').length).toBeGreaterThan(0);
-    expect(ofType(events, 'foe.wounded').some((e) => e.to >= e.hits)).toBe(true);
-    expect(ofType(events, 'quest.ended')[0]?.outcome).toBe('partial');
+    const heard = play('twist.hostage', loud, 'stealth', true);
+    expect(ofType(heard, 'alarm.raised').length).toBe(1);
+    expect(ofType(heard, 'foe.wounded').some((e) => e.to >= e.hits)).toBe(true);
+    expect(ofType(heard, 'quest.ended')[0]?.outcome).toBe('partial');
+    const quiet = loud.map((a) => ({ ...a, attributes: { ...a.attributes, stealth: 100 } }));
+    const unheard = play('twist.hostage', quiet, 'stealth', true);
+    expect(ofType(unheard, 'alarm.raised').length).toBe(0);
+    expect(ofType(unheard, 'quest.ended')[0]?.outcome).toBe('won');
   });
 
   it('every twist kind is covered here', () => {
@@ -203,21 +247,65 @@ describe('contracts (contract SPEC.md, D-139)', () => {
       { state, events: [], commandIds: [] },
       { type: 'guild.found', day: 1, size: 3 },
     );
-    run = advanceTo(run, 7 * 10 + 1);
+    // The real shapes as the board drew them, week by week (events only carry the shown ones).
+    const drawnIds: string[] = [];
+    const seen = new Set<string>();
+    const note = () => {
+      for (const o of run.state.guild!.board)
+        // non-null: founded above.
+        if (!seen.has(o.id)) {
+          seen.add(o.id);
+          drawnIds.push(o.templateId);
+          const real = shapeOf(o.templateId);
+          expect(shapeOf(o.shownTemplateId)).toEqual({
+            ...real,
+            twistId: real?.twistId === 'twist.info' ? null : real?.twistId,
+          });
+        }
+    };
+    note();
+    for (let week = 2; week <= 11; week += 1) {
+      run = advanceTo(run, (week - 1) * 7 + 1);
+      note();
+    }
     const posted = ofType(run.events, 'offer.posted');
     expect(posted.length).toBe(22);
+    expect(drawnIds.length).toBe(22);
+    expect(drawnIds.some((id) => id.includes('twist.info'))).toBe(true);
+    // The hidden twist never reaches a posted event, so no log or view can show it.
+    expect(JSON.stringify(posted)).not.toContain('twist.info');
     for (const p of posted) {
       const drawn = shapeOf(p.templateId);
       expect(drawn?.siteId).toBe('site.barrow');
       const twist = contracts.twists.find((t) => t.id === drawn?.twistId);
-      expect(p.shownTwistId).toBe(twist && !twist.hidden ? twist.id : null);
       // Fee 1000 with no spread in the fixture, plus the shown twist's change.
-      expect(p.feeCopper).toBe(1000 + (twist && !twist.hidden ? twist.feeBp / 10 : 0));
+      expect(p.feeCopper).toBe(1000 + (twist ? twist.feeBp / 10 : 0));
     }
-    // Seven shapes exist; with a memory of four, no shape repeats within four posts of itself.
-    posted.forEach((p, at) => {
-      const window = posted.slice(Math.max(0, at - 4), at).map((q) => q.templateId);
-      expect(window).not.toContain(p.templateId);
+    // Seven shapes exist; with a memory of four, no shape repeats within four draws of itself.
+    drawnIds.forEach((id, at) => {
+      expect(drawnIds.slice(Math.max(0, at - 4), at)).not.toContain(id);
     });
+  });
+
+  it('draws from every shape again once all are remembered', () => {
+    const base = game([]);
+    const big = { ...contracts, recentShapes: 50 };
+    const state: GameState = {
+      ...base,
+      seed: 'board-full-memory',
+      content: {
+        ...base.content,
+        contracts: big,
+        guild: { ...guildRules, offersPerWeek: { assembly: 3, campaign: 3, winter: 3 } },
+      },
+    };
+    let run = playGuild(
+      { state, events: [], commandIds: [] },
+      { type: 'guild.found', day: 1, size: 3 },
+    );
+    run = advanceTo(run, 7 * 5 + 1);
+    // 18 offers from 7 shapes: after all 7 are remembered the board still posts.
+    expect(ofType(run.events, 'offer.posted').length).toBe(18);
+    expect(new Set(run.state.guild!.recentShapes).size).toBe(7); // non-null: founded above.
   });
 });

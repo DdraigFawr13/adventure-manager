@@ -107,13 +107,13 @@ describe('template text (D-114)', () => {
     expect(() => renderFamily(ctx({ library: loop }), 'a', 'k')).toThrow(/too deep/);
   });
 
-  it('masks names and numbers with their slot names, keeping agreement', () => {
+  it('masks names, numbers, pronouns and agreement with their slot names', () => {
     expect(
       renderText(
         ctx({ mask: true }),
         '{wenna} struck {blows} {blows~blow|blows}; {wenna.they} won.',
         'k',
       ),
-    ).toBe('‹wenna› struck ‹blows› blows; she won.');
+    ).toBe('‹wenna› struck ‹blows› ‹blow|blows›; ‹wenna.they› won.');
   });
 });

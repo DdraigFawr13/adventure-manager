@@ -8,8 +8,8 @@ From one quest's events (`quest.started` to `quest.ended`), the roster and the q
 
 - the outcome, the party, and the **writer**: the survivor with the best Wits (ties by id); nobody if all died;
 - the contract's foe groups (from its template), how many were beaten, how many exchanges, whether the alarm went up or the party retreated;
-- each member's foe hits (traced back through the cause chain to their attack or cleave), signature actions used, and worst wound step;
-- lives held back from Dying (a cleric's tending on a Dying member who lived), deaths with the foe whose blow began the fall (traced back to the defence or overreach check; none if they bled out after a scene), and lasting injuries.
+- each member's blows that landed (traced back through the cause chain to their attack or cleave; a cleave's second blow counts), signature actions used, and worst wound step;
+- lives held back from Dying (a cleric's tending on a Dying member who lived), deaths with the foe whose blow knocked them down (none if a scene did), and lasting injuries.
 
 ## The letter (`writeQuestReport`)
 
@@ -19,7 +19,7 @@ Content lists the **sections** in order: a family to render once, or a list (dee
 - A composed contract (D-139) adds its twist's id as a fact (`twist.trap`), so a section can say what the twist did; bad information is first revealed here.
 - **Slots**: `quest` (the site's name for a composed contract), `foe` (the contract's last foe group), `party`, `dead` (counts), `writer` (a person).
 - **Deeds**: content ranks deed kinds (a life saved, guards, most hits, mends, cleaves, scouting, strikes from shadow, wards) with the least count that earns a line; each member gets at most one deed, the dead and the writer get none (the writer does not praise themself), and the section's `max` caps the list. Item slots `who`, `count` (or `patient` for a save); facts `once` or `many`.
-- **Deaths**: one line each, slots `who` and `killer`, fact `struck` or `bled`.
+- **Deaths**: one line each, slots `who` and `killer`, fact `struck` (a foe knocked them down; `killer` names it), `scene` (a fall or trap on the way in did) or `retreat` (a failed retreat check did). A death is traced back to the blow that last knocked the member down, not to the beat's death roll.
 - **Injuries**: one line each, slot `who`, facts `after-loss` when someone died and `self` when the writer is hurt (written as "I").
 - Lines in one list do not open with the same three words: an item that would is re-picked (up to 4 tries). Each line's first letter is capitalised. Picks are keyed by the save's seed, quest id, section and item, so a replay reads the same and two saves read differently.
 

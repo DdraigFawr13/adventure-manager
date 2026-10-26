@@ -4,6 +4,7 @@ import type { PersonSlot, SlotValue, TemplateLibrary, TextContext } from '../cor
 import { renderFamily, type PronounForms, type PronounKey } from '../core/text.ts';
 import { shapeOf } from '../contract/compose.ts';
 import { templateFor } from '../resolution/turn.ts';
+import { WOUND } from '../resolution/types.ts';
 import type {
   Adventurer,
   GameEvent,
@@ -13,8 +14,10 @@ import type {
 
 export interface DeathNote {
   readonly id: string;
-  /** The foe group whose blow began the fall; null when the cause was a scene or bleeding. */
+  /** The foe group whose blow knocked them down; null when a scene or the retreat did. */
   readonly foeId: string | null;
+  /** What knocked them down: a foe, a scene on the way in (a fall, a trap), or the way out. */
+  readonly cause: 'foe' | 'scene' | 'retreat';
 }
 
 export interface QuestSummary {
@@ -30,7 +33,7 @@ export interface QuestSummary {
   readonly exchanges: number;
   readonly alarm: boolean;
   readonly retreated: boolean;
-  /** Foe hits landed, per adventurer. */
+  /** Blows that landed on a foe group, per adventurer (a cleave's second blow counts too). */
   readonly hits: Readonly<Record<string, number>>;
   /** Signature actions used, per adventurer and action id. */
   readonly actions: Readonly<Record<string, Readonly<Record<string, number>>>>;
@@ -66,12 +69,15 @@ export function summariseQuest(
   let alarm = false;
   let retreated = false;
   const causeOf = (e: GameEvent) => byId.get(e.causeId);
+  // The blow that last knocked each member down: a death traces back to it, not to the beat's
+  // death roll, whose cause is only the step (review of D-139 branch).
+  const knockedDown = new Map<string, GameEvent>();
   for (const e of events) {
     switch (e.type) {
       case 'foe.wounded': {
         if (e.to >= e.hits && e.from < e.hits) foesBeaten += 1;
         const attacker = attackerOf(e, causeOf);
-        if (attacker) hits[attacker] = (hits[attacker] ?? 0) + (e.to - e.from);
+        if (attacker) hits[attacker] = (hits[attacker] ?? 0) + 1;
         break;
       }
       case 'action.used': {
@@ -83,17 +89,22 @@ export function summariseQuest(
       case 'wound.changed': {
         const [who = ''] = e.subjectIds;
         worst[who] = Math.max(worst[who] ?? 0, e.to);
+        if (e.from < WOUND.down && e.to >= WOUND.down) knockedDown.set(who, e);
         break;
       }
       case 'adventurer.stabilised': {
         const [patient = '', healer = ''] = e.subjectIds;
-        if ((worst[patient] ?? 0) >= 4 && !saves.some(([, p]) => p === patient))
+        if ((worst[patient] ?? 0) >= WOUND.dying && !saves.some(([, p]) => p === patient))
           saves.push([healer, patient]);
         break;
       }
       case 'adventurer.died': {
         const [who = ''] = e.subjectIds;
-        deaths.push({ id: who, foeId: killerOf(e, causeOf) });
+        const fall = knockedDown.get(who);
+        deaths.push({
+          id: who,
+          ...(fall ? fallCause(fall, causeOf) : { foeId: null, cause: 'scene' }),
+        });
         break;
       }
       case 'injury.gained':
@@ -147,14 +158,18 @@ function attackerOf(e: GameEvent, causeOf: (e: GameEvent) => GameEvent | undefin
   return null;
 }
 
-/** Walks back from a death to the foe's blow that started it, if there was one. */
-function killerOf(e: GameEvent, causeOf: (e: GameEvent) => GameEvent | undefined): string | null {
-  for (let at = causeOf(e), n = 0; at && n < 8; at = causeOf(at), n += 1) {
-    if (at.type === 'check.rolled' && at.purpose === 'defence') return at.subjectIds[1] ?? null;
-    if (at.type === 'check.rolled' && at.purpose === 'attack') return at.subjectIds[1] ?? null;
-    if (at.type === 'check.rolled' && at.purpose === 'bleed') return null;
+/** What lay behind a knock-down: a foe's attack or an overreach's counter-blow, a scene, or the retreat. */
+function fallCause(
+  fall: GameEvent,
+  causeOf: (e: GameEvent) => GameEvent | undefined,
+): Pick<DeathNote, 'foeId' | 'cause'> {
+  for (let at = causeOf(fall), n = 0; at && n < 4; at = causeOf(at), n += 1) {
+    if (at.type !== 'check.rolled') continue;
+    if (at.purpose === 'defence' || at.purpose === 'attack')
+      return { foeId: at.subjectIds[1] ?? null, cause: 'foe' };
+    return { foeId: null, cause: at.purpose === 'retreat' ? 'retreat' : 'scene' };
   }
-  return null;
+  return { foeId: null, cause: 'scene' };
 }
 
 /** One section of the letter, in content (SPEC.md). */
@@ -242,7 +257,7 @@ export function writeQuestReport(
         who: person(d.id),
         killer: d.foeId ? options.nameOf(d.foeId) : '',
       },
-      facts: [d.foeId ? 'struck' : 'bled', d.id === summary.partyIds[0] ? 'first-named' : 'other'],
+      facts: [d.cause === 'foe' ? 'struck' : d.cause],
     })),
     injuries: summary.injuries.map((id): Item => ({
       family: 'report.injury',
@@ -284,18 +299,26 @@ export function writeQuestReport(
 
 const REPICKS = 4;
 
-/** Items in one list should not open alike ("We lost … We lost …"): re-pick, a few times at most. */
+/**
+ * Items in one list should not open alike ("We lost … We lost …"): re-pick, a few times at most.
+ * The choice is made on the unmasked text, so a masked run picks exactly what the player reads.
+ */
 function freshLine(ctx: TextContext, family: string, key: string, opened: Set<string>): string {
-  let line = '';
+  const plain: TextContext = { ...ctx, mask: false };
+  let chosen = key;
   for (let n = 0; n < REPICKS; n += 1) {
-    line = renderFamily(ctx, family, n === 0 ? key : `${key}/again${n}`);
-    const opening = line.split(' ').slice(0, 3).join(' ').toLowerCase();
+    chosen = n === 0 ? key : `${key}/again${n}`;
+    const opening = renderFamily(plain, family, chosen)
+      .split(' ')
+      .slice(0, 3)
+      .join(' ')
+      .toLowerCase();
     if (!opened.has(opening)) {
       opened.add(opening);
       break;
     }
   }
-  return line;
+  return renderFamily(ctx, family, chosen);
 }
 
 function capitalise(text: string): string {

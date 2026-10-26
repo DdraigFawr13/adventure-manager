@@ -5,7 +5,7 @@ How the board's work is put together (D-139, PLAN §9d): a **site**, a **monster
 ## Shapes
 
 - A shape is (site, monster kind, twist or none, danger). Its quest template id is `shape:<site>+<monster>+<twist or plain>+<danger>`; `findTemplate` composes it on demand, so quests, saves and replays carry only the id.
-- **Site:** tags (shift scene difficulty by approach, as before), home tags (which monster kinds can live there), the dangers it can host, and its scenes, written at hazardous difficulty. Content gives a shift per danger (routine −2, hazardous 0, perilous +1, deadly +2 to start) added to every scene.
+- **Site:** tags (shift scene difficulty by approach, as before), home tags (which monster kinds can live there), the dangers it can host, and its scenes, written at hazardous difficulty. Content gives a shift per danger (routine −2, hazardous 0, perilous 0, deadly +2 after the first tuning) added to every scene.
 - **Monster kind:** a family, the home tags it lives in, and its foe groups per danger it comes in (PLAN §7b, "a few variants by danger rating"). The composed quest fights those groups after the site's scenes.
 - A site and a kind fit when they share a home tag and both have the danger.
 
