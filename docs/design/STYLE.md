@@ -1,6 +1,6 @@
 # Style
 
-Phase 2 style guide: theme, tone and visual identity. Each section records what the owner decided. Status: in progress.
+Phase 2 style guide: theme, tone and visual identity. Each section records what the owner decided. Status: all questions answered 2026-10-26; awaiting the owner's sign-off to lock.
 
 ## 1. Visual metaphor (Accepted 2026-10-26)
 
@@ -140,3 +140,9 @@ Rejected: one English flavour for all (the region feels like one county), Celtic
 - References: *Pentiment*, Pratchett's Watch books, FM's news items.
 
 Rejected: archaic high style (tiring, slow to scan), modern plain wire style (wastes the in-world inbox), grim literary (too grim, wears thin).
+
+### 9c. Spoken voice (Accepted 2026-10-26)
+
+**Text only, plus short vocal sounds.** No narrator or voiced dialogue at launch. Short non-verbal or name-free sounds add life: a crier's "Hear ye!", cheers from the hall, grunts and cries on the quest board, a murmur at a funeral. No synthesised voices.
+
+Rejected for now: key-moment narrator, synthesised voices, recorded chronicler for the Hall of Heroes (the narrator and chronicler could be revisited after launch with a new decision).

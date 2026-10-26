@@ -355,3 +355,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** In-world text is plain, lightly period-flavoured English with understated humour; speakers sound like their station; deaths are always written sincerely; generated lines need many variants. Detail: `docs/design/STYLE.md` §9b.
 - **Why:** Owner's choice (Style Q9b); serves both the whimsy asked for and permadeath.
+
+## D-060 Spoken voice: text plus vocal sounds, no narrator
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** No narration or voiced dialogue; only short name-free vocal sounds (crier calls, cheers, grunts, funeral murmurs); no synthesised voices. Detail: `docs/design/STYLE.md` §9c.
+- **Why:** Owner's choice (Style Q9c); generated names can't be recorded, sounds never repeat a sentence, and translation stays cheap.
