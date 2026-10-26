@@ -28,10 +28,21 @@
       "Bash(rg:*)",
       "Bash(find:*)",
       "Bash(node .claude/master/sync.mjs --check)",
+      "Bash(node tools/docs-check.mjs)",
       "Bash(npm run check)",
       "Bash(npm test:*)",
       "Bash(npm run typecheck)",
       "Bash(npm run lint)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ],
+    "ask": [
+      "Bash(git push *--force*)",
+      "Bash(git push *-f *)",
+      "Bash(git push *-f)"
     ]
   }
 }

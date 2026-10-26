@@ -60,11 +60,11 @@ code { font-family: var(--mono); font-size: .85em; }
 
   <section class="now" aria-labelledby="now">
     <span class="pill p-now">Now</span>
-    <h2 id="now">Part A done; Part B (production) next</h2>
+    <h2 id="now">Part B: §13 milestones next</h2>
     <ol>
-      <li><b>§11 Technology and architecture:</b> engine, the deterministic simulation package, data formats, saves, modding.</li>
-      <li>Then the tools and skills review, then §12 to §15 (the kingdom map is workshopped in §12).</li>
-      <li>All work so far is in draft pull request #2, waiting to be merged into <code>main</code>.</li>
+      <li><b>§13 Milestones:</b> prototype, vertical slice, alpha, free demo, beta, launch, post-launch roadmap.</li>
+      <li>Then §14 budget (turning §12's rough costs into a budget) and §15.</li>
+      <li>Part A is merged (#2); Part B is in draft pull request #3.</li>
     </ol>
   </section>
 
@@ -73,7 +73,7 @@ code { font-family: var(--mono); font-size: .85em; }
     <ul class="phases">
       <li><span class="pill p-done">Done</span><b>1 · Concept</b><small>33 sections, locked 25 Oct (D-045)</small></li>
       <li><span class="pill p-done">Done</span><b>2 · Style</b><small>9 sections, locked 26 Oct (D-061)</small></li>
-      <li><span class="pill p-now">In progress</span><b>3 · Full plan</b><small>10 of 15 sections written</small></li>
+      <li><span class="pill p-now">In progress</span><b>3 · Full plan</b><small>12 of 15 sections written</small></li>
       <li><span class="pill p-wait">After the plan</span><b>Build</b><small>Prototype to launch; stages set in §13</small></li>
     </ul>
   </section>
@@ -94,10 +94,10 @@ code { font-family: var(--mono); font-size: .85em; }
       <li><span class="no">9</span><span class="name">Risks and prototypes</span><span class="pill p-done">Done</span><span class="what">Nine risks with tests; ledger minimum 15 px with lining figures; watched quest first. <span class="ids">D-084–086</span></span></li>
       <li><span class="no">10</span><span class="name">Playtest and metrics plan</span><span class="pill p-done">Done</span><span class="what">Playtest logs only, release sends nothing; owner, then 6–10, 30–50, demo, 200+ beta. <span class="ids">D-088–089</span></span></li>
       <li class="part" style="display:block">Part B · Production</li>
-      <li><span class="no">11</span><span class="name">Technology and architecture</span><span class="pill p-now">Next</span><span class="what">Engine, the deterministic simulation package, data formats, saves, modding.</span></li>
-      <li class="step"><span class="no">★</span><span class="name">Tools and skills review</span><span class="pill p-soon">To do</span><span class="what">Your request: look into tools and skills that improve development (Claude Code skills, agents and hooks; engine and editor tooling; testing, CI and asset pipelines). Placed here because it depends on the stack chosen in §11, and feeds §15. Each tool is adopted only if measured cheaper or equal at the same quality (DEL-07).</span></li>
-      <li><span class="no">12</span><span class="name">Art and audio production</span><span class="pill p-soon">To do</span><span class="what">What an artist makes and what is generated, with costs. Includes workshopping the kingdom map (D-087).</span></li>
-      <li><span class="no">13</span><span class="name">Milestones</span><span class="pill p-soon">To do</span><span class="what">Prototype, vertical slice, alpha, free demo, beta, launch, post-launch roadmap.</span></li>
+      <li><span class="no">11</span><span class="name">Technology and architecture</span><span class="pill p-done">Done</span><span class="what">Engine picked after a test: web tech (Electron) vs Godot 4; event log as the spine; safe versioned saves. <span class="ids">D-090–091</span></span></li>
+      <li class="step"><span class="no">★</span><span class="name">Tools and skills review</span><span class="pill p-done">Done</span><span class="what">Your request: look into tools and skills that improve development (Claude Code skills, agents and hooks; engine and editor tooling; testing, CI and asset pipelines). Placed here because it depends on the stack chosen in §11, and feeds §15. Each tool is adopted only if measured cheaper or equal at the same quality (DEL-07). Outcome: docs checker, mock-up script, adversarial review before PRs, fresh session per PR or section, deny and ask rules. <span class="ids">D-092–096</span></span></li>
+      <li><span class="no">12</span><span class="name">Art and audio production</span><span class="pill p-done">Done</span><span class="what">Kingdom map: hand-drawn base, launch layers factions, guilds, action, threats; rough costs art $23k–74k, audio $9k–37k. <span class="ids">D-097–098</span></span></li>
+      <li><span class="no">13</span><span class="name">Milestones</span><span class="pill p-now">Next</span><span class="what">Prototype, vertical slice, alpha, free demo, beta, launch, post-launch roadmap.</span></li>
       <li><span class="no">14</span><span class="name">Budget, team and business</span><span class="pill p-soon">To do</span><span class="what">Costs, team shape, and business assumptions behind the §1 targets.</span></li>
       <li><span class="no">15</span><span class="name">Quality, CI and release process</span><span class="pill p-soon">To do</span><span class="what">Checks, CI, release steps; adopts what the tools review recommends.</span></li>
     </ul>
@@ -107,7 +107,7 @@ code { font-family: var(--mono); font-size: .85em; }
     <h2 id="build">After the plan: building it</h2>
     <p>No game code until you approve the whole plan (D-001). The build then follows the milestones set in §13. Working outline:</p>
     <ul class="phases">
-      <li><span class="pill p-wait">Build 1</span><b>Prototypes</b><small>One watched quest, then the headless simulator, desk mock-ups, attachment playtest (D-085)</small></li>
+      <li><span class="pill p-wait">Build 1</span><b>Prototypes</b><small>Engine test (web vs Godot), then one watched quest, the headless simulator, desk mock-ups, attachment playtest (D-085, D-090)</small></li>
       <li><span class="pill p-wait">Build 2</span><b>Vertical slice</b><small>One season, final look</small></li>
       <li><span class="pill p-wait">Build 3</span><b>Alpha and demo</b><small>All launch systems; free demo</small></li>
       <li><span class="pill p-wait">Build 4</span><b>Beta and launch</b><small>Content complete, polish</small></li>
@@ -124,6 +124,7 @@ code { font-family: var(--mono); font-size: .85em; }
       <li>Training academy, item commissioning<span>Early update (D-070)</span></li>
       <li>Intrigue and underhanded dealings<span>Later (D-069)</span></li>
       <li>Bigger ranking ladders<span>Later (D-073)</span></li>
+      <li>Deeds and rumours on the kingdom map<span>Later (D-097)</span></li>
       <li>20 class levels<span>Later (D-074)</span></li>
       <li>Guild compound, city-building style<span>Later (D-075)</span></li>
       <li>Painted portraits<span>Later (D-054)</span></li>
@@ -139,7 +140,7 @@ code { font-family: var(--mono); font-size: .85em; }
   <section aria-labelledby="open">
     <h2 id="open">Open questions</h2>
     <ul class="qs">
-      <li>Kingdom map (launch goal, D-087): an on-theme fantasy map of the March showing areas, locations, guilds, action and deeds. Workshop in §12.</li>
+      <li>Kingdom map art direction: make it look better over time; review the Story-Generator map code as a starting point (D-097).</li>
       <li>Ledger readability: 15 px with lining figures (D-084); confirm on real monitors in the prototypes.</li>
       <li>"More fantasy flair" for the quest board art: defined when art direction starts.</li>
       <li>Bardic songs: sung or instrumental.</li>

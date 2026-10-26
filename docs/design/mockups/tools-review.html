@@ -1,0 +1,114 @@
+<title>Tools and Skills Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; a verdict strip, then grouped item cards with a status pill each, measured numbers set apart. Same paper-and-ink palette as the roadmap. */
+:root {
+  --bg: #f4efe4; --surface: #fbf8f1; --fg: #2a2017; --muted: #6b5a45; --line: #ddd0b6;
+  --adopt: #2f6b4a; --build: #3f6f8f; --art: #9c7a2f; --no: #8a8172; --ask: #8e2a22;
+  --title: "IM Fell English SC", Georgia, serif;
+  --body: "Source Serif 4", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1d1813; --surface: #261f18; --fg: #eee4d2; --muted: #b3a48c; --line: #3d3328; --adopt: #7cc39b; --build: #7fa9c9; --art: #d0aa55; --no: #9a9182; --ask: #d0675c; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1d1813; --surface: #261f18; --fg: #eee4d2; --muted: #b3a48c; --line: #3d3328; --adopt: #7cc39b; --build: #7fa9c9; --art: #d0aa55; --no: #9a9182; --ask: #d0675c; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 56px; }
+.wrap { max-width: 880px; margin: 0 auto; display: grid; gap: 34px; }
+h1 { font-family: var(--title); font-weight: 400; font-size: 2.3rem; margin: 0; line-height: 1.1; text-wrap: balance; }
+h2 { font-family: var(--title); font-weight: 400; font-size: 1.5rem; margin: 0 0 4px; text-wrap: balance; }
+.sub { color: var(--muted); margin: 6px 0 0; max-width: 66ch; }
+.meta { font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+section > p { margin: 0 0 12px; color: var(--muted); max-width: 68ch; }
+.answers { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 12px; }
+.ans { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; }
+.ans h3 { font-family: var(--title); font-weight: 400; font-size: 1.2rem; margin: 0; }
+.ans p { margin: 0; font-size: .95rem; }
+.num { font-family: var(--mono); font-size: .85rem; font-variant-numeric: tabular-nums; background: color-mix(in srgb, var(--fg) 6%, transparent); padding: 1px 5px; border-radius: 3px; white-space: nowrap; }
+.items { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.items li { display: grid; grid-template-columns: 1fr auto; gap: 2px 14px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.items b { font-weight: 600; }
+.items .why { grid-column: 1 / -1; color: var(--muted); font-size: .93rem; min-width: 0; }
+.pill { font-family: var(--mono); font-size: .64rem; letter-spacing: .07em; text-transform: uppercase; padding: 1px 8px; border-radius: 10px; border: 1px solid currentColor; white-space: nowrap; align-self: start; }
+.adopt { color: var(--adopt); } .build { color: var(--build); } .art { color: var(--art); } .no { color: var(--no); } .ask { color: var(--ask); background: color-mix(in srgb, var(--ask) 10%, transparent); }
+footer { color: var(--muted); font-size: .88rem; border-top: 1px solid var(--line); padding-top: 12px; }
+code { font-family: var(--mono); font-size: .85em; }
+a { color: inherit; }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="meta">26 October 2026 · after PLAN §11</span>
+    <h1>Tools and skills review</h1>
+    <p class="sub">What helps build Adventure Manager faster, cheaper or safer, and what doesn't. Measured numbers come from this repo today; anything else is judgement. Source: <code>docs/design/TOOLS-REVIEW.md</code>.</p>
+  </header>
+
+  <section aria-labelledby="q">
+    <h2 id="q">Your two questions</h2>
+    <div class="answers">
+      <div class="ans"><span class="pill adopt" style="justify-self:start">Useful, already in use</span><h3>Ripgrep</h3>
+        <p>Installed, and Claude Code's own search is built on it. Speed doesn't matter at this size (10 searches: grep <span class="num">27 ms</span>, ripgrep <span class="num">62 ms</span>).</p>
+        <p>The saving is <b>searching instead of reading</b>: the decision index costs <span class="num">≈1,100</span> tokens against <span class="num">≈10,900</span> to read DECISIONS whole (10× cheaper); a topic search <span class="num">≈500</span> (22×). It matters more once code and <code>node_modules</code> exist, which it skips.</p></div>
+      <div class="ans"><span class="pill no" style="justify-self:start">Not adopted</span><h3>Caveman skill</h3>
+        <p>Makes Claude write in clipped English to cut <b>output</b> tokens: claimed 75%, tested 15–25%.</p>
+        <p>But output is only <span class="num">0.6–2.5%</span> of a session's tokens; the bill drops about <span class="num">1–3%</span>. It would also make explanations harder to follow. Shorter sessions save far more (see the audit).</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="audit">
+    <h2 id="audit">Setup audit: two findings for you</h2>
+    <p>The <code>setup-audit</code> skill ran on this repo (report only). The setup is clean: one hook, 19 read-only allow rules, nothing risky, cache hit ratio <span class="num">99.3%</span>.</p>
+    <ul class="items">
+      <li><b>Start a fresh session per merged PR or plan section</b><span class="pill ask">Your call</span><span class="why">This one session has re-read <span class="num">58.2 million</span> cached tokens (measured). Cached reads cost a tenth of normal input, but at this size they dominate. A new session starts near the <span class="num">84k</span>-token baseline and resumes from HANDOFF. No setting needed, just a habit.</span></li>
+      <li><b>Add a few deny rules</b><span class="pill ask">Your call</span><span class="why">The project settings have 19 allow and 0 deny rules. Deny reading <code>.env</code> files and <code>secrets/</code>, and deny force-push, before keys and code arrive. Low risk today.</span></li>
+      <li><b>84 skills listed in every session</b><span class="pill no">Parked</span><span class="why">About 7,500 tokens (estimated), many unrelated (data, Canva, plugin management). Optional to turn off unused plugins in your claude.ai settings.</span></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="now">
+    <h2 id="now">Adopted today</h2>
+    <ul class="items">
+      <li><span><b>Docs checker</b> <code>tools/docs-check.mjs</code></span><span class="pill adopt">Adopted</span><span class="why">Before every push: every cited decision number exists; accepted plan sections have no leftover "Draft". Runs in <span class="num">0.06 s</span>; caught both planted mistakes. Limit: can't catch a wrong number that exists.</span></li>
+      <li><span><b>Mock-up screenshot script</b> <code>tools/mockup-shot.mjs</code></span><span class="pill adopt">Adopted</span><span class="why">Renders any page at desktop and phone width, checks fonts and sideways scroll, saves screenshots. Used for this page.</span></li>
+      <li><b>Setup audit, run once</b><span class="pill adopt">Done</span><span class="why">Findings above.</span></li>
+      <li><b>Adversarial review before every pull request</b><span class="pill adopt">Your rule</span><span class="why">Before a PR is created and before it is marked ready, the whole branch diff is reviewed for what is wrong, inconsistent or unverified (D-093).</span></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="build">
+    <h2 id="build">When the build starts</h2>
+    <ul class="items">
+      <li><b>Engine tools in cloud sessions</b><span class="pill build">Build start</span><span class="why">Install .NET and a headless Godot for the engine test; Node is already handled.</span></li>
+      <li><b>Checks for the winning stack</b><span class="pill build">Build start</span><span class="why">Web: TypeScript strict, Vitest, Playwright, Biome or ESLint, Ajv, PixiJS, Electron with steamworks.js. Godot: .NET with xUnit, GdUnit4, GodotSteam. Both: the determinism test, content validator, headless simulator.</span></li>
+      <li><b>Review skills on pull requests</b><span class="pill build">Build start</span><span class="why"><code>code-review</code>, <code>security-review</code>, <code>simplify</code>, and the <code>reviewer</code> agent for big diffs. They carry out your adversarial-review rule on code.</span></li>
+      <li><b><code>run</code> skill</b><span class="pill build">Build start</span><span class="why">Launch the game and screenshot it to confirm a change works.</span></li>
+      <li><b>CI checks that stay free for docs-only pushes</b><span class="pill build">Build start</span><span class="why">Through the <code>efficient-github-actions</code> skill, plus the AI-Master stack layer for the chosen engine.</span></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="art">
+    <h2 id="art">For art and design (§12)</h2>
+    <ul class="items">
+      <li><b>OpenArt (image and video generation)</b><span class="pill art">Exploration only</span><span class="why">Mood boards and quick variations for the kingdom map and art direction. Not for shipped art until the commercial licence and Steam's AI-disclosure rules are checked. Each use costs credits, estimated and approved first.</span></li>
+      <li><b>Figma</b><span class="pill art">If an artist joins</span><span class="why">Shared designs and hand-off specs. Until then the HTML mock-ups do the job.</span></li>
+      <li><b>tldraw</b><span class="pill art">Optional</span><span class="why">Quick sketch boards for map layouts and flows.</span></li>
+      <li><b>Canva</b><span class="pill art">Later</span><span class="why">Store art and marketing: Steam capsules, demo announcements.</span></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="skip">
+    <h2 id="skip">Not needed</h2>
+    <ul class="items">
+      <li><b>Supabase, Vercel</b><span class="pill no">Skip</span><span class="why">Backend and hosting; the game sends nothing (D-088). Vercel could host a devlog later.</span></li>
+      <li><b>Stripe</b><span class="pill no">Skip</span><span class="why">Steam handles sales (D-040).</span></li>
+      <li><b>Mobbin</b><span class="pill no">Skip</span><span class="why">Mobile and web app screens; little transfers to this game.</span></li>
+      <li><b>Claude Docs</b><span class="pill no">Skip</span><span class="why">Design docs live in the repo.</span></li>
+      <li><b>Gmail, Google Drive</b><span class="pill no">Later</span><span class="why">Maybe for playtest invites and feedback forms; anything sent to people is asked first.</span></li>
+      <li><b>Linear, Asana, Notion, Slack</b><span class="pill no">Skip</span><span class="why">GitHub issues and PRs are enough for one owner (these also failed to connect today).</span></li>
+      <li><b>Datadog, BigQuery, Amplitude, Economic Index</b><span class="pill no">Skip</span><span class="why">No telemetry (D-088).</span></li>
+      <li><b>Multi-agent workflows</b><span class="pill no">Case by case</span><span class="why">Expensive. Only for big parallel jobs like drafting the 60 key-moment templates, with your OK each time.</span></li>
+    </ul>
+  </section>
+
+  <footer>Sources for the caveman figures: <a href="https://pasqualepillitteri.it/en/news/846/claude-code-caveman-mode-token-saving">pasqualepillitteri.it</a>, <a href="https://www.implicator.ai/caveman-claude-code-skill-cuts-output-20-your-bill-barely-notices-2/">implicator.ai</a>.</footer>
+</div>

@@ -1,0 +1,241 @@
+<title>Kingdom Map of the March</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+DW+Pica:ital@0;1&family=Sorts+Mill+Goudy:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: neutral page chrome; one large interactive map of the March on the walnut desk, with a base-style switch and layer toggles above it, then the three base options and the layers explained. Locked palette and old-press type. */
+:root {
+  --bg: #f3f2ef; --fg: #23211e; --muted: #6a655d; --line: #d6d2ca;
+  --desk: #3b2a1e; --desk2: #2c1f16; --paper: #efe4cc; --ink: #2a2017; --ink2: #6b5a45; --seal: #8e2a22; --brass: #b8923e;
+  --title: "IM Fell English SC", Georgia, serif;
+  --letter: "IM Fell DW Pica", Georgia, serif;
+  --ledger: "Sorts Mill Goudy", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--ledger); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 26px; }
+h1 { font-family: var(--title); font-weight: 400; font-size: 2.2rem; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--title); font-weight: 400; font-size: 1.5rem; margin: 0 0 6px; text-wrap: balance; }
+.sub { color: var(--muted); margin: 6px 0 0; max-width: 76ch; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; font-size: .95rem; }
+.controls fieldset { border: 1px solid var(--line); border-radius: 4px; padding: 6px 12px 8px; margin: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.controls legend { font-family: var(--mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 0 4px; }
+.controls label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.controls input:focus-visible { outline: 2px solid var(--seal); outline-offset: 2px; }
+.desk { background: repeating-linear-gradient(92deg, var(--desk) 0 34px, var(--desk2) 34px 36px); border-radius: 6px; padding: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); overflow-x: auto; }
+svg.map { display: block; width: 100%; min-width: 720px; height: auto; border-radius: 3px; box-shadow: 0 6px 16px rgba(0,0,0,.4); }
+.opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 14px; }
+.opt { border: 1px solid var(--line); border-radius: 4px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; }
+.opt h3 { font-family: var(--title); font-weight: 400; font-size: 1.2rem; margin: 0; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.opt p { margin: 0; font-size: .95rem; }
+.rec { font-family: var(--mono); font-size: .6rem; letter-spacing: .08em; text-transform: uppercase; border: 1px solid currentColor; padding: 1px 6px; border-radius: 3px; }
+.layers { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 6px 24px; list-style: none; margin: 0; padding: 0; }
+.layers li { border-bottom: 1px solid var(--line); padding: 6px 0; font-size: .95rem; }
+.layers b { font-family: var(--title); font-weight: 400; font-size: 1.05rem; }
+.muted { color: var(--muted); }
+/* SVG text */
+.m-title { font-family: var(--title); fill: var(--ink); }
+.m-town { font-family: var(--title); fill: var(--ink); font-size: 15px; }
+.m-small { font-family: var(--ledger); fill: var(--ink); font-size: 11px; }
+.m-area { font-family: var(--title); fill: var(--ink2); font-size: 17px; letter-spacing: 3px; opacity: .8; }
+.m-pencil { font-family: var(--letter); font-style: italic; fill: #5b6470; font-size: 12px; }
+.m-deed { font-family: var(--letter); fill: var(--ink); font-size: 11px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>The kingdom map</h1>
+    <p class="sub">A first workshop for the launch goal (D-087): a map of the March that shows its areas and places, the guilds, what is happening now, and the deeds done there. Year 4, autumn, in a save where The Lantern Company was founded at Wendle. Every name and mark is an example. Use the switches to compare the two base styles and to turn each layer on and off.</p>
+  </header>
+
+  <div class="controls">
+    <fieldset><legend>Base map</legend>
+      <label><input type="radio" name="base" id="base-hand" value="hand" checked> Hand-illustrated</label>
+      <label><input type="radio" name="base" id="base-proc" value="proc"> Procedural ink</label>
+    </fieldset>
+    <fieldset><legend>Layers</legend>
+      <label><input type="checkbox" id="l-factions" data-layer="factions"> Factions</label>
+      <label><input type="checkbox" id="l-guilds" data-layer="guilds" checked> Guilds</label>
+      <label><input type="checkbox" id="l-action" data-layer="action" checked> Action</label>
+      <label><input type="checkbox" id="l-threats" data-layer="threats" checked> Threats</label>
+      <label><input type="checkbox" id="l-rumours" data-layer="rumours"> Rumours (later)</label>
+      <label><input type="checkbox" id="l-deeds" data-layer="deeds"> Deeds (later)</label>
+    </fieldset>
+  </div>
+
+  <div class="desk">
+  <svg class="map" viewBox="0 0 1000 640" role="img" aria-label="Illustrated map of the March with guild banners, moving parties, a spreading threat, rumours and inked deeds">
+    <defs>
+      <pattern id="p-sea" width="22" height="10" patternUnits="userSpaceOnUse"><path d="M0 6 q5.5 -5 11 0 t11 0" fill="none" stroke="#5f7c7a" stroke-width=".9" opacity=".7"/></pattern>
+      <pattern id="p-fen" width="16" height="9" patternUnits="userSpaceOnUse"><path d="M2 6 h7 M5 6 v-3 M11 3 h4" stroke="#2a2017" stroke-width=".8" opacity=".55"/></pattern>
+      <pattern id="p-wood" width="18" height="16" patternUnits="userSpaceOnUse"><circle cx="5" cy="6" r="3.6" fill="none" stroke="#2a2017" stroke-width=".9" opacity=".6"/><path d="M5 9.6 v3" stroke="#2a2017" stroke-width=".9" opacity=".6"/><circle cx="13" cy="12" r="3" fill="none" stroke="#2a2017" stroke-width=".9" opacity=".5"/></pattern>
+      <pattern id="p-moor" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r=".9" fill="#2a2017" opacity=".45"/><circle cx="9" cy="8" r=".7" fill="#2a2017" opacity=".4"/><path d="M6 11 l1 -2 l1 2" fill="none" stroke="#2a2017" stroke-width=".6" opacity=".4"/></pattern>
+      <pattern id="p-hill" width="26" height="18" patternUnits="userSpaceOnUse"><path d="M2 14 q6 -11 12 0 M14 8 q5 -8 10 0" fill="none" stroke="#2a2017" stroke-width="1" opacity=".55"/><path d="M5 12 l3 -4 M17 7 l2 -3" stroke="#2a2017" stroke-width=".6" opacity=".45"/></pattern>
+      <filter id="f-wash" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="9"/></filter>
+      <filter id="f-stain" x="-30%" y="-30%" width="160%" height="160%"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="26"/><feGaussianBlur stdDeviation="2"/></filter>
+      <radialGradient id="g-stain"><stop offset="0" stop-color="#1b120c" stop-opacity=".62"/><stop offset=".7" stop-color="#1b120c" stop-opacity=".28"/><stop offset="1" stop-color="#1b120c" stop-opacity="0"/></radialGradient>
+      <symbol id="banner" viewBox="0 0 20 34"><path d="M2 0 v34" stroke="#2a2017" stroke-width="1.6"/><path d="M3 2 h15 v14 l-7.5 -4 l-7.5 4 z"/></symbol>
+      <symbol id="standee" viewBox="0 0 12 20"><ellipse cx="6" cy="18" rx="6" ry="2" fill="#2a2017" opacity=".55"/><rect x="2" y="2" width="8" height="15" rx="4"/></symbol>
+      <symbol id="town" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="#efe4cc" stroke="#2a2017" stroke-width="1.6"/><circle cx="10" cy="10" r="3.2" fill="#2a2017"/></symbol>
+      <symbol id="mourn" viewBox="0 0 12 12"><path d="M0 0 h12 l-12 12 z" fill="#2a2017"/></symbol>
+    </defs>
+
+    <!-- paper -->
+    <rect width="1000" height="640" fill="#efe4cc"/>
+    <!-- sea -->
+    <path d="M1000 0 V640 H560 C600 600 650 580 690 560 C740 530 760 480 800 460 C840 440 860 400 880 360 C900 320 940 300 960 250 C980 200 990 120 1000 0 Z" fill="url(#p-sea)"/>
+    <!-- coastline -->
+    <path id="coast" d="M1000 0 C990 120 980 200 960 250 C940 300 900 320 880 360 C860 400 840 440 800 460 C760 480 740 530 690 560 C650 580 600 600 560 640" fill="none" stroke="#2a2017" stroke-width="2.2"/>
+
+    <!-- HAND-ILLUSTRATED BASE -->
+    <g id="base-hand-layer">
+      <g filter="url(#f-wash)" opacity=".55">
+        <ellipse cx="610" cy="420" rx="160" ry="110" fill="#9fa77a"/>
+        <ellipse cx="420" cy="300" rx="170" ry="120" fill="#7f8f5a"/>
+        <ellipse cx="170" cy="190" rx="150" ry="110" fill="#b3a27c"/>
+        <ellipse cx="430" cy="90" rx="220" ry="70" fill="#9a8c78"/>
+        <ellipse cx="900" cy="320" rx="90" ry="220" fill="#9fb2b0"/>
+      </g>
+      <path d="M420 40 q60 -20 120 0 q50 15 110 -5" fill="none" stroke="#2a2017" stroke-width="1.4" opacity=".6"/>
+      <!-- compass rose -->
+      <g transform="translate(905 545)" opacity=".85"><circle r="34" fill="none" stroke="#2a2017"/><path d="M0 -42 L6 0 L0 42 L-6 0 Z" fill="#2a2017"/><path d="M-42 0 L0 6 L42 0 L0 -6 Z" fill="#8e2a22"/><text y="-46" text-anchor="middle" class="m-small">N</text></g>
+      <!-- sea serpent -->
+      <path d="M840 150 q12 -18 24 0 q12 18 24 0 q12 -18 24 0" fill="none" stroke="#2a2017" stroke-width="2.2" opacity=".55"/><circle cx="912" cy="146" r="2.5" fill="#2a2017" opacity=".6"/>
+      <!-- title cartouche -->
+      <g transform="translate(40 560)"><rect width="250" height="60" rx="6" fill="#efe4cc" stroke="#2a2017" stroke-width="1.6"/><rect x="5" y="5" width="240" height="50" rx="4" fill="none" stroke="#b8923e"/><text x="125" y="30" text-anchor="middle" class="m-title" font-size="22">The March</text><text x="125" y="47" text-anchor="middle" class="m-small">as kept by The Lantern Company</text></g>
+    </g>
+    <!-- PROCEDURAL BASE (hidden until chosen) -->
+    <g id="base-proc-layer" display="none">
+      <g transform="translate(40 570)"><text class="m-title" font-size="20">The March</text><text y="20" class="m-small">generated from region data</text></g>
+      <g transform="translate(920 560)"><path d="M0 -26 L5 0 L0 26 L-5 0 Z" fill="#2a2017"/><text y="-30" text-anchor="middle" class="m-small">N</text></g>
+    </g>
+
+    <!-- biome textures (both bases) -->
+    <path d="M500 330 C560 320 680 330 760 380 C780 430 740 470 700 500 C640 540 560 530 520 500 C480 460 470 380 500 330 Z" fill="url(#p-fen)"/>
+    <path d="M300 230 C360 200 480 210 540 250 C570 300 540 350 480 370 C410 390 330 380 290 340 C270 300 270 250 300 230 Z" fill="url(#p-wood)"/>
+    <path d="M40 120 C90 90 220 100 280 140 C300 190 280 260 220 280 C140 300 70 270 40 220 Z" fill="url(#p-moor)"/>
+    <path d="M250 40 C330 20 520 20 640 50 C660 90 620 130 540 140 C430 150 300 140 250 110 Z" fill="url(#p-hill)"/>
+    <!-- rivers and roads -->
+    <path d="M520 140 C510 200 530 260 560 320 C590 380 650 420 720 470 C760 500 800 480 830 470" fill="none" stroke="#5f7c7a" stroke-width="2.4"/>
+    <path id="road-ashford" d="M330 330 C380 360 430 380 470 420" fill="none" stroke="#2a2017" stroke-width="1.6" stroke-dasharray="6 5"/>
+    <path d="M330 330 C300 260 250 220 200 190" fill="none" stroke="#2a2017" stroke-width="1.6" stroke-dasharray="6 5"/>
+    <path d="M330 330 C400 300 460 260 520 200" fill="none" stroke="#2a2017" stroke-width="1.6" stroke-dasharray="6 5"/>
+    <path d="M470 420 C540 440 600 450 650 440 C700 430 740 440 780 470" fill="none" stroke="#2a2017" stroke-width="1.6" stroke-dasharray="6 5"/>
+    <path d="M470 420 C450 480 470 530 520 560" fill="none" stroke="#2a2017" stroke-width="1.6" stroke-dasharray="6 5"/>
+
+    <!-- area names -->
+    <text x="612" y="524" class="m-area">THE FENS</text>
+    <text x="345" y="270" class="m-area">ELDERWOOD</text>
+    <text x="70" y="250" class="m-area">GREYMOOR</text>
+    <text x="470" y="132" class="m-area">THE STONE SPINE</text>
+    <text x="870" y="400" class="m-area" transform="rotate(-62 870 400)">THE NARROW SEA</text>
+
+    <!-- FACTIONS (border tints) -->
+    <g id="layer-factions" display="none" opacity=".22">
+      <path d="M250 200 C300 180 380 200 420 260 C440 330 400 390 340 400 C280 400 240 350 240 290 Z" fill="#5b4a8b"/>
+      <path d="M420 360 C480 360 540 400 540 450 C540 500 480 520 440 500 C400 470 400 400 420 360 Z" fill="#3f6f8f"/>
+      <path d="M700 420 C760 410 820 440 820 480 C800 530 740 540 700 510 C680 480 680 440 700 420 Z" fill="#b8923e"/>
+      <path d="M60 130 C120 110 220 130 250 170 C250 230 200 260 140 260 C90 250 60 200 60 130 Z" fill="#3e6b3a"/>
+      <path d="M420 40 C500 30 600 40 630 70 C620 110 560 130 480 130 C430 120 410 80 420 40 Z" fill="#7a6f60"/>
+    </g>
+
+    <!-- settlements -->
+    <g>
+      <use href="#town" x="320" y="320" width="22" height="22"/><text x="300" y="315" class="m-town" text-anchor="end">Kingsholm</text>
+      <use href="#town" x="460" y="410" width="20" height="20"/><text x="482" y="410" class="m-town">Ashford</text>
+      <use href="#town" x="770" y="460" width="20" height="20"/><text x="792" y="458" class="m-town">Saltmouth</text>
+      <use href="#town" x="190" y="180" width="18" height="18"/><text x="185" y="172" class="m-town" text-anchor="end">Varrowmere</text>
+      <use href="#town" x="640" y="430" width="18" height="18"/><text x="610" y="425" class="m-town" text-anchor="end">Wendle</text>
+      <use href="#town" x="510" y="190" width="18" height="18"/><text x="532" y="190" class="m-town">Thornbury</text>
+      <use href="#town" x="440" y="70" width="18" height="18"/><text x="462" y="70" class="m-town">Delvenhold</text>
+      <use href="#town" x="510" y="550" width="18" height="18"/><text x="532" y="565" class="m-town">Sedgecombe</text>
+      <!-- landmarks -->
+      <g transform="translate(395 360)"><path d="M0 0 q12 -16 24 0 z" fill="#2a2017" opacity=".8"/></g><text x="370" y="388" class="m-small">Hollow Barrow</text>
+      <g transform="translate(700 528)"><path d="M0 8 v-8 M5 8 v-8 M10 8 v-8 M-2 0 h14" stroke="#2a2017" stroke-width="1.4"/></g><text x="716" y="537" class="m-small">Reedfolk stilts</text>
+    </g>
+
+    <!-- THREATS -->
+    <g id="layer-threats">
+      <g filter="url(#f-stain)"><ellipse cx="420" cy="370" rx="70" ry="44" fill="url(#g-stain)"/></g>
+      <path d="M445 388 l16 16 M461 388 l-16 16" stroke="#8e2a22" stroke-width="3"/>
+      <text x="432" y="438" class="m-small" fill="#8e2a22" style="fill:#8e2a22">road closed</text>
+    </g>
+
+    <!-- GUILDS -->
+    <g id="layer-guilds">
+      <use href="#banner" x="652" y="384" width="20" height="34" fill="#8e2a22"/><text x="676" y="380" class="m-small">The Lantern Company · tier 2</text>
+      <use href="#banner" x="330" y="276" width="18" height="30" fill="#5b4a8b"/><use href="#banner" x="346" y="276" width="18" height="30" fill="#3f3f3f"/>
+      <text x="368" y="290" class="m-small">Iron Oath · Grey Wardens · tier 1</text>
+      <use href="#banner" x="470" y="372" width="18" height="30" fill="#3f6f8f"/><text x="492" y="388" class="m-small">Ashford Free Blades</text>
+      <use href="#banner" x="748" y="474" width="18" height="30" fill="#b8923e"/><text x="770" y="496" class="m-small">Saltmouth Company</text>
+      <use href="#banner" x="196" y="146" width="18" height="30" fill="#3e6b3a"/>
+    </g>
+
+    <!-- ACTION -->
+    <g id="layer-action">
+      <path d="M648 438 C600 470 560 500 530 548" fill="none" stroke="#8e2a22" stroke-width="2" stroke-dasharray="2 5"/>
+      <use href="#standee" x="560" y="478" width="12" height="20" fill="#8e2a22"/><use href="#standee" x="570" y="482" width="12" height="20" fill="#8e2a22"/><use href="#standee" x="580" y="478" width="12" height="20" fill="#8e2a22"/>
+      <text x="554" y="510" class="m-small" text-anchor="end">Marrow's party → Sedgecombe bounty, day 3 of 9</text>
+      <path d="M340 330 C330 260 300 200 230 150" fill="none" stroke="#5b4a8b" stroke-width="2" stroke-dasharray="2 5"/>
+      <use href="#standee" x="282" y="214" width="12" height="20" fill="#5b4a8b"/><use href="#standee" x="292" y="210" width="12" height="20" fill="#5b4a8b"/>
+      <text x="52" y="300" class="m-small">Iron Oath party → Greymoor</text>
+      <g transform="translate(612 452)"><circle r="9" fill="#8e2a22"/><text y="4" text-anchor="middle" font-size="10" fill="#efe4cc" font-family="IM Fell English SC, serif">!</text></g>
+      <text x="626" y="456" class="m-small" style="font-style:italic">key moment waiting</text>
+    </g>
+
+    <!-- RUMOURS -->
+    <g id="layer-rumours">
+      <text x="40" y="338" class="m-pencil">"wolves bold on the moor road"?</text>
+      <text x="560" y="110" class="m-pencil">a new seam opened, something below?</text>
+      <path d="M680 120 q-30 30 -60 20" fill="none" stroke="#5b6470" stroke-dasharray="3 3"/>
+    </g>
+
+    <!-- DEEDS -->
+    <g id="layer-deeds">
+      <g transform="translate(600 300)"><rect x="-4" y="-14" width="182" height="34" fill="#efe4cc" stroke="#2a2017"/><text x="4" y="0" class="m-deed">Here the Fen Drake fell</text><text x="4" y="14" class="m-deed" style="font-style:italic">Year 3 · The Lantern Company</text></g>
+      <path d="M640 320 L655 380" stroke="#2a2017" stroke-width=".8"/>
+      <g transform="translate(150 380)"><rect x="-4" y="-14" width="200" height="34" fill="#efe4cc" stroke="#2a2017"/><use href="#mourn" x="182" y="-14" width="14" height="14"/><text x="4" y="0" class="m-deed">Aldith Marrow fell holding the bridge</text><text x="4" y="14" class="m-deed" style="font-style:italic">Year 4 · rest well</text></g>
+      <path d="M260 400 L320 335" stroke="#2a2017" stroke-width=".8"/>
+      <g transform="translate(60 130)"><rect x="-4" y="-14" width="150" height="34" fill="#efe4cc" stroke="#2a2017"/><text x="4" y="0" class="m-deed">Varrowmere held</text><text x="4" y="14" class="m-deed" style="font-style:italic">Year 2 · against the raiders</text></g>
+      <path d="M150 150 L192 186" stroke="#2a2017" stroke-width=".8"/>
+    </g>
+  </svg>
+  </div>
+
+  <section aria-labelledby="bases">
+    <h2 id="bases">How the base map is made</h2>
+    <div class="opts">
+      <div class="opt"><h3>A · Hand-illustrated</h3><p>An artist draws the whole March: washes, coasts, a compass rose, a sea serpent, the title cartouche. The live layers sit on top.</p><p class="muted">Most beautiful and distinctive. One fixed region; generated regions later (D-030) would each need new art.</p></div>
+      <div class="opt"><h3>B · Procedural ink</h3><p>Code draws the map from region data using an artist's stamp set (woods, hills, fen marks, towns). The same renderer draws the quest-board sites.</p><p class="muted">Cheaper and works for generated regions. Flatter; risks looking generated, which works against the "cool fantasy" goal.</p></div>
+      <div class="opt"><h3>C · Hand base now, procedural later <span class="rec">Recommended</span></h3><p>The launch region gets the hand-illustrated base (A). The live layers, and later generated regions, use the procedural ink renderer (B), which is built anyway for the quest board.</p><p class="muted">Launch looks its best; the generated-region mode still has a path. Cost: the illustrated map (~$3,000–10,000, estimate) plus the stamp set already counted for sites.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="lay">
+    <h2 id="lay">What each layer shows</h2>
+    <ul class="layers">
+      <li><b>Areas and places.</b> Biomes, the 8 settlements and landmarks; zoom from kingdom to county.</li>
+      <li><b>Factions.</b> Who holds sway where (heraldic colours, D-048); shifts as the region changes.</li>
+      <li><b>Guilds.</b> Banners at each guildhall with ranking tier; yours stands out.</li>
+      <li><b>Action.</b> Parties as standees moving on routes, rivals' too; a seal marks a waiting key moment.</li>
+      <li><b>Threats.</b> Spreading ink stains; sharper with better knowledge (D-083 rule 5); closed roads.</li>
+      <li><b>Rumours.</b> The clerk's pencil notes; they become contract leads (D-043).</li>
+      <li><b>Deeds.</b> Inked cartouches that stay on the map: beasts slain, defences held, the fallen with a mourning corner. Over a long save the map becomes the guild's history (Pillar 3).</li>
+      <li><b>Everything links to its Trace</b> (D-082): click a stain, banner or deed to see why it is there.</li>
+    </ul>
+  </section>
+</div>
+<script>
+  document.querySelectorAll('input[data-layer]').forEach(box => {
+    const g = document.getElementById('layer-' + box.dataset.layer);
+    const sync = () => g.setAttribute('display', box.checked ? 'inline' : 'none');
+    box.addEventListener('change', sync); sync();
+  });
+  document.querySelectorAll('input[name="base"]').forEach(r => r.addEventListener('change', () => {
+    const hand = document.getElementById('base-hand').checked;
+    document.getElementById('base-hand-layer').setAttribute('display', hand ? 'inline' : 'none');
+    document.getElementById('base-proc-layer').setAttribute('display', hand ? 'none' : 'inline');
+  }));
+</script>

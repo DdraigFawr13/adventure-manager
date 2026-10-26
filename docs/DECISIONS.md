@@ -514,6 +514,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** After plan approval, prototypes run in this order: 1 one watched quest (is watching fun?); 2 headless year simulator on the same simulation core (balance, pacing, delegation, careers); 3 desk-density mock-ups and the template-writing test, alongside 1 or 2; 4 a two-year attachment playtest. Detail: `docs/design/PLAN.md` §9b.
 - **Why:** Owner's choice (Plan Q9a): test the assumption the whole game rests on first.
+- **Amended (2026-10-26, D-090):** step 0, the engine test, comes before step 1.
 - **Note:** first recorded as "headless simulator first"; the owner reported that answer as a misclick the same day and chose quest first.
 
 ## D-086 Riskiest assumptions and their tests
@@ -526,6 +527,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-26) as a launch goal; design to workshop.
 - **Decision:** Launch includes a kingdom map of the March in a striking, on-theme fantasy style showing areas and locations, the player's and rival guilds, current action, and the deeds done across the region. It builds on the home-screen region map (D-049) and is a consequence surface (PLAN §8a). Style, layers and interactions are workshopped with the art plan (PLAN §12). Detail: `docs/design/PLAN.md` §1a.
+- **Amended (2026-10-26, D-097):** launch layers are factions, guilds, action and threats; deeds and rumours on the map come later.
 - **Why:** Owner's request: the region should be a place the player wants to look at, where the guild's history is visible (Pillars 3 and 4).
 
 ## D-088 Data collection: playtest logs, nothing sent from release
@@ -539,3 +541,58 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Playtests run owner-only for prototypes, then 6–10 invited vertical-slice players (about two thirds management-sim veterans), a 30–50 closed alpha, the public demo and a 200+ beta. Measures cover pacing, danger and economy, engagement (watched vs auto-resolved, delegation, Trace use), onboarding drop-off, attachment, readability tasks and stability. Each measure has a target; misses become dated findings; the same miss in two rounds goes to the owner as a design problem. Detail: `docs/design/PLAN.md` §10a, §10b, §10d.
 - **Why:** Owner accepted the draft (Plan Q10b).
+
+## D-090 Engine chosen after a two-engine test
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The engine is chosen between web tech in Electron (TypeScript) and Godot 4 (C#) after prototype step 0: the same roster ledger and kingdom-map view built in both, judged on the owner's look-and-feel notes plus measured build time, frame rate and memory at 1366×768, download size and the find-the-fact task. Unity is out. The architecture in PLAN §11b–§11g is engine-neutral. Detail: `docs/design/PLAN.md` §11a; adds step 0 to D-085.
+- **Why:** Owner's choice (Plan Q11a) after the trade-off: web tech favours dense ledgers and speed of building; Godot favours the animated map and board.
+
+## D-091 Engine-neutral architecture
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Five packages (engine, content, ui, shell, tools); the engine is pure rules with seeded randomness and injected time, one simulate function, and every change an event with a cause id. The event log feeds the Trace, histories, Chronicle, reports, letters and playtest logs. Game values are integers. Content is JSON with schemas, loaded as packs (mods later). Ironman saves are written safely each day, versioned with migrations, never overwritten when unreadable, synced by Steam Cloud. Optional AI flavour is off by default, player-keyed and never blocks templates. Performance: 1366×768 minimum, 60 fps map, day tick under 50 ms, simulated year under 1 s, save/load under 1 s. Detail: `docs/design/PLAN.md` §11b–§11g.
+- **Why:** Owner accepted the draft (Plan Q11b); holds for either engine in D-090.
+
+## D-092 Tools adopted now: docs checker, mock-up script, one setup audit
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** `tools/docs-check.mjs` runs before every push with the drift check (cited decision ids exist; no draft markers in accepted PLAN sections). `tools/mockup-shot.mjs` renders every HTML mock-up or page at desktop and phone width before publishing (fonts, no sideways scroll, screenshots). The `setup-audit` skill runs once on this repo; its proposals come to the owner before any change. Detail: `docs/design/TOOLS-REVIEW.md` §3.
+- **Why:** Owner's choice from the tools review. Measured: the docs checker runs in 0.06 s and caught both planted mistakes on a copy of the docs; of the day's four lessons it would have caught one. The mock-up script turns the VER-06 check used for every mock-up into one command.
+
+## D-093 Adversarial review before every pull request
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Before creating any pull request, and again before marking one ready, review the whole branch diff adversarially: what is wrong, inconsistent with DECISIONS, unverified or missing. Fix or report each finding before the PR goes up. Use the `reviewer` agent or `code-review` skill for large diffs. Recorded in AGENTS.md project rules.
+- **Why:** Owner's rule (2026-10-26).
+
+## D-094 Tools review accepted
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The rest of the tools review stands as the plan: build-start tooling (engine tools in cloud sessions, per-stack checks, review skills on PRs, the `run` skill, CI checks that stay free for docs-only pushes); art connectors for exploration only (OpenArt with licence, disclosure and cost checks first; Figma if an artist joins; tldraw optional; Canva later); the not-needed list; ripgrep kept as is; the caveman skill not adopted. Detail: `docs/design/TOOLS-REVIEW.md`.
+- **Why:** Owner accepted the list after reviewing the page.
+
+## D-095 A fresh session per merged PR or plan section
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** End a working session after each merged PR or finished plan section; the next session starts from `docs/HANDOFF.md` (CTX-02). If a session must go on, compact at a section boundary, not mid-task.
+- **Why:** Setup audit finding (owner approved): one long session re-read 58.2 million cached tokens, while a fresh session starts near 84,000.
+
+## D-096 Deny secret reads; ask before any force-push
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** `.claude/settings.json` denies reading `.env`, `.env.*` and `secrets/**` in the project root through the file tools, and asks before a `git push` whose command contains `--force` (including `--force-with-lease`) or a separate `-f` flag. Also allows `node tools/docs-check.mjs` without a prompt.
+- **Limits (found in the pre-merge review, 2026-10-26):** the allow list lets `cat`, `head`, `tail`, `grep`, `rg` and `find` run without a prompt, so a shell read of `.env` is not blocked; force pushes written as combined flags (`-fu`), refspecs (`origin +main`) or `git -C dir push` are not matched; `git branch:*` also allows `git branch -D` and `find:*` allows `-delete`. Tightening these is the owner's decision (HANDOFF open questions).
+- **Why:** Setup audit finding (owner approved): there were 19 allow rules and no deny or ask rules; SAFE-02 and GIT-03 were instructions only.
+
+## D-097 Kingdom map: hand-drawn base, four launch layers
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The launch March has a hand-illustrated base map in layers; live marks and later generated regions use the procedural ink renderer built for the quest board. Launch layers: areas and places, factions, guilds (with tier), action (moving parties, key-moment seals) and threats (spreading stains, closed roads), each linked to its Trace. Deeds and rumours on the map come later (meanwhile Chronicle and inbox). The map is to look better over time; the owner's Story-Generator repository is a lead for its art direction. Detail: `docs/design/PLAN.md` §12d; mock-up `docs/design/mockups/kingdom-map.html`.
+- **Why:** Owner's choice (Plan Q12a): the best-looking launch map with a path to generated regions; a smaller launch layer set.
+
+## D-098 Art and audio production lists and rough costs
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** An artist draws parts and set pieces; code assembles them (portraits ~200 parts, crests, site maps from ~60 stamps per biome); monsters 72 pieces, icons ~240 drawings, 26 initials, ~10 legendary items, a few textures; a ledger font cut only if D-084's real-monitor check fails. Audio: 60–90 min of commissioned early-music ambience, ~150 desk sounds, 5 biome beds, ~10 stingers, ~40 name-free vocal sounds. Rough estimates: art $23,000–74,000, audio $9,000–37,000, refined in PLAN §14 and replaced by quotes. Pipeline: layered sources exported by script, an asset licence ledger, OFL fonts, contracts that transfer the needed rights. AI-generated images for exploration only (D-094). Detail: `docs/design/PLAN.md` §12a–§12c, §12e.
+- **Why:** Owner accepted the draft (Plan Q12b) and asked for a review of the Story-Generator repository's map code for art direction.
