@@ -30,7 +30,7 @@ No game code before phase 3 is approved.
 
 ## What CI runs
 
-- **CI** (`ci.yml`): the master drift check on every PR update and `main` push. Markdown-only changes skip it.
+- **CI** (`ci.yml`): on every PR update and `main` push, one Linux job runs the drift check, the docs check and `npm run check`. Markdown-only and `docs/` changes skip it, so run the docs check locally for those.
 - No deploys yet.
 
 ## Project rules

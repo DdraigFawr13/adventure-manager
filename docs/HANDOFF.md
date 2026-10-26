@@ -8,6 +8,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Just done
 
+- 2026-10-26 PR #7 (resolution v0) merged. CI now runs the drift check, the docs check and `npm run check` in one job (D-105); replayed in a clean clone before pushing (actionlint couldn't be installed in this session).
 - 2026-10-26 Resolution v0 on branch `ccr-7f6bf382-zc866n`: owner settled six forks: hybrid quest shape (D-118), percent chances (D-119), wound steps (D-120), three plan levers (D-121), eight working attributes (D-122), foe groups now and per-enemy tokens later (D-123). Spec `packages/engine/src/resolution/SPEC.md`; `simulate(state, command)` with `quest.start`/`step`/`choose`, events with cause ids, invariants, determinism test; numbers in new `packages/content` (TypeScript typed by engine types until the JSON loader). Boundary check now allows `SPEC.md` in `src`. `npm run check` green (49 tests); independent review fixed (D-093). Measured with `node tools/resolution-sweep.ts 2000` (hazardous barrow delve, 5 mid adventurers, never retreat): deaths 0.18% per adventurer vs 0.8% target, ~43 injuries per death vs ~5, 99% won. Starting numbers are too gentle; tuning is R1/R2's job.
 - 2026-10-26 M1 started on branch `ccr-829d90c0-lqu9xa`: owner holds Story-Generator rights, reuse approved (D-116); one dependency list approved incl. the game stack (D-117); `docs/STANDARDS.md` written with the per-package `AGENTS.md` plan; npm workspace with `packages/engine` (named random streams copied from Story-Generator, self-explaining `Value`), boundary check `tools/check-boundaries.mjs`, `npm run check` green (26 tests, incl. the boundary check's own); independent review fixed (D-093).
 - 2026-10-26 Owner approved the whole plan (M0, D-115); PR #5 merged.
@@ -32,8 +33,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 ## Next
 
 1. Watched-quest prototype (R1, PLAN §9b step 1): a plain text log and board driven by `simulate` events, plus the first tuning pass toward §4c (sweep numbers above). Template text for the log needs the template grammar (D-114).
-2. Add `npm run check` to CI (`ci.yml`, path-filtered per D-105) using the `efficient-github-actions` skill.
-3. Web-first engine test (D-110): ledger and kingdom map in Electron + TypeScript, reusing Story-Generator map code (D-116). Godot only if web misses its bar. Time-boxes and stop rules: PLAN §9b (D-111).
+2. Web-first engine test (D-110): ledger and kingdom map in Electron + TypeScript, reusing Story-Generator map code (D-116). Godot only if web misses its bar. Time-boxes and stop rules: PLAN §9b (D-111).
 
 ## Open questions
 
