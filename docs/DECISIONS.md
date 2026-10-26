@@ -271,3 +271,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** `docs/design/CONCEPT.md` (33 sections, pillars, scope tiers) is the locked phase-1 concept. Phase 2 (style design) begins.
 - **Why:** Owner declared the concept 100% fleshed out after the review pass.
+
+## D-046 Visual metaphor: the guildmaster's war table
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The UI is the guildmaster's desk (ledgers, seals, letters, painted map with miniatures). In-world styling carries the frame and set pieces; dense data screens use a clean, legible layer with no texture behind numbers. Detail: `docs/design/STYLE.md` §1.
+- **Why:** Owner's choice (Style Q1); ties to D-004 and D-043 while keeping D-016 density readable.
