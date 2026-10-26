@@ -2,6 +2,8 @@
 // Plays N seeded years with a fixed policy for the player's side, runs the guild and resolution
 // invariants on every year and reports against PLAN §2 and §4 (targets in brackets).
 // Usage: node tools/year-sim.ts [years=1000] [policy=default|cautious|bold]
+// Every seed plays all three policies, because the last block compares them; the runtime row is
+// one policy's year, so a full run costs about three times that.
 import {
   GUILD_SIZE,
   POLICIES,
@@ -38,6 +40,12 @@ const col = (pick: (r: YearResult) => number) => rs.map(pick);
 
 console.log(`${years} seeded years, policy ${policyName} ${JSON.stringify(POLICIES[policyName])}`);
 console.log(
+  'A drawn guild of 15 with the assault approach; the §4c death targets are for a well-built reference party (D-137).',
+);
+console.log(
+  'Surplus and spending count every coin in and out except the starting chest; fees still owed at day 336 are not counted.',
+);
+console.log(
   line(
     'deaths a year',
     col((r) => r.deaths),
@@ -46,9 +54,9 @@ console.log(
 );
 console.log(
   line(
-    'lasting injuries a year',
-    col((r) => r.injuries),
-    '~5 per death',
+    'lasting injuries per death',
+    col((r) => r.injuries / Math.max(1, r.deaths)),
+    '~5',
   ),
 );
 console.log(
@@ -74,7 +82,7 @@ for (const d of ['routine', 'hazardous', 'perilous', 'deadly']) {
   const [a, k] = pooled.get(d) ?? [0, 0];
   console.log(
     `deaths per adventurer-quest, ${d}`.padEnd(44) +
-      ` pooled ${((100 * k) / Math.max(1, a)).toFixed(2)}% of ${a} adventurer-quests  [${targetPct[d]}%]`,
+      ` pooled ${((100 * k) / Math.max(1, a)).toFixed(2)}% of ${a} adventurer-quests  [${targetPct[d]}% for the reference party, D-137]`,
   );
 }
 console.log(
@@ -88,7 +96,7 @@ console.log(
   line(
     'year-end surplus (% of spending)',
     col((r) => (100 * r.surplusCopper) / r.spendingCopper),
-    '+10..20',
+    '+10..20; tuned by fees, not a finding',
   ),
 );
 console.log(

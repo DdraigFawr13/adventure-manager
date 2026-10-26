@@ -116,6 +116,8 @@ describe('people (guild SPEC.md, People)', () => {
       prospectId: prospect.adventurer.id,
     });
     expect(ofType(signed.events, 'recruit.signed').at(-1)?.wageCopper).toBe(WAGE);
+    // D-138: signing in a window costs weeks of the recruit's wage up front.
+    expect(moneyOf(signed, 'sign-on')).toEqual([-8 * WAGE]);
     expect(signed.state.guild!.members).toHaveLength(4); // non-null: founded.
     expect(signed.state.roster.some((a) => a.id === prospect.adventurer.id)).toBe(true);
     expect(() =>
@@ -125,7 +127,7 @@ describe('people (guild SPEC.md, People)', () => {
     expect(advanceTo(signed, 15).state.guild!.prospects).toHaveLength(0); // non-null: founded.
   });
 
-  it('takes the dead off the roster and the wage bill', () => {
+  it('takes the dead off the guild and the wage bill; the roster keeps them flagged dead', () => {
     const base = foundedGuild(3);
     // Foes that cannot miss and a death roll that cannot fail: someone dies on the quest.
     const cloned: GameState = structuredClone(base.state);
@@ -150,6 +152,21 @@ describe('people (guild SPEC.md, People)', () => {
       expect(home.state.roster.find((a) => a.id === id)?.dead).toBe(true);
     }
     expect(moneyOf(home, 'wages').at(-1)).toBe(-(3 - died.length) * WAGE);
+    // D-138: each death pays a funeral and the family's share. This plan never retreats, which is
+    // reckless, so each death also costs renown; a plan that heeds the leader's call costs none.
+    expect(moneyOf(home, 'funeral')).toEqual(died.map(() => -(200 + 26 * WAGE)));
+    const deathIds = (run: Run) => new Set(ofType(run.events, 'adventurer.died').map((e) => e.id));
+    const forDeaths = (run: Run) =>
+      ofType(run.events, 'renown.changed').filter((e) => deathIds(run).has(e.causeId));
+    expect(forDeaths(home).map((e) => e.amount)).toEqual(died.map(() => -5));
+    const careful = advanceTo(
+      take({ ...base, state }, ['adv.1', 'adv.2', 'adv.3'], undefined, {
+        ...steadyPlan,
+        retreat: 'leader',
+      }),
+      8,
+    );
+    expect(forDeaths(careful)).toEqual([]);
     expect(stopDays(home.events, (s) => s.reason === 'death')).toEqual([3]);
     expect(checkGuildInvariants(home.state, home.events, home.commandIds)).toEqual([]);
   });

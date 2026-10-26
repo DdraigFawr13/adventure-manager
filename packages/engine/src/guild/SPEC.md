@@ -9,9 +9,9 @@ The calendar, the contract board, wages, recovery and recruitment for one guild,
 
 ## The board (contracts)
 
-- On each week start the board drops expired offers and adds new ones: a number per week by part of the year (winter is thin), each drawn by weighted danger from the quest templates the content lists for this guild's tier, with a fee, travel days each way and an expiry week.
+- On each week start the board drops expired offers and adds new ones: a number per week by part of the year (winter is thin), each drawn by weighted danger from the content's quest templates of that danger (no ranking tiers yet; they come with rivals), with a fee, travel days each way and an expiry week.
 - Fees per danger from content (rising about 2.5 times a step, PLAN §4b), with a small spread. Loot is a share of the fee paid on a win.
-- `contract.take` (offer id, member ids, plan; `day` must be today) needs an idle party of at least the minimum size whose members are all fit enough (not out injured). The offer leaves the board and the party leaves that day; the quest resolves on arrival (travel days later) with the resolution v0 rules, unwatched, so the leader's call answers every moment (D-125); the party is home after travelling back. Dead members leave the roster and wage bill on arrival.
+- `contract.take` (offer id, member ids, plan; `day` must be today) needs an idle party of at least the minimum size whose members are all fit enough (not out injured). The offer leaves the board and the party leaves that day; the quest resolves on arrival (travel days later) with the resolution v0 rules, unwatched, so the leader's call answers every moment (D-125); the party is home after travelling back. Dead members leave the guild's members and wage bill on arrival; the roster keeps them, flagged dead.
 
 ## Money (PLAN §4b)
 
@@ -20,8 +20,8 @@ The calendar, the contract board, wages, recovery and recruitment for one guild,
 
 ## People
 
-- After a quest, each survivor is out from the day the party is home for rest days per wound step left, plus 3–8 weeks (stream `guild.recovery`) if the quest gave an injury (`injury.gained`); `contract.take` refuses anyone still out, and `member.recovered` marks the day they are fit. Dead members leave the roster with their wage.
-- Recruitment: on each week start inside a window, a shortlist of prospects replaces the last (stream `guild.recruit`, attributes from the class leanings in content; outside a window it is empty); `recruit.sign` adds one at their asked wage (class base plus a step per point the best three attributes average above 10). The starting roster is drawn the same way. Signing is never delegated (D-038), so it is always a stop.
+- After a quest, each survivor is out from the day the party is home for rest days per wound step left, plus 3–8 weeks (stream `guild.recovery`) if the quest gave an injury (`injury.gained`); `contract.take` refuses anyone still out, and `member.recovered` marks the day they are fit. A death costs the guild (D-138): a funeral, 26 weeks of the dead member's wage to the family, and renown when the plan was reckless (bold risk, or never retreating).
+- Recruitment: on each week start inside a window, a shortlist of prospects replaces the last (stream `guild.recruit`, attributes from the class leanings in content; outside a window it is empty); `recruit.sign` adds one at their asked wage and pays a sign-on fee of 8 weeks of it (D-138) (class base plus a step per point the best three attributes average above 10). The starting roster is drawn the same way. Signing is never delegated (D-038), so it is always a stop.
 - Retirement, ageing, training and morale are later slices.
 
 ## Stops (PLAN §2f)
@@ -31,3 +31,7 @@ The calendar, the contract board, wages, recovery and recruitment for one guild,
 ## Invariants
 
 Money adds up (every `money.changed` carries the running chest; the last equals the state), no adventurer is in two parties, the dead are in no party and on no wage list, every event has a cause, and the resolution invariants hold for every quest.
+
+## Derived state
+
+Some fields are bookkeeping read back from events, not changes of their own: who is away (set by `party.departed`, cleared by `party.returned`), the day a member is fit again (shown by `member.recovered`), today's date (the command's day), and the shortlist being emptied outside a window (it only ever holds the last `prospect.listed`). They need no events of their own.

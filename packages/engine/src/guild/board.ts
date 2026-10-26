@@ -71,7 +71,8 @@ export function takeContract(
   if (new Set(ids).size !== ids.length) throw new Error('A party lists someone twice.');
   for (const id of ids) {
     const who = memberOf(guild, id);
-    if (!isFree(who, state.calendar)) throw new Error(`${id} is away or still recovering.`);
+    if (who.away) throw new Error(`${id} is away on a quest.`);
+    if (!isFree(who, state.calendar)) throw new Error(`${id} is still recovering.`);
   }
   guild.board.splice(at, 1);
   guild.nextPartyNo += 1;

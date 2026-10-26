@@ -8,6 +8,8 @@
 // - Danger mix 30/40/25/5; travel days each way 4/6/8/9 (+0-2), so the farthest sites are 9-11 days out (D-134);
 //   every survivor then refits 7 days at home, so a quest cycle runs about 3 weeks (PLAN §2a); fee spread +-20%.
 // - Pay by outcome: won 100%, partial 50%, retreated 0, routed 0; loot on a win 20% of the fee.
+// - A death costs a 200-copper funeral and 26 weeks of the dead's wage to the family, plus 5 renown
+//   when the plan was reckless; signing a recruit costs 8 weeks of their wage (D-138).
 // - Running costs 500 a week; patron grant 4000 at the Assembly; starting chest 17000.
 // - Wages: base warrior 60, rogue 54, cleric 48, plus 4 per point the best three attributes
 //   average above 10 (floor base - 10).
@@ -16,10 +18,10 @@
 // - Renown per win by danger 1/3/8/20; a rout loses the same.
 //
 // FEE_SCALE_PERCENT is the one factor tuned so the default policy's year-end surplus lands in
-// +10..20% of spending (tools/year-sim.ts, 1,000 years, after the 2026-10-26 travel change); the base fees below are the brief's 900/2250/5600/14000.
+// +10..20% of spending (tools/year-sim.ts, after the travel change and the death costs of D-138); the base fees below are the brief's 900/2250/5600/14000.
 import type { GuildRules } from '@adventure-manager/engine';
 
-export const FEE_SCALE_PERCENT = 122;
+export const FEE_SCALE_PERCENT = 135;
 
 function fee(baseCopper: number): number {
   return Math.round((baseCopper * FEE_SCALE_PERCENT) / 100);
@@ -76,6 +78,8 @@ export const baseGuildRules: GuildRules = {
   ],
   payBp: { won: 10000, partial: 5000, retreated: 0, routed: 0 },
   lootBp: 2000,
+  death: { funeralCopper: 200, familyShareWeeks: 26, recklessRenownLoss: 5 },
+  signOnWeeks: 8,
   runningCostCopper: 500,
   patronGrantCopper: 4000,
   startingChestCopper: 17000,

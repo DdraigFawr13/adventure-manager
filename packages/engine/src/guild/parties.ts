@@ -28,18 +28,20 @@ export function arrive(turn: GuildTurn, party: Party, causeId: string, stops: Se
   while (state.quest) stepQuest(state, causeId, sink);
   const steps = new Map<string, number>();
   const injured = new Set<string>();
-  const dead = new Set<string>();
+  const dead = new Map<string, string>();
   for (const e of sink.events.slice(first)) {
     const [subject = ''] = e.subjectIds;
     if (e.type === 'wound.changed') steps.set(subject, e.to);
     if (e.type === 'injury.gained') injured.add(subject);
-    if (e.type === 'adventurer.died') dead.add(subject);
+    if (e.type === 'adventurer.died') dead.set(subject, e.id);
     if (e.type === 'quest.ended') party.outcome = e.outcome;
   }
   const recovery = streamFor(state, 'guild.recovery');
   for (const id of [...party.memberIds]) {
     const who = memberOf(guild, id);
-    if (dead.has(id)) {
+    const diedId = dead.get(id);
+    if (diedId !== undefined) {
+      buryMember(turn, who.id, who.wageCopper, party, diedId);
       guild.members.splice(guild.members.indexOf(who), 1);
       party.memberIds.splice(party.memberIds.indexOf(id), 1);
       stops.add('death');
@@ -51,6 +53,29 @@ export function arrive(turn: GuildTurn, party: Party, causeId: string, stops: Se
         rules.daysPerWeek * recovery.between(rules.injuryWeeks.min, rules.injuryWeeks.max);
     who.outUntilDay = restDays > 0 ? party.homeDay + restDays : 0;
   }
+}
+
+/** A death costs the guild (D-138): the funeral, the family's share, and renown if the plan was reckless. */
+function buryMember(
+  turn: GuildTurn,
+  id: string,
+  wageCopper: number,
+  party: Party,
+  diedId: string,
+): void {
+  const { rules, guild, sink } = turn;
+  const cost = rules.death.funeralCopper + rules.death.familyShareWeeks * wageCopper;
+  if (cost !== 0) pay(turn, -cost, 'funeral', diedId, [id]);
+  const reckless = party.plan.risk === 'bold' || party.plan.retreat === 'never';
+  if (!reckless || rules.death.recklessRenownLoss === 0) return;
+  guild.renown -= rules.death.recklessRenownLoss;
+  sink.emit({
+    type: 'renown.changed',
+    causeId: diedId,
+    subjectIds: [id, party.id],
+    amount: -rules.death.recklessRenownLoss,
+    renown: guild.renown,
+  });
 }
 
 /** Brings the party home: members are free to rest, and the fee, loot and renown arrive. */

@@ -1,5 +1,5 @@
 // Test content for the guild year: round numbers so each rule shows in its own arithmetic.
-import type { Command, GameEvent, GameState, GuildRules } from '../src/index.ts';
+import type { Command, GameEvent, GameState, GuildRules, Plan } from '../src/index.ts';
 import { simulate } from '../src/index.ts';
 import { game, steadyPlan } from './fixture.ts';
 
@@ -24,6 +24,8 @@ export const guildRules: GuildRules = {
   ],
   payBp: { won: 10_000, partial: 5000, retreated: 0, routed: 0 },
   lootBp: 2000,
+  death: { funeralCopper: 200, familyShareWeeks: 26, recklessRenownLoss: 5 },
+  signOnWeeks: 8,
   runningCostCopper: 500,
   patronGrantCopper: 4000,
   startingChestCopper: 10_000,
@@ -90,14 +92,14 @@ export function advanceTo(run: Run, day: number): Run {
   return current;
 }
 
-export function take(run: Run, partyIds: string[], offerId?: string): Run {
+export function take(run: Run, partyIds: string[], offerId?: string, plan: Plan = steadyPlan): Run {
   const offer = offerId ?? run.state.guild?.board[0]?.id ?? 'none';
   return play(run, {
     type: 'contract.take',
     day: run.state.calendar,
     offerId: offer,
     partyIds,
-    plan: steadyPlan,
+    plan,
   });
 }
 

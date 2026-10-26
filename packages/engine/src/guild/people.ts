@@ -4,7 +4,7 @@ import { divRoundDown } from '../core/math.ts';
 import { streamFor } from '../core/rng.ts';
 import type { Adventurer, Attribute, Command, GameEvent, GameState } from '../resolution/types.ts';
 import { ATTRIBUTES } from '../resolution/types.ts';
-import { guildTurn, type GuildTurn } from './turn.ts';
+import { guildTurn, type GuildTurn, pay } from './turn.ts';
 import type { GuildRules, Prospect } from './types.ts';
 
 /** Wage by class base and the best three attributes' average (SPEC.md, People). */
@@ -92,5 +92,9 @@ export function signRecruit(
   const person = turn.guild.prospects[at];
   if (!person) throw new Error(`${command.prospectId} is not on the shortlist.`);
   turn.guild.prospects.splice(at, 1);
-  engage(turn, person, command.id);
+  // The sign-on fee (D-138); the founding roster in guild.found pays none.
+  const fee = turn.rules.signOnWeeks * person.wageCopper;
+  const paid =
+    fee === 0 ? command.id : pay(turn, -fee, 'sign-on', command.id, [person.adventurer.id]);
+  engage(turn, person, paid);
 }

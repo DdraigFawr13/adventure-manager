@@ -48,6 +48,14 @@ export interface GuildRules {
   readonly payBp: Readonly<Record<QuestOutcome, number>>;
   /** Extra share of the fee on a win. */
   readonly lootBp: number;
+  /** What a death costs the guild (D-138): a funeral, a share of wages to the family, and renown when the plan was reckless. */
+  readonly death: {
+    readonly funeralCopper: number;
+    readonly familyShareWeeks: number;
+    readonly recklessRenownLoss: number;
+  };
+  /** Signing a recruit in a window costs this many weeks of their wage up front (D-138). */
+  readonly signOnWeeks: number;
   readonly runningCostCopper: number;
   readonly patronGrantCopper: number;
   readonly startingChestCopper: number;
@@ -113,7 +121,8 @@ export interface GuildState {
   nextPersonNo: number;
 }
 
-export type MoneyReason = 'founding' | 'grant' | 'wages' | 'upkeep' | 'fee' | 'loot';
+export type MoneyReason =
+  'founding' | 'grant' | 'wages' | 'upkeep' | 'fee' | 'loot' | 'funeral' | 'sign-on';
 export type StopClass = 'must' | 'digest';
 export type StopReason =
   'week-report' | 'assembly' | 'new-contracts' | 'death' | 'signing-window' | 'party-home';
