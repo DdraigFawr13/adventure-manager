@@ -441,3 +441,15 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Every source has a sink; total renown fades about 10% a year; failure pays in knowledge; rival guilds play by the same rules with no hidden bonuses. Tournaments are the guild's shop window (renown burst, recruitment draw, rival scouting both ways, low lethality, storied prizes, at the cost of a party for 1–2 weeks). Difficulty comes from the start choice (no slider). Launch ladder: 3 tiers of 6 guilds, 1 up and 1 down per tier each Assembly; ladder size is region data, and bigger ladders come after launch. Detail: `docs/design/PLAN.md` §4a, §4d–§4f.
 - **Why:** Owner accepted (Plan Q4c) and asked for bigger ladders later; gives tournaments the reason §3c asked for.
+
+## D-074 Ten class levels at launch, twenty planned
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Adventurers have 10 class levels at launch: about 1 a year early, slowing; most survivors retire around level 7–9; level 10 is legendary; multiclassing or prestige opens at level 5. 20 levels are planned for later, so level count, experience curve and per-level abilities are class data and level-gated rules use bands. Moving to 20 needs its own pacing decision. Detail: `docs/design/PLAN.md` §5a.
+- **Why:** Owner's choice (Plan Q5a): "Start with 10. Plan for 20 eventually." Ten levels fit 6–12 year careers with each level meaningful.
+
+## D-075 Progression of adventurers, guild and guildmaster
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Attributes grow toward hidden potential and decline with age (ancestry sets the ages, as data); traits change through events. Retirement is a conversation; retirees can become staff, limited by attributes and wages; revival leaves a changed veteran. Facilities (5 at launch) have 3 levels each and are building entries in data; more levels or a compound of separate buildings (city-building style) come later. At most 5 earned guild traits are active at once. The guildmaster has about 8 stats (1–20) that grow only when the player does that work personally, and decline in the last 3–5 years. At succession the guild, charter, traits, roster, debts, rivalries, standing, Chronicle and the old guildmaster's promises pass on; the old guildmaster's stats and contacts do not. Detail: `docs/design/PLAN.md` §5.
+- **Why:** Owner accepted the draft (Plan Q5b) and asked for bigger facility progression or a guild compound later.
