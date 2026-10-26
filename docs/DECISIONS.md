@@ -423,3 +423,21 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Guild resources are money, renown, faction standing and knowledge; adventurers carry morale, fatigue, health, trust and experience. Launch has 14 systems in four groups (People, Quests, Guild, World) with contract → party → quest → results as the spine. Injury, death and recovery fold into Adventurers; knowledge and scouting merge into one Scouting and research department and ledger; the training academy and item commissioning move to Early update. Delegation per PLAN §3e. Detail: `docs/design/PLAN.md` §3.
 - **Why:** Owner accepted the map and asked for merges and deferrals (Plan Q3b); chose merges B and C and deferral D, kept tournaments as their own part of the Rivals system. Fewer concepts and ledgers for the player at launch.
+
+## D-071 Death rate: about 2 a year in a mid-sized guild
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** A mid-sized guild (~15 adventurers, 3 parties) on tier-appropriate work at default risk loses about 2 adventurers a year; about half of careers end in death; turnover about 25% a year. Four danger ratings with starting death rates per adventurer per quest: Routine 0.2%, Hazardous 0.8%, Perilous 2.5%, Deadly 7%; about 5 lasting injuries per death. D-034 career lengths now describe survivors. Updates PLAN §2e turnover. Detail: `docs/design/PLAN.md` §4c.
+- **Why:** Owner's choice (Plan Q4a): brutal enough for Pillar 2 and D-034, while enough adventurers live long enough to become stories (Pillar 1).
+
+## D-072 Money: tight early, steady later
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Wages are about 55–65% of spending. A founded guild starts with about 3 months of running costs plus a small patron grant; a well-run mid-tier guild runs a 10–20% surplus; top-tier star wages and patron demands bring pressure back. Detail: `docs/design/PLAN.md` §4b.
+- **Why:** Owner's choice (Plan Q4b): FM-like pressure that matters without letting coin crowd out the people.
+
+## D-073 Sources and sinks, tournaments, difficulty ladder
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Every source has a sink; total renown fades about 10% a year; failure pays in knowledge; rival guilds play by the same rules with no hidden bonuses. Tournaments are the guild's shop window (renown burst, recruitment draw, rival scouting both ways, low lethality, storied prizes, at the cost of a party for 1–2 weeks). Difficulty comes from the start choice (no slider). Launch ladder: 3 tiers of 6 guilds, 1 up and 1 down per tier each Assembly; ladder size is region data, and bigger ladders come after launch. Detail: `docs/design/PLAN.md` §4a, §4d–§4f.
+- **Why:** Owner accepted (Plan Q4c) and asked for bigger ladders later; gives tournaments the reason §3c asked for.

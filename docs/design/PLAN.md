@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: §1–§3 written; §4..§15 to do.
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: §1–§3 written; §4 in progress; §5..§15 to do.
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -9,7 +9,7 @@ Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked
 1. **Goals and target player.** Who it's for, session lengths, measurable success criteria. Written below.
 2. **Core loop and pacing.** Day, week, season, generation in detail; a friction budget (clicks and stops per in-game week). Written below.
 3. **Systems map.** Per system: pillar served, inputs and outputs, the player's real decisions, delegation; a diagram of how systems feed each other. Written below.
-4. **Economy and balance.** Money, renown, knowledge: sources and sinks; difficulty curve; tuning targets (e.g. death rate by quest tier).
+4. **Economy and balance.** Money, renown, knowledge: sources and sinks; difficulty curve; tuning targets (e.g. death rate by quest tier). Drafted below.
 5. **Progression.** Adventurers, guild and guildmaster, from first recruit to the next generation.
 6. **Onboarding, UX and accessibility.** The gentle first season, screen rules, colour-blind, keyboard and text-size support.
 7. **Launch content list.** Classes, ancestries, monsters, quest templates, sites; all as data.
@@ -107,7 +107,7 @@ Decisions: D-066..D-068. All times are targets for a typical player in a mid-siz
 
 ### 2e. The generation (Accepted 2026-10-26, D-068)
 
-- **Adventurers:** careers of 6–12 years (D-034), so about 10–20% of a roster leaves each year through death, retirement or departure. Each year needs fresh recruits to hold strength.
+- **Adventurers:** survivors' careers last 6–12 years (D-034), but about half of careers end in death (D-071), so about 25% of a roster leaves each year through death, retirement or departure. A mid-sized guild needs about 4 recruits a year to hold strength.
 - **Guildmaster:** 20–30 years (about 40–75 h). Decline shows in their stats over the last few years; retirement or dismissal triggers succession (CONCEPT §1, §22).
 - **Succession:** a set piece at year's end: choose the next guildmaster (a senior staff member, a retired adventurer, or a newcomer with a background), who inherits the charter, traits and debts. Target: about 10 min.
 
@@ -256,3 +256,88 @@ Checks on the map (WS-05), run on the diagram's edges: every system is reached f
 | Kit | Quartermaster | Special and storied items |
 | Fee haggling, routine spending, minor morale | Deputy | Choosing contracts, big conversations |
 | Minor quest moments | Party leaders (D-032) | Major key moments |
+
+---
+
+## 4. Economy and balance (Draft 2026-10-26)
+
+Subsections are **Proposed** until marked Accepted. This section sets shapes, ratios and targets; exact numbers are tuned in the prototype (§9) against these targets. "Mid-sized guild" means about 15 adventurers in 3 parties.
+
+### 4a. Sources and sinks
+
+| Resource | Sources | Sinks |
+|---|---|---|
+| Money | Contract fees, loot sales, patron grant, tournament prizes, selling adventurers' contracts | Wages (the largest cost), staff, upkeep, gear, facilities, revival, loan interest, release fees |
+| Renown | Contracts by danger, named kills, defences held, tournament results, storied items | Yearly fading of total renown, failed or abandoned contracts, deaths through recklessness (a party sent far above its level), breaking the charter, later: scandals (D-069) |
+| Faction standing | Contracts for a faction, defending its land, patronage | Contracts against its interests, refusing its work, failing it, serving its enemies |
+| Knowledge | Scouting, library research, survivors' reports (even from failed quests), quest events | Goes stale: monster and site knowledge fades slowly, rival knowledge fast (rosters change) |
+
+Rules:
+1. **Every source has a sink.** Nothing accumulates without limit; late-game money goes into facilities, stars' wages and revival, not a growing pile.
+2. **Failure pays in knowledge.** A failed quest's survivors bring back reports, so a loss always leaves the guild better informed (Pillars 2, 5).
+3. **Rivals play by the same rules.** AI guilds earn, spend, recruit and die through the same simulation (GAME-02); no hidden bonuses or rubber-banding.
+
+### 4b. Money pressure (Accepted 2026-10-26, D-072)
+
+**Tight early, steady later**, as in FM.
+
+- **Wages** are the largest cost: about 55–65% of spending at every tier.
+- **A founded guild** starts with about 3 months of running costs in the chest plus a small patron grant. One bad run of contracts hurts; two in a row means a loan or a sale.
+- **A well-run mid-tier guild** is comfortable: about 10–20% surplus a year, spent on facilities and better recruits.
+- **A top guild** feels pressure again: stars ask for big wages and loot cuts, rivals bid for them, and the patron expects more.
+- **Bankruptcy** follows CONCEPT §22: debt, seized assets and a renown hit, not the end.
+- **Contract fees** rise about 2–3 times per danger rating and per ranking tier (to be tuned, §9).
+
+### 4c. Death and danger (Accepted 2026-10-26, D-071)
+
+**Target: about 2 deaths a year** in a mid-sized guild on tier-appropriate contracts at default risk: one death every 1–1.5 h of play, about half of careers ending in death, turnover about 25% a year (about 4 recruits a year).
+
+Contracts carry a danger rating. Working names: **Routine, Hazardous, Perilous, Deadly** (final names per STYLE §9). Starting targets per adventurer per quest, at default risk with no special knowledge:
+
+| Danger | Share of a mid guild's work | Death per adventurer | Any death in a party of 5 |
+|---|---|---|---|
+| Routine | ~30% | 0.2% | ~1% |
+| Hazardous | ~40% | 0.8% | ~4% |
+| Perilous | ~25% | 2.5% | ~12% |
+| Deadly | ~5% | 7% | ~30% |
+
+Check (computed): 3 parties × ~10 quests × 5 adventurers = 150 adventurer-quests a year at a 1.36% average gives about 2.0 deaths a year.
+
+- The plan moves these numbers: cautious retreat thresholds and good knowledge roughly halve them; reckless settings roughly double them (to be tuned, §9).
+- Injuries are far more common than deaths: as a starting target, about 5 lasting injuries for every death.
+- Rough model behind the choice (estimate, not measured; survivors retire after about 9 years):
+
+| Deaths a year | Leavers a year | Turnover | Careers ending in death | Play time per death |
+|---|---|---|---|---|
+| ~1 | ~2.7 | ~18% | ~37% | ~2.2 h |
+| ~2.5 | ~4.2 | ~28% | ~60% | ~0.9 h |
+| ~5 | ~6.7 | ~44% | ~75% | ~0.5 h |
+
+### 4d. Tournaments: why they matter
+
+§3c flagged tournaments as the thinnest link. Proposal: tournaments are the guild's **shop window**.
+
+- **Renown burst:** a tournament win is worth about a month of good contracts in renown, in one week.
+- **Recruitment draw:** prospects watch. A strong showing improves the next recruitment window (more and better prospects interested).
+- **Scouting rivals:** entering reveals knowledge of rival adventurers who compete, and exposes yours to poaching interest in return.
+- **Low lethality:** trials and cups are rarely deadly, so they are where young adventurers get experience and nerves are tested in front of a crowd; the main tournament prize is often a storied item.
+- **Cost:** a party entered is a party not on contracts for 1–2 weeks at the busiest time of year (midsummer).
+
+### 4e. Difficulty curve
+
+- **Start choice sets difficulty** (D-026): founding (tiny roster, bottom tier, low expectations) or taking over a guild from a list that runs from a struggling bottom-tier hall to an established top guild with a demanding patron. No separate difficulty slider at launch.
+- **Ladder:** 3 tiers of 6 guilds (18 guilds in the region, including the player's). At each Assembly the top 1 of a tier goes up and the bottom 1 goes down; top tiers get bigger, deadlier and better-paid contracts. Estimate: a well-run founded guild reaches the middle tier in 3–5 years and the top in 8–12.
+- **Danger tracks ambition:** the player always chooses contracts (D-038), so difficulty within a tier is the player's own risk appetite.
+- **Early protection:** the first season (gentle onboarding, CONCEPT §19) offers mostly Routine and Hazardous work and the patron expects little.
+- **Late pressure:** a top guild faces rivals poaching its stars, high wages, a demanding patron and Deadly contracts; staying on top is harder than getting there (as in FM).
+
+### 4f. Tuning targets
+
+Measured in the prototype and playtests (§9, §10). All are estimates until then:
+
+- Death rate per adventurer per quest by danger rating: §4c.
+- Money: wages 55–65% of spending; founded guild runway about 3 months; well-run mid guild 10–20% surplus a year (§4b).
+- Ranking: a well-run founded guild promoted within 3–5 years; a careless top guild relegated within 2–3.
+- Renown: total renown fades about 10% a year, so a guild that stops performing slides within a few years.
+- Knowledge: a monster kind well researched stays useful for about 3–5 years; a rival scouting report for about 1 year.
+- Tournaments: entering is worth it for a mid-sized guild about once a year, not every time.
