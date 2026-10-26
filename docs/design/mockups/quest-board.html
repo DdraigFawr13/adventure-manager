@@ -1,0 +1,247 @@
+<title>Quest Board Looks</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: neutral page chrome; each option is a 16:9 board panel (container-query units) showing the same moment, with the shared highlights log on the right, then a verdict. */
+:root {
+  --bg: #f3f2ef; --fg: #23211e; --muted: #6a655d; --line: #d6d2ca;
+  --desk: #3b2a1e; --desk2: #2c1f16; --paper: #efe4cc; --paper2: #e4d6b8; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5;
+  --seal: #8e2a22; --brass: #b8923e; --stone: #8d8573; --stone2: #6f6858; --foe: #3d4a3f; --party: #8e2a22;
+  --display: "Cormorant SC", "Cormorant", Georgia, serif;
+  --body: "Source Serif 4", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1b1a18; --fg: #ebe7df; --muted: #a39d92; --line: #3a3732; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+.wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 36px; }
+header h1 { font-family: var(--display); font-size: 2.2rem; margin: 0; letter-spacing: .02em; text-wrap: balance; }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 70ch; }
+.opt { display: grid; gap: 10px; }
+.opt h2 { font-family: var(--display); font-size: 1.5rem; margin: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.rec { font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; border: 1px solid currentColor; padding: 1px 6px; border-radius: 3px; }
+.verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 8px 24px; font-size: .92rem; }
+.verdict div { min-width: 0; } .verdict b { font-family: var(--mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; font-weight: 500; }
+.note { border-top: 1px solid var(--line); padding-top: 14px; color: var(--muted); font-size: .9rem; max-width: 80ch; }
+
+.frame { container-type: inline-size; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.scr { width: 100%; height: 100%; font-size: 1.15cqw; display: grid; grid-template-columns: 1fr 22em; gap: 1em; padding: 1em; box-sizing: border-box;
+  background: repeating-linear-gradient(92deg, var(--desk) 0 2.2em, var(--desk2) 2.2em 2.3em); color: var(--ink); }
+.board { position: relative; border-radius: .3em; overflow: hidden; min-width: 0; min-height: 0; box-shadow: 0 .4em 1em rgba(0,0,0,.4); }
+.board svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.log { background: var(--paper); border-radius: .2em; padding: .8em 1em; display: flex; flex-direction: column; gap: .5em; min-height: 0; overflow: hidden; box-shadow: 0 .3em .8em rgba(0,0,0,.35); }
+.log h3 { font-family: var(--display); font-size: 1.25em; margin: 0; border-bottom: .08em solid var(--rule); padding-bottom: .2em; display: flex; justify-content: space-between; align-items: baseline; }
+.log h3 small { font-family: var(--mono); font-size: .55em; letter-spacing: .08em; text-transform: uppercase; color: var(--ink2); }
+.log ol { list-style: none; margin: 0; padding: 0; display: grid; gap: .45em; font-size: .88em; line-height: 1.35; }
+.log li { display: grid; grid-template-columns: 3.4em 1fr; gap: .4em; }
+.log li time { font-family: var(--mono); font-size: .85em; color: var(--ink2); }
+.roll { font-family: var(--mono); font-size: .85em; color: var(--ink2); }
+.km { margin-top: auto; background: var(--paper2); border: .12em solid var(--seal); border-radius: .25em; padding: .6em .7em; display: grid; gap: .4em; }
+.km b { font-family: var(--display); font-size: 1.1em; color: var(--seal); }
+.km p { margin: 0; font-size: .85em; line-height: 1.35; }
+.km .btns { display: flex; gap: .4em; flex-wrap: wrap; }
+.km .btns span { font-size: .8em; border: .08em solid var(--ink2); padding: .15em .55em; border-radius: .2em; }
+.km .btns span.pri { background: var(--seal); color: var(--paper); border-color: var(--seal); }
+.lbl { font-family: var(--display); }
+.mono { font-family: var(--mono); }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Quest board looks</h1>
+    <p>Style Q4: what the player watches while a party is out (D-004). The same moment in every option: Wenna's party, four strong, deep in the Hollow Barrow on day 2. Sefa is down, three barrow-wights are up, and the calendar has stopped for a major key moment. The highlights log on the right is the same in all four; only the board changes.</p>
+  </header>
+
+  <template id="logtpl">
+    <div class="log">
+      <h3>Hollow Barrow <small>Day 2 · hour 6</small></h3>
+      <ol>
+        <li><time>h4</time><span>Wenna scouts the long gallery. Clear. <span class="roll">(Perception 15 vs 11)</span></span></li>
+        <li><time>h5</time><span>Odric forces the sealed door. <span class="roll">(Might 14 vs 12)</span></span></li>
+        <li><time>h5</time><span>Three barrow-wights wake in the crypt.</span></li>
+        <li><time>h6</time><span>A wight's touch drains Sefa. Sefa is down.</span></li>
+        <li><time>h6</time><span>Bram holds the doorway; the wights press.</span></li>
+      </ol>
+      <div class="km"><b>Key moment: Sefa is down</b>
+        <p>Retreat threshold reached. Wenna (leader) advises pulling back. Bram can carry Sefa, but the gallery is long.</p>
+        <div class="btns"><span class="pri">Retreat with Sefa</span><span>Push on</span><span>Use the vial of dawnlight</span></div>
+      </div>
+    </div>
+  </template>
+
+  <!-- A: painted tiles -->
+  <section class="opt">
+    <h2>A. Painted tiles and minis</h2>
+    <div class="frame"><div class="scr">
+      <div class="board" style="background:#1d1611">
+        <svg viewBox="0 0 160 90" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <pattern id="tile" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#8d8573"/><rect x=".3" y=".3" width="5.4" height="5.4" fill="#968e7b"/><path d="M0 0H6V6" fill="none" stroke="#6f6858" stroke-width=".4"/></pattern>
+          </defs>
+          <!-- explored rooms -->
+          <rect x="10" y="38" width="24" height="18" fill="url(#tile)" stroke="#4a4436" stroke-width="1.2"/>
+          <rect x="34" y="44" width="42" height="6" fill="url(#tile)" stroke="#4a4436" stroke-width="1.2"/>
+          <rect x="76" y="30" width="36" height="30" fill="url(#tile)" stroke="#4a4436" stroke-width="1.2"/>
+          <rect x="88" y="14" width="12" height="16" fill="url(#tile)" stroke="#4a4436" stroke-width="1.2"/>
+          <!-- unexplored suggestion -->
+          <rect x="112" y="40" width="30" height="10" fill="#2a221b" stroke="#3a3128" stroke-dasharray="2 2" stroke-width=".8"/>
+          <rect x="88" y="60" width="12" height="18" fill="#2a221b" stroke="#3a3128" stroke-dasharray="2 2" stroke-width=".8"/>
+          <!-- sarcophagi -->
+          <rect x="82" y="34" width="5" height="9" fill="#5a5446"/><rect x="101" y="34" width="5" height="9" fill="#5a5446"/>
+          <!-- minis: party -->
+          <g font-family="IBM Plex Mono" font-size="2.6" text-anchor="middle">
+            <circle cx="72" cy="47" r="3" fill="#2c1f16"/><circle cx="72" cy="47" r="2.3" fill="#8e2a22"/><text x="72" y="48" fill="#efe4cc">B</text>
+            <circle cx="64" cy="47" r="3" fill="#2c1f16"/><circle cx="64" cy="47" r="2.3" fill="#8e2a22"/><text x="64" y="48" fill="#efe4cc">W</text>
+            <circle cx="56" cy="47" r="3" fill="#2c1f16"/><circle cx="56" cy="47" r="2.3" fill="#8e2a22"/><text x="56" y="48" fill="#efe4cc">O</text>
+            <circle cx="80" cy="53" r="3" fill="#2c1f16"/><circle cx="80" cy="53" r="2.3" fill="#8e2a22" opacity=".45"/><text x="80" y="54" fill="#efe4cc">S</text>
+            <!-- foes -->
+            <circle cx="88" cy="46" r="3" fill="#1a201b"/><circle cx="88" cy="46" r="2.3" fill="#3d4a3f"/><text x="88" y="47" fill="#d8e0d0">w</text>
+            <circle cx="95" cy="40" r="3" fill="#1a201b"/><circle cx="95" cy="40" r="2.3" fill="#3d4a3f"/><text x="95" y="41" fill="#d8e0d0">w</text>
+            <circle cx="96" cy="52" r="3" fill="#1a201b"/><circle cx="96" cy="52" r="2.3" fill="#3d4a3f"/><text x="96" y="53" fill="#d8e0d0">w</text>
+          </g>
+          <text x="6" y="10" font-family="Cormorant SC" font-size="6" fill="#efe4cc">Hollow Barrow</text>
+        </svg>
+      </div>
+      <div class="logslot"></div>
+    </div></div>
+    <div class="verdict">
+      <div><b>Strengths</b>Reads like a dungeon board game: rooms appear as the party explores, minis move square by square. Very clear positions and a strong tabletop feel.</div>
+      <div><b>Weaknesses</b>Tile art per biome (barrows, caves, forts, forests) adds up. Positions this precise suggest a tactics game the simulation is not (D-004), and players will want to move the minis themselves.</div>
+    </div>
+  </section>
+
+  <!-- B: inked map + standees -->
+  <section class="opt">
+    <h2>B. Cartographer's map with standees <span class="rec">Recommended</span></h2>
+    <div class="frame"><div class="scr">
+      <div class="board" style="background:#efe4cc">
+        <svg viewBox="0 0 160 90" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <pattern id="hatch" width="2.4" height="2.4" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><path d="M0 0V2.4" stroke="#6b5a45" stroke-width=".35"/></pattern>
+            <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="1.1"/></filter>
+          </defs>
+          <rect width="160" height="90" fill="#efe4cc"/>
+          <!-- inked walls with hatch outside: explored so far -->
+          <g filter="url(#rough)" fill="none" stroke="#2a2017" stroke-width=".7" stroke-linejoin="round">
+            <path d="M10 38H34V44H76V30H88V14H100V30H112V60H76V50H34V56H10Z" fill="#f4ebd6"/>
+          </g>
+          <g filter="url(#rough)"><path d="M7 35H31V41H73V27H85V11H103V27H115V63H73V53H37V59H7Z M10 38H34V44H76V30H88V14H100V30H112V60H76V50H34V56H10Z" fill="url(#hatch)" fill-rule="evenodd" opacity=".75"/></g>
+          <!-- half-drawn: the pen is still going -->
+          <g filter="url(#rough)" fill="none" stroke="#2a2017" stroke-width=".6" stroke-dasharray="1.4 1.2" opacity=".55">
+            <path d="M112 42H134M112 50H130"/>
+            <path d="M88 60V74M100 60V70"/>
+          </g>
+          <!-- notes in the margin -->
+          <g font-family="Source Serif 4" font-style="italic" font-size="2.6" fill="#6b5a45">
+            <text x="12" y="62">entrance, rope left</text>
+            <text x="40" y="41">long gallery: clear</text>
+            <text x="114" y="38">draught from the east?</text>
+            <text x="78" y="65">old tomb-robbers' tunnel</text>
+          </g>
+          <!-- sarcophagi as ink -->
+          <g fill="none" stroke="#2a2017" stroke-width=".5"><rect x="80" y="33" width="4.5" height="8.5"/><rect x="103" y="33" width="4.5" height="8.5"/></g>
+          <!-- dotted route -->
+          <path d="M14 47H70" fill="none" stroke="#8e2a22" stroke-width=".5" stroke-dasharray=".8 1.2"/>
+          <!-- standees: party (portrait card on base) -->
+          <g>
+            <g transform="translate(70 40)"><ellipse cx="2.5" cy="8.6" rx="3.2" ry="1" fill="#2c1f16"/><rect x="0" y="0" width="5" height="8" rx=".5" fill="#8e2a22"/><circle cx="2.5" cy="2.7" r="1.4" fill="#efe4cc"/><path d="M.6 7.4Q2.5 3.8 4.4 7.4Z" fill="#efe4cc"/></g>
+            <g transform="translate(62 40)"><ellipse cx="2.5" cy="8.6" rx="3.2" ry="1" fill="#2c1f16"/><rect x="0" y="0" width="5" height="8" rx=".5" fill="#8e2a22"/><circle cx="2.5" cy="2.7" r="1.4" fill="#efe4cc"/><path d="M.6 7.4Q2.5 3.8 4.4 7.4Z" fill="#efe4cc"/></g>
+            <g transform="translate(54 40)"><ellipse cx="2.5" cy="8.6" rx="3.2" ry="1" fill="#2c1f16"/><rect x="0" y="0" width="5" height="8" rx=".5" fill="#8e2a22"/><circle cx="2.5" cy="2.7" r="1.4" fill="#efe4cc"/><path d="M.6 7.4Q2.5 3.8 4.4 7.4Z" fill="#efe4cc"/></g>
+            <!-- Sefa: tipped over -->
+            <g transform="translate(78 54) rotate(-80)"><rect x="0" y="0" width="5" height="8" rx=".5" fill="#8e2a22" opacity=".55"/><circle cx="2.5" cy="2.7" r="1.4" fill="#efe4cc"/></g>
+            <!-- foes -->
+            <g transform="translate(86 40)"><ellipse cx="2.5" cy="8.6" rx="3.2" ry="1" fill="#1a201b"/><rect x="0" y="0" width="5" height="8" rx=".5" fill="#3d4a3f"/><path d="M1 2.5h3M1.5 4h2" stroke="#d8e0d0" stroke-width=".5"/></g>
+            <g transform="translate(93 33)"><ellipse cx="2.5" cy="8.6" rx="3.2" ry="1" fill="#1a201b"/><rect x="0" y="0" width="5" height="8" rx=".5" fill="#3d4a3f"/><path d="M1 2.5h3M1.5 4h2" stroke="#d8e0d0" stroke-width=".5"/></g>
+            <g transform="translate(94 47)"><ellipse cx="2.5" cy="8.6" rx="3.2" ry="1" fill="#1a201b"/><rect x="0" y="0" width="5" height="8" rx=".5" fill="#3d4a3f"/><path d="M1 2.5h3M1.5 4h2" stroke="#d8e0d0" stroke-width=".5"/></g>
+          </g>
+          <!-- wax seal for key moment -->
+          <circle cx="104" cy="66" r="4.2" fill="#8e2a22"/><circle cx="104" cy="66" r="3" fill="none" stroke="#5e1c16" stroke-width=".4"/><text x="104" y="67.3" font-family="Cormorant SC" font-size="3.4" text-anchor="middle" fill="#efe4cc">!</text>
+          <text x="6" y="10" font-family="Cormorant SC" font-size="6" fill="#2a2017">Hollow Barrow</text>
+          <text x="6" y="14.5" font-family="IBM Plex Mono" font-size="2.3" fill="#6b5a45">as mapped by Wenna Cray · day 2</text>
+          <!-- compass -->
+          <g transform="translate(148 12)" stroke="#2a2017" stroke-width=".4" fill="none"><circle r="4"/><path d="M0 -5.5V5.5M-5.5 0H5.5"/><path d="M0 -4L1 0L0 4L-1 0Z" fill="#2a2017"/></g>
+        </svg>
+      </div>
+      <div class="logslot"></div>
+    </div></div>
+    <div class="verdict">
+      <div><b>Strengths</b>The map draws itself in ink as the party explores, with margin notes from the scout, so it is the party's own record and fits the ledger desk. Flat standees with portraits are cheap to make per class and ancestry. Loose positions match a simulation that is not a tactics game. Generated dungeons (D-030) render well as line work. The finished map can go into the Chronicle.</div>
+      <div><b>Weaknesses</b>Less spectacle than painted tiles or a diorama; fights read through standee movement, the log and small effects, not animation. Ink line work needs a good procedural renderer to look hand-drawn rather than vector-clean.</div>
+    </div>
+  </section>
+
+  <!-- C: diorama -->
+  <section class="opt">
+    <h2>C. Isometric diorama</h2>
+    <div class="frame"><div class="scr">
+      <div class="board" style="background:radial-gradient(ellipse at 50% 60%, #3a3026, #1d1611 70%)">
+        <svg viewBox="0 0 160 90" preserveAspectRatio="xMidYMid meet">
+          <g transform="translate(80 46) scale(1 .55) rotate(45)">
+            <rect x="-40" y="-14" width="22" height="16" fill="#968e7b" stroke="#4a4436" stroke-width=".8"/>
+            <rect x="-18" y="-8" width="16" height="6" fill="#968e7b" stroke="#4a4436" stroke-width=".8"/>
+            <rect x="-2" y="-20" width="28" height="26" fill="#a39b87" stroke="#4a4436" stroke-width=".8"/>
+            <rect x="26" y="-10" width="14" height="6" fill="#2a221b" stroke="#3a3128" stroke-width=".6" stroke-dasharray="2 2"/>
+          </g>
+          <!-- wall faces -->
+          <path d="M57 47 L69 53 L69 57 L57 51Z" fill="#5a5446"/>
+          <path d="M80 30 L100 40 L100 44 L80 34Z" fill="#6f6858"/>
+          <!-- figures: upright minis -->
+          <g>
+            <g transform="translate(70 40)"><ellipse cx="0" cy="6" rx="2.6" ry="1.1" fill="#2c1f16"/><rect x="-1.4" y="-1" width="2.8" height="7" rx="1" fill="#8e2a22"/><circle cx="0" cy="-2" r="1.5" fill="#d9b48a"/></g>
+            <g transform="translate(64 43)"><ellipse cx="0" cy="6" rx="2.6" ry="1.1" fill="#2c1f16"/><rect x="-1.4" y="-1" width="2.8" height="7" rx="1" fill="#8e2a22"/><circle cx="0" cy="-2" r="1.5" fill="#d9b48a"/></g>
+            <g transform="translate(58 46)"><ellipse cx="0" cy="6" rx="2.6" ry="1.1" fill="#2c1f16"/><rect x="-1.4" y="-1" width="2.8" height="7" rx="1" fill="#8e2a22"/><circle cx="0" cy="-2" r="1.5" fill="#d9b48a"/></g>
+            <g transform="translate(76 48) rotate(80)"><rect x="-1.4" y="-1" width="2.8" height="7" rx="1" fill="#8e2a22" opacity=".6"/><circle cx="0" cy="-2" r="1.5" fill="#d9b48a"/></g>
+            <g transform="translate(80 36)"><ellipse cx="0" cy="6" rx="2.6" ry="1.1" fill="#1a201b"/><rect x="-1.4" y="-1" width="2.8" height="7" rx="1" fill="#3d4a3f"/><circle cx="0" cy="-2" r="1.5" fill="#b8c4b0"/></g>
+            <g transform="translate(88 38)"><ellipse cx="0" cy="6" rx="2.6" ry="1.1" fill="#1a201b"/><rect x="-1.4" y="-1" width="2.8" height="7" rx="1" fill="#3d4a3f"/><circle cx="0" cy="-2" r="1.5" fill="#b8c4b0"/></g>
+            <g transform="translate(86 44)"><ellipse cx="0" cy="6" rx="2.6" ry="1.1" fill="#1a201b"/><rect x="-1.4" y="-1" width="2.8" height="7" rx="1" fill="#3d4a3f"/><circle cx="0" cy="-2" r="1.5" fill="#b8c4b0"/></g>
+          </g>
+          <circle cx="84" cy="40" r="10" fill="#b8c4b0" opacity=".08"/>
+          <text x="6" y="10" font-family="Cormorant SC" font-size="6" fill="#efe4cc">Hollow Barrow</text>
+        </svg>
+      </div>
+      <div class="logslot"></div>
+    </div></div>
+    <div class="verdict">
+      <div><b>Strengths</b>The most cinematic: painted 3D-looking miniatures on terrain, lighting, depth. Best for trailers and the store page.</div>
+      <div><b>Weaknesses</b>The most expensive by far: modelled or rendered minis per class, ancestry and monster, terrain kits per biome, a camera. Closest to the full-3D look D-004 ruled out, and it pulls budget from the management screens that are the actual game.</div>
+    </div>
+  </section>
+
+  <!-- D: card spread -->
+  <section class="opt">
+    <h2>D. Encounter card spread</h2>
+    <div class="frame"><div class="scr">
+      <div class="board" style="background:#2f4a3a">
+        <svg viewBox="0 0 160 90" preserveAspectRatio="xMidYMid meet">
+          <rect width="160" height="90" fill="#2f4a3a"/>
+          <g font-family="Cormorant SC" text-anchor="middle">
+            <!-- path line -->
+            <path d="M22 50H138" stroke="#b8923e" stroke-width=".5" stroke-dasharray="1 1.5"/>
+            <g transform="translate(10 32)"><rect width="24" height="36" rx="1.5" fill="#efe4cc"/><text x="12" y="8" font-size="3.4" fill="#2a2017">Entrance</text><text x="12" y="30" font-family="IBM Plex Mono" font-size="2.2" fill="#4f6f3a">passed</text></g>
+            <g transform="translate(38 32)"><rect width="24" height="36" rx="1.5" fill="#efe4cc"/><text x="12" y="8" font-size="3.4" fill="#2a2017">Long gallery</text><text x="12" y="30" font-family="IBM Plex Mono" font-size="2.2" fill="#4f6f3a">clear</text></g>
+            <g transform="translate(66 28)"><rect width="28" height="42" rx="1.5" fill="#efe4cc" stroke="#8e2a22" stroke-width="1"/><text x="14" y="8" font-size="3.8" fill="#2a2017">Wight crypt</text>
+              <g transform="translate(5 12)"><circle cx="3" cy="3" r="2.4" fill="#3d4a3f"/><circle cx="9" cy="3" r="2.4" fill="#3d4a3f"/><circle cx="15" cy="3" r="2.4" fill="#3d4a3f"/></g>
+              <g transform="translate(5 24)"><circle cx="3" cy="3" r="2.4" fill="#8e2a22"/><circle cx="9" cy="3" r="2.4" fill="#8e2a22"/><circle cx="15" cy="3" r="2.4" fill="#8e2a22"/><circle cx="21" cy="3" r="2.4" fill="#8e2a22" opacity=".4"/></g>
+              <text x="14" y="38" font-family="IBM Plex Mono" font-size="2.2" fill="#8e2a22">key moment</text></g>
+            <g transform="translate(98 32)"><rect width="24" height="36" rx="1.5" fill="#5e2a22"/><rect x="2" y="2" width="20" height="32" rx="1" fill="none" stroke="#b8923e" stroke-width=".4"/><text x="12" y="20" font-size="5" fill="#b8923e">?</text></g>
+            <g transform="translate(126 32)"><rect width="24" height="36" rx="1.5" fill="#5e2a22"/><rect x="2" y="2" width="20" height="32" rx="1" fill="none" stroke="#b8923e" stroke-width=".4"/><text x="12" y="20" font-size="5" fill="#b8923e">?</text></g>
+          </g>
+          <text x="6" y="10" font-family="Cormorant SC" font-size="6" fill="#efe4cc">Hollow Barrow</text>
+        </svg>
+      </div>
+      <div class="logslot"></div>
+    </div></div>
+    <div class="verdict">
+      <div><b>Strengths</b>The cheapest and the most readable: each encounter is a card turned over, progress is obvious, and it scales to any quest type, including defence and warfare. Very little art per biome.</div>
+      <div><b>Weaknesses</b>No sense of place. "Minis on a map board" (D-004) becomes "cards on a table", so the quest stops feeling like a journey through somewhere. Closer to a card game than to a guild watching its people in a dungeon.</div>
+    </div>
+  </section>
+
+  <p class="note">Shared by all four: one party watched live on the board, others as summary cards on the desk (CONCEPT §2); every board movement comes from the same simulation events as the log (GAME-02); the key moment arrives sealed and stops the calendar. Names, places and rolls are placeholders.</p>
+</div>
+
+<script>
+  const tpl = document.getElementById('logtpl');
+  document.querySelectorAll('.logslot').forEach(s => s.replaceWith(tpl.content.cloneNode(true)));
+</script>

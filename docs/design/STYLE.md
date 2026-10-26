@@ -33,3 +33,17 @@ Rejected: frontier slate, heraldic baize, ash and bone.
 Known cost: the home screen relies on good map art.
 
 Rejected: ledger tabs with Letters as home (the region gets sidelined), desk-as-menu (an extra step on every trip; doesn't scale to twelve ledgers).
+
+## 4. Quest board (Accepted 2026-10-26)
+
+**Cartographer's map with standees.** Mock-up: `docs/design/mockups/quest-board.html` (option B).
+
+- The dungeon or site map draws itself in ink as the party explores, with the scout's margin notes; unexplored space stays blank vellum. The finished map can go into the Chronicle (D-042).
+- Adventurers and monsters are flat portrait standees on bases; a fallen member tips over. Positions are loose, not a grid: the board shows the simulation and isn't a tactics game (D-004).
+- Key moments arrive as a wax seal on the map and stop the calendar.
+- **More fantasy flair** than the mock-up (owner's note). To define when art direction starts; candidates: illuminated initials and cartouches, painted monster vignettes in the margins, glowing or gilded ink for magic and wards.
+- **Later (owner's note):** standee animations and effects: moves, attacks, reactions, spell effects. Not at launch. Like every board movement, they play simulation events and never decide anything (GAME-02).
+
+Owner's note: "B but with a bit more fantasy flare to be added to the art styling. I will also eventually want like effects of moves and reactions of the standees and animations of them doing various things but for now it works great."
+
+Rejected: painted tiles (costly per biome, implies tactics), isometric diorama (most expensive, near the ruled-out 3D), encounter card spread (no sense of place).

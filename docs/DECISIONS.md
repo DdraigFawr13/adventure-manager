@@ -295,3 +295,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Fixed top bar (date, stop reason, Continue); grouped ledger tabs on the left; the home screen is the region map with parties as miniatures, a weekly strip and the letter tray; ledgers open as full paper sheets. Detail: `docs/design/STYLE.md` §3.
 - **Why:** Owner's choice (Style Q3); keeps FM navigation speed while putting the region at the centre (pillar 4).
+
+## D-050 Quest board: cartographer's map with standees
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The board is an ink map that draws itself as the party explores, with the scout's margin notes, portrait standees on loose positions and wax-seal key moments. Add more fantasy flair in art direction; standee animations and effects come in a later update. Detail: `docs/design/STYLE.md` §4.
+- **Why:** Owner's choice (Style Q4); fits the ledger desk, is cheap per class and biome, suits generated dungeons, and doesn't imply a tactics game.
