@@ -760,3 +760,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** In the main fight, enemies come in foe groups (a named beast, or a band such as goblins), each with its own wound steps and a few attributes from content data, shown as one standee or cluster on the board. Each exchange, every standing adventurer acts against a group and every group acts against someone. Owner's note: "1 for launch but eventually 2": every enemy as its own token is a later goal, not scoped (Proposed until planned). Detail: `packages/engine/src/resolution/SPEC.md`.
 - **Why:** Owner's choice (resolution v0 fork 6, 2026-10-26): keeps fights to 3–6 exchanges and named beasts individual; per-enemy tokens add tabletop feel later.
+
+## D-124 Resolution v0: the fallen bleed out
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** A Down member who is not tended rolls at the end of each scene or exchange to slip to Dying; the chance falls with Toughness and is content data. A standing cleric tends one Down or Dying member per beat (Dying first). Death becomes a race against time, so retreat thresholds and healers matter. Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Why:** Owner's choice (tuning fork, 2026-10-26): measured with `tools/resolution-sweep.ts`, Down members were safe, so deaths stayed near 0.2% per adventurer against PLAN §4c's 0.8% whatever the death roll.

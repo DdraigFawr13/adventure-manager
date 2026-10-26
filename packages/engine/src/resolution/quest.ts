@@ -3,7 +3,7 @@ import type { EventSink } from '../core/events.ts';
 import { BP_CERTAIN } from '../core/rng.ts';
 import { succeeded } from './check.ts';
 import { resolveExchange, resolveScene } from './encounters.ts';
-import { tendTheDying, wound } from './harm.ts';
+import { tendTheFallen, wound } from './harm.ts';
 import {
   findTemplate,
   living,
@@ -106,7 +106,7 @@ export function chooseMoment(
 /** After a scene or exchange: healing, death rolls, then whether the quest ends or pauses. */
 function afterBeat(turn: Turn, causeId: string, inFight: boolean): void {
   const { quest, rules } = turn;
-  tendTheDying(turn, causeId);
+  tendTheFallen(turn, causeId);
   if (standing(turn).length === 0) return endQuest(turn, 'routed', causeId);
   if (inFight) {
     if (quest.foes.every((f) => f.step >= WOUND.down)) return endQuest(turn, 'won', causeId);

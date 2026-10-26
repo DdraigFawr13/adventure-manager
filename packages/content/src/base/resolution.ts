@@ -32,6 +32,7 @@ export const baseResolutionRules: ResolutionRules = {
   maxExchanges: 6,
   targetWeight: { front: 2, back: 1 },
   deathRoll: { baseBp: 2500, stepBp: 100, pivot: 10 },
+  bleed: { baseBp: 2000, stepBp: 200, pivot: 10 },
   stabilise: { attribute: 'lore', difficulty: 10 },
   injuryBp: { badlyHurt: 1500, down: 4000, dying: 7000 },
   retreat: {

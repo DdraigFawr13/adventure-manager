@@ -428,3 +428,35 @@ describe('start checks and rules the review asked to pin down', () => {
     expect(out.state.quest).toBeNull();
   });
 });
+
+describe('the fallen bleed out (D-124)', () => {
+  it('lets an untended Down member slip to Dying, and death waits for the next beat', () => {
+    const roster = [
+      adventurer('a', { agility: 1, toughness: 12 }),
+      adventurer('b', { agility: 20 }),
+    ];
+    const scene = {
+      id: 's',
+      kind: 'fixed',
+      attribute: 'agility',
+      difficulty: 20,
+      testers: 'all',
+      onFailure: 'wound',
+    } as const;
+    const pass = { ...scene, id: 'p', difficulty: 1 } as const;
+    const risk = { ...game([]).content.rules.risk, steady: { chanceBp: 0, badFailureShareBp: 0 } };
+    const bleed = { baseBp: 10_400, stepBp: 200, pivot: 10 };
+    // Three plain failures take 'a' to Down; then bleeding is certain (104% - 4%).
+    const { events } = run(
+      game(roster, {
+        rules: { ...certain, risk, bleed },
+        quest: { scenes: [scene, scene, scene, pass] },
+      }),
+    );
+    const rolls = ofType(events, 'check.rolled').filter(
+      (e) => e.purpose === 'bleed' || e.purpose === 'death',
+    );
+    expect(rolls.map((e) => e.purpose).slice(0, 2)).toEqual(['bleed', 'death']);
+    expect(rolls[0]?.chance.parts).toEqual([{ sourceId: 'attribute.toughness', amount: -400 }]);
+  });
+});

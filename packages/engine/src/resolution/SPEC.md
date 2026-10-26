@@ -1,6 +1,6 @@
 # Resolution v0
 
-How a party, its plan, stats, gear and the site become odds and events (PLAN §9b step 0b, D-113). Decisions: D-118..D-123. Every number below is a starting value in content data (`packages/content/src/base/resolution.ts`), to be tuned by R1 and R2; none is in engine code.
+How a party, its plan, stats, gear and the site become odds and events (PLAN §9b step 0b, D-113). Decisions: D-118..D-124. Every number below is a starting value in content data (`packages/content/src/base/resolution.ts`), to be tuned by R1 and R2; none is in engine code.
 
 ## Inputs
 
@@ -27,7 +27,7 @@ How a party, its plan, stats, gear and the site become odds and events (PLAN §9
 
 ## Wounds, death and injury (D-120)
 
-- Steps: Fit, Hurt, Badly hurt, Down, Dying; foe groups stop at Down. A Down member does nothing. At the end of each scene or exchange, each standing cleric may try to stabilise one Dying member (Lore check, difficulty 10), returning them to Down (with a `wound.changed` event); then each Dying member makes a **death roll**: 25% − 1% per Toughness and Resolve point above 10. A step past Dying forces a death roll at once.
+- Steps: Fit, Hurt, Badly hurt, Down, Dying; foe groups stop at Down. A Down member does nothing. At the end of each scene or exchange, each standing cleric tends one fallen member, Dying first (Lore check, difficulty 10): a tended Dying member returns to Down (with a `wound.changed` event), a tended Down member is held steady. Each untended Down member then **bleeds**: 20% − 2% per Toughness point above 10 to slip to Dying (D-124). Then each member who was Dying before the bleed rolls makes a **death roll**: 25% − 1% per Toughness and Resolve point above 10. A step past Dying forces a death roll at once.
 - **Rout:** when no member is standing, the quest ends; the party limps home and the contract fails.
 - At the quest's end each member at Badly hurt or worse rolls for a lasting injury: Badly hurt 15%, Down 40%, Dying 70%.
 - Step sizes (failure 1, bad failure 2, alarm bad failure 1, hit 1, strong hit 2, failed retreat 1) are content data too.
@@ -42,7 +42,7 @@ How a party, its plan, stats, gear and the site become odds and events (PLAN §9
 ## Commands and events
 
 - Commands: `quest.start` (party, plan, quest, day), `quest.step` (one scene or one exchange), `quest.choose` (answer to a raised moment). All go through `simulate(state, command)`.
-- Events: `quest.started`, `scene.started`, `exchange.started`, `check.rolled` (purpose, chance `Value`, roll, outcome; purposes: scene, attack, defence, stabilise, death, injury, retreat), `wound.changed`, `foe.wounded`, `alarm.raised`, `adventurer.stabilised`, `adventurer.died`, `moment.raised`, `moment.resolved`, `quest.retreated`, `injury.gained`, `quest.ended` (won, partial, retreated, routed). Each has a cause id: the command or the event that led to it.
+- Events: `quest.started`, `scene.started`, `exchange.started`, `check.rolled` (purpose, chance `Value`, roll, outcome; purposes: scene, attack, defence, stabilise, bleed, death, injury, retreat), `wound.changed`, `foe.wounded`, `alarm.raised`, `adventurer.stabilised`, `adventurer.died`, `moment.raised`, `moment.resolved`, `quest.retreated`, `injury.gained`, `quest.ended` (won, partial, retreated, routed). Each has a cause id: the command or the event that led to it.
 - Balance sweep: `node tools/resolution-sweep.ts [quests]` reports deaths and injuries against PLAN §4c and runs the invariants on every quest.
 - Tests: one rule test per rule above, the determinism test (same seed and commands, same events), and invariants (no step beyond Dying, every event has a cause).
 

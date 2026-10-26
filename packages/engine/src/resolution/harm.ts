@@ -51,14 +51,21 @@ export function deathRoll(turn: Turn, who: Adventurer, causeId: string): void {
   turn.sink.emit({ type: 'adventurer.died', causeId: eventId, subjectIds: [who.id] });
 }
 
-/** End of a scene or exchange: each standing healer tries one Dying member, then the rest roll. */
-export function tendTheDying(turn: Turn, causeId: string): void {
+/**
+ * End of a scene or exchange (D-120, D-124): each standing healer tends one fallen member,
+ * Dying first; untended Down members may bleed to Dying; those already Dying roll for death.
+ */
+export function tendTheFallen(turn: Turn, causeId: string): void {
   const { rules, quest } = turn;
-  const dying = () => living(turn).filter((a) => stepOf(turn, a.id) === WOUND.dying);
+  const at = (step: number) => living(turn).filter((a) => stepOf(turn, a.id) === step);
+  const dyingAtStart = new Set(at(WOUND.dying).map((a) => a.id));
+  const tended = new Set<string>();
   for (const healer of standing(turn)) {
     if (!rules.classes[healer.classId]?.canStabilise) continue;
-    const patient = dying()[0];
+    const untended = (step: number) => at(step).filter((a) => !tended.has(a.id));
+    const patient = untended(WOUND.dying)[0] ?? untended(WOUND.down)[0];
     if (!patient) break;
+    tended.add(patient.id);
     const { attribute, difficulty } = rules.stabilise;
     const { roll: result, eventId } = partyCheck(
       turn,
@@ -70,12 +77,14 @@ export function tendTheDying(turn: Turn, causeId: string): void {
       causeId,
     );
     if (!succeeded(result.outcome)) continue;
-    quest.steps[patient.id] = WOUND.down;
     const stabilised = turn.sink.emit({
       type: 'adventurer.stabilised',
       causeId: eventId,
       subjectIds: [patient.id, healer.id],
     });
+    if (stepOf(turn, patient.id) !== WOUND.dying) continue;
+    quest.steps[patient.id] = WOUND.down;
+    dyingAtStart.delete(patient.id);
     turn.sink.emit({
       type: 'wound.changed',
       causeId: stabilised,
@@ -84,5 +93,31 @@ export function tendTheDying(turn: Turn, causeId: string): void {
       to: WOUND.down,
     });
   }
-  for (const patient of dying()) deathRoll(turn, patient, causeId);
+  for (const patient of at(WOUND.down)) {
+    if (tended.has(patient.id)) continue;
+    bleed(turn, patient, causeId);
+  }
+  // Someone who slipped to Dying this beat first rolls for death at the next one.
+  for (const patient of at(WOUND.dying)) {
+    if (dyingAtStart.has(patient.id)) deathRoll(turn, patient, causeId);
+  }
+}
+
+function bleed(turn: Turn, who: Adventurer, causeId: string): void {
+  const rule = turn.rules.bleed;
+  const above = Math.max(0, who.attributes.toughness - rule.pivot);
+  const parts: ValuePart[] =
+    above > 0 ? [{ sourceId: 'attribute.toughness', amount: -rule.stepBp * above }] : [];
+  const limits = [0, BP_CERTAIN] as const;
+  const { roll: result, eventId } = roll(
+    turn,
+    'bleed',
+    [who.id],
+    rule.baseBp,
+    parts,
+    0,
+    causeId,
+    limits,
+  );
+  if (succeeded(result.outcome)) wound(turn, who.id, 1, eventId);
 }

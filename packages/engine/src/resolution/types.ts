@@ -91,6 +91,8 @@ export interface ResolutionRules {
   readonly targetWeight: Readonly<Record<Position, number>>;
   /** Death chance: base minus step per Toughness and Resolve point above the pivot. */
   readonly deathRoll: { readonly baseBp: number; readonly stepBp: number; readonly pivot: number };
+  /** Chance per beat that an untended Down member slips to Dying, less per Toughness above the pivot. */
+  readonly bleed: { readonly baseBp: number; readonly stepBp: number; readonly pivot: number };
   readonly stabilise: { readonly attribute: Attribute; readonly difficulty: number };
   readonly injuryBp: { readonly badlyHurt: number; readonly down: number; readonly dying: number };
   readonly retreat: {
@@ -142,7 +144,7 @@ export interface GameState {
 }
 
 export type CheckPurpose =
-  'scene' | 'attack' | 'defence' | 'stabilise' | 'death' | 'injury' | 'retreat';
+  'scene' | 'attack' | 'defence' | 'stabilise' | 'bleed' | 'death' | 'injury' | 'retreat';
 export type CheckOutcome = 'strong-success' | 'success' | 'failure' | 'bad-failure';
 export type QuestOutcome = 'won' | 'partial' | 'retreated' | 'routed';
 
