@@ -11,6 +11,7 @@ import {
 } from './layout-areas.ts';
 import { boxCounts, cheapest, gap, pathTo, stepsFrom, xOf, yOf } from './layout-grid.ts';
 import { BIOMES } from './biome-content.ts';
+import { pickVillages } from './layout-villages.ts';
 
 export interface Road {
   /** Indices into the settlements list (0 is the guild hall). */
@@ -24,6 +25,8 @@ export interface Layout {
   /** The seven other settlements, in the order of the content names place.0 to place.6. */
   placeCells: number[];
   roads: Road[];
+  /** Hamlets between the settlements, in the order of the content names village.0 onwards. */
+  villageCells: number[];
   /** Cells from the guild hall to the farthest settlement along the roads. */
   route: number[];
   rivers: RiverLine[];
@@ -189,7 +192,8 @@ export function layoutMarch(crop: Crop, biomeIds: readonly string[]): Layout {
   const areas = chartAreas(crop, biomeIds, sites);
   const closed = pickClosedRoad(roads, route, crop, sites);
   const rivers = traceRivers(crop);
-  return { guildCell, placeCells, roads, route, rivers, ...areas, ...closed };
+  const villageCells = pickVillages(crop, biomeIds, [...sites, closed.landmarkCell], roads, k);
+  return { guildCell, placeCells, villageCells, roads, route, rivers, ...areas, ...closed };
 }
 
 const woodId = (ids: readonly string[], name: string) => ids.indexOf(name);

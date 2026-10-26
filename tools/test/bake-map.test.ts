@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { bakeMap, MARCH, MARCH_WORLD } from '../worldgen/bake.ts';
+import { VILLAGES } from '../worldgen/layout-villages.ts';
 
 // A small sheet (80 x 54 cut from a 160-cell world) keeps the test fast; the real March is the
 // 300 x 200 window in MARCH_WORLD.
@@ -12,6 +13,7 @@ describe('kingdom-map baker (roadmap 1.8, GAME-01)', () => {
     expect(Array.from(b.elevation)).toEqual(Array.from(a.elevation));
     expect(Array.from(b.water)).toEqual(Array.from(a.water));
     expect(Array.from(b.biome)).toEqual(Array.from(a.biome));
+    expect(b.villageCells).toEqual(a.villageCells);
     expect([b.guildCell, b.placeCells, b.roads, b.route, b.rivers, b.areas]).toEqual([
       a.guildCell,
       a.placeCells,
@@ -36,6 +38,24 @@ describe('kingdom-map baker (roadmap 1.8, GAME-01)', () => {
     expect(map.route.every(onLand)).toBe(true);
     const onRoad = new Set(map.roads.flatMap((r) => r.cells));
     expect(map.route.every((c) => onRoad.has(c))).toBe(true);
+  });
+
+  it('spreads villages on dry land, apart from the settlements and each other', () => {
+    const map = bakeMap(small);
+    const k = small.width / MARCH.width;
+    const sites = [map.guildCell, ...map.placeCells];
+    const gap = (a: number, b: number) =>
+      Math.hypot(
+        (a % small.width) - (b % small.width),
+        Math.floor(a / small.width) - Math.floor(b / small.width),
+      );
+    expect(map.villageCells.length).toBeGreaterThan(0);
+    for (const v of map.villageCells) {
+      expect(map.water[v]).toBe(0);
+      for (const other of [...sites, ...map.villageCells.filter((w) => w !== v)]) {
+        expect(gap(v, other)).toBeGreaterThanOrEqual(VILLAGES.minGap * k);
+      }
+    }
   });
 
   it('keeps the March at a 3:2 sheet of about 300 x 200 km, 1 km a cell', () => {

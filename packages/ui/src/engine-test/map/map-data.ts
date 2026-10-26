@@ -12,6 +12,7 @@ export interface MapData {
   guildCell: number;
   /** The seven other settlements, in the order of the content names place.0 to place.6. */
   placeCells: readonly number[];
+  villageCells: readonly number[];
   roads: readonly { a: number; b: number; cells: readonly number[] }[];
   route: readonly number[];
   rivers: readonly { cells: readonly number[]; flows: readonly number[] }[];
@@ -45,6 +46,7 @@ export function decodeMap(): MapData {
     dayCells: baked.dayCells,
     guildCell: baked.guildCell,
     placeCells: baked.placeCells,
+    villageCells: baked.villageCells,
     roads: baked.roads,
     route: baked.route,
     rivers: baked.rivers,

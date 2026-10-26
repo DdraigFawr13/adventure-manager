@@ -101,7 +101,7 @@ const far = map.route[map.route.length - 1]!;
 console.log(
   `seed ${map.seed} ${map.width}x${map.height}: land ${Math.round((land / map.water.length) * 100)}%, ` +
     `route ${map.route.length} cells (${(map.route.length / map.dayCells).toFixed(1)} days) hall ${hall} far ${far}, ` +
-    `${map.roads.length} roads, ${map.rivers.length} rivers, areas ${map.areas.map((a) => a.id).join(',')}`,
+    `${map.villageCells.length} villages, ${map.roads.length} roads, ${map.rivers.length} rivers, areas ${map.areas.map((a) => a.id).join(',')}`,
 );
 
 if (!flags.has('--dry')) {
@@ -120,6 +120,7 @@ if (!flags.has('--dry')) {
     biome: b64(map.biome),
     guildCell: map.guildCell,
     placeCells: map.placeCells,
+    villageCells: map.villageCells,
     roads: map.roads,
     route: map.route,
     rivers: map.rivers,

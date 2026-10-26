@@ -16,7 +16,7 @@ import {
 import { drawBanner, drawCross, drawParty } from './map-marks.ts';
 import { SEAL } from './map-palette.ts';
 import { createSheet } from './map-sheet.ts';
-import { townReach } from './map-town.ts';
+import { townReach, VILLAGE_REACH } from './map-town.ts';
 
 export type LayerName = 'names' | 'guilds' | 'factions' | 'threat' | 'party' | 'fog';
 export type LayerToggles = Readonly<Record<LayerName, boolean>>;
@@ -193,6 +193,13 @@ export function createScene(data: MapData, atlas: Atlas, text: SceneText): Scene
         if (hidden[k]) return;
         const reach = { rx: townReach(k).rx * z, ry: townReach(k).ry * z };
         placeTownName(ctx, rooms, siteName(k), sx(cx(c)), sy(cy(c)), reach, town);
+      });
+      // Villages after the settlements, so a village gives way when names compete.
+      const village: LabelStyle = { size: 13 * ls, spacing: 0.3, face: 'italic', alpha: 0.85 };
+      data.villageCells.forEach((c, k) => {
+        if (journey.uncharted(c)) return;
+        const reach = { rx: VILLAGE_REACH.rx * z, ry: VILLAGE_REACH.ry * z };
+        placeTownName(ctx, rooms, say(`village.${k}`), sx(cx(c)), sy(cy(c)), reach, village);
       });
       if (!hidden[hiddenLandmark]) {
         const at = { x: sx(cx(data.landmarkCell)), y: sy(cy(data.landmarkCell)) };

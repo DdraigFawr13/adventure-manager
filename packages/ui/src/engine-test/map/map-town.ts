@@ -219,6 +219,37 @@ function town(
     spire(ctx, spireAt[s]!, y - ry * 0.1 + s * 6, spec.tier === 3 ? 1.1 : 0.9);
 }
 
+/** Half-width and half-height of a village's footprint in pixels. */
+export const VILLAGE_REACH = { rx: 11, ry: 8 };
+
+/** A village: two or three cottages on a pale clearing; every third has a small chapel spire. */
+export function drawVillages(ctx: CanvasRenderingContext2D, data: MapData, S: number): void {
+  const W = data.cells.width;
+  data.villageCells.forEach((cell, n) => {
+    const x = ((cell % W) + 0.5) * S;
+    const y = (Math.floor(cell / W) + 0.5) * S;
+    const { rx, ry } = VILLAGE_REACH;
+    const g = ctx.createRadialGradient(x, y - 3, 0, x, y - 3, rx + 4);
+    g.addColorStop(0, 'rgba(240,231,208,0.85)');
+    g.addColorStop(1, 'rgba(240,231,208,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.ellipse(x, y - 3, rx + 4, ry + 3, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = ink(0.9);
+    ctx.lineWidth = 0.9;
+    const count = 2 + Math.floor(hash01(100 + n, 1) * 2);
+    for (let k = 0; k < count; k += 1) {
+      const hx = x + (k - (count - 1) / 2) * 7 + (hash01(100 + n, k + 10) - 0.5) * 3;
+      const hy = y + 2 + (k % 2) * 3;
+      house(ctx, hx, hy, 5 + hash01(100 + n, k + 20) * 2, false);
+    }
+    if (n % 3 === 0) spire(ctx, x + count * 3.5, y - 1, 0.7);
+  });
+}
+
 /** The angle from a cell to the nearest sea within 9 cells, or null. */
 function towardSea(data: MapData, cell: number): number | null {
   const { width: W, height: H, water } = data.cells;

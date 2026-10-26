@@ -7,7 +7,7 @@ import { drawGround } from './map-ground.ts';
 import { newCanvas } from './map-layers.ts';
 import { drawRivers, drawRoads } from './map-ink.ts';
 import { collectMarks, drawSymbols } from './map-symbols.ts';
-import { drawBarrow, drawTowns, townReach } from './map-town.ts';
+import { drawBarrow, drawTowns, drawVillages, townReach, VILLAGE_REACH } from './map-town.ts';
 
 /** Pixels a cell; the symbols are drawn for 8. */
 export const ATLAS_SCALE = 8;
@@ -38,6 +38,7 @@ export function* atlasSteps(data: MapData, scale = ATLAS_SCALE): Generator<void,
       clear: [
         ...sites.map((cell, k) => ({ cell, r: townReach(k).rx / scale + 1.2 })),
         { cell: data.landmarkCell, r: 3.6 },
+        ...data.villageCells.map((cell) => ({ cell, r: VILLAGE_REACH.rx / scale + 0.8 })),
       ],
       roadCells,
     },
@@ -50,6 +51,7 @@ export function* atlasSteps(data: MapData, scale = ATLAS_SCALE): Generator<void,
   drawRoads(ctx, data, scale);
   yield;
   drawTowns(ctx, data, sites, scale);
+  drawVillages(ctx, data, scale);
   const bx = ((data.landmarkCell % W) + 0.5) * scale;
   const by = (Math.floor(data.landmarkCell / W) + 0.5) * scale;
   drawBarrow(ctx, bx, by);
