@@ -68,7 +68,15 @@ interface Tracked extends PlayedYear {
   readonly winterLowestChest: number;
 }
 
-export function runYear(seed: string, plan: Plan): Tracked {
+/** Options for tools that want a bigger guild or a year cut short (the desk mock-up). */
+export interface RunOptions {
+  readonly size?: number;
+  readonly lastDay?: number;
+}
+
+export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tracked {
+  const size = options.size ?? GUILD_SIZE;
+  const lastDay = options.lastDay ?? DAYS;
   const started = performance.now();
   let state: GameState = {
     seed,
@@ -113,7 +121,7 @@ export function runYear(seed: string, plan: Plan): Tracked {
   /** The player's side: sign the cheapest prospects, then send out parties on board order. */
   const play = (planToUse: Plan) => {
     const day = state.calendar;
-    while (now().prospects.length > 0 && now().members.length < GUILD_SIZE) {
+    while (now().prospects.length > 0 && now().members.length < size) {
       const cheapest = [...now().prospects].sort(
         (a, b) => a.wageCopper - b.wageCopper || (a.adventurer.id < b.adventurer.id ? -1 : 1),
       )[0]!; // non-null: the list is not empty.
@@ -149,9 +157,9 @@ export function runYear(seed: string, plan: Plan): Tracked {
     return party.map((m) => m.id);
   };
 
-  run({ type: 'guild.found', day: 1, size: GUILD_SIZE });
+  run({ type: 'guild.found', day: 1, size });
   afterDay();
-  for (let day = 2; day <= DAYS; day += 1) {
+  for (let day = 2; day <= lastDay; day += 1) {
     run({ type: 'day.advance', day });
     afterDay();
   }

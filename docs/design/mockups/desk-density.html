@@ -1,0 +1,382 @@
+<title>Guild Desk Ledgers</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+DW+Pica:ital@0;1&family=Sorts+Mill+Goudy:ital@0;1&display=swap">
+<style>
+/* Layout: the R4 desk-density test (PLAN §9a). A real-size desktop frame (1366×768 or 1920×1080) drawn in the candlelit-oak style (STYLE §2–§5): fixed top bar, ledger tabs on the left, the open ledger as a clean paper sheet, the letter tray folded at the right. Narrow windows scale the frame down and say so. One deliberate theme: the desk is always lamp-lit. */
+:root {
+  --desk: #3b2a1e; --desk2: #2c1f16; --desk3: #4a3626;
+  --paper: #efe4cc; --paper2: #e5d7b9; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5;
+  --seal: #8e2a22; --brass: #b8923e; --brass2: #d7b66a;
+  --good: #3f6f8f; --warn: #c08a1e; --bad: #8e2a22;
+  --chrome: #f1e6cf; --chrome2: #c8b48f;
+  --title: "IM Fell English SC", "IM Fell English", Georgia, serif;
+  --letter: "IM Fell DW Pica", Georgia, serif;
+  --ledger: "Sorts Mill Goudy", "Goudy Old Style", Georgia, serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--desk2); color: var(--chrome); font-family: var(--ledger); font-size: 16px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 40px; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, [tabindex]:focus-visible, input:focus-visible { outline: 2px solid var(--brass2); outline-offset: 2px; }
+.page { display: grid; gap: 14px; }
+.intro { display: grid; gap: 6px; max-width: 80ch; }
+.intro h1 { font-family: var(--title); font-weight: 400; font-size: 1.9rem; margin: 0; color: var(--brass2); text-wrap: balance; }
+.intro p { margin: 0; color: var(--chrome2); }
+.controls { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--chrome2); border-radius: 4px; overflow: hidden; }
+.seg button { background: transparent; border: 0; padding: 4px 12px; color: var(--chrome); font-variant-numeric: lining-nums; }
+.seg button[aria-pressed="true"] { background: var(--brass); color: var(--desk2); }
+.scale-note { color: var(--chrome2); font-style: italic; font-size: .92rem; }
+.btn { background: var(--seal); color: var(--paper); border: 0; padding: 5px 14px; border-radius: 3px; font-family: var(--title); font-size: 1rem; letter-spacing: .03em; }
+.btn.ghost { background: transparent; border: 1px solid var(--chrome2); color: var(--chrome); }
+
+/* The fact test strip */
+.quiz { background: var(--desk3); border: 1px solid var(--brass); border-radius: 4px; padding: 10px 14px; display: grid; gap: 8px; max-width: 900px; }
+.quiz h2 { font-family: var(--title); font-weight: 400; font-size: 1.2rem; margin: 0; color: var(--brass2); }
+.quiz .q { font-size: 1.15rem; color: var(--paper); }
+.quiz .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.quiz .ans { color: var(--brass2); }
+.quiz table { border-collapse: collapse; font-variant-numeric: lining-nums tabular-nums; }
+.quiz td, .quiz th { padding: 2px 10px 2px 0; text-align: left; font-weight: 400; }
+.quiz .pass { color: #9cc3dc; } .quiz .fail { color: #e7a07a; }
+.clock { font-variant-numeric: lining-nums tabular-nums; color: var(--chrome2); }
+
+/* The frame: real size, scaled down only when the window is narrower */
+.stage { overflow: hidden; }
+.desk { width: 1366px; height: 768px; transform-origin: 0 0; display: grid; grid-template-columns: 172px 1fr auto; grid-template-rows: 46px 1fr;
+  background: repeating-linear-gradient(92deg, var(--desk) 0 34px, var(--desk2) 34px 36px); color: var(--ink); font-size: 15px; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+
+/* Top bar: crest, date, why the calendar stopped, Continue (STYLE §3) */
+.bar { grid-column: 1 / -1; display: flex; align-items: center; gap: 18px; padding: 0 14px; background: var(--desk2); color: var(--chrome); border-bottom: 2px solid var(--brass); }
+.crest { width: 28px; height: 32px; flex: none; }
+.guild { font-family: var(--title); font-size: 1.15rem; color: var(--brass2); white-space: nowrap; }
+.date { font-variant-numeric: lining-nums; white-space: nowrap; }
+.stopped { color: var(--chrome2); font-style: italic; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
+.chest { font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
+.continue { background: var(--seal); color: var(--paper); border: 0; border-radius: 3px; padding: 5px 16px; font-family: var(--title); font-size: 1rem; }
+
+/* Ledger tabs */
+.tabs { padding: 12px 0 12px 10px; display: grid; align-content: start; gap: 2px; color: var(--chrome); }
+.tabs h3 { font-family: var(--title); font-weight: 400; font-size: .85rem; letter-spacing: .08em; color: var(--brass); margin: 10px 0 2px 6px; }
+.tab { text-align: left; background: transparent; border: 0; padding: 4px 10px; border-radius: 3px 0 0 3px; color: var(--chrome); }
+.tab[aria-selected="true"] { background: var(--paper); color: var(--ink); }
+.tab:disabled { color: #8a7a62; cursor: default; }
+.tab .n { float: right; font-variant-numeric: lining-nums; color: var(--chrome2); }
+.tab[aria-selected="true"] .n { color: var(--ink2); }
+
+/* The sheet: clean paper, no texture behind numbers (STYLE §1) */
+.sheet { background: var(--paper); margin: 8px 0; padding: 8px 16px 6px; display: grid; grid-template-rows: auto 1fr; gap: 6px; min-width: 0; min-height: 0; font-family: var(--ledger); font-variant-numeric: lining-nums tabular-nums; }
+.sheet-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid var(--rule); padding-bottom: 4px; }
+.sheet-head h2 { font-family: var(--title); font-weight: 400; font-size: 1.45rem; margin: 0; }
+.sheet-head .sub { color: var(--ink2); }
+.chips { display: flex; gap: 6px; margin-left: auto; }
+.chip { border: 1px solid var(--rule); background: transparent; border-radius: 12px; padding: 0 9px; color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.body { overflow: auto; min-height: 0; }
+table.l { border-collapse: collapse; width: 100%; }
+table.l th { position: sticky; top: 0; background: var(--paper); text-align: left; font-weight: 400; font-style: italic; color: var(--ink2); font-size: .9em; padding: 2px 6px; border-bottom: 1px solid var(--ink2); white-space: nowrap; }
+table.l th button { background: none; border: 0; padding: 0; font-style: italic; color: inherit; }
+table.l th[aria-sort] button::after { content: " ▾"; font-style: normal; }
+table.l th[aria-sort="ascending"] button::after { content: " ▴"; }
+table.l td { padding: 0 6px; height: 19px; line-height: 19px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+table.l .r { text-align: right; }
+table.l tr.dead td { color: var(--ink2); }
+table.l tr.total td { border-top: 1px solid var(--ink2); font-weight: 600; }
+table.l tbody tr:hover td { background: var(--paper2); }
+.neg { color: var(--seal); }
+.at { color: var(--ink2); }
+.hi { font-weight: 700; }
+
+/* Status: shape and word, never colour alone (D-078) */
+.st { display: inline-flex; align-items: center; gap: .4em; }
+.st i { width: .62em; height: .62em; display: inline-block; flex: none; }
+.st.fit i { background: var(--good); border-radius: 50%; }
+.st.away i { width: 0; height: 0; border-left: .36em solid transparent; border-right: .36em solid transparent; border-bottom: .62em solid var(--brass); }
+.st.out i { background: var(--warn); transform: rotate(45deg) scale(.85); }
+.st.dead i { background: none; width: auto; height: auto; font-style: normal; color: var(--bad); line-height: 1; }
+.st.dead i::before { content: "✝"; }
+.danger { font-variant: small-caps; letter-spacing: .03em; }
+.twist { font-style: italic; color: var(--seal); }
+
+/* Finances: ledger left, the year so far right */
+.fin { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; min-height: 0; }
+.year { display: grid; gap: 8px; align-content: start; }
+.year h4 { font-family: var(--title); font-weight: 400; font-size: 1.05rem; margin: 0; border-bottom: 1px solid var(--rule); }
+.kv { display: grid; grid-template-columns: 1fr auto; gap: 1px 10px; }
+.kv span:nth-child(even) { text-align: right; }
+.chart text { font-family: var(--ledger); font-size: 11px; fill: var(--ink2); }
+
+/* Contracts: board, parties out, recent */
+.con { display: grid; gap: 10px; align-content: start; }
+.con h4 { font-family: var(--title); font-weight: 400; font-size: 1.05rem; margin: 4px 0 0; }
+
+/* The letter tray, folded for dense ledgers */
+.tray { display: flex; }
+.tray-tab { writing-mode: vertical-rl; background: var(--desk3); color: var(--chrome); border: 0; border-left: 2px solid var(--brass); padding: 12px 6px; font-family: var(--title); font-size: 1rem; letter-spacing: .05em; }
+.tray-tab b { color: var(--paper); background: var(--seal); border-radius: 50%; padding: 4px 2px; font-family: var(--ledger); font-weight: 400; margin-top: 8px; }
+.tray-open { width: 320px; background: var(--desk3); padding: 10px; overflow: auto; }
+.letter { background: var(--paper); color: var(--ink); padding: 14px 16px; font-family: var(--letter); font-size: 16px; line-height: 1.45; display: grid; gap: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+.letter p { margin: 0; }
+.letter p.open::first-letter { float: left; font-family: var(--title); color: var(--seal); font-size: 2.8em; line-height: .85; padding: .05em .1em 0 0; }
+.letter .sal, .letter .sig { font-style: italic; }
+.letter .sig { text-align: right; }
+.fleuron { text-align: center; color: var(--brass); }
+</style>
+
+<div class="page">
+  <div class="intro">
+    <h1>Guild desk ledgers</h1>
+    <p>R4 desk-density test (PLAN §9a). Pass line: 25 or more roster rows visible at 1366 px, and you can find 5 set facts in under 10 seconds each. The data is a real simulated guild: 30 adventurers in six parties, played to the start of week 23 by the engine (seed below). Only Roster, Finances and Contracts are built; the other tabs are greyed.</p>
+  </div>
+  <div class="controls">
+    <span class="seg" role="group" aria-label="Screen size">
+      <button type="button" id="w1366" aria-pressed="true">1366 × 768</button>
+      <button type="button" id="w1920" aria-pressed="false">1920 × 1080</button>
+    </span>
+    <button type="button" class="btn" id="quiz-start">Start the fact test</button>
+    <span class="scale-note" id="scale-note"></span>
+  </div>
+  <section class="quiz" id="quiz" hidden aria-live="polite"></section>
+  <div class="stage" id="stage">
+    <div class="desk" id="desk">
+      <header class="bar">
+        <svg class="crest" viewBox="0 0 28 32" aria-hidden="true"><path d="M2 2h24v14c0 8-6 12-12 14C8 28 2 24 2 16z" fill="#8e2a22" stroke="#d7b66a" stroke-width="1.5"/><path d="M14 7l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L6.8 12.3l5-.7z" fill="#d7b66a"/></svg>
+        <span class="guild">The Fenn March Company</span>
+        <span class="date" id="date"></span>
+        <span class="stopped" id="stopped"></span>
+        <span class="chest" id="chest"></span>
+        <button type="button" class="continue" aria-label="Continue (mock-up: does nothing)">Continue</button>
+      </header>
+      <nav class="tabs" aria-label="Ledgers" id="tabs">
+        <h3>Desk</h3>
+        <button type="button" class="tab" disabled>Desk</button>
+        <button type="button" class="tab" data-tab="roster" role="tab">Roster <span class="n" id="n-roster"></span></button>
+        <button type="button" class="tab" disabled>Parties</button>
+        <button type="button" class="tab" data-tab="contracts" role="tab">Contracts <span class="n" id="n-board"></span></button>
+        <h3>Guild</h3>
+        <button type="button" class="tab" disabled>Staff</button>
+        <button type="button" class="tab" disabled>Guildhall</button>
+        <button type="button" class="tab" data-tab="finances" role="tab">Finances</button>
+        <button type="button" class="tab" disabled>Armoury</button>
+        <h3>World</h3>
+        <button type="button" class="tab" disabled>Ranking</button>
+        <button type="button" class="tab" disabled>Chronicle</button>
+      </nav>
+      <main class="sheet" id="sheet"></main>
+      <aside class="tray" id="tray"></aside>
+    </div>
+  </div>
+  <p class="scale-note" id="seed-note"></p>
+</div>
+
+<script>
+const DATA = /*DATA*/ {"seed":"desk-1","today":155,"week":23,"dayOfWeek":1,"chest":{"negative":false,"g":37,"s":8,"c":2,"copper":3782},"renown":30,"roster":[{"id":"adv.1","name":"Wren Ambry","pronouns":"she","class":"Cleric","position":"back","attributes":{"might":13,"agility":14,"toughness":11,"stealth":14,"wits":14,"presence":10,"resolve":16,"lore":14},"wage":{"negative":false,"g":0,"s":6,"c":4,"copper":64},"wageCopper":64,"status":{"kind":"away","where":"Blackthorn Wood","day":172},"quests":8,"won":8,"hits":18,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.2","name":"Cicely Withy","pronouns":"she","class":"Warrior","position":"front","attributes":{"might":17,"agility":7,"toughness":15,"stealth":12,"wits":10,"presence":14,"resolve":8,"lore":8},"wage":{"negative":false,"g":0,"s":8,"c":0,"copper":80},"wageCopper":80,"status":{"kind":"out","day":167},"quests":4,"won":3,"hits":3,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.3","name":"Teal Carr","pronouns":"she","class":"Warrior","position":"front","attributes":{"might":13,"agility":12,"toughness":9,"stealth":7,"wits":14,"presence":11,"resolve":7,"lore":14},"wage":{"negative":false,"g":0,"s":7,"c":2,"copper":72},"wageCopper":72,"status":{"kind":"away","where":"the Drowned Chapel","day":162},"quests":4,"won":0,"hits":10,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.4","name":"Anselm Dyke","pronouns":"he","class":"Warrior","position":"front","attributes":{"might":16,"agility":8,"toughness":10,"stealth":9,"wits":11,"presence":9,"resolve":9,"lore":11},"wage":{"negative":false,"g":0,"s":6,"c":8,"copper":68},"wageCopper":68,"status":{"kind":"away","where":"the Drowned Chapel","day":162},"quests":5,"won":0,"hits":7,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.5","name":"Piers Stour","pronouns":"he","class":"Rogue","position":"front","attributes":{"might":13,"agility":11,"toughness":7,"stealth":15,"wits":12,"presence":11,"resolve":10,"lore":10},"wage":{"negative":false,"g":0,"s":0,"c":0,"copper":0},"wageCopper":0,"status":{"kind":"dead","day":47,"where":"Cray's Mill"},"quests":2,"won":0,"hits":1,"injuries":0,"signedDay":1,"diedDay":47,"diedAt":"Cray's Mill"},{"id":"adv.6","name":"Ash Wherry","pronouns":"she","class":"Warrior","position":"front","attributes":{"might":10,"agility":10,"toughness":14,"stealth":13,"wits":10,"presence":13,"resolve":8,"lore":11},"wage":{"negative":false,"g":0,"s":7,"c":2,"copper":72},"wageCopper":72,"status":{"kind":"out","day":158},"quests":3,"won":1,"hits":3,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.7","name":"Cuthred Cobb","pronouns":"he","class":"Rogue","position":"front","attributes":{"might":12,"agility":17,"toughness":12,"stealth":17,"wits":13,"presence":9,"resolve":12,"lore":11},"wage":{"negative":false,"g":0,"s":7,"c":4,"copper":74},"wageCopper":74,"status":{"kind":"away","where":"Blackthorn Wood","day":172},"quests":8,"won":8,"hits":18,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.8","name":"Wat Thorne","pronouns":"he","class":"Rogue","position":"front","attributes":{"might":7,"agility":13,"toughness":13,"stealth":11,"wits":12,"presence":14,"resolve":7,"lore":9},"wage":{"negative":false,"g":0,"s":6,"c":6,"copper":66},"wageCopper":66,"status":{"kind":"out","day":190},"quests":4,"won":1,"hits":7,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.9","name":"Isolt Thorne","pronouns":"she","class":"Cleric","position":"back","attributes":{"might":12,"agility":10,"toughness":14,"stealth":7,"wits":11,"presence":9,"resolve":11,"lore":12},"wage":{"negative":false,"g":0,"s":0,"c":0,"copper":0},"wageCopper":0,"status":{"kind":"dead","day":16,"where":"the Drowned Chapel"},"quests":1,"won":0,"hits":0,"injuries":0,"signedDay":1,"diedDay":16,"diedAt":"the Drowned Chapel"},{"id":"adv.10","name":"Merry Bellows","pronouns":"she","class":"Rogue","position":"front","attributes":{"might":14,"agility":13,"toughness":14,"stealth":15,"wits":11,"presence":10,"resolve":8,"lore":12},"wage":{"negative":false,"g":0,"s":7,"c":0,"copper":70},"wageCopper":70,"status":{"kind":"away","where":"Blackthorn Wood","day":172},"quests":4,"won":2,"hits":3,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.11","name":"Gervase Ketch","pronouns":"he","class":"Warrior","position":"front","attributes":{"might":9,"agility":13,"toughness":18,"stealth":10,"wits":8,"presence":10,"resolve":8,"lore":7},"wage":{"negative":false,"g":0,"s":7,"c":2,"copper":72},"wageCopper":72,"status":{"kind":"out","day":158},"quests":6,"won":1,"hits":7,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.12","name":"Gervase Lilley","pronouns":"they","class":"Warrior","position":"front","attributes":{"might":16,"agility":8,"toughness":11,"stealth":14,"wits":9,"presence":8,"resolve":11,"lore":8},"wage":{"negative":false,"g":0,"s":7,"c":2,"copper":72},"wageCopper":72,"status":{"kind":"away","where":"the Drowned Chapel","day":162},"quests":3,"won":1,"hits":4,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.13","name":"Edmer Harrow","pronouns":"he","class":"Cleric","position":"back","attributes":{"might":10,"agility":14,"toughness":8,"stealth":13,"wits":14,"presence":7,"resolve":14,"lore":13},"wage":{"negative":false,"g":0,"s":6,"c":4,"copper":64},"wageCopper":64,"status":{"kind":"out","day":199},"quests":7,"won":4,"hits":11,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.14","name":"Hazel Gosling","pronouns":"he","class":"Warrior","position":"front","attributes":{"might":10,"agility":9,"toughness":13,"stealth":14,"wits":11,"presence":9,"resolve":7,"lore":9},"wage":{"negative":false,"g":0,"s":0,"c":0,"copper":0},"wageCopper":0,"status":{"kind":"dead","day":40,"where":"Blackthorn Wood"},"quests":2,"won":0,"hits":1,"injuries":0,"signedDay":1,"diedDay":40,"diedAt":"Blackthorn Wood"},{"id":"adv.15","name":"Merry Ware","pronouns":"she","class":"Rogue","position":"front","attributes":{"might":14,"agility":12,"toughness":13,"stealth":16,"wits":14,"presence":11,"resolve":14,"lore":12},"wage":{"negative":false,"g":0,"s":7,"c":0,"copper":70},"wageCopper":70,"status":{"kind":"away","where":"Reedmere Farm","day":167},"quests":6,"won":4,"hits":10,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.16","name":"Simkin Brackwater","pronouns":"he","class":"Cleric","position":"back","attributes":{"might":11,"agility":12,"toughness":8,"stealth":11,"wits":8,"presence":7,"resolve":17,"lore":9},"wage":{"negative":false,"g":0,"s":6,"c":0,"copper":60},"wageCopper":60,"status":{"kind":"fit"},"quests":6,"won":3,"hits":5,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.17","name":"Bryn Pike","pronouns":"she","class":"Warrior","position":"front","attributes":{"might":15,"agility":11,"toughness":9,"stealth":10,"wits":9,"presence":12,"resolve":13,"lore":13},"wage":{"negative":false,"g":0,"s":7,"c":2,"copper":72},"wageCopper":72,"status":{"kind":"away","where":"the Drowned Chapel","day":162},"quests":6,"won":2,"hits":9,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.18","name":"Petronel Brackwater","pronouns":"she","class":"Warrior","position":"front","attributes":{"might":15,"agility":12,"toughness":16,"stealth":11,"wits":8,"presence":8,"resolve":11,"lore":13},"wage":{"negative":false,"g":0,"s":7,"c":6,"copper":76},"wageCopper":76,"status":{"kind":"away","where":"Blackthorn Wood","day":172},"quests":4,"won":2,"hits":12,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.19","name":"Anselm Wherry","pronouns":"he","class":"Rogue","position":"front","attributes":{"might":12,"agility":16,"toughness":12,"stealth":13,"wits":8,"presence":13,"resolve":9,"lore":11},"wage":{"negative":false,"g":0,"s":7,"c":0,"copper":70},"wageCopper":70,"status":{"kind":"away","where":"Reedmere Farm","day":167},"quests":6,"won":3,"hits":13,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.20","name":"Brida Brackwater","pronouns":"she","class":"Warrior","position":"front","attributes":{"might":15,"agility":7,"toughness":18,"stealth":13,"wits":9,"presence":10,"resolve":12,"lore":11},"wage":{"negative":false,"g":0,"s":8,"c":0,"copper":80},"wageCopper":80,"status":{"kind":"away","where":"Blackthorn Wood","day":172},"quests":6,"won":2,"hits":3,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.21","name":"Linnet Coldharbour","pronouns":"she","class":"Warrior","position":"front","attributes":{"might":14,"agility":11,"toughness":14,"stealth":13,"wits":10,"presence":7,"resolve":12,"lore":7},"wage":{"negative":false,"g":0,"s":7,"c":2,"copper":72},"wageCopper":72,"status":{"kind":"out","day":158},"quests":4,"won":1,"hits":2,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.22","name":"Tancred Wherry","pronouns":"he","class":"Rogue","position":"front","attributes":{"might":13,"agility":10,"toughness":9,"stealth":14,"wits":11,"presence":10,"resolve":14,"lore":11},"wage":{"negative":false,"g":0,"s":6,"c":6,"copper":66},"wageCopper":66,"status":{"kind":"out","day":156},"quests":6,"won":4,"hits":5,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.23","name":"Wren Fenwick","pronouns":"she","class":"Warrior","position":"front","attributes":{"might":11,"agility":8,"toughness":12,"stealth":14,"wits":10,"presence":14,"resolve":10,"lore":12},"wage":{"negative":false,"g":0,"s":7,"c":2,"copper":72},"wageCopper":72,"status":{"kind":"out","day":157},"quests":6,"won":4,"hits":11,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.24","name":"Fen Toft","pronouns":"he","class":"Warrior","position":"front","attributes":{"might":11,"agility":7,"toughness":12,"stealth":12,"wits":13,"presence":7,"resolve":7,"lore":12},"wage":{"negative":false,"g":0,"s":0,"c":0,"copper":0},"wageCopper":0,"status":{"kind":"dead","day":139,"where":"the Hollow Barrow"},"quests":4,"won":1,"hits":2,"injuries":1,"signedDay":1,"diedDay":139,"diedAt":"the Hollow Barrow"},{"id":"adv.25","name":"Ash Pottle","pronouns":"he","class":"Warrior","position":"front","attributes":{"might":10,"agility":7,"toughness":13,"stealth":12,"wits":8,"presence":11,"resolve":14,"lore":9},"wage":{"negative":false,"g":0,"s":7,"c":2,"copper":72},"wageCopper":72,"status":{"kind":"out","day":161},"quests":5,"won":0,"hits":2,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.26","name":"Anselm Pottle","pronouns":"he","class":"Cleric","position":"back","attributes":{"might":11,"agility":9,"toughness":14,"stealth":12,"wits":14,"presence":12,"resolve":12,"lore":18},"wage":{"negative":false,"g":0,"s":6,"c":8,"copper":68},"wageCopper":68,"status":{"kind":"out","day":157},"quests":8,"won":8,"hits":12,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.27","name":"Hob Holloway","pronouns":"he","class":"Warrior","position":"front","attributes":{"might":11,"agility":13,"toughness":11,"stealth":9,"wits":13,"presence":7,"resolve":12,"lore":8},"wage":{"negative":false,"g":0,"s":6,"c":8,"copper":68},"wageCopper":68,"status":{"kind":"away","where":"the Drowned Chapel","day":162},"quests":5,"won":0,"hits":3,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.28","name":"Wren Carr","pronouns":"she","class":"Warrior","position":"front","attributes":{"might":16,"agility":14,"toughness":18,"stealth":14,"wits":9,"presence":10,"resolve":11,"lore":9},"wage":{"negative":false,"g":0,"s":8,"c":4,"copper":84},"wageCopper":84,"status":{"kind":"away","where":"Reedmere Farm","day":167},"quests":6,"won":4,"hits":13,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.29","name":"Sedge Holloway","pronouns":"she","class":"Cleric","position":"back","attributes":{"might":11,"agility":12,"toughness":11,"stealth":10,"wits":10,"presence":13,"resolve":15,"lore":11},"wage":{"negative":false,"g":0,"s":6,"c":0,"copper":60},"wageCopper":60,"status":{"kind":"away","where":"Reedmere Farm","day":167},"quests":8,"won":8,"hits":4,"injuries":0,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.30","name":"Godwin Mallow","pronouns":"they","class":"Warrior","position":"front","attributes":{"might":16,"agility":11,"toughness":15,"stealth":9,"wits":10,"presence":12,"resolve":7,"lore":10},"wage":{"negative":false,"g":0,"s":7,"c":6,"copper":76},"wageCopper":76,"status":{"kind":"out","day":161},"quests":4,"won":1,"hits":4,"injuries":1,"signedDay":1,"diedDay":null,"diedAt":null},{"id":"adv.41","name":"Teal Bellows","pronouns":"he","class":"Cleric","position":"back","attributes":{"might":10,"agility":11,"toughness":10,"stealth":11,"wits":8,"presence":8,"resolve":14,"lore":16},"wage":{"negative":false,"g":0,"s":6,"c":0,"copper":60},"wageCopper":60,"status":{"kind":"out","day":157},"quests":6,"won":4,"hits":14,"injuries":0,"signedDay":16,"diedDay":null,"diedAt":null},{"id":"adv.50","name":"Edith Cobb","pronouns":"she","class":"Cleric","position":"back","attributes":{"might":9,"agility":9,"toughness":9,"stealth":9,"wits":10,"presence":9,"resolve":15,"lore":9},"wage":{"negative":false,"g":0,"s":5,"c":2,"copper":52},"wageCopper":52,"status":{"kind":"out","day":157},"quests":1,"won":1,"hits":1,"injuries":0,"signedDay":134,"diedDay":null,"diedAt":null},{"id":"adv.48","name":"Osric Ferriby","pronouns":"he","class":"Cleric","position":"back","attributes":{"might":8,"agility":11,"toughness":13,"stealth":12,"wits":7,"presence":10,"resolve":14,"lore":13},"wage":{"negative":false,"g":0,"s":6,"c":0,"copper":60},"wageCopper":60,"status":{"kind":"away","where":"Reedmere Farm","day":167},"quests":1,"won":1,"hits":0,"injuries":0,"signedDay":134,"diedDay":null,"diedAt":null},{"id":"adv.49","name":"Agnes Ambry","pronouns":"she","class":"Cleric","position":"back","attributes":{"might":13,"agility":12,"toughness":10,"stealth":9,"wits":13,"presence":10,"resolve":9,"lore":14},"wage":{"negative":false,"g":0,"s":6,"c":0,"copper":60},"wageCopper":60,"status":{"kind":"out","day":158},"quests":1,"won":1,"hits":1,"injuries":0,"signedDay":139,"diedDay":null,"diedAt":null}],"weeks":[{"week":1,"lines":{"founding":17000,"grant":4000,"wages":-2098,"upkeep":-500},"chest":18402},{"week":2,"lines":{"wages":-2098,"upkeep":-500,"fee":4615,"loot":922},"chest":21341},{"week":3,"lines":{"wages":-2098,"upkeep":-500,"funeral":-1656,"sign-on":-480},"chest":16607},{"week":4,"lines":{"wages":-2102,"upkeep":-500},"chest":14005},{"week":5,"lines":{"wages":-2102,"upkeep":-500,"fee":1243,"loot":248},"chest":12894},{"week":6,"lines":{"wages":-2102,"upkeep":-500,"fee":3322,"loot":664,"funeral":-1968},"chest":12310},{"week":7,"lines":{"wages":-2034,"upkeep":-500,"funeral":-1916},"chest":7860},{"week":8,"lines":{"wages":-1968,"upkeep":-500,"fee":1403,"loot":280},"chest":7075},{"week":9,"lines":{"wages":-1968,"upkeep":-500},"chest":4607},{"week":10,"lines":{"wages":-1968,"upkeep":-500},"chest":2139},{"week":11,"lines":{"wages":-1968,"upkeep":-500,"fee":982,"loot":196},"chest":849},{"week":12,"lines":{"wages":-1968,"upkeep":-500,"fee":7776,"loot":1555},"chest":7712},{"week":13,"lines":{"wages":-1968,"upkeep":-500},"chest":5244},{"week":14,"lines":{"wages":-1968,"upkeep":-500,"fee":1494,"loot":298},"chest":4568},{"week":15,"lines":{"wages":-1968,"upkeep":-500,"fee":2842,"loot":568},"chest":5510},{"week":16,"lines":{"wages":-1968,"upkeep":-500,"fee":2707,"loot":541},"chest":6290},{"week":17,"lines":{"wages":-1968,"upkeep":-500},"chest":3822},{"week":18,"lines":{"wages":-1968,"upkeep":-500,"fee":2501,"loot":500},"chest":4355},{"week":19,"lines":{"wages":-1968,"upkeep":-500,"fee":3286,"loot":657},"chest":5830},{"week":20,"lines":{"wages":-1968,"upkeep":-500,"sign-on":-1376,"funeral":-1968},"chest":18},{"week":21,"lines":{"wages":-2072,"upkeep":-500,"fee":8276,"loot":1653},"chest":7375},{"week":22,"lines":{"wages":-2072,"upkeep":-500,"fee":1293,"loot":258},"chest":6354},{"week":23,"lines":{"wages":-2072,"upkeep":-500},"chest":3782}],"reasons":["grant","fee","loot","wages","upkeep","funeral","sign-on"],"board":[{"id":"offer.82","site":"Blackthorn Wood","monster":"fen things","twist":null,"danger":"hazardous","fee":{"negative":false,"g":35,"s":2,"c":2,"copper":3522},"feeCopper":3522,"travelDays":7,"expiresWeek":24},{"id":"offer.83","site":"Ashford Bridge","monster":"bandits","twist":null,"danger":"routine","fee":{"negative":false,"g":13,"s":1,"c":7,"copper":1317},"feeCopper":1317,"travelDays":6,"expiresWeek":24},{"id":"offer.84","site":"the Drowned Chapel","monster":"goblins","twist":"Foul weather","danger":"perilous","fee":{"negative":false,"g":86,"s":9,"c":1,"copper":8691},"feeCopper":8691,"travelDays":10,"expiresWeek":24},{"id":"offer.85","site":"Blackthorn Wood","monster":"goblins","twist":"Foul weather","danger":"hazardous","fee":{"negative":false,"g":33,"s":6,"c":8,"copper":3368},"feeCopper":3368,"travelDays":7,"expiresWeek":25},{"id":"offer.86","site":"Reedmere Farm","monster":"rats","twist":null,"danger":"routine","fee":{"negative":false,"g":10,"s":1,"c":1,"copper":1011},"feeCopper":1011,"travelDays":5,"expiresWeek":25},{"id":"offer.87","site":"Blackthorn Wood","monster":"goblins","twist":null,"danger":"perilous","fee":{"negative":false,"g":80,"s":8,"c":0,"copper":8080},"feeCopper":8080,"travelDays":9,"expiresWeek":25},{"id":"offer.88","site":"Reedmere Farm","monster":"rats","twist":"A trap","danger":"routine","fee":{"negative":false,"g":12,"s":2,"c":6,"copper":1226},"feeCopper":1226,"travelDays":6,"expiresWeek":25}],"parties":[{"id":"party.35","site":"the Drowned Chapel","monster":"goblins","twist":"Cursed ground","danger":"hazardous","members":["Bryn Pike","Teal Carr","Gervase Lilley","Hob Holloway","Anselm Dyke"],"arriveDay":156,"homeDay":162,"fee":{"negative":false,"g":27,"s":5,"c":3,"copper":2753}},{"id":"party.36","site":"Blackthorn Wood","monster":"wolves","twist":"Cursed ground","danger":"perilous","members":["Wren Ambry","Cuthred Cobb","Merry Bellows","Brida Brackwater","Petronel Brackwater"],"arriveDay":163,"homeDay":172,"fee":{"negative":false,"g":72,"s":2,"c":9,"copper":7229}},{"id":"party.37","site":"Reedmere Farm","monster":"wolves","twist":"A deadline","danger":"routine","members":["Merry Ware","Wren Carr","Anselm Wherry","Sedge Holloway","Osric Ferriby"],"arriveDay":161,"homeDay":167,"fee":{"negative":false,"g":10,"s":9,"c":5,"copper":1095}}],"quests":[{"week":21,"site":"Reedmere Farm","danger":"routine","outcome":"won","party":["Cicely Withy","Godwin Mallow","Agnes Ambry","Ash Wherry","Linnet Coldharbour"],"dead":[]},{"week":21,"site":"Blackthorn Wood","danger":"routine","outcome":"won","party":["Wren Ambry","Cuthred Cobb","Anselm Pottle","Merry Bellows","Brida Brackwater"],"dead":[]},{"week":21,"site":"Cray's Mill","danger":"hazardous","outcome":"won","party":["Petronel Brackwater","Wren Fenwick","Teal Bellows","Osric Ferriby","Edith Cobb"],"dead":[]},{"week":20,"site":"the Hollow Barrow","danger":"hazardous","outcome":"retreated","party":["Ash Pottle","Gervase Ketch","Simkin Brackwater","Fen Toft"],"dead":["Fen Toft"]},{"week":20,"site":"Blackthorn Wood","danger":"hazardous","outcome":"won","party":["Merry Ware","Wren Carr","Anselm Wherry","Edmer Harrow","Sedge Holloway"],"dead":[]},{"week":19,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","party":["Bryn Pike","Tancred Wherry","Hob Holloway","Anselm Dyke"],"dead":[]},{"week":18,"site":"Reedmere Farm","danger":"hazardous","outcome":"won","party":["Wren Ambry","Cuthred Cobb","Anselm Pottle","Merry Bellows","Brida Brackwater"],"dead":[]},{"week":18,"site":"Ashford Bridge","danger":"routine","outcome":"won","party":["Edmer Harrow","Sedge Holloway","Gervase Ketch","Simkin Brackwater","Fen Toft"],"dead":[]},{"week":18,"site":"Blackthorn Wood","danger":"routine","outcome":"won","party":["Petronel Brackwater","Wren Fenwick","Teal Bellows","Wat Thorne"],"dead":[]},{"week":17,"site":"the Drowned Chapel","danger":"hazardous","outcome":"retreated","party":["Merry Ware","Wren Carr","Anselm Wherry","Teal Carr","Ash Pottle"],"dead":[]},{"week":16,"site":"the Drowned Chapel","danger":"perilous","outcome":"routed","party":["Cicely Withy","Godwin Mallow","Ash Wherry","Linnet Coldharbour"],"dead":[]},{"week":15,"site":"the Drowned Chapel","danger":"hazardous","outcome":"won","party":["Wren Ambry","Cuthred Cobb","Anselm Pottle","Edmer Harrow","Sedge Holloway"],"dead":[]},{"week":14,"site":"Blackthorn Wood","danger":"routine","outcome":"retreated","party":["Brida Brackwater","Wren Fenwick","Teal Bellows","Ash Pottle"],"dead":[]},{"week":14,"site":"Blackthorn Wood","danger":"hazardous","outcome":"won","party":["Merry Ware","Wren Carr","Anselm Wherry","Gervase Lilley","Simkin Brackwater"],"dead":[]},{"week":14,"site":"the Drowned Chapel","danger":"perilous","outcome":"retreated","party":["Hob Holloway","Gervase Ketch","Anselm Dyke","Fen Toft"],"dead":[]},{"week":13,"site":"the Gallows Spire","danger":"perilous","outcome":"retreated","party":["Bryn Pike","Tancred Wherry","Teal Carr","Wat Thorne"],"dead":[]},{"week":13,"site":"Reedmere Farm","danger":"routine","outcome":"won","party":["Wren Ambry","Cuthred Cobb","Anselm Pottle","Edmer Harrow","Sedge Holloway"],"dead":[]},{"week":11,"site":"the Drowned Chapel","danger":"perilous","outcome":"won","party":["Wren Carr","Anselm Wherry","Wren Fenwick","Teal Bellows","Simkin Brackwater"],"dead":[]},{"week":10,"site":"Reedmere Farm","danger":"routine","outcome":"won","party":["Wren Ambry","Cuthred Cobb","Anselm Pottle","Sedge Holloway","Tancred Wherry"],"dead":[]},{"week":10,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","party":["Brida Brackwater","Bryn Pike","Hob Holloway","Gervase Ketch","Anselm Dyke"],"dead":[]},{"week":10,"site":"the Gallows Spire","danger":"perilous","outcome":"retreated","party":["Merry Ware","Edmer Harrow","Gervase Lilley","Ash Pottle"],"dead":[]},{"week":8,"site":"Blackthorn Wood","danger":"routine","outcome":"won","party":["Wren Ambry","Cuthred Cobb","Anselm Pottle","Sedge Holloway","Tancred Wherry"],"dead":[]},{"week":7,"site":"Cray's Mill","danger":"hazardous","outcome":"retreated","party":["Piers Stour","Linnet Coldharbour","Teal Carr","Wat Thorne","Simkin Brackwater"],"dead":["Piers Stour"]},{"week":7,"site":"Reedmere Farm","danger":"hazardous","outcome":"retreated","party":["Merry Bellows","Brida Brackwater","Bryn Pike","Godwin Mallow","Teal Bellows"],"dead":[]}],"letter":["Guildmaster, from the road home,","We have come back out of Reedmere Farm, job done and witnessed.","We ran into cellar rats, and it was quick work, and they did not get up again.","To make matters worse, the wind never let up, and the footing was worse, which made it harder.","Without fuss, Cicely Withy shoved one of us clear and took the hurt, and called it nothing.","To the business end of it, the reeve has the fee counted out for you, and we will need time.","Agnes Ambry"]} /*END*/;
+const ATTRS = [['might','Mi'],['agility','Ag'],['toughness','To'],['stealth','St'],['wits','Wi'],['presence','Pr'],['resolve','Re'],['lore','Lo']];
+const DAYS = 7;
+const $ = (id) => document.getElementById(id);
+const cap = (s) => String(s).charAt(0).toUpperCase() + String(s).slice(1);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const wk = (day) => `w${Math.floor((day - 1) / DAYS) + 1} d${((day - 1) % DAYS) + 1}`;
+function money(copper, opts = {}) {
+  if (!copper && opts.blank) return '';
+  const neg = copper < 0; let left = Math.abs(copper);
+  const g = Math.floor(left / 100), s = Math.floor((left % 100) / 10), c = left % 10;
+  const parts = [];
+  if (g) parts.push(`${g}g`); if (s) parts.push(`${s}s`); if (c || !parts.length) parts.push(`${c}c`);
+  const text = (neg ? '−' : '') + parts.join(' ');
+  return neg ? `<span class="neg">${text}</span>` : text;
+}
+const plain = (html) => html.replace(/<[^>]+>/g, '');
+
+let tab = 'roster';
+let filter = 'all';
+let sort = { key: 'status', dir: 1 };
+let trayOpen = false;
+let width = 1366;
+try { const saved = localStorage.getItem('desk-width'); if (saved === '1920') width = 1920; } catch {}
+
+function statusText(p) {
+  const s = p.status;
+  if (s.kind === 'fit') return ['fit', 'Fit'];
+  if (s.kind === 'away') return ['away', `Away, ${s.where}, home ${wk(s.day)}`];
+  if (s.kind === 'out') return ['out', `Recovering, fit ${wk(s.day)}`];
+  return ['dead', `Dead ${wk(s.day)}, ${s.where}`];
+}
+const ORDER = { fit: 0, away: 1, out: 2, dead: 3 };
+
+function rosterSheet() {
+  const counts = { all: DATA.roster.length, fit: 0, away: 0, out: 0, dead: 0 };
+  for (const p of DATA.roster) counts[p.status.kind] += 1;
+  let rows = DATA.roster.filter((p) => filter === 'all' || p.status.kind === filter);
+  const val = {
+    name: (p) => p.name, class: (p) => p.class, status: (p) => ORDER[p.status.kind] * 1000 + (p.status.day || 0),
+    wage: (p) => p.wageCopper, quests: (p) => p.quests, won: (p) => p.won, hits: (p) => p.hits, injuries: (p) => p.injuries, signed: (p) => p.signedDay,
+  };
+  for (const [a] of ATTRS) val[a] = (p) => p.attributes[a];
+  const f = val[sort.key];
+  rows = [...rows].sort((a, b) => { const x = f(a), y = f(b); return (x < y ? -1 : x > y ? 1 : 0) * sort.dir || (a.name < b.name ? -1 : 1); });
+  const head = (key, label, cls = '') => `<th class="${cls}" ${sort.key === key ? `aria-sort="${sort.dir > 0 ? 'ascending' : 'descending'}"` : ''}><button type="button" data-sort="${key}">${label}</button></th>`;
+  const chip = (k, label) => `<button type="button" class="chip" data-filter="${k}" aria-pressed="${filter === k}">${label} ${counts[k]}</button>`;
+  return `<div class="sheet-head"><h2>Roster</h2><span class="sub">${counts.all - counts.dead} on the books · wages ${money(DATA.roster.reduce((s, p) => s + p.wageCopper, 0))} a week</span>
+    <span class="chips">${chip('all', 'All')}${chip('fit', 'Fit')}${chip('away', 'Away')}${chip('out', 'Recovering')}${chip('dead', 'Dead')}</span></div>
+    <div class="body"><table class="l"><thead><tr>${head('name', 'Name')}${head('class', 'Class')}${head('status', 'Status')}
+    ${ATTRS.map(([a, s]) => head(a, s, 'r')).join('')}${head('wage', 'Wage / wk', 'r')}${head('quests', 'Quests', 'r')}${head('won', 'Won', 'r')}${head('hits', 'Hits', 'r')}${head('injuries', 'Inj.', 'r')}${head('signed', 'Signed', 'r')}</tr></thead>
+    <tbody>${rows.map((p) => { const [k, t] = statusText(p); const best = Math.max(...ATTRS.map(([a]) => p.attributes[a]));
+      return `<tr class="${k === 'dead' ? 'dead' : ''}"><td>${esc(p.name)}</td><td>${esc(p.class)}${p.position === 'back' ? ' <span class="at">(back)</span>' : ''}</td><td><span class="st ${k}"><i></i>${esc(t)}</span></td>
+      ${ATTRS.map(([a]) => `<td class="r${p.attributes[a] === best ? ' hi' : ''}">${p.attributes[a]}</td>`).join('')}<td class="r">${k === 'dead' ? '' : money(p.wageCopper)}</td><td class="r">${p.quests}</td><td class="r">${p.won}</td><td class="r">${p.hits}</td><td class="r">${p.injuries || ''}</td><td class="r">${p.signedDay === 1 ? 'founding' : wk(p.signedDay)}</td></tr>`; }).join('')}</tbody></table></div>`;
+}
+
+const LINES = [['grant', 'Grant'], ['fee', 'Fees'], ['loot', 'Loot'], ['wages', 'Wages'], ['upkeep', 'Upkeep'], ['funeral', 'Funerals'], ['sign-on', 'Sign-on']];
+function financeSheet() {
+  const weeks = DATA.weeks;
+  const tot = {}; for (const [k] of LINES) tot[k] = weeks.reduce((s, w) => s + (w.lines[k] || 0), 0);
+  const net = (w) => LINES.reduce((s, [k]) => s + (w.lines[k] || 0), 0);
+  const income = tot.grant + tot.fee + tot.loot;
+  const spend = -(tot.wages + tot.upkeep + tot.funeral + tot['sign-on']);
+  const max = Math.max(...weeks.map((w) => w.chest), 1), min = Math.min(0, ...weeks.map((w) => w.chest));
+  const W = 290, H = 150, L = 34, B = 18;
+  const x = (i) => L + (i * (W - L - 6)) / Math.max(1, weeks.length - 1);
+  const y = (v) => 6 + ((max - v) * (H - B - 6)) / (max - min || 1);
+  const pts = weeks.map((w, i) => `${x(i).toFixed(1)},${y(w.chest).toFixed(1)}`).join(' ');
+  const tick = (v) => `<line x1="${L}" x2="${W - 6}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule)"/><text x="${L - 4}" y="${y(v) + 4}" text-anchor="end">${Math.round(v / 100)}g</text>`;
+  const chart = `<svg class="chart" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Chest at the end of each week">
+    ${tick(max)}${tick(Math.round((max + min) / 2))}${tick(min)}
+    <polyline points="${L},${y(min)} ${pts} ${x(weeks.length - 1)},${y(min)}" fill="var(--paper2)" stroke="none"/>
+    <polyline points="${pts}" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+    <circle cx="${x(weeks.length - 1)}" cy="${y(weeks[weeks.length - 1].chest)}" r="3" fill="var(--seal)"/>
+    <text x="${L}" y="${H - 3}">w1</text><text x="${W - 6}" y="${H - 3}" text-anchor="end">w${weeks.length}</text></svg>`;
+  return `<div class="sheet-head"><h2>Finances</h2><span class="sub">This year, weeks 1–${weeks.length} · money in copper, silver and gold (10 to the next)</span></div>
+    <div class="fin"><div class="body"><table class="l"><thead><tr><th>Week</th>${LINES.map(([, l]) => `<th class="r">${l}</th>`).join('')}<th class="r">Net</th><th class="r">Chest at end</th></tr></thead>
+    <tbody>${weeks.map((w) => `<tr><td>${w.week}${w.week === DATA.week ? ' <span class="at">(this week)</span>' : ''}</td>${LINES.map(([k]) => `<td class="r">${money(w.lines[k] || 0, { blank: true })}</td>`).join('')}<td class="r">${money(net(w))}</td><td class="r">${money(w.chest)}</td></tr>`).join('')}
+    <tr class="total"><td>Year so far</td>${LINES.map(([k]) => `<td class="r">${money(tot[k], { blank: true })}</td>`).join('')}<td class="r">${money(income - spend)}</td><td class="r">${money(DATA.chest.copper)}</td></tr></tbody></table></div>
+    <div class="year"><h4>The year so far</h4><div class="kv">
+      <span>Starting chest</span><span>${money(weeks[0].lines.founding || 0)}</span>
+      <span>Money in</span><span>${money(income)}</span><span>Money out</span><span>${money(-spend)}</span>
+      <span>Wages, share of spending</span><span>${Math.round((-100 * tot.wages) / spend)}%</span>
+      <span>Weekly wage bill now</span><span>${money(DATA.roster.reduce((s, p) => s + p.wageCopper, 0))}</span>
+      <span>Renown</span><span>${DATA.renown}</span></div>
+      <h4>Chest, week by week</h4>${chart}</div></div>`;
+}
+
+function contractSheet() {
+  const outcome = { won: 'Done', partial: 'Half done', retreated: 'Withdrew', routed: 'Routed' };
+  return `<div class="sheet-head"><h2>Contracts</h2><span class="sub">${DATA.board.length} on the board · ${DATA.parties.length} parties out</span></div>
+    <div class="body con"><h4>On the board</h4><table class="l"><thead><tr><th>Site</th><th>Work</th><th>Danger</th><th>Twist</th><th class="r">Fee</th><th class="r">Days each way</th><th class="r">Leaves the board</th></tr></thead>
+    <tbody>${DATA.board.map((o) => `<tr><td>${esc(cap(o.site))}</td><td>${esc(o.monster)}</td><td class="danger">${esc(o.danger)}</td><td>${o.twist ? `<span class="twist">${esc(o.twist)}</span>` : ''}</td><td class="r">${money(o.feeCopper)}</td><td class="r">${o.travelDays}</td><td class="r">week ${o.expiresWeek}</td></tr>`).join('')}</tbody></table>
+    <h4>Parties out</h4><table class="l"><thead><tr><th>Site</th><th>Work</th><th>Danger</th><th>Party</th><th class="r">Arrives</th><th class="r">Home</th></tr></thead>
+    <tbody>${DATA.parties.map((p) => `<tr><td>${esc(cap(p.site))}</td><td>${esc(p.monster)}</td><td class="danger">${esc(p.danger)}</td><td>${esc(p.members.join(', '))}</td><td class="r">${wk(p.arriveDay)}</td><td class="r">${wk(p.homeDay)}</td></tr>`).join('')}</tbody></table>
+    <h4>Recent contracts</h4><table class="l"><thead><tr><th class="r">Week</th><th>Site</th><th>Danger</th><th>Outcome</th><th>Lost</th></tr></thead>
+    <tbody>${DATA.quests.map((q) => `<tr><td class="r">${q.week}</td><td>${esc(cap(q.site))}</td><td class="danger">${esc(q.danger)}</td><td>${outcome[q.outcome]}</td><td>${q.dead.length ? `<span class="st dead"><i></i>${esc(q.dead.join(', '))}</span>` : ''}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+function renderTray() {
+  const tray = $('tray');
+  if (!trayOpen) { tray.innerHTML = `<button type="button" class="tray-tab" id="tray-toggle" aria-expanded="false">Letters <b>1</b></button>`; return; }
+  const lines = DATA.letter;
+  const sal = lines[0], sig = lines[lines.length - 1], body = lines.slice(1, -1);
+  tray.innerHTML = `<button type="button" class="tray-tab" id="tray-toggle" aria-expanded="true">Letters</button><div class="tray-open"><div class="letter">
+    <p class="sal">${esc(sal)}</p>${body.map((l, i) => `<p class="${i === 0 ? 'open' : ''}">${esc(l)}</p>`).join('')}<p class="fleuron">❦</p><p class="sig">${esc(sig)}</p></div></div>`;
+}
+
+function render() {
+  for (const t of document.querySelectorAll('.tab[data-tab]')) t.setAttribute('aria-selected', String(t.dataset.tab === tab));
+  $('sheet').innerHTML = tab === 'roster' ? rosterSheet() : tab === 'finances' ? financeSheet() : contractSheet();
+  renderTray();
+}
+
+function fit() {
+  const desk = $('desk'), stage = $('stage');
+  const h = width === 1920 ? 1080 : 768;
+  desk.style.width = `${width}px`; desk.style.height = `${h}px`;
+  desk.style.gridTemplateColumns = width === 1920 ? '190px 1fr auto' : '172px 1fr auto';
+  const room = stage.clientWidth;
+  const scale = Math.min(1, room / width);
+  desk.style.transform = scale < 1 ? `scale(${scale})` : '';
+  stage.style.height = `${h * scale}px`;
+  $('scale-note').textContent = scale < 1
+    ? `Your window is narrower than ${width} px, so the frame is shown at ${Math.round(scale * 100)}%. For the real test, open it on a screen at least ${width} px wide.`
+    : `Shown at real size, ${width} × ${h} px.`;
+  $('w1366').setAttribute('aria-pressed', String(width === 1366));
+  $('w1920').setAttribute('aria-pressed', String(width === 1920));
+}
+
+/* The fact test: five set facts from this guild's own data, timed (pass: each under 10 s and right). */
+function questions() {
+  const living = DATA.roster.filter((p) => p.status.kind !== 'dead');
+  const qs = [];
+  const p1 = living[Math.floor(living.length * 0.6)];
+  qs.push({ q: `What is ${p1.name}'s weekly wage?`, a: plain(money(p1.wageCopper)), tab: 'roster' });
+  const hurt = DATA.roster.find((p) => p.status.kind === 'out');
+  const away = DATA.roster.find((p) => p.status.kind === 'away');
+  if (hurt) qs.push({ q: `${hurt.name} is recovering. In which week and day are they fit again?`, a: wk(hurt.status.day), tab: 'roster' });
+  else if (away) qs.push({ q: `${away.name} is away. When are they home?`, a: wk(away.status.day), tab: 'roster' });
+  const w = DATA.weeks[13];
+  qs.push({ q: `How much did the guild pay in wages in week ${w.week}?`, a: plain(money(-(w.lines.wages || 0))), tab: 'finances' });
+  const best = [...DATA.board].sort((a, b) => b.feeCopper - a.feeCopper)[0];
+  if (best) qs.push({ q: 'Which contract on the board pays the most, and how much?', a: `${cap(best.site)} (${best.monster}), ${plain(money(best.feeCopper))}`, tab: 'contracts' });
+  const strongest = [...living].sort((a, b) => b.attributes.might - a.attributes.might || (a.name < b.name ? -1 : 1))[0];
+  qs.push({ q: 'Who has the highest Might among the living?', a: `${strongest.name} (${strongest.attributes.might})`, tab: 'roster' });
+  return qs.slice(0, 5);
+}
+let quiz = null;
+function quizRender() {
+  const box = $('quiz');
+  box.hidden = false;
+  if (quiz.at >= quiz.qs.length) {
+    const rows = quiz.results.map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r.q)}</td><td>${r.s.toFixed(1)} s</td><td class="${r.ok && r.s < 10 ? 'pass' : 'fail'}">${r.ok ? (r.s < 10 ? 'pass' : 'right, too slow') : 'wrong'}</td></tr>`).join('');
+    const passed = quiz.results.filter((r) => r.ok && r.s < 10).length;
+    const summary = `R4 fact test, ${width} px: ${passed} of ${quiz.results.length} under 10 s. ` + quiz.results.map((r, i) => `Q${i + 1} ${r.s.toFixed(1)} s ${r.ok ? 'right' : 'wrong'}`).join('; ') + '.';
+    box.innerHTML = `<h2>Fact test done: ${passed} of ${quiz.results.length} passed</h2><table>${rows}</table>
+      <div class="row"><input id="quiz-summary" readonly value="${esc(summary)}" style="flex:1;min-width:0;font:inherit;padding:3px 6px"><button type="button" class="btn" id="quiz-copy">Copy results</button><button type="button" class="btn ghost" id="quiz-again">Run again</button></div>
+      <p class="clock">Paste the results into the chat; they become the R4 evidence.</p>`;
+    return;
+  }
+  const cur = quiz.qs[quiz.at];
+  if (quiz.phase === 'ask') {
+    box.innerHTML = `<h2>Question ${quiz.at + 1} of ${quiz.qs.length}</h2><p class="q">${esc(cur.q)}</p>
+      <div class="row"><button type="button" class="btn" id="quiz-found">Found it</button><span class="clock" id="quiz-clock">0.0 s</span><span class="clock">Find it in the frame below, then press Found it.</span></div>`;
+  } else {
+    box.innerHTML = `<h2>Question ${quiz.at + 1} of ${quiz.qs.length}</h2><p class="q">${esc(cur.q)}</p>
+      <p>Answer: <span class="ans">${esc(cur.a)}</span> · you took ${quiz.last.toFixed(1)} s</p>
+      <div class="row"><button type="button" class="btn" id="quiz-right">I had it right</button><button type="button" class="btn ghost" id="quiz-wrong">I had it wrong</button></div>`;
+  }
+}
+function quizStart() {
+  quiz = { qs: questions(), at: 0, phase: 'ask', started: performance.now(), results: [], last: 0 };
+  quizRender();
+}
+setInterval(() => {
+  const c = document.getElementById('quiz-clock');
+  if (c && quiz && quiz.phase === 'ask') c.textContent = `${((performance.now() - quiz.started) / 1000).toFixed(1)} s`;
+}, 100);
+
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('button');
+  if (!t) return;
+  if (t.dataset.tab) { tab = t.dataset.tab; render(); }
+  else if (t.dataset.sort) { const k = t.dataset.sort; sort = sort.key === k ? { key: k, dir: -sort.dir } : { key: k, dir: k === 'name' || k === 'class' || k === 'status' ? 1 : -1 }; render(); }
+  else if (t.dataset.filter) { filter = t.dataset.filter; render(); }
+  else if (t.id === 'tray-toggle') { trayOpen = !trayOpen; renderTray(); }
+  else if (t.id === 'w1366' || t.id === 'w1920') { width = t.id === 'w1920' ? 1920 : 1366; try { localStorage.setItem('desk-width', String(width)); } catch {} fit(); }
+  else if (t.id === 'quiz-start' || t.id === 'quiz-again') quizStart();
+  else if (t.id === 'quiz-found') { quiz.last = (performance.now() - quiz.started) / 1000; quiz.phase = 'check'; quizRender(); }
+  else if (t.id === 'quiz-right' || t.id === 'quiz-wrong') {
+    quiz.results.push({ q: quiz.qs[quiz.at].q, s: quiz.last, ok: t.id === 'quiz-right' });
+    quiz.at += 1; quiz.phase = 'ask'; quiz.started = performance.now(); quizRender();
+  } else if (t.id === 'quiz-copy') {
+    const input = $('quiz-summary');
+    navigator.clipboard?.writeText(input.value).then(() => { t.textContent = 'Copied'; }, () => { input.select(); t.textContent = 'Select and copy'; });
+  }
+});
+
+$('date').textContent = `Week ${DATA.week}, day ${DATA.dayOfWeek} · Year 1`;
+$('stopped').textContent = 'Stopped: the week report, and new contracts on the board';
+$('chest').innerHTML = `Chest ${money(DATA.chest.copper)}`;
+$('n-roster').textContent = DATA.roster.filter((p) => p.status.kind !== 'dead').length;
+$('n-board').textContent = DATA.board.length;
+$('seed-note').textContent = `Data: tools/make-desk-data.ts, seed ${DATA.seed}, 30 adventurers, default plan; every number comes from the engine.`;
+window.addEventListener('resize', fit);
+render();
+fit();
+</script>
