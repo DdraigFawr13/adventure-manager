@@ -76,7 +76,7 @@ Rejected: Alegreya family (too plain), Grenze family, scribe's hand, Texturina t
 - One ink colour; meaning-bearing colour stays with the status and faction sets (D-048). A status icon always sits beside a word or a status colour, never alone.
 - The small level can ship as the custom symbol font (D-052) so icons sit inline with text.
 
-**Proposed (not yet approved):** a hand-tinted watercolour wash on large card icons only, as on historical woodcuts, for colour and flair; wax seals reserved for factions, contracts and set pieces.
+**Accepted (2026-10-26, D-057):** a hand-tinted watercolour wash on large card icons only, as on historical woodcuts, for colour and flair; wax seals reserved for factions, contracts and set pieces.
 
 Rejected: wax seals for every icon (blur at 16 px, clash with the "bad" colour), painted miniatures (cost, mushy when small), clean line glyphs (no period character).
 

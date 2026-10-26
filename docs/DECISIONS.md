@@ -337,3 +337,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Music is soft ambient early-music playing generally (replaces "long silences" in D-055). After launch, bardic songs occasionally interrupt it; the bard plays more with a tavern or a Cantor, and pieces are titled after great deeds and deaths and named in the news and Chronicle. Detail: `docs/design/STYLE.md` §8.
 - **Why:** Owner approved the bard proposal as a later item and set the music direction.
+
+## D-057 Hand-tinted card icons; seals for factions and contracts
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Large card-size icons get a hand-tinted watercolour wash; ledger icons stay plain ink. Wax seals are reserved for factions, contracts and set pieces. Detail: `docs/design/STYLE.md` §6.
+- **Why:** Owner approved the §6 proposal; adds colour and flair where icons are large without hurting small-size readability.
