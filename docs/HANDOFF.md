@@ -4,10 +4,11 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Phase
 
-3 of 3: Full plan → `docs/design/PLAN.md`. Concept locked (D-045); style locked (D-061); plan outline approved (D-062). PLAN.md Part A §1–§10 written (D-063..D-089); §11–§15 written (D-090..D-106). All 15 sections accepted one by one; the whole plan awaits the owner's approval (M0, D-099).
+Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-061), plan approved 2026-10-26 (M0, D-115) with the plan review's decisions (D-108..D-114). Plan: `docs/design/PLAN.md`; game code may now start (D-001 lifted).
 
 ## Just done
 
+- 2026-10-26 Owner approved the whole plan (M0, D-115); PR #5 merged.
 - 2026-10-26 Plan review decided: 10–20 h a week, about 31–46 months to launch (D-108); lean launch cut (D-109); web-first engine test (D-110); stop and slip rules (D-111); 3–4 small crises at launch (D-112); all other recommendations adopted (D-113 design and production, D-114 engine foundations and standards). Applied across PLAN.md.
 - 2026-10-26 Plan review before M0 (owner's request): `docs/design/PLAN-REVIEW.md`, page `docs/design/mockups/plan-review.html`. 9 lean, 11 fun, 8 codebase, 4 standards findings and a top-10 action list; all proposals, none decided. Owner's rule: reviewers are independent, briefed without the main session's findings (D-107).
 - 2026-10-26 PLAN.md §15 accepted: checks per push vs before gates, path-filtered CI with release-only builds, bug severities, Steam branches, release checklist, hotfixes (D-105); launch on Windows only, Deck and Mac after launch (D-106). Plan complete; §14 and §15 on branch `ccr-a7e935d0-9dffpn`.
@@ -33,7 +34,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Next
 
-1. Owner approves the whole plan (M0, D-099), now including the plan review's decisions (D-108..D-114); record the approval in DECISIONS (it lifts D-001's no-code rule). Then M1 starts: write `docs/STANDARDS.md` and resolution v0 (D-113, D-114), then the web-first engine test (D-110); Godot tooling only if web misses its bar. Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
+1. M1 step one: write `docs/STANDARDS.md` and a per-package `AGENTS.md` plan (D-114), then resolution v0: half a page plus engine code for how party, plan, stats, gear and site become odds and events (PLAN §9b, D-113). Then the web-first engine test (D-110): ledger and kingdom map in Electron + TypeScript, reusing Story-Generator map code (owner to confirm rights, §12d). Ask the owner before adding the stack's dependencies (approve the list once, D-114) and before any Godot tooling. Time-boxes and stop rules: PLAN §9b (D-111).
 
 ## Open questions
 

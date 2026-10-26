@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: all 15 sections written and accepted section by section (2026-10-26); the whole plan awaits the owner's approval (M0, D-099).
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: **approved by the owner on 2026-10-26 (M0, D-115)**, with the plan review's decisions (D-108..D-114). Changes from here go through DECISIONS.
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -818,7 +818,7 @@ Each milestone ends at a gate: the owner reviews the exit checks and says go, lo
 
 | # | Milestone | What is built | Who plays (§10a) | Exit checks | Estimate |
 |---|---|---|---|---|---|
-| M0 | Plan approved | PLAN §14–§15 finished | — | Owner approves the whole plan (D-001) | now |
+| M0 | Plan approved | PLAN §1–§15 and the plan review (done 2026-10-26, D-115) | — | Owner approves the whole plan (D-001) | done |
 | M1 | Prototypes | §9b steps 0–4: engine test, one watched quest, headless year simulator, desk mock-ups and writing test, two years in the text prototype. The simulation core is kept; prototype screens are throwaway (§9, D-113) | Owner | Engine settled web-first (D-110); R1–R4 and R6–R8 pass lines met (D-086); R9 proxy shows 20–30-year careers; §9d checks pass | 5–8 months |
 | M2 | Vertical slice | The production engine, content, ui and shell packages (§11b). The prologue and first season (D-076) in one corner of the March: 2 biomes, 3 settlements, 4 classes, ~10 monster kinds, ~6 quest templates; final art and audio for that corner only; the slice's corner of the kingdom map in final style, the rest sketched (D-113) | 6–10 invited players | First season in 3–4 h (D-064); no dense screen needs more than one explanation (D-065); testers name 3 adventurers (R7); determinism test and save upgrade test pass (GAME-05, GAME-06); a tester's bug replays from their save (D-114) | 7–10 months |
 | M3 | Alpha | All 14 launch systems (D-070) in, playable over many years; whole March with about half the launch content; placeholder art allowed outside the slice | 30–50 closed testers | Medians within ±25% of the §4 targets over real play; ≤ 100 stops a year for the mid-sized guild (D-068, §9d); no unreadable saves; feature complete for launch | 10–15 months |

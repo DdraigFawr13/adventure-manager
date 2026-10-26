@@ -7,6 +7,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Concept until 100% fleshed out, then style design, then a full plan grounded in game-design best practices. No game code before the plan is approved.
 - **Why:** Owner's direction at project start; cohesion of mechanics, theme and visuals depends on settling each before the next.
+- **Amended (2026-10-26, D-115):** the plan is approved; game code may start, beginning with M1.
 
 ## D-002 Original IP, Pathfinder as inspiration only
 
@@ -704,4 +705,10 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Before any rule is coded: values carry their own breakdown and cause; named random streams per system kept in the state (`simulate(state, command)`); playtest saves keep commands since the last snapshot so bugs replay exactly; an event-log retention rule tested against the 30-year save. Package boundaries enforced by lint; one schema source for content types and validation; a text-template grammar before R8; interface labels in string files. `docs/STANDARDS.md` and a per-package `AGENTS.md` written at M1 start; engine invariant checks in every balance run; golden-file tests for text; half-page rules specs written just in time; the stack's dependency list approved once. Detail: `docs/design/PLAN.md` §11h, §11i, §15.
 - **Why:** Plan review codebase and standards findings (C1–C8, S1–S4); owner: "just go with your recommendations for the rest."
+
+## D-115 Plan approved (M0)
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The owner approves the whole plan, `docs/design/PLAN.md` §1–§15 with the plan review's decisions (D-108..D-114). This passes the M0 gate (D-099) and lifts D-001's no-code rule. The build starts at M1: `docs/STANDARDS.md` and resolution v0 first, then the web-first engine test (D-110, D-113, D-114). The plan stays the reference; changes to it go through DECISIONS (SRC-04).
+- **Why:** Owner: "merge it and approve the plan" (2026-10-26).
 

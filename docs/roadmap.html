@@ -53,18 +53,18 @@ code { font-family: var(--mono); font-size: .85em; }
 
 <div class="wrap">
   <header>
-    <span class="meta">Updated 26 October 2026 · design phase 3 of 3</span>
+    <span class="meta">Updated 26 October 2026 · build · milestone M1</span>
     <h1>Adventure Manager roadmap</h1>
     <p class="sub">Where the design stands, what comes next, and what is parked for later. This page is a view of <code>docs/HANDOFF.md</code> and <code>docs/design/PLAN.md</code>; if they ever disagree, the handoff wins.</p>
   </header>
 
   <section class="now" aria-labelledby="now">
     <span class="pill p-now">Now</span>
-    <h2 id="now">The plan is written: your approval next (M0)</h2>
+    <h2 id="now">Plan approved: building starts (M1)</h2>
     <ol>
-      <li><b>Approve the whole plan:</b> all 15 sections are accepted, and the plan review's decisions are applied (lean launch cut, solo timeline, web-first engine test; D-108–114). Your approval lifts the no-code rule (D-001).</li>
-      <li>Then M1 starts: a standards file and "resolution v0" (how a quest turns into odds and events), then the web-first engine test.</li>
-      <li>§1–§13 are merged (#2, #3, #4); §14, §15 and the plan review are in pull request #5.</li>
+      <li><b>Standards first:</b> a short standards file and per-package rules for AI coding (D-114).</li>
+      <li><b>Resolution v0:</b> how a party, its plan and the site turn into odds and events; the heart of the watched quest (D-113).</li>
+      <li><b>Engine test, web-first:</b> the ledger and kingdom map in Electron and TypeScript; Godot only if web misses its bar (D-110).</li>
     </ol>
   </section>
 
@@ -73,8 +73,8 @@ code { font-family: var(--mono); font-size: .85em; }
     <ul class="phases">
       <li><span class="pill p-done">Done</span><b>1 · Concept</b><small>33 sections, locked 25 Oct (D-045)</small></li>
       <li><span class="pill p-done">Done</span><b>2 · Style</b><small>9 sections, locked 26 Oct (D-061)</small></li>
-      <li><span class="pill p-now">In progress</span><b>3 · Full plan</b><small>15 of 15 written; awaiting your approval</small></li>
-      <li><span class="pill p-wait">After the plan</span><b>Build</b><small>M1–M7, about 31–46 months to launch, solo at 10–20 h a week (estimate)</small></li>
+      <li><span class="pill p-done">Done</span><b>3 · Full plan</b><small>15 sections, approved 26 Oct (D-115)</small></li>
+      <li><span class="pill p-now">Now</span><b>Build</b><small>M1–M7, about 31–46 months to launch, solo at 10–20 h a week (estimate)</small></li>
     </ul>
   </section>
 
@@ -105,9 +105,9 @@ code { font-family: var(--mono); font-size: .85em; }
 
   <section aria-labelledby="build">
     <h2 id="build">After the plan: building it</h2>
-    <p>No game code until you approve the whole plan (D-001). The build follows the §13 milestones; each ends at a gate where you say go, loop or stop (D-099).</p>
+    <p>You approved the plan on 26 October (D-115). The build follows the §13 milestones; each ends at a gate where you say go, loop or stop (D-099).</p>
     <ul class="phases">
-      <li><span class="pill p-wait">Build 1</span><b>Prototypes</b><small>M1 · 5–8 months. Standards file and resolution v0; web-first engine test; one watched quest, the headless simulator, desk mock-ups, attachment playtest (D-085, D-110)</small></li>
+      <li><span class="pill p-now">Build 1 · now</span><b>Prototypes</b><small>M1 · 5–8 months. Standards file and resolution v0; web-first engine test; one watched quest, the headless simulator, desk mock-ups, attachment playtest (D-085, D-110)</small></li>
       <li><span class="pill p-wait">Build 2</span><b>Vertical slice</b><small>M2 · 7–10 months. Prologue and first season in one corner of the March at final quality; 6–10 players; Steam page goes up</small></li>
       <li><span class="pill p-wait">Build 3</span><b>Alpha</b><small>M3 · 10–15 months. All 14 launch systems, about half the content, 30–50 testers. Early Access or 1.0 decided here (D-100)</small></li>
       <li><span class="pill p-wait">Build 4</span><b>Demo, beta and launch</b><small>M4–M6 · 9–13 months. Free demo alongside a 200+ beta with all content and final art; then launch</small></li>
