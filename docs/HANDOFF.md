@@ -8,6 +8,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Just done
 
+- 2026-10-26 Roadmap page for the owner: `docs/roadmap.html`, published at https://claude.ai/artifact/FTio9mE7jLaK4Wrn189YAg. A view of HANDOFF and PLAN (HANDOFF wins).
 - 2026-10-26 PLAN.md §8 accepted: in-world letters with a Trace to the cause chain, plus numbered inspector histories (D-082, mock-up `consequences.html`); nine surfaces and seven consequence rules (D-083).
 - 2026-10-26 PLAN.md §7 accepted: ancestries Marchfolk, Stonewrights, Lanthe, Reedfolk, Barrowborn (D-079, mock-up `ancestries.html`); standard content volume: 36 monster kinds, 20 sites, 20 quest templates, 60 key moments, ~6,000 lines (D-080); classes, talents, 4 prestige paths, attributes, traits, staff, backgrounds (D-081).
 - 2026-10-26 PLAN.md §6 accepted: prologue + staff-opened ledgers + clerk's notes (D-076); size slider + clear print (D-077); seven screen rules and accessibility list (D-078). Mock-ups published: `onboarding.html`, `readability.html`.
@@ -25,6 +26,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 1. Write PLAN.md §9 (risks and prototypes): riskiest assumptions and the cheapest test for each (quest sim fun to watch? desk holds FM density? old-press ledgers readable?). Include the art costing noted in Next 2. Continue in order to §15. Owner wants visual examples where they help. Draft each section, flag decisions inside it, ask the owner only at real choices (one popup at a time), record answers in PLAN.md and DECISIONS.md, commit.
 2. Early in phase 3 (§9 risks and prototypes, §12 art production): check old-press ledger readability on a rendered screen (STYLE.md §5, fallback D-052) and cost the art (map art, ink renderer, face part library, two icon sizes, painted portraits later).
+3. **Tools and skills review** (owner's request, 2026-10-26): after PLAN §11, before §15, look into tools and skills that improve development (Claude Code skills, agents, hooks; engine and editor tooling; testing, CI and asset pipelines). Adopt only if measured cheaper or equal at the same quality (DEL-07).
 
 ## Open questions
 
@@ -37,6 +39,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Working style with the owner
 
+- Keep `docs/roadmap.html` current: update and republish it (same file path, same URL) at every checkpoint where a section or phase changes.
 - Ask one question at a time as a popup (AskUserQuestion) with a recommendation and room for notes; record each answer in the design doc and DECISIONS.md immediately. "[No preference]" means skipped, not approved; show long content in chat, not only in option previews.
 - The owner often combines or extends options in the notes ("B but with more fantasy flair"); record their words as an owner's note and treat unselected extras as Proposed until approved.
 - Show visual choices as HTML mock-ups (published as artifacts, source in `docs/design/mockups/`); screenshot with Playwright and check before publishing.
