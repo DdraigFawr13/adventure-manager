@@ -1,6 +1,6 @@
 # Agent instructions
 
-Adventure Manager: a management game where the player runs an adventurers' guild (Football Manager's depth of squad, staff, finances and scouting, applied to Pathfinder-style parties, classes and quests). Single-player; platform and stack not chosen yet.
+Adventure Manager: a management game where the player runs an adventurers' guild (Football Manager's depth of squad, staff, finances and scouting, applied to Pathfinder-style parties, classes and quests). Single-player; Windows first (D-106); TypeScript, web-first engine test (D-110).
 
 Shared rules come from AI-Master-Instructions and load through CLAUDE.md (`.claude/master/RULES.md`). This file holds only what is specific to this project. Keep it under 80 lines.
 
@@ -25,7 +25,8 @@ No game code before phase 3 is approved.
 
 - Every push: `node .claude/master/sync.mjs --check` and `node tools/docs-check.mjs` (decision ids exist; no draft markers left in accepted PLAN sections).
 - Every HTML mock-up or page before publishing: `node tools/mockup-shot.mjs <file>` (desktop and phone render, fonts, no sideways scroll), then look at the screenshots (VER-06).
-- Add the project's own check command here once a stack is chosen.
+- Every push that touches code: `npm run check` (format, typecheck, package boundaries, tests). Install with npm 11 (`npx npm@11.9.0 ci`); npm 10 crashes on this lockfile's optional peers.
+- Code rules: `docs/STANDARDS.md`; each package's `AGENTS.md` adds its local rules.
 
 ## What CI runs
 

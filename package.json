@@ -1,0 +1,26 @@
+{
+  "name": "adventure-manager",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "packageManager": "npm@11.9.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "boundaries": "node tools/check-boundaries.mjs",
+    "test": "vitest run",
+    "format": "prettier --write --cache .",
+    "format:check": "prettier --check --cache .",
+    "check": "npm run format:check && npm run typecheck && npm run boundaries && npm test"
+  },
+  "devDependencies": {
+    "@babel/parser": "8.0.7",
+    "@types/node": "24.19.1",
+    "prettier": "3.9.9",
+    "typescript": "7.0.2",
+    "vitest": "5.0.3"
+  }
+}
