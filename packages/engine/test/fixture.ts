@@ -110,6 +110,8 @@ export function game(
     },
     roster,
     quest: null,
+    calendar: 1,
+    guild: null,
   };
 }
 

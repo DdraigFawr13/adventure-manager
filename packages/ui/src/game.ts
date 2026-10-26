@@ -30,6 +30,8 @@ export function newSession(seed: string): Session {
       content: baseResolution,
       roster: prototypeParty(),
       quest: null,
+      calendar: 1,
+      guild: null,
     },
     events: [],
     commandNo: 0,

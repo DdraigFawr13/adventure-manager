@@ -2,6 +2,7 @@
 import type { EventBase } from '../core/events.ts';
 import type { RngState } from '../core/rng.ts';
 import type { Value } from '../core/value.ts';
+import type { GuildCommand, GuildEventBody, GuildRules, GuildState } from '../guild/types.ts';
 
 export const ATTRIBUTES = [
   'might',
@@ -139,6 +140,8 @@ export type ClassAction = { readonly id: string } & (
 export interface ResolutionContent {
   readonly rules: ResolutionRules;
   readonly quests: readonly QuestTemplate[];
+  /** Guild year rules (guild/SPEC.md); absent in resolution-only games. */
+  readonly guild?: GuildRules;
 }
 
 export interface FoeState {
@@ -180,6 +183,9 @@ export interface GameState {
   readonly content: ResolutionContent;
   readonly roster: Adventurer[];
   quest: QuestRun | null;
+  /** Day number of the guild's calendar; 1 is the first day of week 1. */
+  calendar: number;
+  guild: GuildState | null;
 }
 
 export type CheckPurpose =
@@ -214,7 +220,8 @@ export type Command =
       readonly id: string;
       readonly day: number;
       readonly choice: 'push-on' | 'pull-out';
-    };
+    }
+  | GuildCommand;
 
 export type GameEvent = EventBase &
   (
@@ -252,4 +259,5 @@ export type GameEvent = EventBase &
       }
     | { readonly type: 'injury.gained' }
     | { readonly type: 'quest.ended'; readonly outcome: QuestOutcome }
+    | GuildEventBody
   );

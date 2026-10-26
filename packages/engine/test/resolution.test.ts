@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { checkInvariants, simulate } from '../src/index.ts';
 import { chanceValue, rollCheck } from '../src/resolution/check.ts';
+import { foundedGuild, playDays } from './guild-fixture.ts';
 import { adventurer, finish, game, ofType, run, steadyPlan } from './fixture.ts';
 
 const fixed = (roll: number) => ({ int: () => roll - 1 });
@@ -285,6 +286,10 @@ describe('the engine stays deterministic and sound (GAME-01, GAME-06)', () => {
 
   it('gives the same events for the same seed and commands', () => {
     expect(run(game(party())).events).toEqual(run(game(party())).events);
+    // The guild year too: one found, then 60 days of the fixed player.
+    const year = () => playDays(foundedGuild(5), 60).events;
+    expect(year()).toEqual(year());
+    expect(year().length).toBeGreaterThan(100);
   });
 
   it('never changes the state it is given, so a preview is safe', () => {

@@ -844,3 +844,15 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted as a goal (2026-10-26); design, tier and timing not decided.
 - **Decision:** Eventually the guild can send explorers into wild, uncharted areas of the March to uncover hidden places, items and other finds. It joins three things already planned and should be designed with them, not bolted on (WS-05): expeditions (Early update, CONCEPT §28), the map's charted and uncharted ground (the engine-test fog revealed in ink, D-134), and the owner's R1 notes on hidden items and multiple pathways (D-132). Finds are content data (GAME-04). Not built now.
 - **Why:** Owner (2026-10-26): "another thing I want eventually is like wild areas to send explorers to and maybe uncover hidden places or items or stuff like that".
+
+## D-137 Death targets are for a well-built party
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The per-danger death targets in PLAN §4c (0.2 / 0.8 / 2.5 / 7% per adventurer per quest, about 2 deaths a year) describe a strong, well-kitted party, with the sample party (`packages/content/data/prototype-party.json`) as the reference until the game has a fitter definition. An ordinary, randomly drawn guild loses more (the first year-simulator slice: about 4 deaths a year); a careful player earns the target by building and kitting parties well. Tuning checks the targets on the reference party; the year simulator reports the drawn guild alongside. Answers the HANDOFF open question on the reference party.
+- **Why:** Owner's choice (2026-10-26), over "a typical guild" and "the year total only".
+
+## D-138 Deaths and signings cost the guild
+
+- **Status:** Accepted (2026-10-26); amounts are starting assumptions for tuning.
+- **Decision:** A death costs the guild a funeral (200 copper), a share to the family (26 weeks of the dead member's wage) and, when the plan was reckless (bold risk or never retreating), 5 renown. Signing a recruit in a window costs a sign-on fee of 8 weeks of their wage. Numbers live in content (`packages/content/src/base/guild.ts`); rules in `packages/engine/src/guild/SPEC.md`. Measured (1,000 years, fees retuned to scale 135): bold plans now have the most renown in 22% of years (was 55%) but still the most money in 87% (was 92%), because bold wins more contracts; PLAN §9d's "no dominant safe play" is still missed on money.
+- **Why:** Owner's choice (2026-10-26) on the dominant bold plan, over "bold hurts more" and "wait for later slices": every choice needs a visible price (PLAN §4g), and a death had cost nothing and saved a wage.
