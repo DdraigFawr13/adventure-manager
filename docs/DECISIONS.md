@@ -343,3 +343,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Large card-size icons get a hand-tinted watercolour wash; ledger icons stay plain ink. Wax seals are reserved for factions, contracts and set pieces. Detail: `docs/design/STYLE.md` §6.
 - **Why:** Owner approved the §6 proposal; adds colour and flair where icons are large without hurting small-size readability.
+
+## D-058 Naming: mixed cultures on an English-fenland core
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Human names and places use an English-fenland base; each ancestry and major faction has its own naming rules as data. No Pathfinder names, no culture copied from one real nation. Detail: `docs/design/STYLE.md` §9a.
+- **Why:** Owner's choice (Style Q9a); origin readable at a glance, grounded core, extensible by mods.

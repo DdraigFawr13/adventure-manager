@@ -113,3 +113,17 @@ Open: whether bardic songs are sung or instrumental. If sung, lyrics are authore
 Owner's note (2026-10-26): "I think there should be soft ambiance music generally but occasionally interrupted with bardic songs. Doesn't need to be at launch."
 
 Rejected: epic orchestral (fatigue, fights the quiet desk), ambience only (no identity), dark folk (too grim for the whimsy asked for).
+
+## 9. Naming and voice
+
+### 9a. Naming flavour (Accepted 2026-10-26)
+
+**Mixed cultures on an English-fenland core.**
+
+- Humans of the March use an English-fenland base: Ashford, Fenn March, Varrowmere, Hollow Barrow; Wenna Cray, Odric Hale.
+- Each ancestry and major faction has its own naming rules (sounds, structures, epithets), so a name tells the player where someone is from.
+- Naming rules are data (D-044); mods can add cultures.
+- Names must be pronounceable and distinct at a glance in a 30-row roster.
+- Guardrails: no Pathfinder names (D-002); no culture copies a single real-world nation, and ancestries are never mapped onto real ethnic stereotypes.
+
+Rejected: one English flavour for all (the region feels like one county), Celtic and British throughout (ties the setting to one real culture), invented language (hard to remember at roster scale).
