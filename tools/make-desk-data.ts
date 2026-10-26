@@ -259,6 +259,16 @@ const baked = JSON.parse(readFileSync('packages/ui/assets/engine-test/map-base.j
   roads: { cells: number[] }[];
   rivers: { cells: number[] }[];
 };
+// Checked before use: halving needs even sides, and the fields read below must be there.
+if (
+  typeof baked.water !== 'string' ||
+  typeof baked.biome !== 'string' ||
+  !Number.isInteger(baked.width / 2) ||
+  !Number.isInteger(baked.height / 2) ||
+  !(baked.dayCells > 0) ||
+  !Number.isInteger(baked.guildCell)
+)
+  throw new Error('map-base.json is not the bake this tool expects.');
 const water = Buffer.from(baked.water, 'base64');
 const biome = Buffer.from(baked.biome, 'base64');
 const W = baked.width / 2;
@@ -267,8 +277,6 @@ const xy = (cell: number): [number, number] => [
   Math.floor((cell % baked.width) / 2),
   Math.floor(Math.floor(cell / baked.width) / 2),
 ];
-if (typeof baked.water !== 'string' || typeof baked.biome !== 'string' || !(baked.width > 0))
-  throw new Error('map-base.json is not the bake this tool expects.');
 // A half-size cell is water when at least 3 of its 4 full cells are.
 const isWater = (x: number, y: number) => {
   let wet = 0;
@@ -293,8 +301,12 @@ const [gx, gy] = xy(baked.guildCell);
 const daysFor: Record<string, number> = Object.fromEntries(
   rules.dangers.map((d) => [d.danger, d.travelDays + 1]),
 );
-// Sites keep clear of each other, the hall and the towns (about 6 half-cells).
-const taken: [number, number][] = [xy(baked.guildCell), ...baked.placeCells.map(xy)];
+// Sites keep clear of each other, the hall, the towns and the villages (about 6 half-cells).
+const taken: [number, number][] = [
+  xy(baked.guildCell),
+  ...baked.placeCells.map(xy),
+  ...baked.villageCells.map(xy),
+];
 const sitePlaces = baseContracts.sites.map((site, i) => {
   const days = Math.min(...site.dangers.map((d) => daysFor[d] ?? 6));
   const angle = (i * 2 * Math.PI) / baseContracts.sites.length + 0.4;

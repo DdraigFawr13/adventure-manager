@@ -84,6 +84,7 @@ Phase 1 concept. Each section records what the owner decided, with their own not
 - **Decided (2026-10-25):** Guild-level kit. The guild owns an armoury; gear has tiers and a few properties. Notable magic items are named, unique and storied (they gather history as they're used).
 - The quartermaster equips adventurers to a policy the player sets; the player hand-assigns special pieces.
 - Crafting means commissioning items from contacts or the guild workshop; no crafting minigames. Commissioning moved to Early update (D-070).
+- **Amended (2026-10-26, D-143):** gear is per adventurer in RPG-style slots, equipped by hand or by the quartermaster's policy (the two points above now apply per slot); basics are bought from a smith's shop, and buildings may later give discounts or rarer stock.
 
 ## 10. Recruitment
 

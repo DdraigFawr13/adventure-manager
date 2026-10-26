@@ -167,7 +167,7 @@ Launch has 14 systems (D-070). Format per system: pillars served · inputs → o
 5. **Parties and plans** (D-014). Pillar 2. Inputs: adventurers, chemistry, scouting and research, gear. Outputs: a party and a plan (roles, approach, risk tolerance, retreat thresholds) handed to the simulation. Decisions: who goes, which plan. Delegation: saved plans per party; party leaders pick minor tactics (D-032).
 6. **Quest simulation and key moments** (D-004, D-032). Pillar 2. Inputs: party, plan, gear, research, magic (D-028), site from seeded templates (D-030). Outputs: events for the log and board, loot, wounds, deaths, experience, reports, renown, region change. Decisions: major key moments (push on, retreat, spare, spend). Delegation: minor moments to party leaders; full auto-resolve as a setting.
 7. **Scouting and research** (D-013, D-041; merged by D-070). Pillars 2, 5. One department (scouts and librarian) and one ledger of what the guild knows about people, sites, monsters and rivals. Inputs: scout staff, library, survivors' reports, quest events. Outputs: shortlists of prospects with attribute ranges that narrow as knowledge grows, better plan options, revealed key-moment choices, rival reports. Decisions: what and whom to scout or research. Delegation: scouts and librarian.
-8. **Gear and loot** (D-012). Pillars 1, 2. Inputs: loot, money, armoury. Outputs: kit tiers on adventurers, storied magic items, sale income. Decisions: kit policy, who gets special pieces, sell or keep. Delegation: quartermaster equips to policy; special and storied pieces stay with the player. Commissioning items moves to Early update (D-070). **Amended (D-143):** gear sits in RPG-style slots on each adventurer, equipped by hand or by the quartermaster's policy; basics are bought from a smith's shop, and buildings may later give discounts or rarer stock.
+8. **Gear and loot** (D-012). Pillars 1, 2. Inputs: loot, money, armoury, the smith's shop (D-143). Outputs: kit tiers on adventurers, storied magic items, sale income. Decisions: kit policy, who gets special pieces, sell or keep. Delegation: quartermaster equips to policy; special and storied pieces stay with the player. Commissioning items moves to Early update (D-070). **Amended (D-143):** gear sits in RPG-style slots on each adventurer, equipped by hand or by the quartermaster's policy; basics are bought from a smith's shop, and buildings may later give discounts or rarer stock.
 
 **Guild**
 
@@ -467,7 +467,7 @@ Decisions: D-079..D-081, D-109, D-112. Every item is a data entry (GAME-04, D-04
 
 ### 7c. Places and work (Accepted 2026-10-26, D-080)
 
-- **Region:** one authored region, the March (D-030): **8 settlements**, **5 biomes** (fen, downs and woods, moor, hills and caves, coast), about 12 authored landmarks.
+- **Region:** one authored region, the March (D-030): **8 settlements** (at least; D-144 adds another major city and wild-country outposts), **5 biomes** (fen, downs and woods, moor, hills and caves, coast), about 12 authored landmarks.
 - **Factions: 6**: the crown, two cities, a temple, a merchant house and the outlaws (CONCEPT §16), each with a crest, colours and naming rules.
 - **Rival guilds: 17** (3 tiers of 6 with the player, D-073): about 6 authored (name, crest, charter, specialty, patron, home town, founding adventurers) and the rest generated from templates by seed (D-109).
 - **Site templates** (seeded, D-030): delve sites (barrows, ruins, mines, caves, sunken chapels and so on), beast lairs, and defence sites (village, fort, bridge, mill). **20 templates** (D-080).
@@ -479,7 +479,7 @@ Decisions: D-079..D-081, D-109, D-112. Every item is a data entry (GAME-04, D-04
 ### 7d. Guild and gear (Accepted 2026-10-26, D-080)
 
 - **Facilities: 5** × 3 levels (D-075).
-- **Gear:** 4 tiers × about 10 kit types; about 30 magic-item templates that generate storied items, plus about 10 authored legendary items placed in the region.
+- **Gear:** 4 tiers × about 10 kit types (to revisit when the slots and items of D-143 are designed); about 30 magic-item templates that generate storied items, plus about 10 authored legendary items placed in the region.
 - **Guild traits:** about 25 earnable traits (D-020, D-075).
 - **Charter options:** values scale, about 8 specialties, about 12 house rules.
 
@@ -796,6 +796,7 @@ Mock-up: `docs/design/mockups/kingdom-map.html` (interactive: base style and lay
   - It is written in TypeScript with canvas rendering: reuse fits the web option of the engine test directly; Godot would need a port to C#. Evidence for D-090, not a decision.
   - Licence: `UNLICENSED` (`package.json:5`); the owner holds the rights, so reuse is approved (D-116); check the licences of any of its dependencies that come along, and record provenance (SAFE-05).
 - **Launch layers** (lean cut, D-109): areas and places (always), **guilds** (banners with ranking tier) and **action** (parties and rivals moving, key-moment seals). Each mark links to its Trace (D-082). **Factions** (who holds sway where) and **threats** (spreading ink stains, closed roads) follow in an update; meanwhile faction standing lives in its ledger and threats arrive as rumours and letters.
+- **Geography review** (D-144, owner's addition): before the base is drawn, check that rivers run believably and roads follow sensible lines (valleys, fords, passes, bridges); place every town for a reason (a crossroads, a ford, a harbour, a resource such as ore, timber, salt, fish, wool or peat) with a specialty the economy and contracts can use; add at least one more major city and outposts in the wild and harsh areas. §7c's 8 settlements becomes a floor.
 - **When it is drawn** (D-113): at M2 the artist draws the slice's corner in final style and the rest as a sketch; the full base is commissioned once alpha balance is stable, so places that move during balancing are not redrawn.
 - **Later:** **deeds** on the map (inked cartouches, the fallen with a mourning corner; meanwhile deeds live in the Chronicle, D-042) and **rumours** as pencil notes (meanwhile in the inbox, D-043).
 

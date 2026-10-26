@@ -36,7 +36,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 - Reference party for PLAN §4c targets: settled, a well-built party with the sample party as reference (D-137).
 - Permissions (from the PR #3 review): tighten the allow list (`cat`/`grep`/`find` can read `.env`; `git branch:*` allows `-D`; `find:*` allows `-delete`) and widen the force-push ask rules (`-fu`, `origin +main`, `git -C`)? Owner to decide; see D-096 limits.
-- Kingdom map art direction continues past §12 (D-097): Story-Generator layout as the artist's base.
+- Kingdom map art direction continues past §12 (D-097): Story-Generator layout as the artist's base; the workshop now includes a geography review (D-144: sensible rivers and roads, towns placed for a reason with specialties, another major city, wild-country outposts).
 - Later: 20 class levels (D-074) need a pacing decision; facility compound / city-building style guildhall (D-075) not scoped.
 - Intrigue and underhanded dealings (owner's note, D-069): Later tier; content not decided.
 - Exploring the wilds (owner's wish, D-136): explorers uncover hidden places and items; design with expeditions, the map's charting and the R1 hidden-items note; tier not set.
