@@ -14,11 +14,13 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Next
 
-1. Next: Style Q3 UI layout, then, tabletop board look, typography, iconography, portraits, audio mood, naming and voice.
+1. Next: Style Q3 UI layout; then tabletop board look, typography, iconography, portraits, audio mood, naming and voice.
 2. Show visual options as artifacts (mood boards, UI mock-ups) where words aren't enough.
 3. Write `docs/design/STYLE.md` as decisions land; then phase 3 plan.
 
 ## Open questions
+
+- STYLE.md §2 proposal: separate colour-blind-safe status colours and heraldic faction colours. Not yet approved.
 
 - Stack and engine: decided in phase 3; add the matching `stacks/` layer then.
 
