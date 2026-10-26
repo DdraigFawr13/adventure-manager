@@ -192,7 +192,7 @@ Working document for phase 1. Each section records what the owner decided, with 
 ## 28. Scope tiers
 
 - **Decided (review, 2026-10-25):** Every feature is tagged Launch, Early update or Later, and launch is a "minimum lovable" game.
-- **Proposed tiers** (owner to confirm or move items):
+- **Tiers (confirmed 2026-10-25):**
   - **Launch:** §1–§11, §12 delves/hunts and small-scale defence, §13, §14 templates, §15–§23, §24 launch magic, §25, §26 authored region, §27, §29 saves, §30 guild knowledge, §31 chronicle, §32 news and inbox; content stored as data (§33).
   - **Early update:** multi-party war campaigns; optional AI flavour (§14); escorts and expeditions.
   - **Later:** intrigue and investigation; magic traditions (§24); generated regions (§26); public mod tools (§33); social features (§21).

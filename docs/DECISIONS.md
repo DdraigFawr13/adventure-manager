@@ -209,7 +209,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 ## D-035 Scope tiers; war campaigns after launch
 
 - **Status:** Accepted (2026-10-25)
-- **Decision:** Every feature is tagged Launch, Early update or Later; launch is a minimum lovable game with delves/hunts and small-scale defence. Proposed tier list in `docs/design/CONCEPT.md` §28 awaits owner confirmation.
+- **Decision:** Every feature is tagged Launch, Early update or Later; launch is a minimum lovable game with delves/hunts and small-scale defence. Tier list confirmed by the owner: `docs/design/CONCEPT.md` §28.
 - **Why:** Concept review: the full scope is too large for one launch.
 
 ## D-036 The patron is a faction
