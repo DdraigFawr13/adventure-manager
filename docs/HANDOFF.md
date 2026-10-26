@@ -8,7 +8,7 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Just done
 
-- 2026-10-26 PLAN.md §12 accepted: kingdom map hand-drawn base now, procedural later, launch layers factions, guilds, action, threats (D-097; D-087 amended; mock-up `kingdom-map.html`); asset lists, rough costs (art $23k–74k, audio $9k–37k) and pipeline (D-098). Story-Generator repo review for map art direction under way.
+- 2026-10-26 PLAN.md §12 accepted: kingdom map hand-drawn base now, procedural later, launch layers factions, guilds, action, threats (D-097; D-087 amended; mock-up `kingdom-map.html`); asset lists, rough costs (art $23k–74k, audio $9k–37k) and pipeline (D-098). Story-Generator reviewed: its seeded worldgen and ink atlas (TypeScript, canvas) can lay out the March and seed the procedural renderer; reuse favours the web engine option (PLAN §12d).
 - 2026-10-26 Tools review accepted (D-094); fresh session per merged PR or plan section (D-095); deny secret reads and ask before force-push in `.claude/settings.json` (D-096).
 - 2026-10-26 Tools and skills review drafted: `docs/design/TOOLS-REVIEW.md`, page https://claude.ai/artifact/UiwdssAjKy2dnZ73pzJfeB. Adopted: docs checker, mock-up script, one setup audit (D-092); adversarial review before every PR (D-093). Ripgrep: useful, already in use; caveman skill: not adopted.
 - 2026-10-26 PLAN.md §11 accepted: engine chosen after a two-engine test, web tech (Electron, TypeScript) vs Godot 4 (C#), as prototype step 0 (D-090); engine-neutral architecture with the event log as spine, integer determinism, JSON packs, safe versioned saves (D-091).
