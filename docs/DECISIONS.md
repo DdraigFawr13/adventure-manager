@@ -786,3 +786,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** The R1 prototype (PLAN §9b step 1) is a private web page published as a claude.ai link: party sheet, a plain board with standees moving scene to scene, the scrolling log, and push-on or pull-out buttons at moments. Built in `packages/ui` with Vite + React (D-117) on the real engine and content; the screens are throwaway (D-113), the engine is kept. The owner watches 10 quests and records notes for the R1 pass line (PLAN §9a).
 - **Why:** Owner's choice (2026-10-26): nothing to install, works on phone or PC.
 
+
+## D-128 The roadmap page is updated every session
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Every working session on this project updates `docs/roadmap.html` and republishes it to the same link (https://claude.ai/artifact/FTio9mE7jLaK4Wrn189YAg), so the owner can follow progress. It stays a view of HANDOFF and PLAN; HANDOFF wins if they disagree.
+- **Why:** Owner (2026-10-26): "I want that updated in every chat for this project so I can see the progress."

@@ -51,7 +51,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 - End the session after each merged PR or finished plan section; the next one starts here (D-095).
 - Before creating any PR, and before marking one ready, do an adversarial review of the whole branch diff (D-093).
-- Keep `docs/roadmap.html` current: update and republish it (same file path, same URL) at every checkpoint where a section or phase changes.
+- Every session updates and republishes `docs/roadmap.html` to https://claude.ai/artifact/FTio9mE7jLaK4Wrn189YAg (D-128); read the live artifact first, then publish with its `url`.
 - Ask one question at a time as a popup (AskUserQuestion) with a recommendation and room for notes; record each answer in the design doc and DECISIONS.md immediately. "[No preference]" means skipped, not approved; show long content in chat, not only in option previews.
 - The owner often combines or extends options in the notes ("B but with more fantasy flair"); record their words as an owner's note and treat unselected extras as Proposed until approved.
 - Show visual choices as HTML mock-ups (published as artifacts, source in `docs/design/mockups/`); screenshot with Playwright and check before publishing.
