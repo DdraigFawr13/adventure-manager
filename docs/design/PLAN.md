@@ -361,7 +361,7 @@ Decisions: D-074, D-075. Shapes and targets only; exact curves are tuned in the 
 The four layers (D-037) grow at different speeds, so every year shows some change:
 
 - **Attributes (1–20)** grow through training and quests toward a hidden potential (CONCEPT §5), fastest in the first 3–4 years. They peak in the adventurer's prime and decline with age and lasting injuries; physical attributes fall first, mental ones last. Ancestry sets the ages (a long-lived ancestry peaks later and declines slower), as data (GAME-04).
-- **Class levels** (Accepted 2026-10-26, D-074): **10 levels at launch**, the main visible sign of growth. Each level adds class abilities and one talent pick. Pace: about 1 level a year early in a career, slowing later; most survivors retire around level 7–9; level 10 marks a legend. Multiclassing or a prestige path opens at level 5.
+- **Class levels** (Accepted 2026-10-26, D-074): **10 levels at launch**, the main visible sign of growth. Each level adds class abilities and one talent pick. Pace: about 1 level a year early in a career, slowing later; most survivors retire around level 7–9; level 10 marks a legend. Multiclassing or a prestige path opens at level 5, after launch (D-109).
   - **Planned: 20 levels later** (owner's note: "Start with 10. Plan for 20 eventually"). To keep that open, the level count, experience curve and per-level abilities are class data (GAME-04), and level-gated rules (prestige at 5, danger ratings) refer to bands, not fixed numbers. Going to 20 later needs its own pacing decision (faster levelling or longer careers) and twice the per-class content.
 - **Talents** are chosen at each level: the player picks, or the head trainer picks to a plan (D-070 delegation). Multiclassing or a prestige path opens at a set level (CONCEPT §15); both come in an update after launch (D-109).
 - **Traits** change through events, not training: scars and trauma from injuries (D-008), deeds ("Survived the Fen Drake"), habits and personality shifts. They are the layer that carries the adventurer's story.
@@ -451,7 +451,7 @@ Decisions: D-079..D-081, D-109, D-112. Every item is a data entry (GAME-04, D-04
   - **Marchfolk** (humans of the March): learn fastest. Prime about 24–32.
   - **Stonewrights** (stout hill miners): shrug off poison and wounds, slow to heal from trauma. Prime about 40–80.
   - **Lanthe** (long-lived wood folk): grow slowly, can serve under several guildmasters (Pillar 3). Prime about 60–200.
-  - **Reedfolk** (fen stilt-dwellers): parties with one travel the fens fast. Prime about 22–34.
+  - **Reedfolk** (fen stilt-dwellers; after launch, D-109): parties with one travel the fens fast. Prime about 22–34.
   - **Barrowborn** (born near the old barrows): see in the dark, sense the restless dead; the temple faction distrusts them. Prime about 24–32.
   - Each sets attribute leanings, ageing (D-075), naming rules (D-058) and one or two traits. Later as data: Hearthlings (small folk), Grael (tusked clans), Mossbacks, Ashlings.
 - **Attributes: about 16** (lean cut, D-109) on the 1–20 scale (D-007), including hidden ones (potential, consistency, loyalty). Final list during the prototype (§9).
@@ -532,7 +532,7 @@ Each outcome reaches the player through one or more of these, from immediate to 
 
 ## 9. Risks and prototypes (Accepted 2026-10-26)
 
-Decisions: D-084..D-086, D-110, D-113. A prototype answers one question cheaply. **The simulation core is kept** (amended 2026-10-26, D-113): it is written as the production engine package from the start (§11b), with tests; only prototype screens are throwaway. A prototype it is the first build step after the plan is approved (D-001). "Fun" and feel checks pass only on the owner's recorded playtest notes (GAME-06).
+Decisions: D-084..D-086, D-110, D-113. A prototype answers one question cheaply. **The simulation core is kept** (amended 2026-10-26, D-113): it is written as the production engine package from the start (§11b), with tests; only prototype screens are throwaway. Prototyping is the first build step after the plan is approved (D-001). "Fun" and feel checks pass only on the owner's recorded playtest notes (GAME-06).
 
 ### 9a. Riskiest assumptions (Accepted 2026-10-26, D-086)
 
@@ -542,7 +542,7 @@ Ranked by how much of the game fails if the assumption is wrong. "Cheapest test"
 |---|---|---|---|---|
 | R1 | Watching a quest (log and board) is tense and fun | The core loop (Pillar 2) is dull; players auto-resolve everything | One quest, simulated: text log plus a plain board with standees; owner watches 10 quests | Owner wants to watch the next one; auto-resolve feels like a loss; key moments feel like real choices |
 | R2 | The simulation hits the §4 targets: ~2 deaths a year, money tight early, ladder movement | Balance needs rework after art is built | Headless year simulator (no graphics): 1,000 seeded guild-years, report deaths, money, promotions | Medians within ±25% of §4 targets; no runaway rival in 30 simulated years |
-| R3 | A year fits the friction budget: ~80 stops, ~145 min (D-068) | Sessions drag or feel empty | Same headless simulator counts stops by class; then a timed playtest of one year in the text prototype | ≤ 100 stops a year; owner plays a year in ≤ 3 h |
+| R3 | A year fits the friction budget: ~80 stops, ~145 min (D-068) | Sessions drag or feel empty | Same headless simulator counts stops by class; then a timed playtest of one year in the text prototype | ≤ 100 stops a year for the mid-sized guild (top guild: §9d); owner plays a year in ≤ 3 h |
 | R4 | The desk layout holds FM density (30-row roster, finances) on a 1366 px screen | Dense screens need a redesign late | Clickable HTML mock-ups of roster, finances and contract board at 1366 and 1920 px | 25+ roster rows visible at 1366 px; owner finds 5 set facts in under 10 s each |
 | R5 | Old-press ledgers are readable | Dense screens tire players (STYLE §5) | Rendered ledger specimens at real sizes (done, §9c: 15 px, lining figures) | Confirmed on real monitors during R4 |
 | R6 | Staff are competent but limited: the player's own focus visibly beats delegation (D-038) | Delegating everything is optimal; the player becomes a spectator | Headless simulator: same seeds, delegated vs a careful player policy | Player focus 10–25% better on the chosen area; delegation never ruinous |
@@ -563,9 +563,9 @@ The riskiest question first. All prototypes come after the plan is approved (D-0
 3. **Desk-density mock-ups and writing test** (R4, R8): HTML mock-ups at 1366 and 1920 px, and one template family generated 200 times. Neither needs the engine, so they can run alongside step 1 or 2.
 4. **Two years in the text prototype** (R7): the attachment check.
 
-**Time-boxes** (D-111, D-113; estimates at 10–20 h a week): engine test 4–6 weeks; resolution v0 and step 1 6–10 weeks; step 2 starts with one guild, no rivals and three classes and widens in steps, 8–12 weeks; steps 3 and 4 alongside. A step over its box by half goes to the owner at once, not at the gate.
+**Time-boxes** (D-111, D-113; estimates at 10–20 h a week): engine test 4–6 weeks; resolution v0 and step 1 6–10 weeks; step 2 starts with one guild, no rivals and three classes and widens in steps, 8–12 weeks; step 3 alongside; step 4 (two in-game years played) 4–6 weeks. A step over its box by half goes to the owner at once, not at the gate.
 
-**Stop and slip rules** (D-111): if R1 fails twice, building stops and the core loop is redesigned before anything else. A milestone running 50% over its estimate triggers a cut review at that gate: content is dropped or deferred, quality checks never are. Whether to end the project is the owner's call, not a rule.
+**Stop and slip rules** (D-111): if R1 fails twice (two rounds of the 10-quest watch test miss the pass line, with one round of changes between them), building stops and the core loop is redesigned before anything else. A milestone running 50% over its estimate triggers a cut review at that gate: content is dropped or deferred, quality checks never are. Whether to end the project is the owner's call, not a rule.
 
 ### 9c. Ledger readability check (Accepted 2026-10-26, D-084)
 
@@ -639,7 +639,7 @@ Decisions: D-090, D-091, D-110, D-114. Constraints from earlier decisions: PC fi
 
 **Engine test** (prototype step 0, before the watched quest, D-085):
 
-- **Build (web; Godot only as fallback):** (1) one roster ledger: 30 rows, sorting, a hover breakdown on a number (D-078), 15 px old-press type with lining figures (D-084), clear print and the 100–150% size slider (D-077); (2) one kingdom-map view (D-087): layered illustration, zoom and pan, a party moving, faction and guild marks, a threat stain, one ink-reveal effect.
+- **Build (web; Godot only as fallback):** (1) one roster ledger: 30 rows, sorting, a hover breakdown on a number (D-078), 15 px old-press type with lining figures (D-084), clear print and the 100–150% size slider (D-077); (2) one kingdom-map view (D-087): layered illustration, zoom and pan, a party moving, faction and guild marks, a threat stain, one ink-reveal effect. The map piece tests the technique; faction marks and threat stains are not at launch (D-109).
 - **Judged on:** the owner's look-and-feel notes (GAME-06), plus measured build time, frames per second and memory at 1366×768, download size, the find-the-fact task (R4), and whether the ledger works with a screen reader (labelled controls, §6c).
 - The rest of §11 holds for either engine; only the language changes (TypeScript or C#).
 
@@ -821,7 +821,7 @@ Each milestone ends at a gate: the owner reviews the exit checks and says go, lo
 | M0 | Plan approved | PLAN §14–§15 finished | — | Owner approves the whole plan (D-001) | now |
 | M1 | Prototypes | §9b steps 0–4: engine test, one watched quest, headless year simulator, desk mock-ups and writing test, two years in the text prototype. The simulation core is kept; prototype screens are throwaway (§9, D-113) | Owner | Engine settled web-first (D-110); R1–R4 and R6–R8 pass lines met (D-086); R9 proxy shows 20–30-year careers; §9d checks pass | 5–8 months |
 | M2 | Vertical slice | The production engine, content, ui and shell packages (§11b). The prologue and first season (D-076) in one corner of the March: 2 biomes, 3 settlements, 4 classes, ~10 monster kinds, ~6 quest templates; final art and audio for that corner only; the slice's corner of the kingdom map in final style, the rest sketched (D-113) | 6–10 invited players | First season in 3–4 h (D-064); no dense screen needs more than one explanation (D-065); testers name 3 adventurers (R7); determinism test and save upgrade test pass (GAME-05, GAME-06); a tester's bug replays from their save (D-114) | 7–10 months |
-| M3 | Alpha | All 14 launch systems (D-070) in, playable over many years; whole March with about half the launch content; placeholder art allowed outside the slice | 30–50 closed testers | Medians within ±25% of the §4 targets over real play; ≤ 100 stops a year (D-068); no unreadable saves; feature complete for launch | 10–15 months |
+| M3 | Alpha | All 14 launch systems (D-070) in, playable over many years; whole March with about half the launch content; placeholder art allowed outside the slice | 30–50 closed testers | Medians within ±25% of the §4 targets over real play; ≤ 100 stops a year for the mid-sized guild (D-068, §9d); no unreadable saves; feature complete for launch | 10–15 months |
 | M4 | Free demo | The first season as a free build (D-040), cut from the alpha with final art for what it shows; Steam page live since M2 | Public (e.g. a Steam festival) | ≥ 70% of demo starts finish the first season (D-065); crash-free sessions; store feedback logged | 2–3 months, alongside M5 |
 | M5 | Beta | All launch content (D-080, D-081 as cut by D-109), final art and audio, achievements, Steam Cloud; balance and writing passes | 200+ testers | 30-year saves load and upgrade; succession reached in long saves (R9); §11g performance met on the minimum machine; no known save-losing bug | 7–10 months |
 | M6 | Launch | Release build, store assets, day-one patch plan | Everyone | Release checklist (§15) passes; owner signs off | 2–3 months |
@@ -863,7 +863,7 @@ Owner's choice (Plan Q14a): **start solo, hire later.**
 
 - **M1–M2:** the owner directs and designs; code is written with AI help (Claude Code, D-094); contractors are paid per job for the slice's art and audio (§12). The owner's own time is unpaid and not in the budget.
 - **Hire gate:** at the M2 (slice) gate, and again at M3 (alpha), the owner decides whether to add paid help, with the slice's results and the funding route (§14d) in view. The most likely first hire is one developer for 12–18 months.
-- **Contractors throughout:** illustrator (map, icons, monsters, portraits; one artist where possible so the style holds, §12c), composer, sound designer, and optionally a writer for the ~6,000 template lines (D-080).
+- **Contractors throughout:** illustrator (map, icons, monsters, portraits; one artist where possible so the style holds, §12c), composer, sound designer, and optionally a writer for the ~4,500 template lines (D-080, D-109).
 - **Risk:** progress depends on the owner's hours. The gates (D-099) are where a slow pace shows up and gets decided on, not hidden.
 
 ### 14b. Budget (Accepted 2026-10-26, D-103)
@@ -887,7 +887,7 @@ Two cases: solo all the way, and solo plus one developer hired at a gate. Contin
 
 Figures restated on 2026-10-26 for the lean cut and solo timeline (D-108, D-109); first figures: ~$57,000–185,000 solo, ~$128,000–358,000 with a hire.
 
-**Spend before the hire gate (M1–M2):** about $8,000–27,000: the slice's corner of the map and a sketch of the rest ($1,000–3,000, D-113), about a fifth of the other art and audio for the slice's corner, tools, the Steam fee and first contracts. Bulk art waits for M1 to pass (D-099).
+**Spend before the hire gate (M1–M2):** about $8,000–27,000 (rounded estimate, including 12–18 months of tools): the slice's corner of the map and a sketch of the rest ($1,000–3,000, D-113), about a fifth of the other art and audio for the slice's corner, tools, the Steam fee and first contracts. Bulk art waits for M1 to pass (D-099).
 
 ### 14c. Price and revenue (Accepted 2026-10-26, D-104)
 

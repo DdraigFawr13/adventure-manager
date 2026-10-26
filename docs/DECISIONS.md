@@ -110,6 +110,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-25)
 - **Decision:** ~8 original classes, ~5 ancestries, with multiclass or prestige paths at higher levels. Detail: `docs/design/CONCEPT.md` §15.
+- **Amended (2026-10-26, D-109):** launch has 6 classes and 4 ancestries, without multiclassing or prestige paths; the rest follow in updates.
 - **Why:** Owner's choice; enough variety for squad-building while each class is simulated in depth.
 
 ## D-019 Living region with factions
@@ -517,9 +518,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** After plan approval, prototypes run in this order: 1 one watched quest (is watching fun?); 2 headless year simulator on the same simulation core (balance, pacing, delegation, careers); 3 desk-density mock-ups and the template-writing test, alongside 1 or 2; 4 a two-year attachment playtest. Detail: `docs/design/PLAN.md` §9b.
-- **Amended (2026-10-26, D-110, D-113):** the engine test is web-first; resolution v0 comes before step 1; the simulation core is kept as the production engine; each step is time-boxed.
 - **Why:** Owner's choice (Plan Q9a): test the assumption the whole game rests on first.
 - **Amended (2026-10-26, D-090):** step 0, the engine test, comes before step 1.
+- **Amended (2026-10-26, D-110, D-113):** the engine test is web-first; resolution v0 comes before step 1; the simulation core is kept as the production engine; each step is time-boxed.
 - **Note:** first recorded as "headless simulator first"; the owner reported that answer as a misclick the same day and chose quest first.
 
 ## D-086 Riskiest assumptions and their tests
