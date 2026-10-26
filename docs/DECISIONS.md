@@ -175,3 +175,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Background sets starting stats and contacts; stats grow through use; age brings decline and succession. Detail: `docs/design/CONCEPT.md` §25.
 - **Why:** Owner's choice; rewards the focus the player actually plays (D-003, D-022).
+
+## D-030 Authored region with procedural sites; generated regions later
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Launch: hand-made region (6–10 settlements) with seeded procedural sites and contracts. Later: generated regions with authored set pieces, sharing one data format. Detail: `docs/design/CONCEPT.md` §26.
+- **Why:** Owner's choice; identity at launch, replayability later.

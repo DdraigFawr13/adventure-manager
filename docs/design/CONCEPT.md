@@ -173,3 +173,9 @@ Working document for phase 1. Each section records what the owner decided, with 
 - **Decided (2026-10-25):** The player picks a background at creation (e.g. ex-adventurer, merchant, noble, scholar) that sets starting stats and contacts.
 - Stats improve through use: negotiating raises Negotiation, personally running training raises Coaching, and so on.
 - Age eventually brings decline and retirement, which triggers succession (§1).
+
+## 26. Region map
+
+- **Decided (2026-10-25):** At launch, one authored region (fixed cities, factions, landmarks and history), about 6–10 settlements and a handful of distinct biomes. Dungeons, lairs, monster spawns and many contracts are generated from seeded templates (GAME-01) for replayability.
+- Later: a generated-region mode (new geography, cities and factions per save) with authored set pieces, key locations and story arcs placed into it. Region data is built so both modes share one format (GAME-04).
+- Owner's note: "1 but eventually 4."
