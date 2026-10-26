@@ -20,8 +20,8 @@ The calendar, the contract board, wages, recovery and recruitment for one guild,
 
 ## People
 
-- After a quest, each survivor is out from the day the party is home for rest days per wound step left, plus 3–8 weeks (stream `guild.recovery`) if the quest gave an injury (`injury.gained`); `contract.take` refuses anyone still out, and `member.recovered` marks the day they are fit. A death costs the guild (D-138): a funeral, 26 weeks of the dead member's wage to the family, and renown when the plan was reckless (bold risk, or never retreating).
-- Recruitment: on each week start inside a window, a shortlist of prospects replaces the last (stream `guild.recruit`, attributes from the class leanings in content; outside a window it is empty); `recruit.sign` adds one at their asked wage and pays a sign-on fee of 8 weeks of it (D-138) (class base plus a step per point the best three attributes average above 10). The starting roster is drawn the same way. Signing is never delegated (D-038), so it is always a stop.
+- After a quest, each survivor is out from the day the party is home for rest days per wound step left, plus 3–8 weeks (stream `guild.recovery`) if the quest gave an injury (`injury.gained`); `contract.take` refuses anyone still out, and `member.recovered` marks the day they are fit. A death costs the guild (D-138): the content's funeral, a family share of weeks of the dead member's wage, and renown when the plan was reckless (bold risk, or never retreating); amounts in `packages/content/src/base/guild.ts`.
+- Recruitment: on each week start inside a window, a shortlist of prospects replaces the last (stream `guild.recruit`, attributes from the class leanings in content; outside a window it is empty); `recruit.sign` adds one at their asked wage (class base plus a step per point the best three attributes average above 10) and pays the content's sign-on fee, a number of weeks of that wage (D-138). The starting roster is drawn the same way but pays no fee. Signing is never delegated (D-038), so it is always a stop.
 - Retirement, ageing, training and morale are later slices.
 
 ## Stops (PLAN §2f)

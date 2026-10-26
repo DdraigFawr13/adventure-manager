@@ -45,6 +45,8 @@ describe('money (guild SPEC.md, Money)', () => {
   it('pays the patron grant once, and wages and running costs on each week start', () => {
     const day1 = foundedGuild(3);
     expect(moneyOf(day1, 'founding')).toEqual([10_000]);
+    // The founding roster pays no sign-on fee (D-138); only recruit.sign does.
+    expect(moneyOf(day1, 'sign-on')).toEqual([]);
     expect(moneyOf(day1, 'grant')).toEqual([4000]);
     expect(moneyOf(day1, 'wages')).toEqual([-3 * WAGE]);
     expect(moneyOf(day1, 'upkeep')).toEqual([-500]);
@@ -166,7 +168,21 @@ describe('people (guild SPEC.md, People)', () => {
       }),
       8,
     );
+    expect(ofType(careful.events, 'adventurer.died').length).toBeGreaterThan(0);
     expect(forDeaths(careful)).toEqual([]);
+    const bold = advanceTo(
+      take({ ...base, state }, ['adv.1', 'adv.2', 'adv.3'], undefined, {
+        ...steadyPlan,
+        risk: 'bold',
+        retreat: 'leader',
+      }),
+      8,
+    );
+    const boldDied = ofType(bold.events, 'adventurer.died').length;
+    expect(boldDied).toBeGreaterThan(0);
+    expect(forDeaths(bold).map((e) => e.amount)).toEqual(
+      Array.from({ length: boldDied }, () => -5),
+    );
     expect(stopDays(home.events, (s) => s.reason === 'death')).toEqual([3]);
     expect(checkGuildInvariants(home.state, home.events, home.commandIds)).toEqual([]);
   });

@@ -30,7 +30,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 1. R1 passed (D-132). Its notes (meaningful logs, hollowness, traps, hidden items, branching paths) wait for quest template design and the slice; ask the owner before building any of them.
 2. Tuning left: reckless doubles deaths only on the perilous chapel (hazardous ~1.35×, routine ~1×: a never-retreat party wins 99% and 100% there); perilous injuries per death ~3 vs ~5. Deadly needs a template. Decide whether §4c's ratios are per contract or across the year's mix before tuning further.
 3. Engine test verdict (D-110): the owner runs `npm start -w @adventure-manager/shell` on Windows for real fps (60 fps bar at 1366×768; container software rendering gave 48 idle, 44 panning). Godot only if web misses its bar.
-4. Year simulator: bold still wins money (D-138 measured); next ideas for the owner: bold injuries and kit losses, or contract terms that punish failure. Then the next slices (rivals and ladder, delegation, careers; R2, R3, R6, R9), then the next slices (rivals and ladder, delegation, careers; R2, R3, R6, R9).
+4. Year simulator: bold still wins money (D-138 measured); next ideas for the owner: bold injuries and kit losses, or contract terms that punish failure. Then the next slices (rivals and ladder, delegation, careers; R2, R3, R6, R9).
 
 ## Open questions
 
