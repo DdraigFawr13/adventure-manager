@@ -1,5 +1,6 @@
 // Shapes for resolution v0 (SPEC.md). Content packs supply the numbers; the engine only reads them.
 import type { EventBase } from '../core/events.ts';
+import type { PronounKey } from '../core/text.ts';
 import type { RngState } from '../core/rng.ts';
 import type { Value } from '../core/value.ts';
 import type { GuildCommand, GuildEventBody, GuildRules, GuildState } from '../guild/types.ts';
@@ -25,8 +26,16 @@ export type RetreatThreshold = 'badly-hurt' | 'down' | 'dying' | 'leader' | 'nev
 /** Wound steps as numbers, so "worse" is "greater" (D-120). */
 export const WOUND = { fit: 0, hurt: 1, badlyHurt: 2, down: 3, dying: 4 } as const;
 
+export interface PersonName {
+  readonly given: string;
+  readonly family: string;
+}
+
 export interface Adventurer {
   readonly id: string;
+  /** Drawn people carry their name and pronouns; fixed test and sample people take theirs from text data. */
+  readonly name?: PersonName;
+  readonly pronouns?: PronounKey;
   readonly classId: string;
   readonly position: Position;
   readonly attributes: Readonly<Record<Attribute, number>>;

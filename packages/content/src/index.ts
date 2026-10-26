@@ -4,3 +4,4 @@ export * from './base/engine-test.ts';
 export * from './base/money.ts';
 export * from './base/deadly-quest.ts';
 export * from './base/guild.ts';
+export * from './base/reports.ts';
