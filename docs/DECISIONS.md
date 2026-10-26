@@ -349,3 +349,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Human names and places use an English-fenland base; each ancestry and major faction has its own naming rules as data. No Pathfinder names, no culture copied from one real nation. Detail: `docs/design/STYLE.md` §9a.
 - **Why:** Owner's choice (Style Q9a); origin readable at a glance, grounded core, extensible by mods.
+
+## D-059 Writing voice: grounded, with dry wit
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** In-world text is plain, lightly period-flavoured English with understated humour; speakers sound like their station; deaths are always written sincerely; generated lines need many variants. Detail: `docs/design/STYLE.md` §9b.
+- **Why:** Owner's choice (Style Q9b); serves both the whimsy asked for and permadeath.

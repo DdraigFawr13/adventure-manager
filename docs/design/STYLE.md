@@ -127,3 +127,16 @@ Rejected: epic orchestral (fatigue, fights the quiet desk), ambience only (no id
 - Guardrails: no Pathfinder names (D-002); no culture copies a single real-world nation, and ancestries are never mapped onto real ethnic stereotypes.
 
 Rejected: one English flavour for all (the region feels like one county), Celtic and British throughout (ties the setting to one real culture), invented language (hard to remember at roster scale).
+
+### 9b. Writing voice (Accepted 2026-10-26)
+
+**Grounded, with dry wit.** Plain English with light period flavour and understated humour.
+
+- Speakers sound like who they are: patrons clipped, criers loud, gossip sly, staff practical, adventurers in their own voices.
+- Humour lives in small moments; deaths, grief and major losses are written plainly and sincerely, never as jokes.
+- Generated text (templates and optional AI flavour, D-017) needs many variants per line so jokes don't repeat; template fallbacks follow the same voice (GAME-03).
+- Example, crier: "Hear it! Bram Oakes of Ashford Company, dead in the Hollow Barrow. Held the door while his friends got out. Ashford are buying the drinks tonight, and nobody's arguing."
+- Example, quest log: "Odric forces the sealed door. The door objects. Odric wins."
+- References: *Pentiment*, Pratchett's Watch books, FM's news items.
+
+Rejected: archaic high style (tiring, slow to scan), modern plain wire style (wastes the in-world inbox), grim literary (too grim, wears thin).
