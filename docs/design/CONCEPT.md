@@ -34,6 +34,7 @@ Working document for phase 1. Each section records what the owner decided, with 
 - A setting turns on fully automatic resolution (orders set beforehand, report afterwards) for players who want speed.
 - While a party is on a mission there is a visual: stylised, tabletop-style (tokens or minis on a map board), not full 3D models.
 - Design note: the board view is driven by the same simulation events as the log (GAME-02), so what the player sees never disagrees with the result.
+- **Decided (review, 2026-10-25):** With several parties out at once, each party leader resolves minor moments using the player's risk settings and the leader's own stats. Only major moments (a life at risk, a moral choice, a large reward) stop the calendar. The player watches one party live on the board; the others appear as summary cards.
 - Owner's note: "Lets go with 1 but keep 2 as a possibility to turn on… some sort of visual when a team is in a dungeon or on a mission… stylized maybe like a sort of tabletop style."
 
 ## 3. Competition
@@ -46,11 +47,12 @@ Working document for phase 1. Each section records what the owner decided, with 
 
 - **Decided (2026-10-25):** Open-ended sandbox. Seasons roll on; adventurers age, retire and die; new generations arrive; guildmasters succeed one another (see §1).
 - Optional story arcs and world crises give medium-term goals without forcing an ending.
+- **Decided (review, 2026-10-25):** Timescale makes generations playable: adventurers have short, intense careers (about 6–12 seasons; adventuring is brutal); guildmasters last about 20–30 seasons; quiet periods can be time-skipped.
 
 ## 5. Adventurer model
 
 - **Decided (2026-10-25):** FM-style attributes rated 1–20 (roughly 25–35, including hidden ones such as potential, consistency and loyalty), plus skills, traits, class levels and talents.
-- Open (to settle in progression design): each layer needs one distinct job so they don't overlap. Working proposal: attributes = aptitude; skills = trained proficiency; traits = personality and quirks; class levels = role and abilities; talents = choices made at level-up.
+- **Decided (review, 2026-10-25):** Skills are not a separate layer. Four layers, one job each: attributes (1–20) = aptitude and trained ability; traits = personality and quirks; class levels = role and abilities; talents = choices made at level-up.
 - Owner's note: "1 but I like the idea of skills, traits, class levels and talents as well."
 
 ## 6. Injury and death
@@ -62,6 +64,7 @@ Working document for phase 1. Each section records what the owner decided, with 
 
 - **Decided (2026-10-25):** An FM-style calendar that advances day by day on Continue and stops automatically for events, quest key moments, offers and reports.
 - Several parties run in parallel on the same calendar.
+- **Decided (review, 2026-10-25):** The year has an in-world rhythm. An annual Guild Assembly publishes the rankings, applies promotion and relegation, and opens the contract and recruitment season. Winter slows travel and quests.
 
 ## 8. Setting frame
 
@@ -72,7 +75,7 @@ Working document for phase 1. Each section records what the owner decided, with 
 
 - **Decided (2026-10-25):** Four management systems beyond the roster, all real systems:
   1. **Staff and facilities:** trainers, scouts, healers, quartermaster, deputy; guildhall upgrades (training yard, infirmary, library, armoury, tavern).
-  2. **Finances and patrons:** wages, contract fees, upkeep, loans; a patron or board with expectations that can dismiss the guildmaster (which ties into succession, §1).
+  2. **Finances and patrons:** wages, contract fees, upkeep, loans; a patron with expectations that can dismiss the guildmaster (which ties into succession, §1). **Decided (review):** the patron is one of the region's factions (§16), a sponsor with its own agenda; changing patron is possible but costly. The ranking stays the public scoreboard and the charter the guild's own values (§17).
   3. **Contracts and negotiation:** quest contracts (fee, loot share, deadlines, clauses) and adventurer contracts (wages, loot cut, release clauses, poaching).
   4. **Gear, crafting and loot:** equipment, magic items, appraisal and sale, armoury.
 
@@ -100,7 +103,7 @@ Working document for phase 1. Each section records what the owner decided, with 
 
 - **Decided (2026-10-25):** Launch has two families of work:
   1. **Delves and monster hunts:** dungeons, lairs, bounties on named beasts.
-  2. **Defence and warfare:** hold a village against a raid, garrison a fort, join a war campaign; larger, multi-party operations.
+  2. **Defence:** hold a village against a raid, garrison a fort. **Decided (review):** multi-party war campaigns move to the first major update (§28).
 - Not at launch (assumed candidates for later, not cut): escorts and expeditions; intrigue and investigation.
 
 ## 13. Platform
@@ -139,12 +142,13 @@ Working document for phase 1. Each section records what the owner decided, with 
 
 - **Decided (2026-10-25):** Any area (training, scouting, contracts, kit, minor quests and so on) can be delegated to a staff member, who runs it according to their stats. The player focuses where they want; the guildmaster's own stats make their chosen focus matter (§1).
 - A gentle first season introduces systems one at a time.
+- **Decided (review, 2026-10-25):** A few things are never delegated: choosing contracts, major key moments, and big conversations (contracts, departures, promises). Staff are competent but limited, so the player's own focus visibly beats theirs.
 
 ## 20. Business model
 
-- **Decided (2026-10-25):** Free-to-play. The full game is free.
-- Revenue comes from cosmetics only (guild banners and heraldry, hall decor, token/mini skins for the tabletop view, portrait styles) and an optional supporter pack.
-- No gameplay advantage is ever sold: no speed-ups, revival tokens, scout reports or premium recruits. This keeps offline single-player (§14), permadeath (§6) and balance intact.
+- **Decided (review, 2026-10-25; replaces free-to-play):** Premium one-off purchase with a free demo (for example, the first seasons free).
+- No microtransactions and no gameplay advantage for sale. Paid expansions are not decided.
+- Owner chose this after the review noted that cosmetics-only free-to-play earns little in an offline single-player game.
 
 ## 21. Multiplayer
 
@@ -184,3 +188,35 @@ Working document for phase 1. Each section records what the owner decided, with 
 
 - **Decided (2026-10-25):** A new guild starts with about 4–6 adventurers (one party). A top guild runs about 25–40 adventurers across 4–8 parties, plus apprentices and about 10–15 staff.
 - Sized so squad depth and rotation matter while every adventurer stays a person (Pillar 1).
+
+## 28. Scope tiers
+
+- **Decided (review, 2026-10-25):** Every feature is tagged Launch, Early update or Later, and launch is a "minimum lovable" game.
+- **Proposed tiers** (owner to confirm or move items):
+  - **Launch:** §1–§11, §12 delves/hunts and small-scale defence, §13, §14 templates, §15–§23, §24 launch magic, §25, §26 authored region, §27, §29 saves, §30 guild knowledge, §31 chronicle, §32 news and inbox; content stored as data (§33).
+  - **Early update:** multi-party war campaigns; optional AI flavour (§14); escorts and expeditions.
+  - **Later:** intrigue and investigation; magic traditions (§24); generated regions (§26); public mod tools (§33); social features (§21).
+
+## 29. Saves and permadeath
+
+- **Decided (review, 2026-10-25):** The default mode autosaves on every day tick and keeps one save per guild (Ironman-style), so permadeath can't be undone by reloading.
+- An optional "Storyteller" mode allows manual saves.
+
+## 30. Guild knowledge
+
+- **Decided (review, 2026-10-25):** Knowledge is a resource, like FM's opposition scouting. The guild researches monsters, dungeons and rivals through the library, scouts and survivors' reports.
+- Better knowledge gives better quest plans and reveals key-moment options (Pillars 2 and 5).
+
+## 31. Chronicle and Hall of Heroes
+
+- **Decided (review, 2026-10-25):** An automatically written guild history: memorials for the dead, legendary deeds, the histories of storied items, and records.
+- Built from the simulation's own event log; it's the payoff for Pillar 3.
+
+## 32. News and inbox
+
+- **Decided (review, 2026-10-25):** FM's inbox, told in-world: letters, town criers, gossip. Rumours become contract leads.
+- The main surface for the optional AI flavour (§14), always with template fallbacks.
+
+## 33. Mod support
+
+- **Decided (review, 2026-10-25):** Classes, monsters, regions and quests live in data files from the start (GAME-04), so mod support can be opened up later without reworking the engine.

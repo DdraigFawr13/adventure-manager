@@ -88,7 +88,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 ## D-015 Launch quest types: delves/hunts and defence/warfare
 
-- **Status:** Accepted (2026-10-25)
+- **Status:** Accepted (2026-10-25); war campaigns moved to the first major update by D-035
 - **Decision:** Launch with delves and monster hunts, and defence and warfare. Escorts/expeditions and intrigue/investigation are later candidates. Detail: `docs/design/CONCEPT.md` §12.
 - **Why:** Owner's choice; fewer quest families means each simulation is deeper.
 
@@ -136,7 +136,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 ## D-023 Free-to-play, cosmetics and supporter pack only
 
-- **Status:** Accepted (2026-10-25)
+- **Status:** SUPERSEDED by D-040 (2026-10-25)
 - **Decision:** Free full game; sells cosmetics and a supporter pack; never gameplay advantage. Detail: `docs/design/CONCEPT.md` §20.
 - **Why:** Owner chose F2P; cosmetic-only keeps offline play, permadeath (D-008) and balance intact and avoids a required backend.
 
@@ -187,3 +187,81 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Start ~4–6 adventurers; top guilds ~25–40 across 4–8 parties, plus apprentices and ~10–15 staff. Detail: `docs/design/CONCEPT.md` §27.
 - **Why:** Owner's choice; keeps Pillar 1 (people are the game) with real squad depth.
+
+## D-032 Party leaders handle minor key moments
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Leaders resolve minor moments by the player's risk settings and their own stats; only major moments stop the calendar; one party is watched live, the rest as summary cards. Detail: `docs/design/CONCEPT.md` §2.
+- **Why:** Concept review: several parallel parties would otherwise interrupt constantly.
+
+## D-033 Ironman saves by default, Storyteller optional
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Autosave every day tick, one save per guild; optional manual-save Storyteller mode. Detail: `docs/design/CONCEPT.md` §29.
+- **Why:** Concept review: reloading would undo permadeath (D-008) and Pillar 2.
+
+## D-034 Short adventurer careers, longer guildmaster careers
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Adventurers ~6–12 seasons, guildmasters ~20–30 seasons; quiet periods can be time-skipped. Detail: `docs/design/CONCEPT.md` §4.
+- **Why:** Concept review: generational play (D-006) must fit in a playable save.
+
+## D-035 Scope tiers; war campaigns after launch
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Every feature is tagged Launch, Early update or Later; launch is a minimum lovable game with delves/hunts and small-scale defence. Proposed tier list in `docs/design/CONCEPT.md` §28 awaits owner confirmation.
+- **Why:** Concept review: the full scope is too large for one launch.
+
+## D-036 The patron is a faction
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** The patron is one of the region's factions with its own agenda; changing patron is possible but costly. Detail: `docs/design/CONCEPT.md` §9.
+- **Why:** Concept review: one connected system instead of four overlapping judges (WS-05).
+
+## D-037 Four adventurer layers, no separate skills
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Attributes, traits, class levels and talents, one job each. Detail: `docs/design/CONCEPT.md` §5. Refines D-007.
+- **Why:** Concept review: a skills layer overlapped attributes.
+
+## D-038 A non-delegable core
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Contract choice, major key moments and big conversations are never delegated; staff are competent but limited. Detail: `docs/design/CONCEPT.md` §19. Refines D-022.
+- **Why:** Concept review: full delegation would make watching the optimal play.
+
+## D-039 Guild Assembly and seasonal rhythm
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** An annual Guild Assembly sets rankings and promotion/relegation and opens the contract and recruitment season; winter slows travel and quests. Detail: `docs/design/CONCEPT.md` §7.
+- **Why:** Concept review: seasons and windows need an in-world reason (WS-05).
+
+## D-040 Premium with a free demo
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** One-off purchase with a free demo; no microtransactions or paid advantage; paid expansions undecided. Detail: `docs/design/CONCEPT.md` §20. Supersedes D-023.
+- **Why:** Owner's choice after the review noted cosmetics-only F2P earns little offline.
+
+## D-041 Guild knowledge as a resource
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Research on monsters, dungeons and rivals improves plans and reveals options. Detail: `docs/design/CONCEPT.md` §30.
+- **Why:** Concept review; FM's opposition scouting, serves Pillars 2 and 5.
+
+## D-042 Chronicle and Hall of Heroes
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Auto-written guild history from the simulation event log. Detail: `docs/design/CONCEPT.md` §31.
+- **Why:** Concept review; payoff for Pillar 3.
+
+## D-043 In-world news and inbox
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Letters, criers and gossip as the inbox; rumours become leads. Detail: `docs/design/CONCEPT.md` §32.
+- **Why:** Concept review; FM's inbox, told in-world.
+
+## D-044 Content as moddable data
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Classes, monsters, regions and quests are data files from the start; mod tools later. Detail: `docs/design/CONCEPT.md` §33.
+- **Why:** Concept review; GAME-04 makes it nearly free and extends the game's life.
