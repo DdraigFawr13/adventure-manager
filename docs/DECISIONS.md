@@ -367,3 +367,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** `docs/design/STYLE.md` (§1–§9, D-046..D-060) is the locked phase-2 style guide. Phase 3 (full plan) begins.
 - **Why:** Owner locked it after reviewing the summary and the three noted risks (ledger readability, art cost, mixing painted portraits later).
+
+## D-062 Plan outline
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** `docs/design/PLAN.md` follows the approved 15-section outline: Part A game design (§1–§10), then Part B production (§11–§15), written in order, section by section.
+- **Why:** Owner approved the outline as proposed.
