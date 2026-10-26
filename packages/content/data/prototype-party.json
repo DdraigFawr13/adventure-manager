@@ -1,0 +1,90 @@
+{
+  "_note": "Sample party for the watched-quest prototype (D-127). Attributes on the 1-20 scale (D-122); bonuses in basis points.",
+  "party": [
+    {
+      "id": "adv.odric-hale",
+      "classId": "class.warrior",
+      "position": "front",
+      "weaponBp": 400,
+      "armourBp": 500,
+      "attributes": {
+        "might": 15,
+        "agility": 10,
+        "toughness": 14,
+        "stealth": 7,
+        "wits": 9,
+        "presence": 11,
+        "resolve": 13,
+        "lore": 6
+      }
+    },
+    {
+      "id": "adv.wenna-cray",
+      "classId": "class.rogue",
+      "position": "front",
+      "weaponBp": 300,
+      "armourBp": 200,
+      "attributes": {
+        "might": 9,
+        "agility": 15,
+        "toughness": 9,
+        "stealth": 16,
+        "wits": 14,
+        "presence": 10,
+        "resolve": 10,
+        "lore": 8
+      }
+    },
+    {
+      "id": "adv.brother-amis",
+      "classId": "class.cleric",
+      "position": "back",
+      "weaponBp": 200,
+      "armourBp": 400,
+      "attributes": {
+        "might": 10,
+        "agility": 8,
+        "toughness": 11,
+        "stealth": 6,
+        "wits": 11,
+        "presence": 14,
+        "resolve": 15,
+        "lore": 15
+      }
+    },
+    {
+      "id": "adv.tobin-marsh",
+      "classId": "class.warrior",
+      "position": "front",
+      "weaponBp": 300,
+      "armourBp": 400,
+      "attributes": {
+        "might": 13,
+        "agility": 12,
+        "toughness": 12,
+        "stealth": 9,
+        "wits": 8,
+        "presence": 9,
+        "resolve": 11,
+        "lore": 7
+      }
+    },
+    {
+      "id": "adv.essa-reed",
+      "classId": "class.rogue",
+      "position": "back",
+      "weaponBp": 300,
+      "armourBp": 200,
+      "attributes": {
+        "might": 8,
+        "agility": 14,
+        "toughness": 10,
+        "stealth": 14,
+        "wits": 13,
+        "presence": 12,
+        "resolve": 9,
+        "lore": 10
+      }
+    }
+  ]
+}

@@ -79,6 +79,7 @@ export function resolveExchange(turn: Turn, commandId: string): void {
       foe.defence,
       extra,
       exchangeEvent,
+      [foe.id],
     );
     if (!succeeded(result.outcome)) continue;
     woundFoe(turn, foe, result.outcome === 'strong-success' ? steps.strongHit : steps.hit, eventId);

@@ -724,6 +724,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** One approved list (D-114, SAFE-03), all free and open source, versions pinned exactly with the lockfile committed. Dev tools: TypeScript, Vitest, Prettier, `@babel/parser` (package-boundary check), `@types/node`. Game stack for the engine test and after: Electron, Vite with `@vitejs/plugin-react`, React and React DOM, Playwright. Start from Story-Generator's versions where it has the package. Anything else is asked for first. Code rules: `docs/STANDARDS.md`.
 - **Why:** Owner chose "approve plus game stack now" (2026-10-26) so the engine test (D-110) needs no second ask.
+- **Amended (2026-10-26):** owner approved `@types/react` and `@types/react-dom` (dev-only types for the approved React packages).
 
 ## D-118 Resolution v0: quest shape is a hybrid
 
@@ -778,3 +779,10 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** A retreat lasts beats: 1, plus 1 while carrying the fallen, plus 1 on a failed retreat check (all content data). On each beat foes strike if the party fled a fight, and the fallen bleed and roll for death; a party with no one standing is routed. Replaces the old rule that a failed check costs one wound step and the Dying are carried home safe. Detail: `packages/engine/src/resolution/SPEC.md`.
 - **Why:** Owner (tuning, 2026-10-26): "retreat should take time and have its own risks associated with it." Without it, retreating at a threshold ended the quest before bleeding (D-124) could matter.
+
+## D-127 Watched-quest prototype is a published web page
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** The R1 prototype (PLAN §9b step 1) is a private web page published as a claude.ai link: party sheet, a plain board with standees moving scene to scene, the scrolling log, and push-on or pull-out buttons at moments. Built in `packages/ui` with Vite + React (D-117) on the real engine and content; the screens are throwaway (D-113), the engine is kept. The owner watches 10 quests and records notes for the R1 pass line (PLAN §9a).
+- **Why:** Owner's choice (2026-10-26): nothing to install, works on phone or PC.
+

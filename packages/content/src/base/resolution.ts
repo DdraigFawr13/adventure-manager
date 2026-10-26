@@ -93,7 +93,76 @@ export const barrowDelve: QuestTemplate = {
   ],
 };
 
+/** A routine job close to home. */
+export const millCellar: QuestTemplate = {
+  id: 'quest.mill-cellar',
+  danger: 'routine',
+  tags: ['dark'],
+  scenes: [
+    {
+      id: 'scene.mill-yard',
+      kind: 'approach',
+      difficulty: 7,
+      testers: 'best',
+      onFailure: 'alarm',
+    },
+    {
+      id: 'scene.flooded-steps',
+      kind: 'fixed',
+      attribute: 'agility',
+      difficulty: 6,
+      testers: 'all',
+      onFailure: 'wound',
+    },
+  ],
+  foes: [{ id: 'foe.cellar-rats', attack: 7, defence: 7 }],
+};
+
+/** A perilous delve: the drowned chapel and what keeps it. */
+export const drownedChapel: QuestTemplate = {
+  id: 'quest.drowned-chapel',
+  danger: 'perilous',
+  tags: ['dark', 'open'],
+  scenes: [
+    {
+      id: 'scene.reed-causeway',
+      kind: 'fixed',
+      attribute: 'agility',
+      difficulty: 10,
+      testers: 'all',
+      onFailure: 'wound',
+    },
+    {
+      id: 'scene.bell-tower',
+      kind: 'approach',
+      difficulty: 12,
+      testers: 'best-two',
+      onFailure: 'alarm',
+    },
+    {
+      id: 'scene.sunken-nave',
+      kind: 'fixed',
+      attribute: 'wits',
+      difficulty: 12,
+      testers: 'best-two',
+      onFailure: 'wound',
+    },
+    {
+      id: 'scene.crypt-stair',
+      kind: 'fixed',
+      attribute: 'resolve',
+      difficulty: 12,
+      testers: 'all',
+      onFailure: 'wound',
+    },
+  ],
+  foes: [
+    { id: 'foe.drowned-dead', attack: 11, defence: 10 },
+    { id: 'foe.chapel-keeper', attack: 14, defence: 13 },
+  ],
+};
+
 export const baseResolution: ResolutionContent = {
   rules: baseResolutionRules,
-  quests: [barrowDelve],
+  quests: [barrowDelve, millCellar, drownedChapel],
 };

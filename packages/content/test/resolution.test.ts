@@ -61,3 +61,39 @@ describe('base resolution content (SPEC.md)', () => {
     for (const a of state.roster) expect(baseResolution.rules.classes[a.classId]).toBeDefined();
   });
 });
+
+describe('watched-quest prototype data (D-127)', () => {
+  it('fields the sample party on every quest, and every id has a display name', async () => {
+    const { prototypeParty, names, logTemplates } = await import('../src/index.ts');
+    const party = prototypeParty();
+    for (const quest of baseResolution.quests) {
+      let state: GameState = {
+        seed: `proto-${quest.id}`,
+        rng: {},
+        nextEventNo: 1,
+        content: baseResolution,
+        roster: prototypeParty(),
+        quest: null,
+      };
+      let result = simulate(state, {
+        type: 'quest.start',
+        id: 'c0',
+        day: 1,
+        questId: 'q',
+        templateId: quest.id,
+        partyIds: party.map((a) => a.id),
+        plan: { approach: 'assault', risk: 'steady', retreat: 'leader' },
+        watched: false,
+      });
+      for (let n = 1; result.state.quest; n += 1) {
+        state = result.state;
+        result = simulate(state, { type: 'quest.step', id: `c${n}`, day: 1 });
+      }
+      expect(result.events.at(-1)?.type).toBe('quest.ended');
+      const ids = [quest.id, ...quest.scenes.map((s) => s.id), ...quest.foes.map((f) => f.id)];
+      for (const id of ids) expect(names[id], id).toBeDefined();
+    }
+    for (const a of party) expect(names[a.id], a.id).toBeDefined();
+    expect(Object.values(logTemplates).every((v) => v.length > 0)).toBe(true);
+  });
+});

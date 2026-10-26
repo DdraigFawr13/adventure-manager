@@ -78,6 +78,8 @@ export function partyCheck(
   difficulty: number,
   extra: readonly ValuePart[],
   causeId: string,
+  /** Others the check is about, e.g. the foe attacked or the member tended. */
+  others: readonly string[] = [],
 ): { roll: Roll; eventId: string } {
   const { rules, quest } = turn;
   const risk = rules.risk[quest.plan.risk];
@@ -90,7 +92,15 @@ export function partyCheck(
   ];
   if (risk.chanceBp !== 0)
     parts.push({ sourceId: `plan.risk.${quest.plan.risk}`, amount: risk.chanceBp });
-  return roll(turn, purpose, [who.id], rules.baseChanceBp, parts, risk.badFailureShareBp, causeId);
+  return roll(
+    turn,
+    purpose,
+    [who.id, ...others],
+    rules.baseChanceBp,
+    parts,
+    risk.badFailureShareBp,
+    causeId,
+  );
 }
 
 export function roll(

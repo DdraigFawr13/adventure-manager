@@ -76,6 +76,7 @@ export function tendTheFallen(turn: Turn, causeId: string): void {
       difficulty,
       [],
       causeId,
+      [patient.id],
     );
     if (!succeeded(result.outcome)) continue;
     tended.add(patient.id);
