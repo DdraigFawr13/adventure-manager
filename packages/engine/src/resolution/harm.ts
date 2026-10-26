@@ -21,10 +21,17 @@ export function wound(turn: Turn, id: string, steps: number, causeId: string): v
 
 export function woundFoe(turn: Turn, foe: FoeState, steps: number, causeId: string): void {
   const from = foe.step;
-  const to = Math.min(WOUND.down, from + steps);
+  const to = Math.min(foe.hits, from + steps);
   if (to === from) return;
   foe.step = to;
-  turn.sink.emit({ type: 'foe.wounded', causeId, subjectIds: [foe.id], from, to });
+  turn.sink.emit({
+    type: 'foe.wounded',
+    causeId,
+    subjectIds: [foe.id],
+    from,
+    to,
+    hits: foe.hits,
+  });
 }
 
 export function deathRoll(turn: Turn, who: Adventurer, causeId: string): void {

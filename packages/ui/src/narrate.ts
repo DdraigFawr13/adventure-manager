@@ -92,7 +92,7 @@ export function narrate(event: GameEvent): LogLine | null {
         kind: 'roll',
         text: line('foe.wounded', id, {
           foe: capitalise(nameOf(first)),
-          step: nameOf(`foe.wound.${event.to}`),
+          step: nameOf(`foe.wound.${foeStage(event.to, event.hits)}`),
         }),
       };
     case 'alarm.raised':
@@ -136,4 +136,11 @@ export function describeChance(chance: Value, purposeLabel: string): string {
     .map((p) => `${nameOf(p.sourceId)} ${p.amount >= 0 ? '+' : '−'}${Math.abs(p.amount) / 100}%`)
     .join(', ');
   return `${chance.total / 100}% ${purposeLabel}: ${nameOf('rule.base')} ${chance.base / 100}%${parts ? `, ${parts}` : ''}.`;
+}
+
+/** Bloodied (1), reeling (2, half or more) or beaten (3, down): the board and log share this. */
+export function foeStage(step: number, hits: number): 0 | 1 | 2 | 3 {
+  if (step >= hits) return 3;
+  if (step * 2 >= hits) return 2;
+  return step > 0 ? 1 : 0;
 }

@@ -88,7 +88,7 @@ export const quest: QuestTemplate = {
     },
     { id: 'scene.gate', kind: 'approach', difficulty: 10, testers: 'best', onFailure: 'alarm' },
   ],
-  foes: [{ id: 'foe.wights', attack: 10, defence: 10 }],
+  foes: [{ id: 'foe.wights', attack: 10, defence: 10, speed: 10, hits: 3 }],
 };
 
 export function game(

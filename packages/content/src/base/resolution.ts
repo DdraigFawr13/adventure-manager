@@ -88,8 +88,8 @@ export const barrowDelve: QuestTemplate = {
     },
   ],
   foes: [
-    { id: 'foe.barrow-hounds', attack: 10, defence: 9 },
-    { id: 'foe.restless-warden', attack: 12, defence: 11 },
+    { id: 'foe.barrow-hounds', attack: 10, defence: 9, speed: 14, hits: 5 },
+    { id: 'foe.restless-warden', attack: 12, defence: 11, speed: 8, hits: 7 },
   ],
 };
 
@@ -115,7 +115,7 @@ export const millCellar: QuestTemplate = {
       onFailure: 'wound',
     },
   ],
-  foes: [{ id: 'foe.cellar-rats', attack: 7, defence: 7 }],
+  foes: [{ id: 'foe.cellar-rats', attack: 8, defence: 6, speed: 13, hits: 6 }],
 };
 
 /** A perilous delve: the drowned chapel and what keeps it. */
@@ -128,7 +128,7 @@ export const drownedChapel: QuestTemplate = {
       id: 'scene.reed-causeway',
       kind: 'fixed',
       attribute: 'agility',
-      difficulty: 10,
+      difficulty: 9,
       testers: 'all',
       onFailure: 'wound',
     },
@@ -151,14 +151,14 @@ export const drownedChapel: QuestTemplate = {
       id: 'scene.crypt-stair',
       kind: 'fixed',
       attribute: 'resolve',
-      difficulty: 12,
-      testers: 'all',
+      difficulty: 11,
+      testers: 'best-two',
       onFailure: 'wound',
     },
   ],
   foes: [
-    { id: 'foe.drowned-dead', attack: 11, defence: 10 },
-    { id: 'foe.chapel-keeper', attack: 14, defence: 13 },
+    { id: 'foe.drowned-dead', attack: 10, defence: 10, speed: 7, hits: 6 },
+    { id: 'foe.chapel-keeper', attack: 12, defence: 12, speed: 10, hits: 8 },
   ],
 };
 

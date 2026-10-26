@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { WOUND, type Plan, type QuestRun } from '@adventure-manager/engine';
 import { baseResolution, uiText } from '@adventure-manager/content';
 import { choose, newSession, skip, startQuest, step, type Session } from './game.ts';
-import { describeChance, narrate, nameOf, type LogLine } from './narrate.ts';
+import { describeChance, foeStage, narrate, nameOf, type LogLine } from './narrate.ts';
 
 const t = (key: string, vars: Record<string, string> = {}): string =>
   (uiText[key] ?? key).replace(/\{(\w+)\}/g, (slot, k: string) => vars[k] ?? slot);
@@ -352,7 +352,11 @@ function Board({ view, dead }: { view: BoardView; dead: ReadonlySet<string> }) {
             {stop === 'lair' ? (
               <div className="standees foes">
                 {quest.foes.map((f) => (
-                  <span key={f.id} className={`standee foe s${f.step}`} title={nameOf(f.id)}>
+                  <span
+                    key={f.id}
+                    className={`standee foe s${foeStage(f.step, f.hits)}`}
+                    title={nameOf(f.id)}
+                  >
                     {initials(nameOf(f.id))}
                   </span>
                 ))}

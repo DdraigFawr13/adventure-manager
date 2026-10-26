@@ -102,7 +102,7 @@ describe('the main fight (D-118, D-123)', () => {
     const { state, events } = run(
       game(roster, {
         rules: { baseChanceBp: 10_000, ...certain },
-        quest: { scenes: [], foes: [{ id: 'f', attack: 1, defence: 1 }] },
+        quest: { scenes: [], foes: [{ id: 'f', attack: 1, defence: 1, speed: 10, hits: 3 }] },
       }),
     );
     expect(ofType(events, 'quest.ended')[0]?.outcome).toBe('won');
@@ -114,7 +114,7 @@ describe('the main fight (D-118, D-123)', () => {
     const { events } = run(
       game(roster, {
         rules: { ...certain, maxExchanges: 3 },
-        quest: { scenes: [], foes: [{ id: 'f', attack: 1, defence: 20 }] },
+        quest: { scenes: [], foes: [{ id: 'f', attack: 1, defence: 20, speed: 10, hits: 3 }] },
       }),
     );
     expect(ofType(events, 'exchange.started')).toHaveLength(3);
@@ -126,7 +126,7 @@ describe('the main fight (D-118, D-123)', () => {
     const { events } = run(
       game(roster, {
         rules: { ...certain, deathRoll: { baseBp: 0, stepBp: 0, pivot: 10 } },
-        quest: { scenes: [], foes: [{ id: 'f', attack: 20, defence: 20 }] },
+        quest: { scenes: [], foes: [{ id: 'f', attack: 20, defence: 20, speed: 10, hits: 3 }] },
       }),
     );
     expect(ofType(events, 'quest.ended')[0]?.outcome).toBe('routed');
@@ -547,5 +547,18 @@ describe('the leader reads the fight, and retreat takes time (D-125, D-126)', ()
     // 1 base + 1 carrying 'a' (Down) + 1 failed check.
     expect(ofType(events, 'quest.retreated')[0]?.beats).toBe(3);
     expect(ofType(events, 'retreat.beat')).toHaveLength(3);
+  });
+});
+
+describe('speed order and sturdier foes (D-129)', () => {
+  it('lets a faster foe group strike before the party, and keeps it up until its hits are taken', () => {
+    const roster = [adventurer('a', { agility: 5, might: 20 })];
+    const foes = [{ id: 'f', attack: 1, defence: 1, speed: 20, hits: 4 }];
+    const { events } = run(game(roster, { rules: certain, quest: { scenes: [], foes } }));
+    const first = ofType(events, 'check.rolled')[0];
+    expect(first?.purpose).toBe('defence');
+    const wounds = ofType(events, 'foe.wounded');
+    expect(wounds.at(-1)).toMatchObject({ to: 4, hits: 4 });
+    expect(ofType(events, 'exchange.started').length).toBeGreaterThan(1);
   });
 });

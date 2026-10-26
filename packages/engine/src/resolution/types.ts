@@ -52,6 +52,10 @@ export interface FoeGroupTemplate {
   readonly id: string;
   readonly attack: number;
   readonly defence: number;
+  /** Turn order in an exchange, against adventurers' Agility (D-129). */
+  readonly speed: number;
+  /** Hits (wound steps) to beat before the group is down (D-129). */
+  readonly hits: number;
 }
 
 export interface QuestTemplate {
@@ -124,6 +128,8 @@ export interface FoeState {
   readonly id: string;
   readonly attack: number;
   readonly defence: number;
+  readonly speed: number;
+  readonly hits: number;
   step: number;
 }
 
@@ -205,7 +211,13 @@ export type GameEvent = EventBase &
         readonly outcome: CheckOutcome;
       }
     | { readonly type: 'wound.changed'; readonly from: number; readonly to: number }
-    | { readonly type: 'foe.wounded'; readonly from: number; readonly to: number }
+    | {
+        readonly type: 'foe.wounded';
+        readonly from: number;
+        readonly to: number;
+        /** The group is down when `to` reaches this. */
+        readonly hits: number;
+      }
     | { readonly type: 'alarm.raised' }
     | { readonly type: 'adventurer.stabilised' }
     | { readonly type: 'adventurer.died' }

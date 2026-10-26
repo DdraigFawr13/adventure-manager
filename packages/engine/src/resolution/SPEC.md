@@ -1,6 +1,6 @@
 # Resolution v0
 
-How a party, its plan, stats, gear and the site become odds and events (PLAN §9b step 0b, D-113). Decisions: D-118..D-126. Every number below is a starting value in content data (`packages/content/src/base/resolution.ts`), to be tuned by R1 and R2; none is in engine code.
+How a party, its plan, stats, gear and the site become odds and events (PLAN §9b step 0b, D-113). Decisions: D-118..D-126, D-129. Every number below is a starting value in content data (`packages/content/src/base/resolution.ts`), to be tuned by R1 and R2; none is in engine code.
 
 ## Inputs
 
@@ -21,7 +21,7 @@ How a party, its plan, stats, gear and the site become odds and events (PLAN §9
 
 ## Main fight (D-118, D-123)
 
-- Up to 6 exchanges. In each, every standing adventurer attacks the first standing foe group (class attribute + weapon vs the group's defence), then every standing group attacks one standing adventurer (group attack vs Agility, minus armour; front-line members are picked 2:1 over back-line). Down and Dying members are not attacked.
+- Up to 6 exchanges. In each, everyone standing acts once, fastest first (Agility against each foe group's speed; ties by id, D-129). An adventurer attacks the first standing foe group (class attribute + weapon vs the group's defence); a foe group attacks one standing adventurer (group attack vs Agility, minus armour; front-line members are picked 2:1 over back-line). Down and Dying members are not attacked. Each foe group has its own number of hits to beat (content data), and is down when it has taken them.
 - A hit moves the target one wound step; a hit with a roll in the lowest quarter of the chance moves it two.
 - The fight ends when all groups are Down (won), the party retreats, every member is Down or worse (rout), or the exchanges run out (the foes withdraw; the contract is half done).
 

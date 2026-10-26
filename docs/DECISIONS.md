@@ -792,3 +792,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Every working session on this project updates `docs/roadmap.html` and republishes it to the same link (https://claude.ai/artifact/FTio9mE7jLaK4Wrn189YAg), so the owner can follow progress. It stays a view of HANDOFF and PLAN; HANDOFF wins if they disagree.
 - **Why:** Owner (2026-10-26): "I want that updated in every chat for this project so I can see the progress."
+
+## D-129 Resolution v0: speed order and sturdier foes
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** In each fight exchange everyone acts in order of speed: Agility for adventurers, a speed number for each foe group (content data). Each foe group also has its own number of hits to beat before it is down (a swarm about 3, a pack about 5, a warden or keeper about 7), so fights last the planned 3–6 exchanges (D-118) and foes strike throughout. Death numbers are retuned after. Detail: `packages/engine/src/resolution/SPEC.md`.
+- **Why:** Owner's R1 note (2026-10-26): "I don't see any enemies ever really doing anything at all." Measured over 300 quests per contract: foes got 0–2 attacks per fight and fights lasted 1–2 exchanges, because the whole party acted first and a group fell after 3 wound steps.

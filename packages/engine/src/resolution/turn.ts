@@ -7,6 +7,7 @@ import type {
   Adventurer,
   Attribute,
   CheckPurpose,
+  FoeState,
   GameEvent,
   GameState,
   QuestRun,
@@ -60,6 +61,11 @@ export function living(turn: Turn): Adventurer[] {
 
 export function standing(turn: Turn): Adventurer[] {
   return living(turn).filter((a) => stepOf(turn, a.id) < WOUND.down);
+}
+
+/** A foe group is down once it has taken its hits (D-129). */
+export function foeDown(foe: FoeState): boolean {
+  return foe.step >= foe.hits;
 }
 
 /** Best first by the attribute; ties by id, so the order never depends on the roster's order. */
