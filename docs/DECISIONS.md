@@ -127,3 +127,33 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Morale, ambitions, demands, refusals, relationships and departures; conversations driven by guildmaster stats; tracked promises. Detail: `docs/design/CONCEPT.md` §18.
 - **Why:** Owner's choice; people-management drama is the heart of FM.
+
+## D-022 Delegation to staff; gentle first season
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Every area can be delegated to staff who act by their stats; the first season introduces systems gradually. Detail: `docs/design/CONCEPT.md` §19.
+- **Why:** Owner's choice; FM's proven answer to depth without overload.
+
+## D-023 Free-to-play, cosmetics and supporter pack only
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Free full game; sells cosmetics and a supporter pack; never gameplay advantage. Detail: `docs/design/CONCEPT.md` §20.
+- **Why:** Owner chose F2P; cosmetic-only keeps offline play, permadeath (D-008) and balance intact and avoids a required backend.
+
+## D-024 Single-player only at launch
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** No multiplayer or online social features at launch. Detail: `docs/design/CONCEPT.md` §21.
+- **Why:** Owner's choice; keeps the game offline and the effort on the core.
+
+## D-025 Failure continues the story
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Dismissal leads to a new guild or succession; bankruptcy brings debt and seizure; game over only by the player's choice once guild and career both end. Detail: `docs/design/CONCEPT.md` §22.
+- **Why:** Owner's choice; a long sandbox (D-006) shouldn't end on one bad season.
+
+## D-026 Found or take over at game start
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** New games either found a guild or take over an existing one, with difficulty set by that choice. Detail: `docs/design/CONCEPT.md` §23.
+- **Why:** Owner's choice; FM-style club selection plus the ownership of founding.

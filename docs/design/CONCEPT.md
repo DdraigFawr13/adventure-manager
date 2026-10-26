@@ -2,6 +2,25 @@
 
 Working document for phase 1. Each section records what the owner decided, with their own notes. Status: in progress.
 
+## Pitch, pillars and core loop (Proposed)
+
+**Pitch:** Run an adventurers' guild across generations. Recruit, develop and manage a roster of flawed, ambitious people, send them into a living frontier region, and live with the consequences.
+
+**Pillars** (every feature must serve at least one; features that serve none are cut):
+
+1. **People are the game.** Every adventurer is a person with stats, ambitions, relationships and a story that the systems remember (§5, §6, §18).
+2. **You plan, they bleed.** The player decides and intervenes at key moments; the risk falls on people the player cares about, and consequences are permanent (§2, §6, §11).
+3. **A guild that outlives you.** The guild is a character with a charter, earned traits and history, passed between guildmasters (§1, §4, §17).
+4. **A region that remembers.** Factions, rivals and the map react to what the guild does and doesn't do (§3, §16).
+5. **Depth on your terms.** Every system is deep, and every system can be delegated (§19).
+
+**Core loop:**
+
+- **Daily (minutes):** Continue the calendar → handle stops (key moments, offers, people issues, reports) → adjust.
+- **Weekly (a session):** pick contracts → form and brief parties → watch quests on the board → deal with results (loot, injuries, morale, reputation).
+- **Seasonal (hours):** recruitment windows, contract renewals, facility upgrades, ranking movement, patron review, tournaments.
+- **Generational (the save):** heroes age, retire and die; guildmasters succeed one another; the guild's legend and the region change.
+
 ## 1. Player role
 
 - **Decided (2026-10-25):** The player is a desk guildmaster: a pure manager who recruits, trains, assigns and negotiates but doesn't fight.
@@ -115,3 +134,30 @@ Working document for phase 1. Each section records what the owner decided, with 
 - **Decided (2026-10-25):** Full FM-style personalities. Adventurers have morale, ambitions and opinions; they ask for better contracts, refuse quests that clash with their values, demand a place in the top party, form friendships and feuds, and can leave.
 - The player manages them through conversations (praise, warn, promise, reassure). Success depends on the guildmaster's stats (§1).
 - Promises are tracked; broken promises damage trust and morale.
+
+## 19. Managing complexity
+
+- **Decided (2026-10-25):** Any area (training, scouting, contracts, kit, minor quests and so on) can be delegated to a staff member, who runs it according to their stats. The player focuses where they want; the guildmaster's own stats make their chosen focus matter (§1).
+- A gentle first season introduces systems one at a time.
+
+## 20. Business model
+
+- **Decided (2026-10-25):** Free-to-play. The full game is free.
+- Revenue comes from cosmetics only (guild banners and heraldry, hall decor, token/mini skins for the tabletop view, portrait styles) and an optional supporter pack.
+- No gameplay advantage is ever sold: no speed-ups, revival tokens, scout reports or premium recruits. This keeps offline single-player (§14), permadeath (§6) and balance intact.
+
+## 21. Multiplayer
+
+- **Decided (2026-10-25):** Single-player only at launch. Social features may be considered later.
+
+## 22. Failure
+
+- **Decided (2026-10-25):** Failure continues the story rather than ending the save.
+- Dismissal by the patron: the guildmaster can take over a struggling guild elsewhere (like FM job offers), or the player continues as the old guild's successor guildmaster (§1).
+- Bankruptcy brings debt, seized assets and a reputation hit, not an instant end.
+- The save ends only if both the guild and the guildmaster's career end and the player chooses not to continue.
+
+## 23. Game start
+
+- **Decided (2026-10-25):** The player either founds a new guild (writes the charter, tiny roster, bottom tier, low expectations) or takes over an existing guild from a list ranging from a struggling bottom-tier hall to an established top guild with high patron expectations.
+- Difficulty comes from that choice.
