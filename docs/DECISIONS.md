@@ -633,3 +633,15 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Launch price $24.99, with about $12.50–15 net per copy (estimate) and break-even at about 4,000–15,000 copies solo. English only at launch; translation decided after launch on regional sales. Paid expansions decided after launch (D-040). Detail: `docs/design/PLAN.md` §14c.
 - **Why:** Owner's choice (Plan Q14b): in line with comparable deep management games and an easy buy after the free demo.
 
+## D-105 Quality, CI and release process
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Every push runs format, lint, strict types, engine unit tests, the determinism test, the content validator, save fixtures (from M2) and the docs and drift checks; screen tests when ui changes. The 1,000-guild-year balance run and performance checks run before each gate and release, not per push. CI uses path filters so docs-only changes stay free; game builds and Steam uploads run on release tags only, with Steam credentials as secrets set up by the owner. Bugs are GitHub issues in three severities; a save-losing or common-path crash blocks a release, and every fixed blocker or major bug gets a test. Steam branches `playtest`, `beta` and `default`; rollback to the previous build. An 8-step release checklist for the demo, launch and every patch, ending in the owner's sign-off. Detail: `docs/design/PLAN.md` §15.
+- **Why:** Owner accepted the draft (Plan Q15b); adopts the tools review (D-092..D-094) and keeps CI minutes low (CI-01..CI-06).
+
+## D-106 Launch platform: Windows
+
+- **Status:** Accepted (2026-10-26)
+- **Decision:** Launch on Windows only. Linux and Steam Deck players can run it through Proton, not promised on the store page. Steam Deck support (1280×800 layout, controller) and a Mac build are decided after launch. Detail: `docs/design/PLAN.md` §15d.
+- **Why:** Owner's choice (Plan Q15a): one build to make and test for a solo developer (D-102); the Deck's screen is below the 1366×768 minimum (D-091).
+

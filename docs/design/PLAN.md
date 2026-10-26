@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: Part A (§1–§10) and §11–§14 written; §15 to do.
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: all 15 sections written and accepted section by section (2026-10-26); the whole plan awaits the owner's approval (M0, D-099).
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -23,7 +23,7 @@ Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked
 12. **Art and audio production.** What an artist makes vs what is generated, with costs. Written below.
 13. **Milestones.** Prototype, vertical slice, alpha, free demo, beta, launch, post-launch roadmap (painted portraits, standee animations, bardic songs, war campaigns). Written below.
 14. **Budget, team and business assumptions.** Written below.
-15. **Quality, CI and release process.**
+15. **Quality, CI and release process.** Written below.
 
 ---
 
@@ -848,6 +848,7 @@ Two cases: solo all the way, and solo plus one developer hired at a gate. Contin
 - **Net per copy: about $12.50–15** (50–60% of the list price, estimate). Steam keeps 30% (fact for the first $10 million of sales); sales tax and VAT come out of prices in many regions, and regional pricing, launch discounts and refunds take more.
 - **Break-even (estimate):** solo budget about **4,000–15,000 copies**; with a hire about **9,000–29,000 copies**.
 - **Demo:** the first season, free (D-040, M4); D-065's 15% demo conversion is the measure.
+- **§1d targets** (D-065) were revisited for this budget and stand unchanged; break-even needs no extra target.
 - **Paid expansions:** stay undecided (D-040); decide after launch on sales and the post-launch plan (D-101). Free updates first.
 - **Languages:** English at launch. Text lives in template files ready for translation (D-091); translation is decided after launch on sales by region.
 
@@ -866,3 +867,69 @@ Each is an assumption the budget rests on; if one breaks, §14 is revisited at t
 3. Wishlists from the Steam page (live from M2) and the demo carry the launch; no paid advertising in the budget.
 4. The list price and net share above hold at launch.
 5. The owner's time is available at the pace the milestones assume.
+
+---
+
+## 15. Quality, CI and release process (Accepted 2026-10-26)
+
+Decisions: D-105, D-106. Inputs: tools review (D-092..D-094, `docs/design/TOOLS-REVIEW.md` §3), architecture and saves (D-091), milestones (D-099), playtest logs (D-088), team (D-102), shared rules CI-01..CI-06, VER-01..VER-07, GAME-01..GAME-06. Tool names for the checks follow the engine test (D-090); the shape below holds for either engine.
+
+### 15a. Checks (Accepted 2026-10-26, D-105)
+
+Every check runs locally before a push (VER-02); CI repeats the fast ones.
+
+| Check | What it proves | When |
+|---|---|---|
+| Format, lint, strict types | Code is consistent and type-safe | Every push |
+| Engine unit tests | Each rule does what PLAN and DECISIONS say | Every push |
+| Determinism test | Same seed and commands give the same events (GAME-06) | Every push |
+| Content validator | Every data file matches its schema; ids and references resolve (D-091) | Every push |
+| Save fixtures | A saved game from every released version (and every alpha and beta build) loads and upgrades (GAME-05) | Every push from M2 |
+| Screen tests | Key screens render at 1366×768 and 1920×1080, 15 px ledgers, no clipped text at 150% size (D-077, D-084) | Every push touching ui |
+| Docs and drift checks | Decision ids exist; no draft markers; master rules in sync (D-092) | Every push |
+| Balance run | 1,000 seeded guild-years against the §4 and §9a targets (under ~17 min, §11g) | Before each gate and release, and on demand; not per push |
+| Performance | §11g targets on the minimum machine | Before each gate and release |
+| Review | Adversarial review of the whole diff before a PR and before ready (D-093); `code-review` and `security-review` skills on code PRs (D-094) | Every PR |
+
+### 15b. CI (Accepted 2026-10-26, D-105)
+
+- **Pull requests and `main`:** the "every push" checks above, with path filters so docs-only changes stay free (CI-01, CI-04). One job, time limit, least privilege, per-branch concurrency (CI-06). Added through the `efficient-github-actions` skill with the chosen stack's `stacks/` layer.
+- **Release tags only:** build the game for each launch platform (§15e) and upload it to a Steam branch. Builds never run on ordinary pushes.
+- **Manual:** the balance run and performance run, triggered before gates and releases (CI-04).
+- **Steam credentials** live as repository secrets used only by the release job, set up by the owner (SAFE-01, SAFE-02).
+
+### 15c. Bugs and crashes (Accepted 2026-10-26, D-105)
+
+- **Where:** GitHub issues, one per bug, with the build version, the save and the playtest log (D-088) attached.
+- **Crash log:** the game writes a local crash report next to the playtest log; nothing is sent automatically (D-088). Testers attach it.
+- **Severity:**
+  1. **Blocker:** loses or corrupts a save, or crashes on a common path. Stops a release; fixed before anything else.
+  2. **Major:** a wrong rule result, a stuck screen, or a broken Trace (D-082). Fixed before the next gate.
+  3. **Minor:** text, layout, balance numbers. Batched.
+- Every fixed blocker or major bug gets a test that would have caught it (VER-07), and a LESSONS line if a process let it through (SRC-05).
+
+### 15d. Versions and builds (Accepted 2026-10-26, D-105, D-106)
+
+- **Launch platform: Windows** (owner's choice, Plan Q15a). Linux and Steam Deck players can run the Windows build through Proton, but it is not promised on the store page. Steam Deck support (a 1280×800 layout below the 1366×768 minimum, D-091, and controller play) and a Mac build are decided after launch.
+- **Version:** `major.minor.patch` for the game, plus the save-format and content versions stored in every save (D-091).
+- **Steam branches:** `playtest` for slice and alpha testers (M2, M3), `beta` for M5 and later opt-in previews, `default` for the release. The free demo (D-040) is a separate Steam app, as Steam sets up demos (to recheck at sign-up).
+- **Rollback:** Steam keeps earlier builds; a bad release is rolled back by setting the previous build live, and saves made by the bad build must still load in the next fixed one.
+
+### 15e. Release checklist (Accepted 2026-10-26, D-105)
+
+Used at M4 (demo), M6 (launch, D-099) and for every patch:
+
+1. All "every push" checks green on the release commit; balance and performance runs within targets.
+2. No open blocker; majors reviewed by the owner.
+3. Save fixtures from every earlier public build load.
+4. Fresh install and upgrade install tested on the minimum machine for each launch platform.
+5. Achievements and Steam Cloud work on the release branch (D-088, D-091).
+6. Asset licence ledger complete (`assets/LICENSES.md`, §12e, SAFE-05); store page's AI-content disclosure answered if any generated content shipped (D-094).
+7. Patch notes written in plain words; the version in the game matches the tag.
+8. Owner signs off (SAFE-01); the build is set live.
+
+### 15f. After release (Accepted 2026-10-26, D-105)
+
+- **Hotfix:** a blocker found after release gets a patch release as soon as it is fixed and checked; nothing else rides on it.
+- **Updates:** the free updates (D-101) go to the `beta` branch first, then `default`.
+- **Old saves:** every update keeps every older save loading (GAME-05); save fixtures are never deleted.
