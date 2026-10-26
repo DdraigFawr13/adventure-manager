@@ -161,3 +161,9 @@ Working document for phase 1. Each section records what the owner decided, with 
 
 - **Decided (2026-10-25):** The player either founds a new guild (writes the charter, tiny roster, bottom tier, low expectations) or takes over an existing guild from a list ranging from a struggling bottom-tier hall to an established top guild with high patron expectations.
 - Difficulty comes from that choice.
+
+## 24. Magic
+
+- **Decided (2026-10-25):** At launch, magic is real and powerful but not everyday. Casters are valuable, expensive recruits; spells draw on limited daily power and can carry risks (fatigue, mishaps, corruption for dark arts). Magic items are prized and storied (§9).
+- Later: distinct magic traditions (arcane, divine, primal, occult-like) with their own rules, factions and politics, each class drawing on one. Launch magic is designed so traditions can be added without reworking it.
+- Owner's note: "1 and eventually 4."

@@ -163,3 +163,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** The pitch, pillars (people are the game; you plan, they bleed; a guild that outlives you; a region that remembers; depth on your terms) and four-layer core loop at the top of `docs/design/CONCEPT.md`. Every feature must serve at least one pillar.
 - **Why:** Owner approved as written; gives every later design and planning decision a test.
+
+## D-028 Magic: rare and costly now, traditions later
+
+- **Status:** Accepted (2026-10-25)
+- **Decision:** Launch magic is rare-ish, costly and respected, with limited daily power and risks. Distinct magic traditions come later; launch design must leave room for them. Detail: `docs/design/CONCEPT.md` §24.
+- **Why:** Owner's choice; fits grounded high fantasy (D-010) and storied items (D-012).
