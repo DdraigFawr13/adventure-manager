@@ -36,7 +36,8 @@ Updated: 2026-10-26. A fresh session must be able to continue from this file alo
 
 ## Open questions
 
-- Kingdom map (D-087, launch): workshop its style, layers (areas, guilds, action, deeds) and interactions with §12 art production; mock-ups expected.
+- Permissions (from the PR #3 review): tighten the allow list (`cat`/`grep`/`find` can read `.env`; `git branch:*` allows `-D`; `find:*` allows `-delete`) and widen the force-push ask rules (`-fu`, `origin +main`, `git -C`)? Owner to decide; see D-096 limits.
+- Kingdom map art direction continues past §12 (D-097): Story-Generator layout as the artist's base.
 - Later: 20 class levels (D-074) need a pacing decision; facility compound / city-building style guildhall (D-075) not scoped.
 - Intrigue and underhanded dealings (owner's note, D-069): Later tier; content not decided.
 - Old-press ledger readability: 15 px minimum (D-084), confirm on real monitors in R4; fallback is our own Goudy ledger cut (D-052). Use lining figures (`lining-nums`) for all numbers: the face's default figures are old-style and proportional (measured 13.6–20.8 px wide at 40 px; lining 21.1 px each). Clear print (D-077) is the player-side option. Minimum size asked in PLAN §9c.

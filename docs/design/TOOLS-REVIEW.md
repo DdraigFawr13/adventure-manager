@@ -37,7 +37,7 @@ From AI-Master-Instructions (synced; not hand-edited, SRC-06):
 
 ### At build start (after the engine test, D-090)
 
-4. **Engine tooling in cloud sessions:** extend `session-start.local.sh` to install the .NET SDK and a headless Godot for the engine test; Node is already handled.
+4. **Engine tooling in cloud sessions** (needed first, for the engine test itself): extend `session-start.local.sh` to install the .NET SDK and a headless Godot for the engine test; Node is already handled.
 5. **Checks per stack** (decided with the engine):
    - Web: TypeScript strict, Vitest (engine tests), Playwright (screen tests and screenshots), Biome or ESLint, Ajv (content schemas), PixiJS (map and board), Electron with steamworks.js.
    - Godot: .NET with xUnit (engine tests), GdUnit4 (scene tests), GodotSteam.
@@ -80,7 +80,7 @@ Sources: [pasqualepillitteri.it](https://pasqualepillitteri.it/en/news/846/claud
 
 Run with the `setup-audit` skill: scope this repo, quick depth (docs not fetched), one session measured. Report kept outside the repo (session scratch); findings summarised here.
 
-- Clean: one SessionStart hook that exists; 19 read-only allow rules, none risky; no duplicate hooks; prompt cache hit ratio 99.3% (measured).
+- Clean by the audit's classification: one SessionStart hook that exists; 19 allow rules, none flagged risky. Corrected after the PR #3 review: not all are read-only (`git branch:*` allows `-D`, `find:*` allows `-delete`, `npm test` and the sync check run code); see D-096 limits; no duplicate hooks; prompt cache hit ratio 99.3% (measured).
 - **Finding 1 (cost, medium): marathon sessions.** This one session re-read 58.2 million cached tokens (measured). Cached reads cost a tenth of normal input but dominate at that size. Fix: a fresh session per merged PR or finished plan section, resuming from HANDOFF (CTX-02). No setting needed.
 - **Finding 2 (security, low): no deny rules.** `.claude/settings.json` has 19 allow, 0 deny (measured). Fix: add deny rules for reading `.env` files and `secrets/`, and for force-push, via a reviewed PR (shared file).
 - Parked: 84 skills listed per session (29,871 characters, about 7,500 tokens, estimated), many unrelated (data, Canva, plugin management); optional to disable at account level. No toolchain pins, lockfile or tests yet; handled at build start (items 4–5).

@@ -514,6 +514,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** After plan approval, prototypes run in this order: 1 one watched quest (is watching fun?); 2 headless year simulator on the same simulation core (balance, pacing, delegation, careers); 3 desk-density mock-ups and the template-writing test, alongside 1 or 2; 4 a two-year attachment playtest. Detail: `docs/design/PLAN.md` §9b.
 - **Why:** Owner's choice (Plan Q9a): test the assumption the whole game rests on first.
+- **Amended (2026-10-26, D-090):** step 0, the engine test, comes before step 1.
 - **Note:** first recorded as "headless simulator first"; the owner reported that answer as a misclick the same day and chose quest first.
 
 ## D-086 Riskiest assumptions and their tests
@@ -580,7 +581,8 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 ## D-096 Deny secret reads; ask before any force-push
 
 - **Status:** Accepted (2026-10-26)
-- **Decision:** `.claude/settings.json` denies reading `.env`, `.env.*` and `secrets/**`, and asks before any `git push` with `--force` (including `--force-with-lease`) or `-f`. Limit: a Read deny covers the file tools and input redirects, not a shell program reading the same file; the sandbox would be needed to enforce that. Also allows `node tools/docs-check.mjs` without a prompt.
+- **Decision:** `.claude/settings.json` denies reading `.env`, `.env.*` and `secrets/**` in the project root through the file tools, and asks before a `git push` whose command contains `--force` (including `--force-with-lease`) or a separate `-f` flag. Also allows `node tools/docs-check.mjs` without a prompt.
+- **Limits (found in the pre-merge review, 2026-10-26):** the allow list lets `cat`, `head`, `tail`, `grep`, `rg` and `find` run without a prompt, so a shell read of `.env` is not blocked; force pushes written as combined flags (`-fu`), refspecs (`origin +main`) or `git -C dir push` are not matched; `git branch:*` also allows `git branch -D` and `find:*` allows `-delete`. Tightening these is the owner's decision (HANDOFF open questions).
 - **Why:** Setup audit finding (owner approved): there were 19 allow rules and no deny or ask rules; SAFE-02 and GIT-03 were instructions only.
 
 ## D-097 Kingdom map: hand-drawn base, four launch layers

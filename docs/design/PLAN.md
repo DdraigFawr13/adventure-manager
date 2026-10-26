@@ -615,7 +615,7 @@ The owner chose to decide between A (web tech in Electron) and B (Godot 4 with C
 
 **Engine test** (prototype step 0, before the watched quest, D-085):
 
-- **Build in both:** (1) one roster ledger: 30 rows, sorting, a hover breakdown on a number (D-078), 15 px old-press type with lining figures (D-084), clear print and the 100–150% size slider (D-077); (2) one kingdom-map view (D-087): layered illustration, zoom and pan, a party moving, deed markers, one ink-reveal effect.
+- **Build in both:** (1) one roster ledger: 30 rows, sorting, a hover breakdown on a number (D-078), 15 px old-press type with lining figures (D-084), clear print and the 100–150% size slider (D-077); (2) one kingdom-map view (D-087): layered illustration, zoom and pan, a party moving, faction and guild marks, a threat stain, one ink-reveal effect.
 - **Judged on:** the owner's look-and-feel notes (GAME-06), plus measured build time, frames per second and memory at 1366×768, download size, and the find-the-fact task (R4).
 - The rest of §11 holds for either engine; only the language changes (TypeScript or C#).
 
@@ -628,7 +628,7 @@ What the game mostly is: ledgers, letters and inspectors (dense typography), plu
 | Simulation | TypeScript package, also runs headless in Node | C# library, also runs headless in .NET | C# library |
 | Ledgers and letters | HTML/CSS: best-in-class text, tables, OpenType features (lining figures) | Godot Control nodes: workable, more effort for dense typographic tables | uGUI/UI Toolkit: workable, heavy |
 | Map and board | Canvas/WebGL (e.g. PixiJS) | Strong native 2D, animation and shaders | Strong |
-| Steam | Electron + steamworks.js (maintained) | GodotSteam (community, widely used) | Steamworks.NET |
+| Steam | Electron + steamworks.js (last updated April 2026, per a repo tracker; to verify) | GodotSteam (community, widely used) | Steamworks.NET |
 | Download size (estimate) | ~150 MB shell | ~60–100 MB | ~100 MB+ |
 | Cost and licence | Free, open source | Free, MIT | Paid tiers above a revenue threshold; 2023 runtime-fee episode (current terms to check) |
 | Iteration with AI help | Fastest: one language, and the mock-ups are already HTML | Good | Fair |
@@ -683,7 +683,7 @@ flowchart LR
 ### 11g. Performance targets (Accepted 2026-10-26, D-091)
 
 - Minimum screen 1366×768; 60 fps on the map and board on a mid-range laptop from about 2020.
-- A day tick with no stop under 50 ms; a headless simulated year under 1 s (for the 1,000-year runs in §9).
+- A day tick with no stop under 50 ms; a headless simulated guild-year under 1 s, so the 1,000 seeded guild-years in §9b take under about 17 minutes run one after another.
 - Save and load under 1 s for a 30-year save.
 
 ---
@@ -749,8 +749,9 @@ Mock-up: `docs/design/mockups/kingdom-map.html` (interactive: base style and lay
   - Randomness comes from named seeded streams derived from (seed, name), never `Math.random` (`src/engine/core/rng.ts:1-3`), which matches GAME-01.
   - Its atlas draws an ink-style map on canvas: paper land with biome tints, shaded peaks, hills as arcs, two-tone trees, an ink coastline, double frame, compass rose, region names in spaced italics, realm borders as soft bands (`docs/phases/UI_ROOMS.md:28-44`).
   - Uses here: generate the March's terrain, rivers and routes from a seed as the layout an artist paints over; the generator and atlas symbols as a starting point for the procedural ink renderer and later generated regions (D-030).
+  - Facts above were checked by opening the cited lines in that repository on 2026-10-26.
   - It is written in TypeScript with canvas rendering: reuse fits the web option of the engine test directly; Godot would need a port to C#. Evidence for D-090, not a decision.
-  - Licence: `UNLICENSED` (private, `package.json:5`); reuse is fine if the owner holds the rights, with provenance recorded (SAFE-05).
+  - Licence: `UNLICENSED` (private, `package.json:5`); reuse is fine if the owner holds the rights (owner to confirm); check the licences of any of its dependencies that come along, and record provenance (SAFE-05).
 - **Launch layers:** areas and places (always), **factions** (who holds sway where), **guilds** (banners with ranking tier), **action** (parties and rivals moving, key-moment seals), **threats** (spreading ink stains, closed roads). Each mark links to its Trace (D-082).
 - **Later:** **deeds** on the map (inked cartouches, the fallen with a mourning corner; meanwhile deeds live in the Chronicle, D-042) and **rumours** as pencil notes (meanwhile in the inbox, D-043).
 
