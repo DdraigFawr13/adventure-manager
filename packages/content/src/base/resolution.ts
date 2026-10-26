@@ -1,5 +1,6 @@
 // Resolution v0 starting numbers (packages/engine/src/resolution/SPEC.md, D-118..D-123).
-// All are first guesses for R1 and R2 to tune against PLAN §4c, not measured values.
+// First tuning pass (2026-10-26, tools/resolution-sweep.ts): death, bleed, strong-hit and injury
+// numbers hit PLAN §4c on the hazardous delve with the leader's call; the rest are first guesses.
 import type { QuestTemplate, ResolutionContent, ResolutionRules } from '@adventure-manager/engine';
 
 export const baseResolutionRules: ResolutionRules = {
@@ -8,14 +9,13 @@ export const baseResolutionRules: ResolutionRules = {
   stepBp: 500,
   minChanceBp: 500,
   maxChanceBp: 9500,
-  strongHitShareBp: 2500,
+  strongHitShareBp: 3000,
   woundSteps: {
     failure: 1,
     badFailure: 2,
     alarmBadFailure: 1,
     hit: 1,
     strongHit: 2,
-    failedRetreat: 1,
   },
   risk: {
     cautious: { chanceBp: -500, badFailureShareBp: 1500 },
@@ -31,14 +31,18 @@ export const baseResolutionRules: ResolutionRules = {
   alarmFoeBonus: 2,
   maxExchanges: 6,
   targetWeight: { front: 2, back: 1 },
-  deathRoll: { baseBp: 2500, stepBp: 100, pivot: 10 },
-  bleed: { baseBp: 2000, stepBp: 200, pivot: 10 },
+  deathRoll: { baseBp: 4000, stepBp: 150, pivot: 10 },
+  bleed: { baseBp: 2500, stepBp: 200, pivot: 10 },
   stabilise: { attribute: 'lore', difficulty: 10 },
-  injuryBp: { badlyHurt: 1500, down: 4000, dying: 7000 },
+  injuryBp: { badlyHurt: 750, down: 2250, dying: 4100 },
   retreat: {
     attribute: 'wits',
     difficulty: { routine: 6, hazardous: 9, perilous: 12, deadly: 15 },
+    beats: 1,
+    failedCheckBeats: 1,
+    carryBeats: 1,
   },
+  leaderCall: { attribute: 'wits', difficulty: 12, clarityStepBp: 2500 },
   classes: {
     'class.warrior': { attackAttribute: 'might', canStabilise: false },
     'class.rogue': { attackAttribute: 'agility', canStabilise: false },

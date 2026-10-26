@@ -1,11 +1,11 @@
 # Resolution v0
 
-How a party, its plan, stats, gear and the site become odds and events (PLAN §9b step 0b, D-113). Decisions: D-118..D-124. Every number below is a starting value in content data (`packages/content/src/base/resolution.ts`), to be tuned by R1 and R2; none is in engine code.
+How a party, its plan, stats, gear and the site become odds and events (PLAN §9b step 0b, D-113). Decisions: D-118..D-126. Every number below is a starting value in content data (`packages/content/src/base/resolution.ts`), to be tuned by R1 and R2; none is in engine code.
 
 ## Inputs
 
 - **Party:** 3–6 adventurers, each with the eight working attributes (Might, Agility, Toughness, Stealth, Wits, Presence, Resolve, Lore; 1–20, D-122), a class, a front or back position, a weapon bonus and an armour bonus. v0 classes: warrior, rogue, cleric (default; a healer makes Dying matter).
-- **Plan (D-121):** approach (stealth, assault, diplomacy), risk (cautious, steady, bold), retreat threshold (first Badly hurt, first Down, first Dying, never).
+- **Plan (D-121):** approach (stealth, assault, diplomacy), risk (cautious, steady, bold), retreat threshold (first Badly hurt, first Down, the leader's call (default), first Dying, never).
 - **Quest:** a template with 3–7 scenes, then one main fight; the site's tags (e.g. `guarded`, `dark`, `open`) shift scene difficulty per approach (negative is easier: a guarded fort favours stealth, guarded = stealth −2, assault +2); foe groups for the main fight.
 
 ## Checks (D-119)
@@ -34,15 +34,16 @@ How a party, its plan, stats, gear and the site become odds and events (PLAN §9
 - Lasting injuries are events only in v0; nothing is stored on the adventurer yet.
 - Target: these numbers start where the headless simulator should give PLAN §4c's deaths per danger rating and about 5 injuries per death; R2 tunes them.
 
-## Retreat and key moments (D-032, D-121)
+## Retreat and key moments (D-032, D-121, D-125, D-126)
 
-- After each scene and exchange the engine counts members at or past the retreat threshold (the dead count). When the count rises, a **major moment** is raised for a watched party (push on or pull out); an unwatched leader pulls out. After a push on, the moment comes back only if the count rises again.
-- Retreat is one check by the standing member with the best Wits (difficulty by danger rating: 6, 9, 12, 15); failure gives one random living member a wound step. The retreat carries the Dying home with no further death rolls. It abandons the contract (its price per PLAN §4g).
+- After each scene and exchange the engine counts members at or past the retreat line (the dead count). When the count rises, a **major moment** is raised for a watched party (push on or pull out); an unwatched leader pulls out. After a push on, the moment comes back only if the count rises again.
+- **The leader's call** (default, D-125): the line is first Dying, but each time another member falls (Down or worse) the leader (best Wits) reads the fight. Winning means a larger share of foe groups down than of the party fallen. The read is a Wits check, difficulty 12 minus 1 per 25-point gap between those shares; success makes the right call (hold if winning, pull out if losing), failure the wrong one. A pull-out call raises the moment or the retreat as above.
+- **Retreat takes time** (D-126): one check by the standing member with the best Wits (difficulty by danger rating: 6, 9, 12, 15). The way out lasts 1 beat, +1 while carrying anyone Down or Dying, +1 if the check fails. Each `quest.step` is one beat: every standing foe group strikes once if the party fled a fight, then the fallen are tended, bleed and roll for death as usual. If nobody is left standing it becomes a rout. A retreat abandons the contract (its price per PLAN §4g).
 
 ## Commands and events
 
 - Commands: `quest.start` (party, plan, quest, day), `quest.step` (one scene or one exchange), `quest.choose` (answer to a raised moment). All go through `simulate(state, command)`.
-- Events: `quest.started`, `scene.started`, `exchange.started`, `check.rolled` (purpose, chance `Value`, roll, outcome; purposes: scene, attack, defence, stabilise, bleed, death, injury, retreat), `wound.changed`, `foe.wounded`, `alarm.raised`, `adventurer.stabilised`, `adventurer.died`, `moment.raised`, `moment.resolved`, `quest.retreated`, `injury.gained`, `quest.ended` (won, partial, retreated, routed). Each has a cause id: the command or the event that led to it.
+- Events: `quest.started`, `scene.started`, `exchange.started`, `check.rolled` (purpose, chance `Value`, roll, outcome; purposes: scene, attack, defence, stabilise, bleed, death, injury, retreat, judgement), `wound.changed`, `foe.wounded`, `alarm.raised`, `adventurer.stabilised`, `adventurer.died`, `moment.raised`, `moment.resolved`, `quest.retreated` (beats), `retreat.beat`, `leader.judged` (situation, call), `injury.gained`, `quest.ended` (won, partial, retreated, routed). Each has a cause id: the command or the event that led to it.
 - Balance sweep: `node tools/resolution-sweep.ts [quests]` reports deaths and injuries against PLAN §4c and runs the invariants on every quest.
 - Tests: one rule test per rule above, the determinism test (same seed and commands, same events), and invariants (no step beyond Dying, every event has a cause).
 

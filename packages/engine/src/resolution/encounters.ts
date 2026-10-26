@@ -83,6 +83,14 @@ export function resolveExchange(turn: Turn, commandId: string): void {
     if (!succeeded(result.outcome)) continue;
     woundFoe(turn, foe, result.outcome === 'strong-success' ? steps.strongHit : steps.hit, eventId);
   }
+  foesStrike(turn, exchangeEvent);
+}
+
+/** Every standing foe group strikes one standing adventurer: in each exchange, and on a retreat. */
+export function foesStrike(turn: Turn, causeId: string): void {
+  const { quest, rules } = turn;
+  const steps = rules.woundSteps;
+  const alarm = quest.alarm ? rules.alarmFoeBonus : 0;
   for (const foe of quest.foes) {
     if (foe.step >= WOUND.down) continue;
     const targets = standing(turn);
@@ -102,7 +110,7 @@ export function resolveExchange(turn: Turn, commandId: string): void {
       rules.baseChanceBp,
       parts,
       0,
-      exchangeEvent,
+      causeId,
     );
     if (!succeeded(result.outcome)) continue;
     wound(

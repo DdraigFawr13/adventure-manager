@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { checkInvariants, simulate } from '../src/index.ts';
 import { chanceValue, rollCheck } from '../src/resolution/check.ts';
-import { adventurer, game, ofType, run, steadyPlan } from './fixture.ts';
+import { adventurer, finish, game, ofType, run, steadyPlan } from './fixture.ts';
 
 const fixed = (roll: number) => ({ int: () => roll - 1 });
 const certain = { minChanceBp: 0, maxChanceBp: 10_000 };
@@ -424,8 +424,11 @@ describe('start checks and rules the review asked to pin down', () => {
       choice: 'pull-out',
     });
     expect(out.events.some((e) => e.type === 'check.rolled' && e.purpose === 'retreat')).toBe(true);
-    expect(ofType([...out.events], 'quest.ended')[0]?.outcome).toBe('retreated');
-    expect(out.state.quest).toBeNull();
+    // D-126: the retreat takes beats; the quest ends only after them.
+    expect(out.state.quest?.phase).toBe('retreat');
+    const rest = finish(out.state);
+    expect(ofType(rest.events, 'retreat.beat').length).toBeGreaterThan(0);
+    expect(ofType(rest.events, 'quest.ended')[0]?.outcome).toBe('retreated');
   });
 });
 
@@ -482,5 +485,67 @@ describe('the fallen bleed out (D-124)', () => {
       .map((e) => e.purpose)
       .filter((p) => p === 'stabilise' || p === 'bleed');
     expect(purposes.slice(0, 2)).toEqual(['stabilise', 'bleed']);
+  });
+});
+
+describe('the leader reads the fight, and retreat takes time (D-125, D-126)', () => {
+  const scene = {
+    id: 's',
+    kind: 'fixed',
+    attribute: 'agility',
+    difficulty: 20,
+    testers: 'all',
+    onFailure: 'wound',
+  } as const;
+  const bad = {
+    ...game([]).content.rules.risk,
+    steady: { chanceBp: 0, badFailureShareBp: 10_000 },
+  };
+  const leaderPlan = { ...steadyPlan, retreat: 'leader' } as const;
+
+  it('pulls out when losing and the read succeeds', () => {
+    // 'a' falls in a scene (losing: no foe down yet); wits 20 makes the read certain.
+    const roster = [adventurer('a', { agility: 1 }), adventurer('b', { agility: 20, wits: 20 })];
+    const rules = {
+      ...certain,
+      risk: bad,
+      leaderCall: { attribute: 'wits', difficulty: 0, clarityStepBp: 2500 },
+    } as const;
+    const { events } = run(game(roster, { rules, quest: { scenes: [scene, scene] } }), leaderPlan);
+    expect(ofType(events, 'leader.judged')[0]).toMatchObject({
+      situation: 'losing',
+      call: 'pull-out',
+    });
+    expect(ofType(events, 'quest.retreated')).toHaveLength(1);
+  });
+
+  it('makes the wrong call when the read fails', () => {
+    const roster = [adventurer('a', { agility: 1 }), adventurer('b', { agility: 20, wits: 1 })];
+    const rules = {
+      ...certain,
+      risk: bad,
+      leaderCall: { attribute: 'wits', difficulty: 40, clarityStepBp: 2500 },
+    } as const;
+    const { events } = run(game(roster, { rules, quest: { scenes: [scene, scene] } }), leaderPlan);
+    expect(ofType(events, 'leader.judged')[0]).toMatchObject({ situation: 'losing', call: 'hold' });
+  });
+
+  it('adds beats for a failed retreat check and for carrying the fallen', () => {
+    const roster = [adventurer('a', { agility: 1 }), adventurer('b', { agility: 20, wits: 1 })];
+    const rules = {
+      ...certain,
+      risk: bad,
+      retreat: {
+        ...game([]).content.rules.retreat,
+        difficulty: { routine: 40, hazardous: 40, perilous: 40, deadly: 40 },
+      },
+    } as const;
+    const { events } = run(game(roster, { rules, quest: { scenes: [scene, scene] } }), {
+      ...steadyPlan,
+      retreat: 'down',
+    });
+    // 1 base + 1 carrying 'a' (Down) + 1 failed check.
+    expect(ofType(events, 'quest.retreated')[0]?.beats).toBe(3);
+    expect(ofType(events, 'retreat.beat')).toHaveLength(3);
   });
 });

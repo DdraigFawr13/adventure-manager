@@ -18,7 +18,8 @@ export type Approach = 'stealth' | 'assault' | 'diplomacy';
 export type Risk = 'cautious' | 'steady' | 'bold';
 export type Danger = 'routine' | 'hazardous' | 'perilous' | 'deadly';
 export type Position = 'front' | 'back';
-export type RetreatThreshold = 'badly-hurt' | 'down' | 'dying' | 'never';
+/** 'leader': the party's leader judges at each fall whether to hold to first Dying (D-125). */
+export type RetreatThreshold = 'badly-hurt' | 'down' | 'dying' | 'leader' | 'never';
 
 /** Wound steps as numbers, so "worse" is "greater" (D-120). */
 export const WOUND = { fit: 0, hurt: 1, badlyHurt: 2, down: 3, dying: 4 } as const;
@@ -77,7 +78,6 @@ export interface ResolutionRules {
     readonly alarmBadFailure: number;
     readonly hit: number;
     readonly strongHit: number;
-    readonly failedRetreat: number;
   };
   readonly risk: Readonly<
     Record<Risk, { readonly chanceBp: number; readonly badFailureShareBp: number }>
@@ -95,9 +95,20 @@ export interface ResolutionRules {
   readonly bleed: { readonly baseBp: number; readonly stepBp: number; readonly pivot: number };
   readonly stabilise: { readonly attribute: Attribute; readonly difficulty: number };
   readonly injuryBp: { readonly badlyHurt: number; readonly down: number; readonly dying: number };
+  /** A retreat takes beats (D-126): a base, more on a failed check, more while carrying the fallen. */
   readonly retreat: {
     readonly attribute: Attribute;
     readonly difficulty: Readonly<Record<Danger, number>>;
+    readonly beats: number;
+    readonly failedCheckBeats: number;
+    readonly carryBeats: number;
+  };
+  /** The leader's read at a fall (D-125): a clearer situation lowers the difficulty. */
+  readonly leaderCall: {
+    readonly attribute: Attribute;
+    readonly difficulty: number;
+    /** Gap between foes down and party fallen, in basis points, worth one point of difficulty. */
+    readonly clarityStepBp: number;
   };
   readonly classes: Readonly<
     Record<string, { readonly attackAttribute: Attribute; readonly canStabilise: boolean }>
@@ -124,7 +135,12 @@ export interface QuestRun {
   readonly partyIds: readonly string[];
   /** Wound step per adventurer id. */
   readonly steps: Record<string, number>;
-  phase: 'scenes' | 'fight';
+  phase: 'scenes' | 'fight' | 'retreat';
+  /** Retreat beats still to cover; foes strike on each if the party fled a fight. */
+  retreatBeats: number;
+  fledFight: boolean;
+  /** Members fallen (Down or worse) when the leader last judged. */
+  judgedFallen: number;
   sceneIndex: number;
   exchange: number;
   alarm: boolean;
@@ -144,7 +160,15 @@ export interface GameState {
 }
 
 export type CheckPurpose =
-  'scene' | 'attack' | 'defence' | 'stabilise' | 'bleed' | 'death' | 'injury' | 'retreat';
+  | 'scene'
+  | 'attack'
+  | 'defence'
+  | 'stabilise'
+  | 'bleed'
+  | 'death'
+  | 'injury'
+  | 'retreat'
+  | 'judgement';
 export type CheckOutcome = 'strong-success' | 'success' | 'failure' | 'bad-failure';
 export type QuestOutcome = 'won' | 'partial' | 'retreated' | 'routed';
 
@@ -187,7 +211,13 @@ export type GameEvent = EventBase &
     | { readonly type: 'adventurer.died' }
     | { readonly type: 'moment.raised'; readonly moment: 'retreat' }
     | { readonly type: 'moment.resolved'; readonly choice: 'push-on' | 'pull-out' }
-    | { readonly type: 'quest.retreated' }
+    | { readonly type: 'quest.retreated'; readonly beats: number }
+    | { readonly type: 'retreat.beat'; readonly beatsLeft: number }
+    | {
+        readonly type: 'leader.judged';
+        readonly situation: 'winning' | 'losing';
+        readonly call: 'hold' | 'pull-out';
+      }
     | { readonly type: 'injury.gained' }
     | { readonly type: 'quest.ended'; readonly outcome: QuestOutcome }
   );
