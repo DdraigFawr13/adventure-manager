@@ -2,6 +2,7 @@
 // Second tuning pass (2026-10-26, tools/resolution-sweep.ts, D-131): death, bleed and the mill
 // cellar's numbers put the prototype party near PLAN §4c on all three contracts at the default
 // plan. Cautious and reckless plans hit §4c's half and double only on the perilous chapel (D-131).
+import { baseContracts } from './contracts.ts';
 import { gallowsSpire } from './deadly-quest.ts';
 import { baseGuildRules } from './guild.ts';
 import type { QuestTemplate, ResolutionContent, ResolutionRules } from '@adventure-manager/engine';
@@ -190,5 +191,6 @@ export const drownedChapel: QuestTemplate = {
 export const baseResolution: ResolutionContent = {
   rules: baseResolutionRules,
   quests: [barrowDelve, millCellar, drownedChapel, gallowsSpire],
+  contracts: baseContracts,
   guild: baseGuildRules,
 };

@@ -103,6 +103,7 @@ describe('quest report text (R8)', () => {
       const lines = writeQuestReport({ ...summary, questId: `q${n}` }, reportText, {
         personOf: person,
         nameOf: (id) => names[id] ?? id,
+        seed: 'cases',
       });
       const body = lines.filter((l) => !l.formula);
       expect(lines[0]?.formula, `case ${n} salutation`).toBe(true);
@@ -180,7 +181,7 @@ function goldenLetters(count: number): string {
       watched: false,
     });
     for (let k = 0; state.quest; k += 1) step({ type: 'quest.step', id: `s${n}.${k}`, day: 1 });
-    const summary = summariseQuest(events, state.roster, baseResolution.quests);
+    const summary = summariseQuest(events, state.roster, baseResolution);
     const personOf = (id: string): PersonSlot => {
       const a = state.roster.find((r) => r.id === id);
       return {
@@ -191,6 +192,7 @@ function goldenLetters(count: number): string {
     const lines = writeQuestReport(summary, reportText, {
       personOf,
       nameOf: (id) => names[id] ?? id,
+      seed: 'golden-letters',
     });
     out.push(lines.map((l) => l.text).join('\n'));
   }

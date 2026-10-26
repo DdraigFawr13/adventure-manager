@@ -3,6 +3,7 @@ import {
   checkGuildInvariants,
   checkInvariants,
   isFree,
+  shapeOf,
   simulate,
   stopDays,
   type Command,
@@ -49,7 +50,25 @@ export interface YearResult {
   seconds: number;
 }
 
+/** The raw year: final state and every event, for tools that read events themselves. */
+export interface PlayedYear {
+  readonly state: GameState;
+  readonly events: readonly GameEvent[];
+}
+
 export function playYear(seed: string, plan: Plan): YearResult {
+  return summariseYear(runYear(seed, plan));
+}
+
+interface Tracked extends PlayedYear {
+  readonly started: number;
+  readonly lowestChest: number;
+  readonly weeksInDebt: number;
+  readonly winterStartChest: number;
+  readonly winterLowestChest: number;
+}
+
+export function runYear(seed: string, plan: Plan): Tracked {
   const started = performance.now();
   let state: GameState = {
     seed,
@@ -142,7 +161,12 @@ export function playYear(seed: string, plan: Plan): YearResult {
     ...checkGuildInvariants(state, events, commandIds),
   ];
   if (problems.length) throw new Error(`Seed ${seed}: ${problems.slice(0, 5).join(' ')}`);
+  return { state, events, started, lowestChest, weeksInDebt, winterStartChest, winterLowestChest };
+}
 
+function summariseYear(played: Tracked): YearResult {
+  const { state, events, started, lowestChest, weeksInDebt, winterStartChest, winterLowestChest } =
+    played;
   const result: YearResult = {
     deaths: 0,
     injuries: 0,
@@ -172,7 +196,7 @@ export function playYear(seed: string, plan: Plan): YearResult {
     if (e.type === 'injury.gained') result.injuries += 1;
     if (e.type === 'recruit.signed') result.recruits += 1;
     if (e.type === 'quest.started') {
-      danger = dangerOf.get(e.templateId) ?? '';
+      danger = shapeOf(e.templateId)?.danger ?? dangerOf.get(e.templateId) ?? '';
       const row = result.byDanger.get(danger) ?? [0, 0];
       row[0] += e.subjectIds.length - 1;
       result.byDanger.set(danger, row);

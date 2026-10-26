@@ -41,6 +41,7 @@ export function foundGuild(
     board: [],
     parties: [],
     prospects: [],
+    recentShapes: [],
     nextOfferNo: 0,
     nextPartyNo: 0,
     nextPersonNo: 0,

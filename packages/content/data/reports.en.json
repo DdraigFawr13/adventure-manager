@@ -38,6 +38,9 @@
       "family": "report.fight"
     },
     {
+      "family": "report.twist"
+    },
+    {
       "list": "deeds",
       "max": 2
     },
@@ -327,7 +330,7 @@
         "if": ["writer", "fight"]
       },
       {
-        "text": "{@f.never} {foe}{@f.why}.",
+        "text": "{@f.never.lead}{@f.never} {foe}{@f.why}.",
         "if": ["writer", "no-fight"]
       }
     ],
@@ -530,18 +533,20 @@
       }
     ],
     "f.never": [
-      "We never reached",
-      "We never got as far as",
-      "We did not come within a stone's throw of",
-      "We saw nothing of",
-      "We turned round before we met"
+      "we never reached",
+      "we never got as far as",
+      "we did not come within a stone's throw of",
+      "we saw nothing of",
+      "we turned round before we met"
     ],
     "f.why": [
       "; the road did for us first",
       ", because the way in was worse than the job",
       "; the place itself wore us down",
       ", and I would not call that luck",
-      ", which may be the one kind thing in this letter"
+      ", which may be the one kind thing in this letter",
+      "; the way was too much for us",
+      ", and the rest of this letter says why"
     ],
     "report.deed.saved": [
       "{@ds.when}{who} {@ds.verb} {patient}{@ds.tail}.",
@@ -1027,6 +1032,128 @@
       "You will want to know that ",
       "Tell the infirmary that ",
       "Not all of it will heal, and "
-    ]
+    ],
+    "report.twist": [
+      {
+        "text": "{@tw.lead}{@tw.weather}{@tw.after}.",
+        "if": ["writer", "twist.foul-weather"]
+      },
+      {
+        "text": "{@tw.lead}{@tw.info}{@tw.after}.",
+        "if": ["writer", "twist.bad-information"]
+      },
+      {
+        "text": "{@tw.lead}{@tw.trap}{@tw.after}.",
+        "if": ["writer", "twist.trap"]
+      },
+      {
+        "text": "{@tw.lead}{@tw.curse}{@tw.after}.",
+        "if": ["writer", "twist.cursed-ground"]
+      },
+      {
+        "text": "{@tw.lead.plain}{@tw.hostage.lost}{@tw.sorry}.",
+        "if": ["writer", "twist.hostage", "alarm"]
+      },
+      {
+        "text": "{@tw.lead.good}{@tw.hostage.saved}{@tw.good}.",
+        "if": ["writer", "twist.hostage", "outcome.won"],
+        "unless": ["alarm"]
+      },
+      {
+        "text": "{@tw.lead}{@tw.deadline}{@tw.after}.",
+        "if": ["writer", "twist.deadline"]
+      }
+    ],
+    "tw.weather": [
+      "the weather was foul the whole way",
+      "it rained sideways for three days",
+      "the roads were mud to the knee",
+      "the wind never let up, and the footing was worse",
+      "we walked through the worst weather of the year",
+      "every path was flooded or frozen",
+      "the fen was half under water",
+      "fog sat on us from the first morning",
+      "the cold got into everything"
+    ],
+    "tw.info": [
+      "what we were told about {foe} was wrong; the contract undersold them",
+      "whoever wrote the contract never saw {foe} up close",
+      "the reeve's description of {foe} was generous to {foe}",
+      "we were told one thing about {foe} and found another",
+      "nobody warned us how strong {foe} had grown"
+    ],
+    "tw.trap": [
+      "someone had set a trap on the way in",
+      "there was a trap waiting for us, and it was not old",
+      "we walked into a trap that nobody had warned us about",
+      "the way in was trapped, and cleverly",
+      "a tripwire and a deadfall met us halfway",
+      "the way in was rigged with spikes and a falling beam",
+      "a pit had been dug and covered on the only path"
+    ],
+    "tw.curse": [
+      "the ground there is cursed; wounds would not close",
+      "something in that place keeps blood flowing",
+      "cuts bled there that should have stopped",
+      "the earth itself was against us, and every wound ran",
+      "wounds wept there long after they should have dried",
+      "the place drank blood; every cut kept running",
+      "an old curse lies on that ground, and it kept our wounds open"
+    ],
+    "tw.hostage.lost": [
+      "they knew we were coming, and the hostage did not live to see us",
+      "the alarm went up, and with it went the hostage",
+      "we were heard, and the hostage paid for it",
+      "once they heard us, the hostage was as good as dead"
+    ],
+    "tw.hostage.saved": [
+      "we brought the hostage out alive",
+      "the hostage is safe and on the cart behind us",
+      "we got the hostage clear before anyone knew we were there",
+      "the hostage walked out with us, shaken but whole"
+    ],
+    "tw.deadline": [
+      "we had no time to do it properly",
+      "the deadline gave us no room to wait them out",
+      "with the clock against us we could not see it through at our own pace",
+      "we were working to the reeve's timetable, not ours",
+      "there was no time to wear them down",
+      "the reeve wanted it done by the market day, and so it was rushed",
+      "the deadline cut the fight short"
+    ],
+    "tw.after": [
+      "",
+      ", and it told",
+      ", which made it harder",
+      ", and you should know it",
+      ", and it cost us",
+      ", and we felt it",
+      ", and it showed"
+    ],
+    "tw.lead": [
+      "",
+      "First, ",
+      "For the record, ",
+      "You should know that ",
+      "As it turned out, ",
+      "To make matters worse, ",
+      "Mark this down: "
+    ],
+    "tw.lead.good": [
+      "",
+      "Better news: ",
+      "For the record, ",
+      "You will be glad to hear ",
+      "As promised, "
+    ],
+    "tw.good": ["", ", and grateful", ", and the family has been told", ", none the worse"],
+    "f.never.lead": ["", "In the end, ", "As it fell out, ", "Truth be told, ", "To be plain, "],
+    "tw.lead.plain": [
+      "",
+      "I have to tell you that ",
+      "You should know that ",
+      "It is hard to write, but "
+    ],
+    "tw.sorry": ["", "; we are sorry for it", "; we could not stop it", "; that is on us"]
   }
 }

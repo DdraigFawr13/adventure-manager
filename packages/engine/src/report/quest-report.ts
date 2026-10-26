@@ -2,7 +2,14 @@
 // summary reads only events; the words come from content templates through the text grammar.
 import type { PersonSlot, SlotValue, TemplateLibrary, TextContext } from '../core/text.ts';
 import { renderFamily, type PronounForms, type PronounKey } from '../core/text.ts';
-import type { Adventurer, GameEvent, QuestOutcome, QuestTemplate } from '../resolution/types.ts';
+import { shapeOf } from '../contract/compose.ts';
+import { templateFor } from '../resolution/turn.ts';
+import type {
+  Adventurer,
+  GameEvent,
+  QuestOutcome,
+  ResolutionContent,
+} from '../resolution/types.ts';
 
 export interface DeathNote {
   readonly id: string;
@@ -39,7 +46,7 @@ export interface QuestSummary {
 export function summariseQuest(
   events: readonly GameEvent[],
   roster: readonly Adventurer[],
-  quests: readonly QuestTemplate[],
+  content: ResolutionContent,
 ): QuestSummary {
   const byId = new Map(events.map((e) => [e.id, e]));
   const start = events.find((e) => e.type === 'quest.started');
@@ -53,8 +60,7 @@ export function summariseQuest(
   const saves: [string, string][] = [];
   const deaths: DeathNote[] = [];
   const injuries: string[] = [];
-  const template = quests.find((q) => q.id === start.templateId);
-  if (!template) throw new Error(`No quest template ${start.templateId}.`);
+  const template = templateFor(content, start.templateId);
   let foesBeaten = 0;
   let exchanges = 0;
   let alarm = false;
@@ -191,6 +197,8 @@ export interface ReportOptions {
   readonly nameOf: (id: string) => string;
   /** Replaces names and numbers with their slot names, so repeated sentences can be counted. */
   readonly mask?: boolean;
+  /** The save's seed: picks are keyed by it and the quest id, so two saves write different letters. */
+  readonly seed: string;
 }
 
 /** Writes the letter: one line per section that has something to say. */
@@ -216,9 +224,11 @@ export function writeQuestReport(
   if (summary.exchanges >= 4) facts.add('long-fight');
   if (summary.exchanges > 0 && summary.exchanges <= 2) facts.add('short-fight');
   if (summary.foeIds.length > 1) facts.add('many-foes');
+  const shape = shapeOf(summary.templateId);
+  if (shape?.twistId) facts.add(shape.twistId);
   const mainFoe = summary.foeIds[summary.foeIds.length - 1];
   const vars: Record<string, SlotValue> = {
-    quest: options.nameOf(summary.templateId),
+    quest: options.nameOf(shape ? shape.siteId : summary.templateId),
     foe: mainFoe ? options.nameOf(mainFoe) : '',
     party,
     dead,
@@ -245,7 +255,7 @@ export function writeQuestReport(
   };
   const lines: ReportLine[] = [];
   text.sections.forEach((section, at) => {
-    const key = `${summary.questId}/${at}`;
+    const key = `${options.seed}/${summary.questId}/${at}`;
     const formula = section.formula ?? false;
     const base = {
       library: text.library,
@@ -257,18 +267,35 @@ export function writeQuestReport(
       if (line) lines.push({ text: capitalise(line), formula });
     }
     if (section.list) {
+      const opened = new Set<string>();
       items[section.list].slice(0, section.max ?? Infinity).forEach((item, n) => {
         const ctx: TextContext = {
           ...base,
           vars: { ...vars, ...item.vars },
           facts: new Set([...facts, ...item.facts]),
         };
-        const line = renderFamily(ctx, item.family, `${key}/${n}`);
+        const line = freshLine(ctx, item.family, `${key}/${n}`, opened);
         if (line) lines.push({ text: capitalise(line), formula });
       });
     }
   });
   return lines;
+}
+
+const REPICKS = 4;
+
+/** Items in one list should not open alike ("We lost … We lost …"): re-pick, a few times at most. */
+function freshLine(ctx: TextContext, family: string, key: string, opened: Set<string>): string {
+  let line = '';
+  for (let n = 0; n < REPICKS; n += 1) {
+    line = renderFamily(ctx, family, n === 0 ? key : `${key}/again${n}`);
+    const opening = line.split(' ').slice(0, 3).join(' ').toLowerCase();
+    if (!opened.has(opening)) {
+      opened.add(opening);
+      break;
+    }
+  }
+  return line;
 }
 
 function capitalise(text: string): string {

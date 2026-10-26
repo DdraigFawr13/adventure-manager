@@ -58,7 +58,10 @@ const text: ReportText = {
       { text: 'I am hurt.', if: ['self'] },
       { text: '{who} is hurt.', unless: ['self'] },
     ],
-    bye: ['{writer}', { text: 'the reeve', if: ['no-writer'] }],
+    bye: [
+      { text: '{writer}', if: ['writer'] },
+      { text: 'the reeve', if: ['no-writer'] },
+    ],
   },
 };
 
@@ -67,6 +70,7 @@ const people: Record<string, PersonSlot> = {
   b: { name: 'Wenna', pronouns: 'she' },
 };
 const options = {
+  seed: 'test-seed',
   personOf: (id: string) => people[id] ?? { name: id, pronouns: 'they' as const },
   nameOf: (id: string) => `«${id}»`,
 };
@@ -79,7 +83,7 @@ describe('quest report (report SPEC.md)', () => {
         quest: { foes: [{ id: 'foe.wights', attack: 1, defence: 1, speed: 1, hits: 3 }] },
       }),
     );
-    const summary = summariseQuest(events, state.roster, state.content.quests);
+    const summary = summariseQuest(events, state.roster, state.content);
     expect(summary.outcome).toBe('won');
     expect(summary.partyIds).toEqual(['a', 'b']);
     expect(summary.writerId).toBe('b');
@@ -94,7 +98,7 @@ describe('quest report (report SPEC.md)', () => {
   });
 
   it('refuses events that are not one whole quest', () => {
-    expect(() => summariseQuest([], [], [quest])).toThrow(/start to end/);
+    expect(() => summariseQuest([], [], game([]).content)).toThrow(/start to end/);
   });
 
   const base: QuestSummary = {

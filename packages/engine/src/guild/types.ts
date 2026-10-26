@@ -98,6 +98,8 @@ export interface GuildMember {
 export interface Offer {
   readonly id: string;
   readonly templateId: string;
+  /** The twist the board shows; null when there is none or it is hidden (D-139). */
+  readonly shownTwistId: string | null;
   readonly danger: Danger;
   readonly feeCopper: number;
   readonly travelDays: number;
@@ -126,6 +128,8 @@ export interface GuildState {
   readonly board: Offer[];
   readonly parties: Party[];
   readonly prospects: Prospect[];
+  /** Shape ids the board posted most recently, oldest first (contract/SPEC.md). */
+  readonly recentShapes: string[];
   /** Counters for ids, so ids stay unique and replayable. */
   nextOfferNo: number;
   nextPartyNo: number;
@@ -166,6 +170,7 @@ export type GuildEventBody =
   | {
       readonly type: 'offer.posted';
       readonly templateId: string;
+      readonly shownTwistId: string | null;
       readonly danger: Danger;
       readonly feeCopper: number;
       readonly travelDays: number;

@@ -1,0 +1,786 @@
+{
+  "_note": "Contracts v0 (D-139, packages/engine/src/contract/SPEC.md): sites, monster kinds and twists the board composes. Every number is a starting assumption to tune (R2): site scenes are at hazardous difficulty and carry over from the four fixed quests; foe groups follow the fixed quests' numbers per danger. Twist fee changes in basis points.",
+  "plainWeight": 10,
+  "sceneShift": {
+    "routine": -2,
+    "hazardous": 0,
+    "perilous": 0,
+    "deadly": 2
+  },
+  "recentShapes": 60,
+  "sites": [
+    {
+      "id": "site.hollow-barrow",
+      "tags": ["dark", "guarded"],
+      "homes": ["barrow", "tomb"],
+      "dangers": ["hazardous", "perilous"],
+      "scenes": [
+        {
+          "id": "scene.fen-road",
+          "kind": "fixed",
+          "difficulty": 8,
+          "testers": "all",
+          "onFailure": "wound",
+          "attribute": "agility"
+        },
+        {
+          "id": "scene.barrow-mouth",
+          "kind": "approach",
+          "difficulty": 10,
+          "testers": "best",
+          "onFailure": "alarm"
+        },
+        {
+          "id": "scene.fallen-passage",
+          "kind": "fixed",
+          "difficulty": 11,
+          "testers": "best-two",
+          "onFailure": "wound",
+          "attribute": "wits"
+        },
+        {
+          "id": "scene.burial-hall",
+          "kind": "approach",
+          "difficulty": 12,
+          "testers": "best-two",
+          "onFailure": "alarm"
+        }
+      ]
+    },
+    {
+      "id": "site.crays-mill",
+      "tags": ["dark"],
+      "homes": ["cellar", "vermin", "river"],
+      "dangers": ["routine", "hazardous"],
+      "scenes": [
+        {
+          "id": "scene.mill-yard",
+          "kind": "approach",
+          "difficulty": 9,
+          "testers": "best",
+          "onFailure": "alarm"
+        },
+        {
+          "id": "scene.flooded-steps",
+          "kind": "fixed",
+          "difficulty": 12,
+          "testers": "all",
+          "onFailure": "wound",
+          "attribute": "agility"
+        }
+      ]
+    },
+    {
+      "id": "site.drowned-chapel",
+      "tags": ["dark", "open"],
+      "homes": ["tomb", "water", "ruin"],
+      "dangers": ["hazardous", "perilous", "deadly"],
+      "scenes": [
+        {
+          "id": "scene.reed-causeway",
+          "kind": "fixed",
+          "difficulty": 8,
+          "testers": "all",
+          "onFailure": "wound",
+          "attribute": "agility"
+        },
+        {
+          "id": "scene.bell-tower",
+          "kind": "approach",
+          "difficulty": 11,
+          "testers": "best-two",
+          "onFailure": "alarm"
+        },
+        {
+          "id": "scene.sunken-nave",
+          "kind": "fixed",
+          "difficulty": 11,
+          "testers": "best-two",
+          "onFailure": "wound",
+          "attribute": "wits"
+        },
+        {
+          "id": "scene.crypt-stair",
+          "kind": "fixed",
+          "difficulty": 10,
+          "testers": "best-two",
+          "onFailure": "wound",
+          "attribute": "resolve"
+        }
+      ]
+    },
+    {
+      "id": "site.gallows-spire",
+      "tags": ["guarded", "open"],
+      "homes": ["ruin", "tower", "tomb"],
+      "dangers": ["perilous", "deadly"],
+      "scenes": [
+        {
+          "id": "scene.spire-ascent",
+          "kind": "fixed",
+          "difficulty": 9,
+          "testers": "all",
+          "onFailure": "wound",
+          "attribute": "agility"
+        },
+        {
+          "id": "scene.iron-stair",
+          "kind": "approach",
+          "difficulty": 11,
+          "testers": "best-two",
+          "onFailure": "alarm"
+        },
+        {
+          "id": "scene.bone-gallery",
+          "kind": "fixed",
+          "difficulty": 11,
+          "testers": "best-two",
+          "onFailure": "wound",
+          "attribute": "resolve"
+        },
+        {
+          "id": "scene.high-cell",
+          "kind": "approach",
+          "difficulty": 12,
+          "testers": "best-two",
+          "onFailure": "alarm"
+        }
+      ]
+    },
+    {
+      "id": "site.reedmere-farm",
+      "tags": ["open"],
+      "homes": ["field", "vermin", "wild"],
+      "dangers": ["routine", "hazardous"],
+      "scenes": [
+        {
+          "id": "scene.farm-lane",
+          "kind": "fixed",
+          "difficulty": 8,
+          "testers": "all",
+          "onFailure": "wound",
+          "attribute": "agility"
+        },
+        {
+          "id": "scene.hedge-line",
+          "kind": "approach",
+          "difficulty": 10,
+          "testers": "best",
+          "onFailure": "alarm"
+        },
+        {
+          "id": "scene.byre",
+          "kind": "fixed",
+          "difficulty": 10,
+          "testers": "best-two",
+          "onFailure": "wound",
+          "attribute": "wits"
+        }
+      ]
+    },
+    {
+      "id": "site.wendle-mine",
+      "tags": ["dark"],
+      "homes": ["cave", "deep"],
+      "dangers": ["hazardous", "perilous", "deadly"],
+      "scenes": [
+        {
+          "id": "scene.pit-head",
+          "kind": "fixed",
+          "difficulty": 9,
+          "testers": "best-two",
+          "onFailure": "wound",
+          "attribute": "agility"
+        },
+        {
+          "id": "scene.dark-gallery",
+          "kind": "fixed",
+          "difficulty": 10,
+          "testers": "best-two",
+          "onFailure": "wound",
+          "attribute": "wits"
+        },
+        {
+          "id": "scene.old-workings",
+          "kind": "approach",
+          "difficulty": 11,
+          "testers": "best-two",
+          "onFailure": "alarm"
+        },
+        {
+          "id": "scene.flooded-sump",
+          "kind": "fixed",
+          "difficulty": 9,
+          "testers": "all",
+          "onFailure": "wound",
+          "attribute": "toughness"
+        }
+      ]
+    },
+    {
+      "id": "site.ashford-bridge",
+      "tags": ["guarded", "open"],
+      "homes": ["road", "bandit"],
+      "dangers": ["routine", "hazardous", "perilous"],
+      "scenes": [
+        {
+          "id": "scene.causeway-road",
+          "kind": "fixed",
+          "difficulty": 8,
+          "testers": "all",
+          "onFailure": "wound",
+          "attribute": "agility"
+        },
+        {
+          "id": "scene.toll-house",
+          "kind": "approach",
+          "difficulty": 11,
+          "testers": "best",
+          "onFailure": "alarm"
+        },
+        {
+          "id": "scene.bridge-span",
+          "kind": "fixed",
+          "difficulty": 10,
+          "testers": "best-two",
+          "onFailure": "wound",
+          "attribute": "resolve"
+        }
+      ]
+    },
+    {
+      "id": "site.blackthorn-wood",
+      "tags": ["open"],
+      "homes": ["wild", "beast", "cult"],
+      "dangers": ["routine", "hazardous", "perilous"],
+      "scenes": [
+        {
+          "id": "scene.wood-edge",
+          "kind": "fixed",
+          "difficulty": 9,
+          "testers": "best-two",
+          "onFailure": "wound",
+          "attribute": "wits"
+        },
+        {
+          "id": "scene.deer-track",
+          "kind": "approach",
+          "difficulty": 10,
+          "testers": "best",
+          "onFailure": "alarm"
+        },
+        {
+          "id": "scene.thorn-clearing",
+          "kind": "fixed",
+          "difficulty": 10,
+          "testers": "all",
+          "onFailure": "wound",
+          "attribute": "agility"
+        }
+      ]
+    }
+  ],
+  "monsters": [
+    {
+      "id": "monster.barrow-dead",
+      "family": "restless-dead",
+      "lives": ["barrow", "tomb"],
+      "variants": {
+        "hazardous": [
+          {
+            "id": "foe.barrow-hounds",
+            "attack": 13,
+            "defence": 9,
+            "speed": 14,
+            "hits": 5
+          },
+          {
+            "id": "foe.restless-warden",
+            "attack": 15,
+            "defence": 11,
+            "speed": 8,
+            "hits": 7
+          }
+        ],
+        "perilous": [
+          {
+            "id": "foe.grave-hounds",
+            "attack": 14,
+            "defence": 10,
+            "speed": 14,
+            "hits": 6
+          },
+          {
+            "id": "foe.barrow-lord",
+            "attack": 16,
+            "defence": 12,
+            "speed": 9,
+            "hits": 8
+          }
+        ],
+        "deadly": [
+          {
+            "id": "foe.grave-host",
+            "attack": 16,
+            "defence": 12,
+            "speed": 11,
+            "hits": 7
+          },
+          {
+            "id": "foe.old-king",
+            "attack": 18,
+            "defence": 14,
+            "speed": 9,
+            "hits": 9
+          }
+        ]
+      }
+    },
+    {
+      "id": "monster.drowned-dead",
+      "family": "restless-dead",
+      "lives": ["water", "tomb"],
+      "variants": {
+        "hazardous": [
+          {
+            "id": "foe.drowned-thralls",
+            "attack": 12,
+            "defence": 9,
+            "speed": 7,
+            "hits": 5
+          },
+          {
+            "id": "foe.drowned-priest",
+            "attack": 14,
+            "defence": 11,
+            "speed": 9,
+            "hits": 6
+          }
+        ],
+        "perilous": [
+          {
+            "id": "foe.drowned-dead",
+            "attack": 13,
+            "defence": 10,
+            "speed": 7,
+            "hits": 6
+          },
+          {
+            "id": "foe.chapel-keeper",
+            "attack": 15,
+            "defence": 12,
+            "speed": 10,
+            "hits": 8
+          }
+        ],
+        "deadly": [
+          {
+            "id": "foe.drowned-host",
+            "attack": 15,
+            "defence": 12,
+            "speed": 8,
+            "hits": 7
+          },
+          {
+            "id": "foe.risen-keeper",
+            "attack": 18,
+            "defence": 14,
+            "speed": 10,
+            "hits": 9
+          }
+        ]
+      }
+    },
+    {
+      "id": "monster.rats",
+      "family": "beasts",
+      "lives": ["cellar", "vermin", "field"],
+      "variants": {
+        "routine": [
+          {
+            "id": "foe.cellar-rats",
+            "attack": 14,
+            "defence": 6,
+            "speed": 13,
+            "hits": 8
+          }
+        ],
+        "hazardous": [
+          {
+            "id": "foe.rat-swarm",
+            "attack": 14,
+            "defence": 8,
+            "speed": 14,
+            "hits": 6
+          },
+          {
+            "id": "foe.rat-king",
+            "attack": 15,
+            "defence": 10,
+            "speed": 12,
+            "hits": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "monster.wolves",
+      "family": "beasts",
+      "lives": ["wild", "field", "beast"],
+      "variants": {
+        "routine": [
+          {
+            "id": "foe.wolves",
+            "attack": 12,
+            "defence": 7,
+            "speed": 14,
+            "hits": 6
+          }
+        ],
+        "hazardous": [
+          {
+            "id": "foe.wolf-pack",
+            "attack": 13,
+            "defence": 9,
+            "speed": 15,
+            "hits": 5
+          },
+          {
+            "id": "foe.pack-leader",
+            "attack": 15,
+            "defence": 10,
+            "speed": 13,
+            "hits": 6
+          }
+        ],
+        "perilous": [
+          {
+            "id": "foe.dire-wolves",
+            "attack": 15,
+            "defence": 11,
+            "speed": 15,
+            "hits": 6
+          },
+          {
+            "id": "foe.grey-sire",
+            "attack": 16,
+            "defence": 12,
+            "speed": 13,
+            "hits": 8
+          }
+        ]
+      }
+    },
+    {
+      "id": "monster.bandits",
+      "family": "cultists-and-bandits",
+      "lives": ["road", "bandit", "ruin", "wild"],
+      "variants": {
+        "routine": [
+          {
+            "id": "foe.footpads",
+            "attack": 12,
+            "defence": 8,
+            "speed": 11,
+            "hits": 6
+          }
+        ],
+        "hazardous": [
+          {
+            "id": "foe.bandits",
+            "attack": 13,
+            "defence": 10,
+            "speed": 11,
+            "hits": 5
+          },
+          {
+            "id": "foe.bandit-captain",
+            "attack": 15,
+            "defence": 11,
+            "speed": 10,
+            "hits": 7
+          }
+        ],
+        "perilous": [
+          {
+            "id": "foe.outlaw-band",
+            "attack": 14,
+            "defence": 11,
+            "speed": 12,
+            "hits": 6
+          },
+          {
+            "id": "foe.outlaw-chief",
+            "attack": 16,
+            "defence": 12,
+            "speed": 11,
+            "hits": 8
+          }
+        ]
+      }
+    },
+    {
+      "id": "monster.goblins",
+      "family": "goblin-kind",
+      "lives": ["cave", "deep", "wild", "ruin"],
+      "variants": {
+        "routine": [
+          {
+            "id": "foe.goblin-scouts",
+            "attack": 12,
+            "defence": 7,
+            "speed": 14,
+            "hits": 6
+          }
+        ],
+        "hazardous": [
+          {
+            "id": "foe.goblin-warband",
+            "attack": 12,
+            "defence": 9,
+            "speed": 14,
+            "hits": 6
+          },
+          {
+            "id": "foe.goblin-boss",
+            "attack": 15,
+            "defence": 10,
+            "speed": 11,
+            "hits": 6
+          }
+        ],
+        "perilous": [
+          {
+            "id": "foe.goblin-horde",
+            "attack": 14,
+            "defence": 10,
+            "speed": 14,
+            "hits": 7
+          },
+          {
+            "id": "foe.goblin-chief",
+            "attack": 16,
+            "defence": 12,
+            "speed": 11,
+            "hits": 7
+          }
+        ]
+      }
+    },
+    {
+      "id": "monster.cultists",
+      "family": "cultists-and-bandits",
+      "lives": ["cult", "ruin", "tower", "cellar"],
+      "variants": {
+        "hazardous": [
+          {
+            "id": "foe.cult-acolytes",
+            "attack": 12,
+            "defence": 9,
+            "speed": 11,
+            "hits": 5
+          },
+          {
+            "id": "foe.cult-priest",
+            "attack": 15,
+            "defence": 10,
+            "speed": 9,
+            "hits": 6
+          }
+        ],
+        "perilous": [
+          {
+            "id": "foe.cult-zealots",
+            "attack": 14,
+            "defence": 11,
+            "speed": 12,
+            "hits": 6
+          },
+          {
+            "id": "foe.hierophant",
+            "attack": 16,
+            "defence": 12,
+            "speed": 10,
+            "hits": 8
+          }
+        ],
+        "deadly": [
+          {
+            "id": "foe.spire-wardens",
+            "attack": 16,
+            "defence": 12,
+            "speed": 11,
+            "hits": 7
+          },
+          {
+            "id": "foe.gallows-lord",
+            "attack": 18,
+            "defence": 14,
+            "speed": 9,
+            "hits": 9
+          }
+        ]
+      }
+    },
+    {
+      "id": "monster.trolls",
+      "family": "giants-and-trolls",
+      "lives": ["deep", "cave", "road"],
+      "variants": {
+        "perilous": [
+          {
+            "id": "foe.troll",
+            "attack": 15,
+            "defence": 12,
+            "speed": 8,
+            "hits": 9
+          }
+        ],
+        "deadly": [
+          {
+            "id": "foe.troll-brood",
+            "attack": 17,
+            "defence": 13,
+            "speed": 9,
+            "hits": 8
+          },
+          {
+            "id": "foe.troll-mother",
+            "attack": 18,
+            "defence": 14,
+            "speed": 8,
+            "hits": 10
+          }
+        ]
+      }
+    },
+    {
+      "id": "monster.fen-things",
+      "family": "fen-things",
+      "lives": ["water", "field", "wild"],
+      "variants": {
+        "hazardous": [
+          {
+            "id": "foe.bog-lurkers",
+            "attack": 13,
+            "defence": 10,
+            "speed": 12,
+            "hits": 7
+          }
+        ],
+        "perilous": [
+          {
+            "id": "foe.mire-lurkers",
+            "attack": 14,
+            "defence": 11,
+            "speed": 12,
+            "hits": 6
+          },
+          {
+            "id": "foe.mire-mother",
+            "attack": 16,
+            "defence": 12,
+            "speed": 9,
+            "hits": 8
+          }
+        ]
+      }
+    },
+    {
+      "id": "monster.old-magic",
+      "family": "old-magic",
+      "lives": ["tower", "ruin", "deep"],
+      "variants": {
+        "perilous": [
+          {
+            "id": "foe.stone-guardians",
+            "attack": 15,
+            "defence": 12,
+            "speed": 8,
+            "hits": 7
+          },
+          {
+            "id": "foe.lantern-wisps",
+            "attack": 13,
+            "defence": 10,
+            "speed": 15,
+            "hits": 5
+          }
+        ],
+        "deadly": [
+          {
+            "id": "foe.bound-guardians",
+            "attack": 17,
+            "defence": 13,
+            "speed": 9,
+            "hits": 8
+          },
+          {
+            "id": "foe.warding-engine",
+            "attack": 18,
+            "defence": 15,
+            "speed": 7,
+            "hits": 10
+          }
+        ]
+      }
+    }
+  ],
+  "twists": [
+    {
+      "id": "twist.foul-weather",
+      "weight": 3,
+      "feeBp": 500,
+      "hidden": false,
+      "kind": "scene-shift",
+      "attribute": "agility",
+      "amount": 2
+    },
+    {
+      "id": "twist.bad-information",
+      "weight": 2,
+      "feeBp": 0,
+      "hidden": true,
+      "kind": "foe-shift",
+      "amount": 1
+    },
+    {
+      "id": "twist.trap",
+      "weight": 3,
+      "feeBp": 500,
+      "hidden": false,
+      "kind": "extra-scene",
+      "scene": {
+        "id": "scene.trap",
+        "kind": "fixed",
+        "difficulty": 9,
+        "testers": "best-two",
+        "onFailure": "wound",
+        "attribute": "wits"
+      }
+    },
+    {
+      "id": "twist.cursed-ground",
+      "weight": 2,
+      "feeBp": 800,
+      "hidden": false,
+      "kind": "bleed",
+      "amountBp": 1000
+    },
+    {
+      "id": "twist.hostage",
+      "weight": 2,
+      "feeBp": 1500,
+      "hidden": false,
+      "kind": "hostage"
+    },
+    {
+      "id": "twist.deadline",
+      "weight": 2,
+      "feeBp": 500,
+      "hidden": false,
+      "kind": "deadline",
+      "exchanges": 2
+    }
+  ]
+}

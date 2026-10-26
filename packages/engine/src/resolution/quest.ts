@@ -113,12 +113,12 @@ export function chooseMoment(
 
 /** After a scene or exchange: healing, death rolls, then whether the quest ends or pauses. */
 function afterBeat(turn: Turn, causeId: string, inFight: boolean): void {
-  const { quest, rules } = turn;
+  const { quest } = turn;
   mend(turn, tendTheFallen(turn, causeId), causeId);
   if (standing(turn).length === 0) return endQuest(turn, 'routed', causeId);
   if (inFight) {
     if (quest.foes.every(foeDown)) return endQuest(turn, 'won', causeId);
-    if (quest.exchange >= rules.maxExchanges) return endQuest(turn, 'partial', causeId);
+    if (quest.exchange >= maxExchanges(turn)) return endQuest(turn, 'partial', causeId);
   }
   let pullOutCause = quest.plan.retreat === 'leader' ? leaderJudges(turn, causeId) : null;
   const count = pastThreshold(turn);
@@ -233,8 +233,18 @@ function retreatBeat(turn: Turn, commandId: string): void {
   if (quest.retreatBeats <= 0) endQuest(turn, 'retreated', beat);
 }
 
+/** A deadline twist (D-139) ends the fight sooner; the foes slip away. */
+function maxExchanges(turn: Turn): number {
+  const twist = turn.template.twist;
+  const sooner = twist?.kind === 'deadline' ? twist.exchanges : 0;
+  return Math.max(1, turn.rules.maxExchanges - sooner);
+}
+
 /** Rolls lasting injuries, then ends the quest. v0 records injuries as events only. */
-function endQuest(turn: Turn, outcome: QuestOutcome, causeId: string): void {
+function endQuest(turn: Turn, reached: QuestOutcome, causeId: string): void {
+  // A hostage twist (D-139): once the alarm is up, a win is only half done.
+  const hostageLost = turn.template.twist?.kind === 'hostage' && turn.quest.alarm;
+  const outcome = hostageLost && reached === 'won' ? 'partial' : reached;
   const { injuryBp } = turn.rules;
   const chanceByStep: Readonly<Record<number, number>> = {
     [WOUND.badlyHurt]: injuryBp.badlyHurt,
