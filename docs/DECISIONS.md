@@ -660,7 +660,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Launch on Windows only. Linux and Steam Deck players can run it through Proton, not promised on the store page. Steam Deck support (1280×800 layout, controller) and a Mac build are decided after launch. Detail: `docs/design/PLAN.md` §15d.
 - **Why:** Owner's choice (Plan Q15a): one build to make and test for a solo developer (D-102); the Deck's screen is below the 1366×768 minimum (D-091).
-- **Under review (2026-10-27, D-150):** the owner chose mobile first; the launch platform is being re-planned.
+- **Replaced (2026-10-27, D-151):** launch is on iPhone and Android phones; Windows follows after launch (mobile first, D-150).
 
 ## D-107 Reviewers are independent
 
@@ -933,3 +933,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27) as the direction. The re-plan it triggers is in progress: each affected decision below is reopened and settled one question at a time, and until a replacement is recorded the old rule still describes the current build.
 - **Decision:** The phone version from D-149 (the guildhall as hub, a work desk, the living map, Ask the clerk, pull to continue) becomes the lead platform; the PC version follows it rather than the other way round. This reopens: the launch platform (D-106), the platform line in CONCEPT §13, the desk layout as the home screen (STYLE §3), the 1366×768 minimum and engine-test bars (D-091, D-110), the R4 desk-density test (PLAN §9a), the target player (D-063), price and store terms (D-104), milestones and timeline (D-099, D-108), and budget (D-103). The engine, content, saves and writing are unaffected: the engine has no screen or input in it (GAME-01, GAME-02).
 - **Why:** Owner (2026-10-27), asked when mobile should be planned (options: after launch, alongside launch, mobile first, hub on Windows too), chose "Mobile first" after the D-149 mock-ups: "I love this idea and think it is a really great concept. I like all the details and things and depth. I want this planned."
+
+## D-151 Launch on iPhone and Android phones
+
+- **Status:** Accepted (2026-10-27). Replaces D-106 (re-plan under D-150).
+- **Decision:** The game launches on iPhone and Android phones at the same time, held upright, as one web-tech codebase wrapped for both stores. Tablets run the phone layout scaled up; a tablet layout of its own is decided later (D-149 leaves it open). Windows follows after launch, and the order of later platforms (Windows, Mac, Steam Deck) is decided then. iPhone builds need a Mac, bought or rented; that cost is set in the budget re-plan.
+- **Why:** Owner's choice (re-plan question 1, 2026-10-27), the recommended option: "iPhone + Android". One build serves both stores, and premium games usually sell best on iPhone.

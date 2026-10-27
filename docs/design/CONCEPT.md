@@ -111,7 +111,7 @@ Phase 1 concept. Each section records what the owner decided, with their own not
 
 - **Decided (2026-10-25):** PC first (desktop, Steam-style): dense information screens, mouse and keyboard, long sessions. Other platforms only later, if at all.
 - Note (2026-10-27, D-149): if a phone or tablet version is made later, it uses the guildhall as hub, a work desk and the living map.
-- Under review (2026-10-27, D-150): the owner chose mobile first; this section is being re-planned.
+- **Replaced (2026-10-27, D-150, D-151):** mobile first. Launch on iPhone and Android phones, held upright, with the guildhall as hub (D-149); Windows follows after launch.
 
 ## 14. Generated writing
 
