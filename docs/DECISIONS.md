@@ -385,6 +385,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The primary player is a management-sim veteran (FM, Battle Brothers, Darkest Dungeon, RimWorld, Crusader Kings) with a taste for fantasy. Tabletop RPG fans are secondary, carried by the gentle first season and delegation. Players who want direct combat control or short roguelite sessions are not targeted. Detail: `docs/design/PLAN.md` §1b.
 - **Why:** Owner's choice (Plan Q1b); the concept's depth, Ironman saves and desk-only guildmaster are built for this group, and onboarding the secondary group costs less than diluting depth.
+- **Amended (2026-10-27, D-153):** the same player, on a phone, in sittings of about 10–30 minutes.
 
 ## D-064 Pace: one season takes about 2–2.5 hours
 
@@ -946,3 +947,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Replaces D-104's $24.99 price for the phone launch (re-plan under D-150); D-040's model holds: one purchase, a free demo, no microtransactions.
 - **Decision:** On both phone stores the game is a free download. The first season is the demo (D-040, PLAN M4). A single in-app purchase of $14.99 unlocks the full game, for good, with no other purchases. Net per sale is about $10–12 after the store's cut and sales taxes (estimate; the small-developer cut of about 15% is to be rechecked at sign-up). Break-even and the budget are redone in the budget re-plan. English only at launch stays (D-104).
 - **Why:** Owner's choice (re-plan question 2, 2026-10-27), the recommended option: "Free + $14.99 unlock". It keeps the free demo from D-040 and a premium price for a deep game, near what phone players will pay (the session's judgement, not measured).
+
+## D-153 Same veteran player, playing in short sittings
+
+- **Status:** Accepted (2026-10-27). Amends D-063 for the phone launch (re-plan under D-150).
+- **Decision:** The primary player stays the management-sim veteran from D-063, now on a phone, in the style of a Football Manager Mobile player. A sitting is about 10–30 minutes. The daily Ironman autosave (D-033) lets them stop at any point and resume exactly there. A season still takes about 2–2.5 hours in total (D-064), spread over several sittings. The depth is not cut for the phone. Tabletop fans stay secondary, carried by the gentle first season and delegation.
+- **Why:** Owner's choice (re-plan question 3, 2026-10-27), the recommended option: "Same veterans, short sittings". The owner wants the depth shown in the D-149 mock-ups kept.
