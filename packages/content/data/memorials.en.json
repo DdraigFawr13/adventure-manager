@@ -1,0 +1,457 @@
+{
+  "_note": "Memorial letters (R7, PLAN §8 rule 6, D-059): written when someone dies, to the guildmaster, by the comrade who shared the most contracts with them, or by the guild clerk. Written plainly and sincerely, never as a joke (STYLE §9b). Facts and slots: packages/engine/src/report/SPEC.md. Grammar: packages/engine/src/core/text.ts.",
+  "clerk": "Hedda Vane",
+  "deeds": ["saved", "guard", "striker", "mend"],
+  "sections": [
+    {
+      "family": "memorial.salutation",
+      "formula": true
+    },
+    {
+      "family": "memorial.opening"
+    },
+    {
+      "family": "memorial.death"
+    },
+    {
+      "family": "memorial.service"
+    },
+    {
+      "family": "memorial.deed"
+    },
+    {
+      "family": "memorial.person"
+    },
+    {
+      "family": "memorial.closing"
+    },
+    {
+      "family": "memorial.signoff",
+      "formula": true
+    }
+  ],
+  "library": {
+    "memorial.salutation": [
+      {
+        "text": "Guildmaster,",
+        "if": ["writer"]
+      },
+      {
+        "text": "To the guildmaster,",
+        "if": ["writer"]
+      },
+      {
+        "text": "To the guildmaster, from the guild's book:",
+        "if": ["clerk"]
+      }
+    ],
+    "memorial.opening": [
+      {
+        "text": "I was there when {dead} fell at {quest}, and I would rather you heard it from me.",
+        "if": ["writer", "together"]
+      },
+      {
+        "text": "You will have the report from {quest} by now. I wanted to write about {dead} myself.",
+        "if": ["writer", "together"]
+      },
+      {
+        "text": "I was not there when {dead} died at {quest}. I wish I had been.",
+        "if": ["writer"],
+        "unless": ["together"]
+      },
+      {
+        "text": "They told me about {dead} when I came in. I have been trying to write this since.",
+        "if": ["writer"],
+        "unless": ["together"]
+      },
+      {
+        "text": "The guild has lost {dead}, who died at {quest}.",
+        "if": ["clerk"]
+      },
+      {
+        "text": "It is my duty to record the death of {dead} at {quest}.",
+        "if": ["clerk"]
+      },
+      {
+        "text": "I was with {dead} at {quest}. I am writing because someone who knew {dead.them} should.",
+        "if": ["writer", "together"]
+      },
+      {
+        "text": "I have started this letter three times. {dead} died at {quest}, and I was there.",
+        "if": ["writer", "together"]
+      },
+      {
+        "text": "I heard about {dead} on the road back. I will say what I can.",
+        "if": ["writer"],
+        "unless": ["together"]
+      },
+      {
+        "text": "News of {dead} reached me after it was over. I want you to know who {dead.they} {dead~was|were}.",
+        "if": ["writer"],
+        "unless": ["together"]
+      },
+      {
+        "text": "With regret, I record that {dead} died at {quest}.",
+        "if": ["clerk"]
+      },
+      {
+        "text": "{dead} died at {quest}. I was there, and I want to tell you about {dead.them}.",
+        "if": ["writer", "together"]
+      },
+      {
+        "text": "We brought {dead} back from {quest}. Not the way any of us wanted.",
+        "if": ["writer", "together"]
+      },
+      {
+        "text": "I was at {quest} when we lost {dead}. This is the hardest letter I have written.",
+        "if": ["writer", "together"]
+      }
+    ],
+    "memorial.death": [
+      {
+        "text": "{killer} struck {dead.them} down in the fight, and {dead.they} did not get up.",
+        "if": ["struck", "writer"]
+      },
+      {
+        "text": "It was {killer}. {dead.They} {dead~was|were} still on {dead.their} feet when the blow came.",
+        "if": ["struck", "writer"]
+      },
+      {
+        "text": "We had already turned back when {killer} caught {dead.them}.",
+        "if": ["retreat", "writer", "together"]
+      },
+      {
+        "text": "The party was pulling out when {killer} caught {dead.them}.",
+        "if": ["retreat", "writer"],
+        "unless": ["together"]
+      },
+      {
+        "text": "{dead.They} never reached the fight. The way in took {dead.them} first.",
+        "if": ["scene", "writer"]
+      },
+      {
+        "text": "{dead.They} fell to {killer}.",
+        "if": ["struck", "clerk"]
+      },
+      {
+        "text": "{dead.They} {dead~was|were} struck down by {killer} as the party withdrew.",
+        "if": ["retreat", "clerk"]
+      },
+      {
+        "text": "{dead.They} died on the way in, before any foe was met.",
+        "if": ["scene", "clerk"]
+      },
+      {
+        "text": "{killer} got through to {dead.them}. There was nothing any of us could do.",
+        "if": ["struck", "writer", "together"]
+      },
+      {
+        "text": "I am told it was {killer}, and that it was quick.",
+        "if": ["struck", "writer"],
+        "unless": ["together"]
+      },
+      {
+        "text": "{dead.They} {dead~was|were} among the last to turn for home, and {killer} reached {dead.them}.",
+        "if": ["retreat", "writer"]
+      },
+      {
+        "text": "It was the way in, not the fight, that killed {dead.them}. I keep thinking it should not have been.",
+        "if": ["scene", "writer"]
+      }
+    ],
+    "memorial.service": [
+      {
+        "text": "It was {dead.their} first contract.",
+        "if": ["first-is-last"]
+      },
+      {
+        "text": "{dead.They} had only just signed the book.",
+        "if": ["first-is-last", "served.short"]
+      },
+      {
+        "text": "{dead.They} went out {count} times with this guild, the first to {first}.",
+        "if": ["quests.few"]
+      },
+      {
+        "text": "{count} contracts, starting at {first}. {dead.They} came home from all of them but this one.",
+        "if": ["quests.few"]
+      },
+      {
+        "text": "{dead.They} went out {count} times. I was beside {dead.them} for most of them.",
+        "if": ["quests.many", "writer", "close"]
+      },
+      {
+        "text": "{dead.They} served the guild on {count} contracts.",
+        "if": ["quests.many", "clerk"]
+      },
+      {
+        "text": "{count} contracts, from {first} to {quest}.",
+        "if": ["quests.many"]
+      },
+      {
+        "text": "{dead.They} had been on {count} contracts, and came home from every one until this.",
+        "if": ["quests.many"]
+      },
+      {
+        "text": "{dead.Their} first was {first}. {dead.They} went out {count} times in all.",
+        "if": ["quests.few"]
+      },
+      {
+        "text": "I was beside {dead.them} on most of {dead.their} {count} contracts, from {first} on.",
+        "if": ["quests.few", "writer", "close"]
+      },
+      {
+        "text": "{count} times {dead.they} went out for this guild. {dead.They} should have had many more.",
+        "if": ["quests.many"]
+      },
+      {
+        "text": "{dead.They} {dead~was|were} one of the old hands: {count} contracts, the first at {first}.",
+        "if": ["quests.many"]
+      },
+      {
+        "text": "Since {first}, {dead.they} had been on {count} contracts, more than most of us.",
+        "if": ["quests.many"]
+      },
+      {
+        "text": "I went out with {dead.them} more times than I can easily count. {count}, the book says.",
+        "if": ["quests.many", "writer", "close"]
+      },
+      {
+        "text": "{dead.They} had only been out {count} times, the first to {first}.",
+        "if": ["quests.few"]
+      },
+      {
+        "text": "{count} contracts. Not many, but {dead.they} came back from each of them better than {dead.they} went.",
+        "if": ["quests.few", "writer"]
+      },
+      {
+        "text": "{dead.Their} first contract was {first}. There were only {count}.",
+        "if": ["quests.few"]
+      },
+      {
+        "text": "{dead.They} came to us not long ago. This was {dead.their} first time out.",
+        "if": ["first-is-last"]
+      }
+    ],
+    "memorial.deed": [
+      {
+        "text": "At {deedQuest} {dead.they} pulled me back from dying. I would not be writing this otherwise.",
+        "if": ["deed.saved", "saved-writer"]
+      },
+      {
+        "text": "At {deedQuest} {dead.they} held {patient} back from dying. {patient} is alive because of it.",
+        "if": ["deed.saved"],
+        "unless": ["saved-writer"]
+      },
+      {
+        "text": "Whenever it went badly, {dead.they} stood in front. At {deedQuest} {dead.they} took blows that were meant for others.",
+        "if": ["deed.guard"]
+      },
+      {
+        "text": "At {deedQuest} {dead.they} fought as well as anyone I have seen.",
+        "if": ["deed.striker", "writer"]
+      },
+      {
+        "text": "{dead.Their} work at {deedQuest} is still talked about in the hall.",
+        "if": ["deed.striker"]
+      },
+      {
+        "text": "{dead.They} patched more of us up than I can count.",
+        "if": ["deed.mend", "writer"]
+      },
+      {
+        "text": "{dead.They} tended the wounded on every contract {dead.they} went on.",
+        "if": ["deed.mend", "clerk"]
+      },
+      {
+        "text": "{dead.They} never asked for much, and did what was asked.",
+        "if": ["deed.none", "writer"],
+        "unless": ["first-is-last"]
+      },
+      {
+        "text": "I owe {dead.them} my life. At {deedQuest}, when I was going, {dead.they} would not let me.",
+        "if": ["deed.saved", "saved-writer"]
+      },
+      {
+        "text": "{patient} would have died at {deedQuest} if not for {dead.them}.",
+        "if": ["deed.saved"],
+        "unless": ["saved-writer"]
+      },
+      {
+        "text": "{dead.They} always put {dead.themself} between the rest of us and the worst of it.",
+        "if": ["deed.guard", "writer"]
+      },
+      {
+        "text": "When it came to the fight, {dead.they} {dead~was|were} the one we counted on. {deedQuest} showed it.",
+        "if": ["deed.striker", "writer"]
+      },
+      {
+        "text": "If you were hurt, {dead.they} {dead~was|were} the first one kneeling next to you.",
+        "if": ["deed.mend", "writer"]
+      },
+      {
+        "text": "{dead.They} did the work without fuss, every time.",
+        "if": ["deed.none", "writer"],
+        "unless": ["first-is-last"]
+      },
+      {
+        "text": "{dead.They} {dead~was|were} steady. You knew where you were with {dead.them}.",
+        "if": ["deed.none", "writer"],
+        "unless": ["first-is-last"]
+      },
+      {
+        "text": "{dead.They} kept {dead.their} head when others did not, and nobody ever had to ask twice.",
+        "if": ["deed.none", "writer"],
+        "unless": ["first-is-last"]
+      },
+      {
+        "text": "At {deedQuest} {dead.they} held the line so the rest of us could get our breath.",
+        "if": ["deed.guard"]
+      },
+      {
+        "text": "{dead.They} took the hits so we would not have to. {deedQuest} was the worst of it, and {dead.they} never said a word.",
+        "if": ["deed.guard", "writer"]
+      },
+      {
+        "text": "More than one of us is alive because {dead.they} stepped in front at {deedQuest}.",
+        "if": ["deed.guard", "writer"]
+      },
+      {
+        "text": "At {deedQuest} {dead.they} stood guard over the others and held.",
+        "if": ["deed.guard", "clerk"]
+      },
+      {
+        "text": "I watched {dead.them} at {deedQuest}. I have never seen anyone fight like it.",
+        "if": ["deed.striker", "writer", "close"]
+      },
+      {
+        "text": "{dead.They} mended the rest of us on more nights than anyone remembers.",
+        "if": ["deed.mend"]
+      }
+    ],
+    "memorial.person": [
+      {
+        "text": "{dead.They} {dead~was|were} {age}.",
+        "if": ["young"]
+      },
+      {
+        "text": "{dead.They} {dead~was|were} only {age}.",
+        "if": ["young", "writer"]
+      },
+      {
+        "text": "{dead.They} {dead~was|were} {age}, and had seen more than most of us.",
+        "if": ["veteran"]
+      },
+      {
+        "text": "{dead.They} always took the front, and never once complained of it.",
+        "if": ["class.warrior", "writer"],
+        "unless": ["young", "veteran"]
+      },
+      {
+        "text": "{dead.They} always went first, to look, so the rest of us would not have to.",
+        "if": ["class.rogue", "writer"],
+        "unless": ["young", "veteran"]
+      },
+      {
+        "text": "{dead.They} said a few words over each of us before we set out. Somebody else will have to now.",
+        "if": ["class.cleric", "writer"],
+        "unless": ["young", "veteran"]
+      },
+      {
+        "text": "{dead.They} {dead~was|were} {age}. Too young for this.",
+        "if": ["young", "writer"]
+      },
+      {
+        "text": "At {age}, {dead.they} still went out with the rest of us.",
+        "if": ["veteran", "writer"]
+      },
+      {
+        "text": "{dead.They} carried the heavy end of every shield wall we ever made.",
+        "if": ["class.warrior", "writer"],
+        "unless": ["young", "veteran"]
+      },
+      {
+        "text": "{dead.They} saw the trap before the rest of us saw the door.",
+        "if": ["class.rogue", "writer"],
+        "unless": ["young", "veteran"]
+      },
+      {
+        "text": "{dead.They} kept the rest of us going when we had nothing left.",
+        "if": ["class.cleric", "writer"],
+        "unless": ["young", "veteran"]
+      },
+      {
+        "text": "{dead.They} {dead~was|were} {age}, with most of {dead.their} life ahead of {dead.them}.",
+        "if": ["young"]
+      },
+      {
+        "text": "{dead.They} {dead~was|were} {age}, and the steadiest of us.",
+        "if": ["veteran", "writer"]
+      }
+    ],
+    "memorial.closing": [
+      {
+        "text": "We will drink to {dead.them} tonight.",
+        "if": ["writer"]
+      },
+      {
+        "text": "Put {dead.their} name in the book, if you would.",
+        "if": ["writer"]
+      },
+      {
+        "text": "I am sorry. I thought you should know.",
+        "if": ["writer"]
+      },
+      {
+        "text": "The name has been entered in the guild's book.",
+        "if": ["clerk"]
+      },
+      {
+        "text": "I will see {dead.them} buried properly, if the guild allows.",
+        "if": ["writer"]
+      },
+      {
+        "text": "There is a gap at the table now. We all feel it.",
+        "if": ["writer"]
+      },
+      {
+        "text": "{dead.They} deserved better than {quest}.",
+        "if": ["writer"]
+      },
+      {
+        "text": "Wages owed have been set aside for the family.",
+        "if": ["clerk"]
+      },
+      {
+        "text": "We will remember {dead.them}.",
+        "if": ["writer"]
+      },
+      {
+        "text": "I will write to {dead.their} people, unless you would rather do it yourself.",
+        "if": ["writer"]
+      },
+      {
+        "text": "The name will be read at the next Assembly.",
+        "if": ["clerk"]
+      }
+    ],
+    "memorial.signoff": [
+      {
+        "text": "{writer}",
+        "if": ["writer"]
+      },
+      {
+        "text": "Yours, {writer}",
+        "if": ["writer"]
+      },
+      {
+        "text": "{writer}, clerk to the guild",
+        "if": ["clerk"]
+      },
+      {
+        "text": "With sorrow, {writer}",
+        "if": ["writer"]
+      }
+    ]
+  }
+}

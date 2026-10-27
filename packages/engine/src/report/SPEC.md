@@ -30,3 +30,23 @@ Content lists the **sections** in order: a family to render once, or a list (dee
 ## People's names
 
 Drawn people get a given and family name and a pronoun set on their own stream (`guild.names`), from `packages/content/data/naming.json` (STYLE §9a); the sample party keeps its names in text data. Pronoun weights are an assumption (she 45, he 45, they 10).
+
+## Histories (`historyOf`, R7, PLAN §8)
+
+Each person's dated record, read from the events in one pass; like the letter, a view that changes nothing. Entries:
+
+- `joined` (`recruit.signed`, the founding roster included);
+- `quest`, one per contract they went on, when the party reaches the site: contract id, outcome, the party, their landed blows, signature actions, whom they held back from Dying and who held them back, their worst wound step (from the quest's summary);
+- `injured` (`member.laid-up`: the days out), `changed` (`attribute.changed`: growth, age or injury, with the attribute and new value);
+- `retired` (`adventurer.retired`, with age) or `died` (on the quest: what knocked them down, as in the letter's deaths).
+
+`writeHistory` renders each entry as one short dated line from content (`packages/content/data/histories.en.json`), the clerk's plain voice. Facts: `outcome.*`; `struck`, `scene` or `retreat` for a death; `growth`, `age` or `injury` for a change; `saved` (they held someone back), `was-saved`, `hits` (3+ blows). Slots: `who`, `quest`, `foe`, `days`, `attribute`, `to`, `count`, `patient`, `saver`, `age`.
+
+## Memorial letters (`writeMemorial`, R7, PLAN §8 rule 6, D-059)
+
+When someone dies, a letter to the guildmaster about them, written sincerely, from their history.
+
+- **Writer:** the comrade who shared the most contracts with them and was alive and on the roster after their death (ties: the most recent shared contract, then id); else the guild clerk (a content name).
+- **Facts:** `quests.one` (1), `quests.few` (2–5), `quests.many` (6+); `served.short` (under a year since joining) or `served.long`; their best deed across all contracts, in the content's order: `deed.saved`, `deed.guard`, `deed.striker` (most blows in one contract, 4+), `deed.mend`, or `deed.none`; how they died: `struck`, `retreat` or `scene`; `writer` or `clerk`; `together` when the writer was on the fatal contract; `young` (under 25) or `veteran` (35+); their class as `class.<id>`; `first-is-last` when their first contract was their last; `saved-writer` when the life they saved was the writer's; `close` when the writer shared at least half their contracts.
+- **Slots:** `dead` (the person), `writer`, `first` (their first contract's site), `quest` (the fatal one), `killer`, `count` (contracts), `years` (whole years served), `patient` (someone they saved, the first), `deedQuest` (where the remembered deed happened), `age`.
+- **Sections** come from content like the quest letter's; a section with no allowed variant is left out. Picks are keyed by the save's seed and the dead person's id. Across one save, a section re-picks (up to 12 times) to avoid a sentence shape an earlier letter used: the caller writes the save's letters in death order with one shared set, so a replay reads the same.

@@ -1,0 +1,63 @@
+{
+  "_note": "Histories (R7, PLAN §8): one short line per entry on a person's card, the guild clerk's plain voice; the page adds the date. Deaths written plainly (STYLE §9b). Facts and slots: packages/engine/src/report/SPEC.md.",
+  "library": {
+    "history.joined": [
+      "Signed on with the guild.",
+      "Joined the guild and signed the book.",
+      "Took the guild's coin and signed on."
+    ],
+    "history.quest": ["{@hq.went} {quest}{@hq.result}{@hq.extra}."],
+    "hq.went": ["Went to", "Was sent to", "Went out to"],
+    "hq.result": [
+      { "text": ", and the contract was met", "if": ["outcome.won"] },
+      { "text": "; the job was done", "if": ["outcome.won"] },
+      { "text": ", and the job was left half done", "if": ["outcome.partial"] },
+      { "text": "; the party finished only part of it", "if": ["outcome.partial"] },
+      { "text": ", and the party pulled out", "if": ["outcome.retreated"] },
+      { "text": "; the party came away early", "if": ["outcome.retreated"] },
+      { "text": ", where the party was broken", "if": ["outcome.routed"] },
+      { "text": "; the party was routed", "if": ["outcome.routed"] }
+    ],
+    "hq.extra": [
+      { "text": "; held {patient} back from dying", "if": ["saved"] },
+      { "text": "; kept {patient} alive when it counted", "if": ["saved"] },
+      {
+        "text": "; was pulled back from dying by {saver}",
+        "if": ["was-saved"],
+        "unless": ["saved"]
+      },
+      {
+        "text": "; would have died there but for {saver}",
+        "if": ["was-saved"],
+        "unless": ["saved"]
+      },
+      {
+        "text": "; landed {count} blows on {foe}",
+        "if": ["hits"],
+        "unless": ["saved", "was-saved"]
+      },
+      { "text": "", "unless": ["saved", "was-saved", "hits"] }
+    ],
+    "history.injured": [
+      "Came home with a lasting injury; out for {days} days.",
+      "Took an injury that kept {who.them} out {days} days."
+    ],
+    "history.changed": [
+      { "text": "{attribute} rose to {to}.", "if": ["growth"] },
+      { "text": "Grew in {attribute}, now {to}.", "if": ["growth"] },
+      { "text": "{attribute} slipped to {to} with age.", "if": ["age"] },
+      { "text": "Age cost a point of {attribute}; now {to}.", "if": ["age"] },
+      { "text": "The injury cost a point of {attribute}; now {to}.", "if": ["injury"] }
+    ],
+    "history.retired": [
+      "Retired from the guild at {age}.",
+      "Left the guild at {age} and hung up {who.their} kit."
+    ],
+    "history.died": [
+      { "text": "Died at {quest}, struck down by {foe}.", "if": ["struck"] },
+      { "text": "Fell at {quest} to {foe}.", "if": ["struck"] },
+      { "text": "Died at {quest}, cut down by {foe} as the party pulled back.", "if": ["retreat"] },
+      { "text": "Died at {quest} before the fight was reached.", "if": ["scene"] }
+    ]
+  }
+}

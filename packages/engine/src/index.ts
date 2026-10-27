@@ -12,6 +12,7 @@ export * from './resolution/types.ts';
 export * from './simulate.ts';
 export * from './core/money.ts';
 export * from './report/quest-report.ts';
+export * from './report/history.ts';
 export * from './contract/types.ts';
 export * from './contract/compose.ts';
 export * from './career/types.ts';
