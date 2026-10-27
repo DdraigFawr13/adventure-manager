@@ -301,6 +301,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Fixed top bar (date, stop reason, Continue); grouped ledger tabs on the left; the home screen is the region map with parties as miniatures, a weekly strip and the letter tray; ledgers open as full paper sheets. Detail: `docs/design/STYLE.md` §3.
 - **Why:** Owner's choice (Style Q3); keeps FM navigation speed while putting the region at the centre (pillar 4).
+- **Replaced (2026-10-27, D-155):** the guildhall hub is home on every platform; see D-149 and D-155.
 
 ## D-050 Quest board: cartographer's map with standees
 
@@ -385,6 +386,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The primary player is a management-sim veteran (FM, Battle Brothers, Darkest Dungeon, RimWorld, Crusader Kings) with a taste for fantasy. Tabletop RPG fans are secondary, carried by the gentle first season and delegation. Players who want direct combat control or short roguelite sessions are not targeted. Detail: `docs/design/PLAN.md` §1b.
 - **Why:** Owner's choice (Plan Q1b); the concept's depth, Ironman saves and desk-only guildmaster are built for this group, and onboarding the secondary group costs less than diluting depth.
+- **Amended (2026-10-27, D-153):** the same player, on a phone, in sittings of about 10–30 minutes.
 
 ## D-064 Pace: one season takes about 2–2.5 hours
 
@@ -397,6 +399,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Five design goals, one per pillar (PLAN §1a), and six success targets (PLAN §1d): demo conversion ≥ 15%, first-season completion ≥ 70%, median playtime > 20 h, ≥ 25% of 40 h+ players reach a second guildmaster, Steam reviews ≥ 80% positive, no dense screen needing more than one explanation in playtests. Numbers are estimates, revisited in PLAN §10 and §14.
 - **Why:** Owner accepted the proposed starting set (Plan Q1a/d); gives later sections and playtests something measurable to aim at.
+- **Under review (2026-10-27, D-150):** the Steam-review and Steam-data targets need phone equivalents. The owner decides them with the D-088 question.
 
 ## D-066 A season is one in-game year
 
@@ -545,6 +548,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Playtest builds write a local log of the PLAN §10b measures that testers choose to send. The release sends nothing; §1d targets come from Steam data and achievement unlock rates. Opt-in anonymous telemetry stays open as a future option, decided by the owner as a cost (SAFE-03); the log format allows it. Detail: `docs/design/PLAN.md` §10c.
 - **Why:** Owner's choice (Plan Q10a): no backend or personal data for an offline single-player game, while keeping a path to richer data.
+- **Under review (2026-10-27, D-150):** on phones the release still sends nothing, but the §1d measures named here (Steam data, achievement rates) have no phone source yet. The owner decides where they come from.
 
 ## D-089 Playtest stages, measures and follow-up
 
@@ -564,6 +568,8 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Five packages (engine, content, ui, shell, tools); the engine is pure rules with seeded randomness and injected time, one simulate function, and every change an event with a cause id. The event log feeds the Trace, histories, Chronicle, reports, letters and playtest logs. Game values are integers. Content is JSON with schemas, loaded as packs (mods later). Ironman saves are written safely each day, versioned with migrations, never overwritten when unreadable, synced by Steam Cloud. Optional AI flavour is off by default, player-keyed and never blocks templates. Performance: 1366×768 minimum, 60 fps map, day tick under 50 ms, simulated year under 1 s, save/load under 1 s. Detail: `docs/design/PLAN.md` §11b–§11g.
 - **Why:** Owner accepted the draft (Plan Q11b); holds for either engine in D-090.
+- **Amended (2026-10-27, D-154):** the screen minimum is a phone 375 points wide, held upright; the PC minimum returns with the Windows version.
+- **Amended (2026-10-27, D-158):** on phones, cloud saves use the stores' own services in place of Steam Cloud. D-158 sets out the limits.
 
 ## D-092 Tools adopted now: docs checker, mock-up script, one setup audit
 
@@ -616,12 +622,15 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Build in seven milestones after plan approval, each ending at an owner gate (go, loop or stop): M1 prototypes (§9b, engine chosen), M2 vertical slice (production packages; prologue and first season in one corner of the March: 2 biomes, 3 settlements, 4 classes, ~10 monster kinds, ~6 quest templates, final art for that corner), M3 alpha (all 14 launch systems, about half the content, 30–50 testers), M4 free demo (the first season, alongside the beta), M5 beta (all content, final art and audio, 200+ testers), M6 launch, M7 free updates. Estimate: about 18–28 months to launch for a small team, scheduled in §14. Rules: no bulk art or music before M1 passes R1 and R2; old saves keep loading from M2; content after M2 is data only; Steam page live from M2. Detail: `docs/design/PLAN.md` §13a, §13b.
 - **Amended (2026-10-26, D-108, D-111, D-113):** estimates restated for solo at 10–20 h a week: about 31–46 months to launch. The simulation core from M1 is kept. Map base waits for alpha balance. Slip and stop rules in D-111.
 - **Why:** Owner accepted the draft (Plan Q13c); proving fun and balance before paying for bulk art protects the art budget (D-098).
+- **Amended (2026-10-27, D-156):** mobile first; the phone engine test joins M1, phone builds from M2, launch about 39–68 months from plan approval (estimate), with extra art and phone costs listed in D-156.
+- **Under review (2026-10-27, D-150):** the Steam page from M2 and Steam-based tester recruiting have no phone replacement yet; the owner decides it (HANDOFF open questions).
 
 ## D-100 Launch model decided at the alpha gate
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The plan assumes a full 1.0 release after the beta. At the M3 (alpha) exit the owner decides again between that and Steam Early Access, with the budget and alpha results in hand. Detail: `docs/design/PLAN.md` §13b.
 - **Why:** Owner's choice (Plan Q13a): Early Access brings money sooner and real long saves, but early reviews of a rough build count; the budget that tips it is not known yet.
+- **Under review (2026-10-27, D-150):** Early Access is a Steam model; whether phones get an equivalent (for example a public test track) is for the owner.
 
 ## D-101 Post-launch order: war campaigns first
 
@@ -641,12 +650,15 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Budget estimates with 20% contingency: about $57,000–185,000 solo, about $128,000–358,000 with one developer hired; about $10,000–32,000 is spent before the hire gate (M1–M2). Self-funded through the slice; at the slice gate the owner chooses between self-funding, a publisher, crowdfunding and Early Access at the alpha gate (D-100); no talks before that decision. Five budget assumptions are checked at each gate. Detail: `docs/design/PLAN.md` §14b, §14d, §14e.
 - **Amended (2026-10-26, D-108, D-109):** about $52,000–174,000 solo and $124,000–347,000 with a hire; about $8,000–27,000 before the hire gate.
 - **Why:** Owner accepted the draft (Plan Q14c); the slice is the pitch, so funding is chosen when there is something to show.
+- **Amended (2026-10-27, D-156):** mobile first; the phone engine test joins M1, phone builds from M2, launch about 39–68 months from plan approval (estimate), with extra art and phone costs listed in D-156.
+- **Restated (2026-10-27, D-157):** the solo budget for mobile first is about $66,000–219,000 with contingency.
 
 ## D-104 Price $24.99; English at launch
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Launch price $24.99, with about $12.50–15 net per copy (estimate) and break-even at about 4,000–15,000 copies solo. English only at launch; translation decided after launch on regional sales. Paid expansions decided after launch (D-040). Detail: `docs/design/PLAN.md` §14c.
 - **Amended (2026-10-26, D-109):** break-even about 3,500–14,000 copies solo, cash costs only.
+- **Replaced for the phone launch (2026-10-27, D-152, D-157):** a free download with a $14.99 unlock; break-even is about 5,500–22,000 unlocks. English only at launch stands.
 - **Why:** Owner's choice (Plan Q14b): in line with comparable deep management games and an easy buy after the free demo.
 
 ## D-105 Quality, CI and release process
@@ -654,12 +666,14 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Every push runs format, lint, strict types, engine unit tests, the determinism test, the content validator, save fixtures (from M2) and the docs and drift checks; screen tests when ui changes. The 1,000-guild-year balance run and performance checks run before each gate and release, not per push. CI uses path filters so docs-only changes stay free; game builds and Steam uploads run on release tags only, with Steam credentials as secrets set up by the owner. Bugs are GitHub issues in three severities; a save-losing or common-path crash blocks a release, and every fixed blocker or major bug gets a test. Steam branches `playtest`, `beta` and `default`; rollback to the previous build. An 8-step release checklist for the demo, launch and every patch, ending in the owner's sign-off. Detail: `docs/design/PLAN.md` §15.
 - **Why:** Owner accepted the draft (Plan Q15b); adopts the tools review (D-092..D-094) and keeps CI minutes low (CI-01..CI-06).
+- **Amended (2026-10-27, D-158):** the phone stores' test tracks, staged rollouts, fix-forward releases and cloud saves replace the Steam steps for the phone launch.
 
 ## D-106 Launch platform: Windows
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Launch on Windows only. Linux and Steam Deck players can run it through Proton, not promised on the store page. Steam Deck support (1280×800 layout, controller) and a Mac build are decided after launch. Detail: `docs/design/PLAN.md` §15d.
 - **Why:** Owner's choice (Plan Q15a): one build to make and test for a solo developer (D-102); the Deck's screen is below the 1366×768 minimum (D-091).
+- **Replaced (2026-10-27, D-151):** launch is on iPhone and Android phones; Windows follows after launch (mobile first, D-150).
 
 ## D-107 Reviewers are independent
 
@@ -672,6 +686,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The owner builds at about 10–20 hours a week. With the lean cut (D-109) the estimate is about 31–46 months to launch: M1 5–8, M2 7–10, M3 10–15, M4 2–3 alongside M5 7–10, M6 2–3 months. A lasting change in hours re-plans at the next gate. Detail: `docs/design/PLAN.md` §13a, §14e.
 - **Why:** Owner's answer (plan review Q1); the first estimate (18–28 months) assumed a small team, but the owner chose solo (D-102).
+- **Amended (2026-10-27, D-156):** mobile first; the phone engine test joins M1, phone builds from M2, launch about 39–68 months from plan approval (estimate), with extra art and phone costs listed in D-156.
 
 ## D-109 Lean launch cut
 
@@ -684,6 +699,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The engine-test pieces (ledger and kingdom map) are built in web tech (Electron, TypeScript), reusing the Story-Generator map code. Godot 4 (C#) is built only if web misses its bar: 60 fps map at 1366×768, readable 15 px ledger, the find-the-fact task. A screen-reader check joins the judging list. Amends D-090. Detail: `docs/design/PLAN.md` §11a.
 - **Why:** Owner's choice (plan review Q3) on new evidence: Story-Generator is TypeScript and canvas, and building both engines costs weeks a solo builder does not have.
+- **Amended (2026-10-27, D-154):** the engine test is rebuilt as a phone app and judged on the owner's phone.
 
 ## D-111 Stop and slip rules
 
@@ -702,6 +718,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Adopted on the owner's instruction to go with the recommendations: the simulation core is kept from M1 (only prototype screens are throwaway); resolution v0 first; time-boxed prototype steps; a standing tension most weeks; winter as the planning season; every safe choice (caution, delegation, skipping winter) has a visible price; visible recovery levers without rubber-banding; extra simulator checks (no dominant safe play, winter cash, bad starts, top-guild load, late goals) and a shape-repetition writing check with a template previewer; the map base drawn after alpha balance; break-even stated as cash only; wishlist targets, a monthly devlog and tester sign-up. Detail: `docs/design/PLAN.md` §2b, §2d, §4g, §9b, §9d, §12d, §13, §14c, §14f; review `docs/design/PLAN-REVIEW.md`.
 - **Why:** Plan review findings, checked at their cited lines; owner: "just go with your recommendations for the rest."
+- **Under review (2026-10-27, D-150):** wishlist targets and Steam playtest recruiting are Steam-only; phone equivalents are open. The marketing budget line in D-157 is unchanged pending that.
 
 ## D-114 Engine foundations and code standards
 
@@ -926,3 +943,77 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27) as the direction for any later phone version, except the parts marked Proposed below. Windows-only launch stands (D-106); no mobile work is scheduled.
 - **Decision:** A phone version, if built, follows "Hall and Road" with the owner's change. Accepted: the guildhall cutaway is the hub, with one system per room; a work desk, reachable as a tab and as the study in the hall, holds what spans the whole guild (notices, the contract board, the year's numbers and the patron's target, the full roster ledger); the living map is the outside; Ask the clerk answers plain questions; Continue is a pull-down handle; four tabs (Hall, March, Desk, Ask). Proposed, for the owner's review: which system sits in which of the eleven rooms (barracks for members, infirmary, training yard, armoury, smith, library, tavern, gate, strongroom, Hall of Heroes, works), and each room showing who runs it with the never-delegated choices (D-038) marked. Not settled: the tablet layout (the open-book spread was the session's suggestion, not chosen). Phone only: STYLE §3 stays the PC rule; on the phone the pull handle replaces the top bar's fixed Continue. Rough estimate: 1,200–2,420 hours and about $9,000–30,000 more art, less if the hall and map are built for Windows first. Detail: `docs/design/mockups/mobile-hall-desk.html`; earlier rounds `mobile-concepts.html`, `mobile-concepts-2.html`, `mobile-hall-and-road.html`.
 - **Why:** Owner (2026-10-27), after four rounds of mock-ups: liked the recommended phone mix with the guildhall and living map added, then "I want satchel to be changed to something like work desk where you can go through notifications and deeper into rosters some of the overall stats that the individual rooms don't provide… the guild house is the hub and the work desk is for overall stuff and notifications and contracts."
+- **Amended (2026-10-27):** the room-by-room split (barracks, infirmary, training yard, armoury, smith, library, tavern, gate, strongroom, Hall of Heroes, works) and the staff display in each room are Accepted. The owner said "Do what you recommend", and the session had recommended the split as proposed. The tablet layout stays not settled.
+- **Superseded in part (2026-10-27, D-150, D-151, D-155):** mobile first. The phone is now the launch platform, and the hub is home on every platform, so the "Windows-only launch stands" and "Phone only" lines above no longer apply.
+
+## D-150 Mobile first: the phone becomes the lead platform
+
+- **Status:** Accepted (2026-10-27) as the direction. Re-plan done 2026-10-27: D-151–D-158 replace or amend each rule listed below. Still open for the owner: the phone sources for the success measures (D-065, D-088), and the phone equivalents of the Steam store page, wishlists, playtest recruiting and Early Access (D-099, D-100, D-113).
+- **Decision:** The phone version from D-149 (the guildhall as hub, a work desk, the living map, Ask the clerk, pull to continue) becomes the lead platform; the PC version follows it rather than the other way round. This reopens: the launch platform (D-106), the platform line in CONCEPT §13, the desk layout as the home screen (STYLE §3), the 1366×768 minimum and engine-test bars (D-091, D-110), the R4 desk-density test (PLAN §9a), the target player (D-063), price and store terms (D-104), milestones and timeline (D-099, D-108), and budget (D-103). The engine, content, saves and writing are unaffected: the engine has no screen or input in it (GAME-01, GAME-02).
+- **Why:** Owner (2026-10-27), asked when mobile should be planned (options: after launch, alongside launch, mobile first, hub on Windows too), chose "Mobile first" after the D-149 mock-ups: "I love this idea and think it is a really great concept. I like all the details and things and depth. I want this planned."
+
+## D-151 Launch on iPhone and Android phones
+
+- **Status:** Accepted (2026-10-27). Replaces D-106 (re-plan under D-150).
+- **Decision:** The game launches on iPhone and Android phones at the same time, held upright, as one web-tech codebase wrapped for both stores. Tablets run the phone layout scaled up; a tablet layout of its own is decided later (D-149 leaves it open). Windows follows after launch, and the order of later platforms (Windows, Mac, Steam Deck) is decided then. iPhone builds need a Mac, bought or rented; that cost is set in the budget re-plan.
+- **Why:** Owner's choice (re-plan question 1, 2026-10-27), the recommended option: "iPhone + Android". The option as offered read: "Both phone stores at launch, portrait; tablets run the phone layout scaled up; Windows follows after launch." One build serves both stores, and premium games usually sell best on iPhone (the session's judgement, not measured).
+
+## D-152 Free download, first season free, one $14.99 unlock
+
+- **Status:** Accepted (2026-10-27). Replaces D-104's $24.99 price for the phone launch (re-plan under D-150); D-040's model holds: one purchase, a free demo, no microtransactions.
+- **Decision:** On both phone stores the game is a free download. The first season is the demo (D-040, PLAN M4). A single in-app purchase of $14.99 unlocks the full game, for good, with no other purchases. Net per sale is about $10–12 after the store's cut and sales taxes (estimate; the small-developer cut of about 15% is to be rechecked at sign-up). Break-even and the budget are redone in the budget re-plan. English only at launch stays (D-104).
+- **Why:** Owner's choice (re-plan question 2, 2026-10-27), the recommended option: "Free + $14.99 unlock". It keeps the free demo from D-040 and a premium price for a deep game, near what phone players will pay (the session's judgement, not measured).
+
+## D-153 Same veteran player, playing in short sittings
+
+- **Status:** Accepted (2026-10-27). Amends D-063 for the phone launch (re-plan under D-150).
+- **Decision:** The primary player stays the management-sim veteran from D-063, now on a phone, in the style of a Football Manager Mobile player. A sitting is about 10–30 minutes. The daily Ironman autosave (D-033) lets them stop at any point and resume exactly there. A season still takes about 2–2.5 hours in total (D-064), spread over several sittings. The depth is not cut for the phone. Tabletop fans stay secondary, carried by the gentle first season and delegation.
+- **Why:** Owner's choice (re-plan question 3, 2026-10-27), the recommended option: "Same veterans, short sittings". The owner wants the depth shown in the D-149 mock-ups kept.
+
+## D-154 Phones 375 points wide and up; phone versions of the engine test and R4
+
+- **Status:** Accepted (2026-10-27). Amends D-091's screen minimum, D-110's bars and PLAN §9a R4 for the phone launch (re-plan under D-150).
+- **Decision:** (1) The game supports phones 375 points wide and wider, held upright: the iPhone SE and most Android phones from about 2019 on. It must also lay out correctly on larger phones. (2) The engine test is rebuilt as a phone app from the same web code. It is judged on the owner's own phone: a 60 fps map with smooth pinch and pan, text no smaller than 15 px (D-084), and a screen-reader check. Measurements in the container count only as a floor; the verdict needs the owner's device evidence (VER-07). (3) R4 becomes a phone test. The owner finds 5 set facts in under 10 seconds each, using the hall hub, the work desk and Ask the clerk (D-149). The 25-row roster rule is dropped.
+- **Why:** Owner's choice (re-plan question 4, 2026-10-27), the recommended option: "375-pt phones, new phone tests". Testing phones now, not at the slice, finds layout or speed problems while they are cheap.
+
+## D-155 The guildhall hub is the home screen on every platform
+
+- **Status:** Accepted (2026-10-27). Replaces D-049 and STYLE §3 (re-plan under D-150).
+- **Decision:** On every platform, home is the guildhall hub with its rooms (D-149). The work desk holds the whole-guild views, and the living map is the outside. Pull to continue is the phone's Continue. When Windows follows, its wide screen shows the hub and the work desk side by side, with the same rooms, desk views and map. The PC gets no separate desk interface. Two parts of STYLE §1 still hold on every platform: the in-world look frames set pieces, and data screens sit on a clean paper layer.
+- **Why:** Owner's choice (re-plan question 5, 2026-10-27), the recommended option: "Hall hub everywhere". The option as offered read: "The guildhall hub with its rooms becomes the home on every platform; the PC version shows the hub and work desk side by side on a wide screen. One design to build and test; STYLE §3 is replaced." One design to build and test serves a solo builder (D-102), and it lets the PC version follow the phone, as D-150 intends.
+
+## D-156 Mobile first takes longer: about 39–68 months to launch, accepted
+
+- **Status:** Accepted (2026-10-27). Amends D-099, D-103 and D-108 for the phone launch (re-plan under D-150).
+- **Decision:** The milestone ladder (D-099) and the lean content cut (D-109) stay. M1 gains the phone engine test (D-154). The phone app is built from the vertical slice (M2) on, and every later milestone ships to both phone stores. Estimated extra work is about 500–1,400 hours. D-149's 1,200–2,420 hours was a phone version added on top of the Windows game. As the only launch interface, it replaces the PC desk (about 500–1,000 hours) and the Windows shell and release work that is no longer needed before launch (about 0–200 hours). At about 15 hours a week that is about 8–22 months more, so launch moves to about 39–68 months from plan approval (estimate). Estimated extra money: about $9,000–30,000 of art for the hall rooms and town views; a Mac or Mac rental for iPhone builds; two or three test phones; Apple's developer fee of about $99 a year and Google's of about $25 once. Prices are to be rechecked when spent. The hire stays an option at the slice gate (D-102, D-103). The stop and slip rules (D-111) apply as before.
+- **Why:** Owner's choice (re-plan question 6, 2026-10-27), the recommended option: "Accept the longer timeline", rather than trimming the hall or bringing the hire forward.
+
+## D-157 Budget and break-even for mobile first
+
+- **Status:** Accepted (2026-10-27). Restates D-103's budget and D-104's break-even for the phone launch (D-152, D-156). All figures are estimates in US dollars; store prices and fees are to be rechecked when spent.
+- **Decision:** The solo budget becomes about $66,000–219,000, including 20% contingency (it was about $52,000–174,000). This is the D-103 subtotal of $43,600–145,100 with these changes:
+  - Hall-room and town-view art: +$9,000–30,000 (D-156).
+  - A Mac or Mac rental for iPhone builds: +$600–1,500.
+  - Two or three test phones: +$300–1,000.
+  - Store fees: +$425–625 (Apple about $99 a year over 4–6 years, Google about $25 once).
+  - Longer AI and tool subscriptions at $100–200 a month for 39–68 months: +$900–4,600.
+  - The Steam fee is no longer needed at launch: −$100.
+  - The subtotal becomes $54,725–182,725.
+  
+  At about $10–12 net per $14.99 unlock (D-152), break-even on cash costs is about 5,500–22,000 unlocks. With a developer hire at the slice gate (about $60,000–144,000, D-103), the total becomes about $138,000–392,000 with contingency (it was about $124,000–347,000). Break-even is then about 11,500–39,000 unlocks. Spend before the hire gate (M1–M2) becomes about $9,000–30,000, adding the Mac, the test phones and the first store fees to D-103's $8,000–27,000. The marketing line stays as it was, pending the phone store-page question (D-113).
+- **Why:** The owner said "Do what you recommend" (2026-10-27) to the re-plan's remaining items. Mobile first changes the art, the hardware, the fees, the timeline and the price, so the earlier figures no longer held.
+
+## D-158 Releases through the two phone stores
+
+- **Status:** Accepted (2026-10-27). Adapts D-105's release process and PLAN §15 for the phone launch (D-151); store terms are to be rechecked at sign-up.
+- **Decision:**
+  - **Test builds:** Apple's TestFlight and Google Play's testing tracks replace the Steam `playtest` and `beta` branches. Slice and alpha testers (M2, M3) use the closed tracks; the beta (M5) uses the open ones.
+  - **Releases:** the demo and the full game are one app with the in-app unlock (D-152), so there is no separate demo app. Updates go out as staged rollouts on both stores, and a bad rollout is paused. Apple's phased release covers updates only, not the first version (to recheck).
+  - **Rollback:** neither store can set an earlier build live again (to recheck). A bad release is fixed forward with a higher version number, and saves made by the bad build must load in the fixed one (GAME-05).
+  - **Cloud saves:** the phone's own backup (iCloud, Google backup) restores saves on a new phone. This is a step down from Steam Cloud: it is not live sync, and Google's backup has a per-app size cap (about 25 MB, to recheck). Live sync across devices would need Game Center or Play Games saved games; that is decided when builds start (D-091).
+  - **Achievements:** the Steam achievements become optional Game Center and Google Play Games achievements.
+  - **Screen tests:** screens are tested upright at 375 and 430 points wide, with 15 px minimum text and no clipping at 150% text size (D-077, D-084, D-154).
+  - **Builds:** iPhone builds run on the owner's Mac or a rented one, on release tags only. CI keeps running on Linux, because macOS runners cost many times more minutes (CI-01).
+  - **Crashes:** the game itself still sends nothing (D-088). The stores' own crash reports, sent by the phone with the player's consent, are read alongside testers' attached logs.
+  - **Release checklist:** item 4 (fresh and upgrade installs) becomes "on a small phone and a large phone on each system". Item 5 becomes "cloud saves and achievements work on the store build".
+- **Why:** The owner said "Do what you recommend" (2026-10-27) to the re-plan's remaining items. Steam-specific steps no longer apply to a phone launch.
