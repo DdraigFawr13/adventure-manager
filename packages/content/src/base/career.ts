@@ -16,10 +16,11 @@
 // - People: drawn at 18-30, potential 0-6 above each attribute; prime ends at 32; growth chance per
 //   quest 10% to age 24, 5% to 32; past 32, a 3% a year step (to 30%) to lose each physical point,
 //   and an 8% a year step (to 60%) to ask to retire.
-// - Patron (D-141): confidence starts at 60 of 100; met +15, missed -15 a place short (at most -40),
-//   in debt at year's end -15. Emergency grant (D-146): offered to a guild in debt at a week start,
-//   8 weeks of its wages, at most one taken in 3 years, costing 15 confidence and a target one step
-//   harder next year. Guildmaster starts at 30-45; health retirement from 60, certain by 75.
+// - Patron (D-141): confidence starts at 60 of 100; met +15, missed -10 a place short (at most -25),
+//   in debt at year's end -10 (softened from 15 / 40 / 15, which dismissed 16 of 100 founded guilds
+//   after two years). Emergency grant (D-146): offered to a guild in debt at a week start, 8 weeks
+//   of its wages, at most one taken in 3 years, costing 5 confidence and a target one step harder
+//   next year. Guildmaster starts at 30-45; health retirement from 60, certain by 75.
 import type { CareerRules, GuildRules } from '@adventure-manager/engine';
 import { baseCrisisRules } from './crises.ts';
 import { baseGuildRules } from './guild.ts';
@@ -64,8 +65,8 @@ export const baseCareerRules: CareerRules = {
   dangerDifficulty: { routine: 20, hazardous: 40, perilous: 60, deadly: 80 },
   rivalSpread: 10,
   rivalDrift: { pullDiv: 3, renownPerPoint: 25, noise: 3 },
-  patron: { start: 60, met: 15, perPlaceShort: 15, maxMiss: 40, debt: 15, max: 100 },
-  emergency: { wageWeeks: 8, everyYears: 3, confidenceCost: 15 },
+  patron: { start: 60, met: 15, perPlaceShort: 10, maxMiss: 25, debt: 10, max: 100 },
+  emergency: { wageWeeks: 8, everyYears: 3, confidenceCost: 5 },
   guildmaster: { age: { min: 30, max: 45 }, healthFromAge: 60, certainAge: 75 },
 };
 

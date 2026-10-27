@@ -2,7 +2,7 @@
 // their founding until the guildmaster's career ends (or a cap), with careers on, rivals abstract,
 // and the one-year simulator's player policy. The invariants run over every career.
 // Usage: node tools/career-sim.ts [careers=100] [maxYears=40] [policy=default|cautious|bold|compare]
-//   [staff=off|compare] [size=15]
+//   [staff=off|compare] [size=15] [grants=take|refuse]
 // With policy=compare, each seed is also played cautious and bold, for §9d's no-dominant-safe-play check.
 // With staff=compare, each seed is played hands-on (the guildmaster runs training and recovery)
 // and delegated (the best affordable hire runs both), and R6 compares the two (staff/SPEC.md).
@@ -28,6 +28,7 @@ const staffMode = process.argv[5] ?? 'off';
 if (staffMode !== 'off' && staffMode !== 'compare')
   throw new Error(`Unknown staff mode ${staffMode}.`);
 const size = Number(process.argv[6] ?? GUILD_SIZE);
+const refuseGrants = process.argv[7] === 'refuse';
 const content = {
   ...baseResolution,
   guild: staffMode === 'compare' ? staffGuildRules : careerGuildRules,
@@ -73,6 +74,7 @@ function play(seed: string, delegate = false, planToUse = plan!): Career {
     size,
     lastDay: maxYears * yearDays,
     delegate,
+    refuseGrants,
     onDay: (state) => {
       const staff = state.guild?.staff;
       if (!staff) return;
@@ -260,6 +262,14 @@ const badStart = results.filter(
 console.log(
   `§9d bad starts (chest below half the start after 2 years, or a grant in them): ${badStart.length}; of those, careers lasting 10+ years: ${badStart.filter((r) => r.years >= 10).length} [most recover, §4g]`,
 );
+{
+  const ends = new Map<string, number>();
+  for (const r of badStart) ends.set(r.end, (ends.get(r.end) ?? 0) + 1);
+  const short = badStart.filter((r) => r.years < 10).map((r) => r.years);
+  console.log(
+    `  bad starts ended: ${[...ends].map(([k, v]) => `${k} ${v}`).join(', ')}; those under 10 years ended in year ${short.sort((a, b) => a - b).join(', ')}`,
+  );
+}
 console.log(
   `  emergency grants taken (D-146): ${results.filter((r) => r.grants > 0).length} careers took one; ${results.reduce((n, r) => n + r.grants, 0)} in all`,
 );

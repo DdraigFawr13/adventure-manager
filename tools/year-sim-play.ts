@@ -81,6 +81,8 @@ export interface RunOptions {
   readonly delegate?: boolean;
   /** Called after each day's play, to sample the state (the career tool's R6 readings). */
   readonly onDay?: (state: GameState) => void;
+  /** Refuse the patron's emergency grant instead of taking it (a comparison run). */
+  readonly refuseGrants?: boolean;
 }
 
 export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tracked {
@@ -132,8 +134,8 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
   const play = (planToUse: Plan) => {
     const day = state.calendar;
     if (options.delegate) delegate(day);
-    // The simulated player always takes the patron's emergency grant (D-146).
-    if (now().career?.emergencyOffer) run({ type: 'patron.grant', day });
+    // The simulated player takes the patron's emergency grant (D-146) unless told to refuse.
+    if (now().career?.emergencyOffer && !options.refuseGrants) run({ type: 'patron.grant', day });
     while (now().prospects.length > 0 && now().members.length < size) {
       const cheapest = [...now().prospects].sort(
         (a, b) => a.wageCopper - b.wageCopper || (a.adventurer.id < b.adventurer.id ? -1 : 1),
