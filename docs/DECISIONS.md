@@ -959,7 +959,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Why:** Owner (2026-10-27), after four rounds of mock-ups: liked the recommended phone mix with the guildhall and living map added, then "I want satchel to be changed to something like work desk where you can go through notifications and deeper into rosters some of the overall stats that the individual rooms don't provide… the guild house is the hub and the work desk is for overall stuff and notifications and contracts."
 - **Amended (2026-10-27):** the room-by-room split (barracks, infirmary, training yard, armoury, smith, library, tavern, gate, strongroom, Hall of Heroes, works) and the staff display in each room are Accepted. The owner said "Do what you recommend", and the session had recommended the split as proposed. The tablet layout stays not settled.
 - **Superseded in part (2026-10-27, D-150, D-151, D-155):** mobile first. The phone is now the launch platform, and the hub is home on every platform, so the "no mobile work is scheduled", "Windows-only launch stands" and "Phone only" lines above no longer apply.
-- **Amended (2026-10-27, D-169):** the 11 rooms are no longer fixed in place; the player builds them on stacked floors.
+- **Amended (2026-10-27, D-169, D-178, D-180):** the 11 rooms are no longer fixed in place: the player builds 7 of them on stacked floors and 4 (gate, training yard, works yard, forge) in the compound.
 
 ## D-150 Mobile first: the phone becomes the lead platform
 
@@ -1100,6 +1100,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27).
 - **Decision:** The hub (D-149, D-155) is a side-on cutaway of floors 3 cells wide, which fits an upright phone. A room takes 1–3 cells, and rooms of the same kind side by side merge into one bigger room. The house grows up (upper storeys, a tower) and down (cellars dug out at cost). A new guild starts with the common room (a small tavern), the gate and a small barracks, around the study, which holds the work desk (D-149) and is always there rather than built. Each room kind is a building entry in data with its sizes, levels and effects (GAME-04); the 11 room kinds of D-149 are the launch list. Builds take weeks and are best done in winter (D-067).
 - **Why:** Owner's choice (2026-10-27), the recommended option "Stacked floors", over rooms unlocking in fixed places and over a top-down compound. Layout becomes a real choice, and the cutaway hub stays.
+- **Amended (2026-10-27, D-178, D-180):** the gate is no longer part of the starting hall; it stands in the compound wall. Of the 11 kinds, 7 are hall rooms on stacked floors and 4 (gate, training yard, works yard, forge) are compound buildings.
 
 ## D-170 Rooms have capacity and a staff head
 
@@ -1112,3 +1113,58 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27).
 - **Decision:** The guild funds places in its home town that the townsfolk own: at launch the smith, temple, inn, market and stables, each with 3 levels. Their boosts: cheaper and rarer gear (the town smith supplies the guild's own smith room and shop, D-143, D-149, which still sells basic gear), cheaper healing and revival (the temple), a better recruit pool (the inn), better loot prices (the market) and faster travel (the stables). Funding raises the guild's standing with the town, and the boosts hold only while that standing holds: a scandal or a rival guild's bigger purse can cost the guild a site. Each site is a data entry (GAME-04), and the boosts show where they apply (a price line, a log line).
 - **Why:** Owner's choice (2026-10-27), the recommended option "Patronage", over guild-owned buildings and over a mix of the two. Tying the boosts to standing and rivals makes them part of the guild's politics, so they don't sit on top of the game as a separate city-builder, and they give late-game money a sink (PLAN §4).
+
+## D-172 Rooms have 3 levels, and height and depth cost more
+
+- **Status:** Accepted (2026-10-27).
+- **Decision:** Every room kind has 3 levels, like the town sites (D-171). A cell costs more the higher or deeper it is, so the first upper storey and the first cellar are cheap and the tenth is not. Pacing targets for the year simulator, from the option the owner chose: the first extra room is affordable in the first season, and a full house costs about 8–12 years of a mid guild's surplus, the old facilities' target (PLAN §5c). Kinds may differ in width (some 1 cell only, some up to 3); the exact costs, widths and capacities are set in the simulator. Mock-up: `docs/design/mockups/guild-house.html` (https://claude.ai/artifact/D57ueUj99aC7vVxZX9hMLU).
+- **Why:** Owner's choice (2026-10-27), the recommended option "3 levels, height costs", over a flat cell cost and over 5 levels. It keeps the money target the simulator already checks, and the level count matches the town.
+
+## D-173 The house has a few incidents, as letters
+
+- **Status:** Accepted (2026-10-27).
+- **Decision:** About 1–2 house incidents a year (a target for the simulator), each arriving as a letter with a choice (D-043): for example a fire in the smith or tavern, a rival's break-in at the strongroom, sickness in a crowded barracks. They are more likely when a room is neglected or full (a barracks can't be over capacity, D-174, unless beds are lost). Each incident kind is a data entry (GAME-04); none is a tapping minigame (D-153).
+- **Why:** Owner's choice (2026-10-27), the recommended option "A few, as letters", over no incidents and over incidents after launch. Incidents tie the house to capacity and to rivals through letters the game already has.
+
+## D-174 No bed, no signing
+
+- **Status:** Accepted (2026-10-27).
+- **Decision:** The guild can't sign a member without a free barracks bed: the roster is capped by beds (D-170). The signing screen says so and points to the barracks. D-173's barracks sickness therefore comes from a full barracks, not an over-full one. Not settled: what happens if beds are lost while members are signed (a fire, D-173), for example whether those members sleep rough until it is rebuilt.
+- **Why:** Owner's choice (2026-10-27), "Signing is blocked", over the recommended option (sign, and extras sleep rough with a morale cost) and over a small overflow then a block. A clear cap that makes barracks space a real decision.
+
+## D-175 The home town is a faction
+
+- **Status:** Accepted (2026-10-27).
+- **Decision:** The home town is a faction, and the standing that holds the town sites (D-171) is its faction standing (D-019), one value in the faction ledger. Patronage, contracts for the town, scandals and failing the town all move it. The town screen shows that value with the mark below which the boosts stop. Not settled: whether the home town is one of the 6 launch factions (PLAN §7, §12) or a seventh.
+- **Why:** Owner's choice (2026-10-27), the recommended option "Town is a faction", over a separate town meter. One value per faction already exists, so a second meter would be bolted on (WS-05).
+
+## D-176 Only the gate and strongroom are locked to a floor
+
+- **Status:** Accepted (2026-10-27).
+- **Decision:** The gate is on the ground floor and the strongroom is below ground; every other room kind can go on any floor. The lock is a field on the room kind's data entry (GAME-04), and the build sheet greys out kinds that can't go in the chosen cell, with the reason. Building in the hall lists only hall kinds, and building in the compound only compound kinds (D-180).
+- **Why:** Owner's choice (2026-10-27), the recommended option "Gate and strongroom only", over no locks and over more locks (training yard on the ground floor, library or Hall of Heroes in a tower). Two locks that make sense at a glance without making layout a puzzle with one answer.
+- **Amended (2026-10-27, D-180):** the gate moves to the compound wall, so the strongroom is the only hall room locked to a floor; four kinds are compound-only.
+
+## D-177 Rooms cost a small weekly upkeep
+
+- **Status:** Accepted (2026-10-27).
+- **Decision:** Each room costs a small weekly upkeep that rises with its level, shown on the room's page and on the desk's Money page. Amounts are set in the year simulator, with D-172's pacing targets.
+- **Why:** Owner's choice (2026-10-27), the recommended option "Small weekly upkeep", over no upkeep. A big house has a running price, and late-game money gets another sink (the roadmap's money risk).
+
+## D-178 A compound around the hall, with outdoor-only buildings
+
+- **Status:** Accepted (2026-10-27) as the owner's direction; how it is drawn and which kinds are outdoor-only are settled by D-180. Amends D-169 (all rooms on stacked floors) and D-176 (floor locks).
+- **Decision:** The guild house is the hall and the compound around it. Some buildings can only be built in the compound, the training yard among them; the rest stay rooms in the hall's floors. Each kind's data entry says where it can go (GAME-04, D-176).
+- **Why:** Owner (2026-10-27), adding to the upkeep answer: "for the guild hall I want it to be the hall itself and like the surrounding compound where you can build things like training yard. Some set buildings can only be built in the compound area."
+
+## D-179 The home town is a top-down map with build plots
+
+- **Status:** Accepted (2026-10-27) as the owner's direction; amends the street view in round 1 of `docs/design/mockups/guild-house.html` (replaced by round 2, not kept).
+- **Decision:** The home town is a top-down, scrollable map of the town's layout, with its places and empty build plots marked. It is laid out so the town can grow (more plots and sites in updates, D-168). An empty plot is where the guild pays to found a site, which a townsperson then runs; patronage (D-171) is unchanged (owner's choice 2026-10-27, the recommended "Found new sites by patronage", over guild-owned buildings and over both).
+- **Why:** Owner (2026-10-27): "I want the town to be a top down view of the town in like a layout so it can be expanded. I want it to be a scrollable map with build plots and locations marked."
+
+## D-180 The compound is side-on, beside the hall; four outdoor-only kinds
+
+- **Status:** Accepted (2026-10-27). Details D-178; amends D-176 (the gate) and D-169 (the starting gate).
+- **Decision:** The compound continues the hall's side-on cutaway at ground level: the player swipes left or right from the hall to the yard, where outdoor plots are drawn at the same scale. The hall stays the home screen (D-155). Four kinds are compound-only: the training yard, the works yard, the gate (now in the compound wall, not the hall's ground floor) and the smith's forge. The other room kinds (barracks, infirmary, armoury, library, tavern, strongroom, Hall of Heroes) stay in the hall, with the strongroom below ground (D-176). Assumed until the simulator sets them: the compound's width in plots, and that compound plots follow the hall's rules (1–3 plots per building, same kinds side by side merge, 3 levels, D-172).
+- **Why:** Owner's choice (2026-10-27): the recommended view "Side-on, swipe sideways", over a top-down compound with the hall as one building and over a separate Grounds plan; and for outdoor-only kinds, the recommended works yard and gate plus the smith's forge, leaving the Hall of Heroes in the hall. One picture in one projection keeps the hub as it is.
