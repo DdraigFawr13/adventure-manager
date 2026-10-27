@@ -22,6 +22,8 @@ Rejected: frontier slate, heraldic baize, ash and bone.
 
 ## 3. Screen layout (Accepted 2026-10-26)
 
+**Replaced (2026-10-27, D-155):** with the phone leading (D-150), home on every platform is the guildhall hub with its rooms, a work desk for whole-guild views and the living map outside (D-149; mock-ups `docs/design/mockups/mobile-hall-desk.html`). The text below is the earlier PC layout, kept for the record.
+
 **Desk home with ledger tabs.** Mock-up: `docs/design/mockups/ui-layouts.html` (option C).
 
 - **Top bar, fixed on every screen:** guild crest, date, why the calendar stopped, Continue. It never moves, so the continue-stop-respond loop stays in one place.

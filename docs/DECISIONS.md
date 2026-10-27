@@ -302,6 +302,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Fixed top bar (date, stop reason, Continue); grouped ledger tabs on the left; the home screen is the region map with parties as miniatures, a weekly strip and the letter tray; ledgers open as full paper sheets. Detail: `docs/design/STYLE.md` §3.
 - **Why:** Owner's choice (Style Q3); keeps FM navigation speed while putting the region at the centre (pillar 4).
 
+- **Replaced (2026-10-27, D-155):** the guildhall hub is home on every platform; see D-149 and D-155.
 ## D-050 Quest board: cartographer's map with standees
 
 - **Status:** Accepted (2026-10-26)
@@ -961,3 +962,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Amends D-091's screen minimum, D-110's bars and PLAN §9a R4 for the phone launch (re-plan under D-150).
 - **Decision:** (1) The game supports phones 375 points wide and wider, held upright: the iPhone SE and most Android phones from about 2019 on. It must also lay out correctly on larger phones. (2) The engine test is rebuilt as a phone app from the same web code. It is judged on the owner's own phone: a 60 fps map with smooth pinch and pan, text no smaller than 15 px (D-084), and a screen-reader check. Measurements in the container count only as a floor; the verdict needs the owner's device evidence (VER-07). (3) R4 becomes a phone test. The owner finds 5 set facts in under 10 seconds each, using the hall hub, the work desk and Ask the clerk (D-149). The 25-row roster rule is dropped.
 - **Why:** Owner's choice (re-plan question 4, 2026-10-27), the recommended option: "375-pt phones, new phone tests". Testing phones now, not at the slice, finds layout or speed problems while they are cheap.
+
+## D-155 The guildhall hub is the home screen on every platform
+
+- **Status:** Accepted (2026-10-27). Replaces D-049 and STYLE §3 (re-plan under D-150).
+- **Decision:** On every platform, home is the guildhall hub with its rooms (D-149). The work desk holds the whole-guild views, and the living map is the outside. Pull to continue is the phone's Continue. When Windows follows, its wide screen shows the hub and the work desk side by side, with the same rooms, desk views and map. The PC gets no separate desk interface. Two parts of STYLE §1 still hold on every platform: the in-world look frames set pieces, and data screens sit on a clean paper layer.
+- **Why:** Owner's choice (re-plan question 5, 2026-10-27), the recommended option: "Hall hub everywhere". One design to build and test serves a solo builder (D-102), and it lets the PC version follow the phone, as D-150 intends.
