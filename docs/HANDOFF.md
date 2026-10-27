@@ -14,7 +14,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Next
 
-1. Phone R4 (D-154, D-159), this branch: a phone mock-up of the hub, the work desk and Ask the clerk with 5 blind, page-timed facts; publish as an artifact that saves the timings. Lessons from desk rounds 1–3 (archive): a Find box, the timer starting after the question is read, a person card.
+1. Phone R4 (D-154, D-159): published as the Guildhall Fact Test, https://claude.ai/artifact/PkKz6nGhVqJ4Fr8Fz89MMX (`docs/design/mockups/phone-r4.html`, data `node tools/make-desk-data.ts phone-1 docs/design/mockups/phone-r4.html`). Waits on the owner's run on their Pixel; results save to the artifact's `r4runs` collection (read with ArtifactData `list`). Note for the owner: at week 23, 23 of 30 members are resting from wounds, which may be a balance finding.
 2. Tools and skills reassessment for mobile first (D-161), before step 4: phone screenshots and touch checks, Vercel Hobby previews, the phone wrapper choice (needs SAFE-03 approval; D-117 approved only Electron).
 3. Step 4, the two-year text prototype (R7) as a phone-first web page (D-160), with histories and memorial letters; standing parties (D-014, D-142) join here.
 4. Engine test verdict (D-110, D-154): rebuild the engine test as a phone app; the owner judges it on their phone (60 fps map with smooth pinch, 15 px text, screen reader).
