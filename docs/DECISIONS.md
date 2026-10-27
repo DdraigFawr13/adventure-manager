@@ -524,6 +524,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Ledger text is at least 15 px at 100% scale; all numbers use the face's lining figures (`lining-nums`), which are equal width and sit on the line. To be confirmed on real monitors in the desk-density prototype (PLAN §9a R4); fallbacks are D-052 and D-077. Detail: `docs/design/PLAN.md` §9c.
 - **Why:** Owner's choice (Plan Q9b) after real-size specimens at 13–16 px; the measurement showed the default figures are proportional old-style, so lining figures are required for columns.
 - **Amended (2026-10-27, D-154):** confirmed on the owner's phone in the phone R4, not on monitors.
+- **Confirmed (2026-10-27, D-166):** the owner read the 15 px text with lining figures comfortably on their phone in R4.
 
 ## D-085 Prototype order: watched quest first
 
@@ -1070,3 +1071,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27)
 - **Decision:** The find-the-fact test (R4, PLAN §9a, as a phone test under D-154) passes. In round 2 (seed phone-2, the owner's phone at 443 × 790 px), the owner found all 5 facts, each right, in under 10 seconds: 8.9, 8.0, 9.8, 5.8 and 6.1 s. For the three facts about people they typed in Find, then opened the adventurer's card; the money and the contract facts went through the work desk. Round 1 (seed phone-1) failed at 0 of 5 under 10 s; round 2 followed D-162's changes, on a different guild. R5 (readability, D-084) is not decided here.
 - **Why:** The owner's timed run, pasted by the owner and saved by the test page (`r4runs`, round 2, attempt 1, no answer flagged as a guess). That it meets R4's pass line is the session's reading of PLAN §9a.
+
+## D-166 R5 passes: 15 px with lining figures reads well on the phone
+
+- **Status:** Accepted (2026-10-27)
+- **Decision:** The readability check (R5, PLAN §9a) passes on the owner's phone (443 × 790 px): the 15 px minimum with lining figures (D-084) stays. The fallbacks, our own ledger cut (D-052) and clear print as the default (D-077), are not needed now; clear print stays a player option.
+- **Why:** Owner (2026-10-27), asked whether the 15 px text read comfortably in the fact test: "Yes, readable".

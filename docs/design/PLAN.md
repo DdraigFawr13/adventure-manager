@@ -583,7 +583,7 @@ Mock-up: `docs/design/mockups/readability.html` (first section).
 
 - **Minimum ledger size: 15 px** at 100% (owner's choice); the size slider (D-077) goes up from there.
 - **All numbers use lining figures** (`lining-nums`). Measured at 40 px: the ledger face's default figures are old-style and proportional (13.6–20.8 px wide); lining figures are equal width (21.1 px) and sit on the line.
-- Still to confirm, now on the owner's phone in the phone R4 (D-154, D-159); if it fails there, D-052 (own ledger cut) and clear print (D-077) are the fallbacks.
+- Confirmed on the owner's phone in the phone R4 (D-166); before that, still to confirm (D-154, D-159); if it fails there, D-052 (own ledger cut) and clear print (D-077) are the fallbacks.
 
 ### 9d. Added checks (Accepted 2026-10-26, D-113)
 
