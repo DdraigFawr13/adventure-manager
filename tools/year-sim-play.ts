@@ -187,21 +187,36 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
     run({ type: 'guild.pick', day: 1, partyIndex, extraIds });
   };
 
-  /** The house policy: at a week start with no work running, start the plan's next step if the chest after paying keeps 12 weeks of spending. */
+  /** The first fire damage to repair (D-193), barracks first; null when nothing needs repair. */
+  const repair = (day: number): { command: Bare; urgent: boolean } | null => {
+    const scars = now().house?.scars ?? [];
+    const scar = scars.find((x) => x.kindId === 'room.barracks') ?? scars[0];
+    if (!scar) return null;
+    // Lost barracks beds put members at the inn: repaired at once, into debt if need be.
+    return {
+      command: { type: 'house.repair', day, place: scar.place },
+      urgent: scar.kindId === 'room.barracks',
+    };
+  };
+
+  /** The house policy: at a week start with no work running, repair fire damage first (barracks at once, D-193), else start the plan's next step, if the chest after paying keeps 12 weeks of spending. */
   let planStep = 0;
   const houseStep = (day: number) => {
     const plan = options.housePlan;
     const guild = now();
     const houseRules = state.content.guild?.house;
-    if (!plan || !guild.house || !houseRules || planStep >= plan.length) return;
+    if (!plan || !guild.house || !houseRules) return;
     if ((day - 1) % rules.daysPerWeek !== 0 || guild.house.work.length > 0) return;
-    const step = plan[planStep]!; // non-null: planStep < plan.length.
-    const command: Bare =
-      step.type === 'build'
-        ? { type: 'house.build', day, place: step.place, kindId: step.kindId }
-        : step.type === 'upgrade'
-          ? { type: 'house.upgrade', day, place: step.place }
-          : { type: 'house.extend', day, direction: step.direction };
+    const fix = repair(day);
+    if (!fix && planStep >= plan.length) return;
+    const step = plan[planStep];
+    const command: Bare = fix
+      ? fix.command
+      : step!.type === 'build' // non-null: planStep < plan.length when there is no repair.
+        ? { type: 'house.build', day, place: step!.place, kindId: step!.kindId }
+        : step!.type === 'upgrade'
+          ? { type: 'house.upgrade', day, place: step!.place }
+          : { type: 'house.extend', day, direction: step!.direction };
     let cost: number;
     try {
       // A preview on a copy: only the cost is wanted, and a chest too thin for it is not an error.
@@ -216,9 +231,9 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
     }
     const wages = guild.members.reduce((sum, m) => sum + m.wageCopper, 0);
     const weekly = wages + rules.runningCostCopper + upkeepOf(guild.house, houseRules);
-    if (guild.chestCopper - cost < HOUSE_RESERVE_WEEKS * weekly) return;
+    if (!fix?.urgent && guild.chestCopper - cost < HOUSE_RESERVE_WEEKS * weekly) return;
     run(command);
-    planStep += 1;
+    if (!fix) planStep += 1;
   };
 
   /** A full delegator (R6): each area goes to the best listed candidate better than the staff member already hired, if a year's wage is in the chest; the guildmaster's own skill is never weighed. */

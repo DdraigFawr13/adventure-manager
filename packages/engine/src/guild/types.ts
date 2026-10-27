@@ -218,7 +218,13 @@ export type MoneyReason =
   | 'building'
   | 'rooms'
   | 'emergency'
-  | 'crisis';
+  | 'crisis'
+  | 'inn'
+  | 'incident'
+  | 'theft';
+export type IncidentAnswer = 'paid' | 'free';
+export type IncidentResult =
+  'saved' | 'lowered' | 'burnt-out' | 'written-off' | 'recovered' | 'not-recovered' | 'ill';
 export type StopClass = 'must' | 'digest';
 export type StopReason =
   | 'week-report'
@@ -232,7 +238,8 @@ export type StopReason =
   | 'training-plan'
   | 'infirmary'
   | 'patron-offer'
-  | 'crisis';
+  | 'crisis'
+  | 'incident';
 
 export type GuildCommand =
   | {
@@ -276,6 +283,18 @@ export type GuildCommand =
       readonly area: Area;
     }
   | { readonly type: 'patron.grant'; readonly id: string; readonly day: number }
+  | {
+      readonly type: 'incident.answer';
+      readonly id: string;
+      readonly day: number;
+      readonly answer: IncidentAnswer;
+    }
+  | {
+      readonly type: 'house.repair';
+      readonly id: string;
+      readonly day: number;
+      readonly place: Place;
+    }
   | {
       readonly type: 'house.build';
       readonly id: string;
@@ -413,6 +432,24 @@ export type GuildEventBody =
       readonly direction?: ExtendDirection;
       readonly doneWeek: number;
     }
+  /** An incident struck (house/SPEC.md): `place` is null for theft; `feeCopper` is the paid answer's fee. */
+  | {
+      readonly type: 'incident.struck';
+      readonly kindId: string;
+      readonly effect: 'fire' | 'theft' | 'sickness';
+      readonly place: Place | null;
+      readonly feeCopper: number;
+    }
+  | {
+      readonly type: 'incident.settled';
+      readonly kindId: string;
+      readonly effect: 'fire' | 'theft' | 'sickness';
+      readonly place: Place | null;
+      readonly answer: IncidentAnswer;
+      readonly byDefault: boolean;
+      readonly result: IncidentResult;
+    }
+  | { readonly type: 'member.fell-ill'; readonly days: number; readonly sickbed: boolean }
   | {
       readonly type: 'stop.raised';
       readonly stopClass: StopClass;

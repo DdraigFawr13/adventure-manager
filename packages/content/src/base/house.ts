@@ -27,12 +27,25 @@
 //   and backups), a 1-plot training yard (4 places), and no infirmary (the rudimentary-infirmary
 //   start is measured against it). The simulator then signs up to the beds.
 // - Barracks beds per cell by level 8 / 10 / 12 (D-170, D-174).
+// - Incidents (v2, D-173, D-191-D-193; baseIncidentRules, ASSUMPTIONS): fire 30 bp a week on a forge,
+//   tavern, works or barracks cell, theft 110 bp, sickness 400 bp on a full barracks cell; times
+//   150% / 100% / 50% by room level 1 / 2 / 3, 200% in debt, 200% for a full target (200% for theft
+//   with no strongroom). A fire fee is 400 copper, theft 300, sickness 250; thieves take 12% / 6% / 3%
+//   of the chest by strongroom level (20% with none), the thief-takers get it back 50% of the time;
+//   sickness fells 3 members for 14 days (7 with a healer, half that on a sickbed); lodgers pay 60
+//   copper a week each at the inn; a repair costs 50% of the levels it restores (D-193). Measured
+//   (career-sim house=on incidents=on, 100 careers x 26 years, every letter on its default,
+//   2026-10-27): 1.24 incidents a year (fire 0.66, theft 0.52, sickness 0.07: the barracks is
+//   rarely full after year 1), target 1-2; dismissals 12% against 14% without incidents; theft 3.3%
+//   of spending from year 10; lodgers in 0.6% of weeks. First pass at 8 / 30 / 120 bp: 0.33 a year.
+//   Not in baseHouseRules, so house=on without incidents is unchanged; houseIncidentGuildRules adds them.
 // - Storeys: the first added 8,000, each later 8,000 more; cellars 10,000 then 10,000 more; a wall
 //   push 5,000 then 5,000 more, up to 6 plots a side (D-172, D-183).
 import type {
   CareerRules,
   GuildRules,
   HouseRules,
+  IncidentRules,
   Place,
   RoomKind,
 } from '@adventure-manager/engine';
@@ -97,6 +110,46 @@ export const baseHouseRules: HouseRules = {
   winterWeeksBp: 7500,
   noSickbedBp: 20000,
   homeTraining: { youngBp: 300, primeBp: 150, placedBp: 15000, unplacedBp: 7500 },
+};
+
+/** House incidents (house/SPEC.md, Incidents): starting numbers, all ASSUMPTIONS (see the header). */
+export const baseIncidentRules: IncidentRules = {
+  kinds: [
+    {
+      id: 'incident.fire',
+      effect: 'fire',
+      roomKindIds: ['room.forge', 'room.tavern', 'room.works', 'room.barracks'],
+      weeklyBp: 30,
+      paidCopper: 400,
+    },
+    {
+      id: 'incident.theft',
+      effect: 'theft',
+      roomKindIds: ['room.strongroom'],
+      weeklyBp: 110,
+      paidCopper: 300,
+      shareBp: [1200, 600, 300],
+      noRoomShareBp: 2000,
+      recoverBp: 5000,
+    },
+    {
+      id: 'incident.sickness',
+      effect: 'sickness',
+      roomKindIds: ['room.barracks'],
+      weeklyBp: 400,
+      paidCopper: 250,
+      count: 3,
+      freeDays: 14,
+      paidDays: 7,
+      sickbedBp: 5000,
+    },
+  ],
+  levelBp: [15_000, 10_000, 5000],
+  noRoomBp: 20_000,
+  debtBp: 20_000,
+  fullBp: 20_000,
+  innFeeCopper: 60,
+  repairBp: 5000,
 };
 
 /** One step of the simulator's build plan; places refer to the starting layout and the floors the plan adds. */
@@ -172,4 +225,10 @@ export const houseGuildRules: GuildRules = {
   house: baseHouseRules,
   // The founding draft (D-188) pays its purse; the inherited `startingChestCopper` is not used.
   founding: baseFoundingRules,
+};
+
+/** The house-on career rules with incidents and inn lodgers (career-sim incidents=on). */
+export const houseIncidentGuildRules: GuildRules = {
+  ...houseGuildRules,
+  house: { ...baseHouseRules, incidents: baseIncidentRules },
 };

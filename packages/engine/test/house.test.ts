@@ -1,10 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import {
   bedsOf,
+  incidentChanceBp,
   sickbedsOf,
   trainingPlacesOf,
   type GameState,
   type HouseRules,
+  type IncidentKind,
+  type IncidentRules,
   type Place,
   type RoomKind,
 } from '../src/index.ts';
@@ -694,6 +697,288 @@ describe('house (house SPEC.md)', () => {
       expect(
         ofType(playDays(run, 60).events, 'member.laid-up').every((e) => e.sickbed === undefined),
       ).toBe(true);
+    });
+  });
+
+  describe('incidents (v2)', () => {
+    const fire: IncidentKind = {
+      id: 'incident.fire',
+      effect: 'fire',
+      roomKindIds: ['room.barracks'],
+      weeklyBp: 10_000,
+      paidCopper: 40,
+    };
+    const theft: IncidentKind = {
+      id: 'incident.theft',
+      effect: 'theft',
+      roomKindIds: ['room.vault'],
+      weeklyBp: 10_000,
+      paidCopper: 30,
+      shareBp: [1000, 500, 250],
+      noRoomShareBp: 2000,
+      recoverBp: 10_000,
+    };
+    const sickness: IncidentKind = {
+      id: 'incident.sickness',
+      effect: 'sickness',
+      roomKindIds: ['room.barracks'],
+      weeklyBp: 10_000,
+      paidCopper: 25,
+      count: 2,
+      freeDays: 14,
+      paidDays: 7,
+      sickbedBp: 5000,
+    };
+    const rules = (kinds: IncidentKind[], extra: Partial<IncidentRules> = {}): IncidentRules => ({
+      kinds,
+      levelBp: [10_000, 10_000, 10_000],
+      noRoomBp: 10_000,
+      debtBp: 10_000,
+      fullBp: 10_000,
+      innFeeCopper: 5,
+      repairBp: 5000,
+      ...extra,
+    });
+    /** Weekly chances of 10,000 bp, so the first week start (the founding day) strikes. */
+    const struck = (
+      size: number,
+      kinds: IncidentKind[],
+      house2: Partial<HouseRules> = {},
+      chest = 100_000,
+    ) =>
+      foundedGuild(size, {
+        house: { ...house, ...house2, incidents: rules(kinds) },
+        startingChestCopper: chest,
+        signingWindows: [{ from: 1, to: 6 }],
+      });
+    const answer = (run: Run, a: 'paid' | 'free') =>
+      play(run, { type: 'incident.answer', day: today(run), answer: a });
+    const letterOf = (run: Run) => houseOf(run).letter;
+    const barracksAt = (level: number): Partial<HouseRules> => ({
+      start: {
+        ...house.start,
+        cells: [
+          { place: hall(1, 0), kindId: 'room.barracks', level },
+          { place: hall(1, 1), kindId: 'room.barracks', level },
+        ],
+      },
+    });
+
+    it('rolls and draws nothing without incidents, and charges no inn fee', () => {
+      const run = playDays(begun(3), 30);
+      expect(ofType(run.events, 'incident.struck')).toEqual([]);
+      expect(run.state.rng['house.incidents']).toBeUndefined();
+      expect(paid(run, 'inn')).toEqual([]);
+      expect(houseOf(run).letter).toBeNull();
+    });
+
+    it('strikes at most once a week, never while a letter stands, then settles by default', () => {
+      let run = struck(3, [fire, theft]);
+      expect(ofType(run.events, 'incident.struck').map((e) => e.kindId)).toEqual(['incident.fire']);
+      expect(ofType(run.events, 'stop.raised').filter((e) => e.reason === 'incident')).toHaveLength(
+        1,
+      );
+      expect(letterOf(run)?.kindId).toBe('incident.fire');
+      run = advanceTo(run, startOf(2) - 1);
+      expect(ofType(run.events, 'incident.struck')).toHaveLength(1);
+      run = advanceTo(run, startOf(2));
+      const [settled] = ofType(run.events, 'incident.settled');
+      expect([settled?.answer, settled?.byDefault]).toEqual(['free', true]);
+      expect(ofType(run.events, 'incident.struck')).toHaveLength(2);
+    });
+
+    it('scales the chance by level, debt and a full target, rounding down at each step', () => {
+      const r = rules([], {
+        levelBp: [15_000, 10_000, 5000],
+        noRoomBp: 20_000,
+        debtBp: 20_000,
+        fullBp: 20_000,
+      });
+      expect(incidentChanceBp(r, 8, 1, false, false)).toBe(12);
+      expect(incidentChanceBp(r, 8, 3, false, false)).toBe(4);
+      expect(incidentChanceBp(r, 8, 1, true, false)).toBe(24);
+      expect(incidentChanceBp(r, 8, 1, false, true)).toBe(24);
+      expect(incidentChanceBp(r, 8, 1, true, true)).toBe(48);
+      expect(incidentChanceBp(r, 8, null, false, false)).toBe(16);
+      expect(incidentChanceBp(r, 7, 1, true, false)).toBe(20); // 10.5 -> 10, then 20
+    });
+
+    it('fire let burn drops a level, and burns out a level-1 cell', () => {
+      const high = answer(struck(3, [fire], barracksAt(2)), 'free');
+      expect(levels(high, [hall(1, 0), hall(1, 1)])).toEqual([1, 2]);
+      expect(ofType(high.events, 'incident.settled')[0]?.result).toBe('lowered');
+      const low = answer(struck(3, [fire]), 'free');
+      expect(houseOf(low).floors[1]?.[0]).toBeNull();
+      expect(ofType(low.events, 'incident.settled')[0]?.result).toBe('burnt-out');
+      expect(letterOf(low)).toBeNull();
+    });
+
+    it('fire paid pays the fee and keeps the cell', () => {
+      const run = answer(struck(3, [fire]), 'paid');
+      expect(paid(run, 'incident')).toEqual([-40]);
+      expect(levels(run, [hall(1, 0)])).toEqual([1]);
+      expect(ofType(run.events, 'incident.settled')[0]?.result).toBe('saved');
+    });
+
+    it('a burnt barracks cell gives lodgers who pay the inn fee into debt, and blocks signing', () => {
+      let run = answer(struck(4, [fire], {}, -10_000), 'free');
+      expect(bedsOf(houseOf(run), run.state.content.guild!.house!)).toBe(2);
+      const sign = (r: Run) =>
+        play(r, {
+          type: 'recruit.sign',
+          day: today(r),
+          prospectId: r.state.guild!.prospects[0]!.adventurer.id,
+        });
+      expect(() => sign(run)).toThrow(/bed/);
+      run = advanceTo(run, startOf(2));
+      expect(paid(run, 'inn')).toEqual([-10]); // 4 members, 2 beds, 5 copper each
+      expect(chest(run)).toBeLessThan(0);
+      const reasons = ofType(run.events, 'money.changed').map((e) => e.reason);
+      expect(reasons.lastIndexOf('inn')).toBeGreaterThan(reasons.lastIndexOf('rooms'));
+    });
+
+    it('theft takes its share at the strike, and the paid answer rolls to bring it back', () => {
+      const run = struck(3, [theft]);
+      const [taken] = ofType(run.events, 'money.changed').filter((e) => e.reason === 'theft');
+      const stolen = -taken!.amountCopper; // non-null: a strike takes coin.
+      expect(stolen).toBe(Math.floor(((taken!.chestCopper + stolen) * 2000) / 10_000));
+      expect(letterOf(run)?.stolenCopper).toBe(stolen);
+      const free = answer(run, 'free');
+      expect(paid(free, 'theft')).toEqual([-stolen]);
+      const back = answer(run, 'paid');
+      expect(paid(back, 'incident')).toEqual([-30]);
+      expect(paid(back, 'theft')).toEqual([-stolen, stolen]);
+      expect(ofType(back.events, 'incident.settled')[0]?.result).toBe('recovered');
+      const lost = answer(
+        foundedGuild(3, {
+          house: { ...house, incidents: rules([{ ...theft, recoverBp: 0 }]) },
+          startingChestCopper: 100_000,
+        }),
+        'paid',
+      );
+      expect(paid(lost, 'theft')).toEqual([-stolen]);
+    });
+
+    it('theft uses the best strongroom level and needs coin in the chest', () => {
+      const vaultAt = (level: number): Partial<HouseRules> => ({
+        start: {
+          ...house.start,
+          lowestFloor: -1,
+          cells: [...house.start.cells, { place: hall(-1, 0), kindId: 'room.vault', level }],
+        },
+      });
+      const run = struck(3, [theft], vaultAt(2));
+      const [taken] = ofType(run.events, 'money.changed').filter((e) => e.reason === 'theft');
+      const stolen = -taken!.amountCopper; // non-null: a strike takes coin.
+      expect(stolen).toBe(Math.floor(((taken!.chestCopper + stolen) * 500) / 10_000));
+      expect(ofType(struck(3, [theft], {}, -10_000).events, 'incident.struck')).toEqual([]);
+    });
+
+    it('sickness fells only home and fit members, and a sickbed halves the days', () => {
+      const infirmary: RoomKind = {
+        id: 'room.infirmary',
+        where: 'hall',
+        maxCells: 3,
+        cellCostCopper: [100, 200, 400],
+        weeks: [2, 3, 4],
+        upkeepCopper: [1, 2, 4],
+        sickbeds: [1, 2, 3],
+      };
+      const ill = (run: Run) => ofType(run.events, 'member.fell-ill');
+      // Only a full barracks falls ill: 3 members on 4 beds do not.
+      expect(ofType(struck(3, [sickness]).events, 'incident.struck')).toEqual([]);
+      const free = answer(struck(4, [sickness]), 'free');
+      expect(ill(free).map((e) => [e.days, e.sickbed])).toEqual([
+        [14, false],
+        [14, false],
+      ]);
+      expect(new Set(ill(free).map((e) => e.subjectIds[0])).size).toBe(2);
+      const members = free.state.guild!.members;
+      expect(members.filter((m) => m.outUntilDay === 15)).toHaveLength(2);
+      const paidRun = answer(struck(4, [sickness]), 'paid');
+      expect(ill(paidRun).map((e) => e.days)).toEqual([7, 7]);
+      // One sickbed: the first sick member takes it (half the days), the second does not.
+      const bed = answer(
+        struck(4, [sickness], {
+          kinds: [...house.kinds, infirmary],
+          start: {
+            ...house.start,
+            cells: [
+              ...house.start.cells,
+              { place: hall(1, 2), kindId: 'room.infirmary', level: 1 },
+            ],
+          },
+        }),
+        'free',
+      );
+      expect(ill(bed).map((e) => [e.days, e.sickbed])).toEqual([
+        [7, true],
+        [14, false],
+      ]);
+      expect(houseOf(bed).sickbeds).toHaveLength(1);
+      // Someone already out is not drawn: count 3 of 4 members, one away.
+      let busy = struck(4, [{ ...sickness, count: 3 }]);
+      busy = { ...busy, state: structuredClone(busy.state) };
+      busy.state.guild!.members[0]!.outUntilDay = 100;
+      const sick = ill(answer(busy, 'free'));
+      expect(sick).toHaveLength(3);
+      expect(sick.map((e) => e.subjectIds[0])).not.toContain(busy.state.guild!.members[0]!.id);
+    });
+
+    it('repairs fire damage at half the cost, into debt, and heals the scar when done (D-193)', () => {
+      const burnt = answer(struck(4, [fire], {}, -10_000), 'free');
+      expect(houseOf(burnt).scars).toEqual([
+        { place: hall(1, 0), kindId: 'room.barracks', level: 1 },
+      ]);
+      const cost = burnt.state.content.guild!.house!.kinds.find((k) => k.id === 'room.barracks')!
+        .cellCostCopper[0]!;
+      expect(() =>
+        play(burnt, { type: 'house.repair', day: today(burnt), place: hall(1, 1) }),
+      ).toThrow(/no fire damage/);
+      let run = play(burnt, { type: 'house.repair', day: today(burnt), place: hall(1, 0) });
+      expect(paid(run, 'building')).toEqual([-Math.floor(cost / 2)]);
+      expect(chest(run)).toBeLessThan(0);
+      expect(() => play(run, { type: 'house.repair', day: today(run), place: hall(1, 0) })).toThrow(
+        /under work/,
+      );
+      // Weekly fires keep striking the other barracks cell; the repaired one is checked the week it is done.
+      const done = ofType(run.events, 'house.started').at(-1)!.doneWeek;
+      run = advanceTo(run, startOf(done));
+      expect(levels(run, [hall(1, 0)])).toEqual([1]);
+      expect(houseOf(run).scars.some((x) => x.place.area === 'hall' && x.place.cell === 0)).toBe(
+        false,
+      );
+    });
+
+    it('a second fire keeps the first scar, and building on a burnt place clears it', () => {
+      let run = answer(struck(3, [fire], barracksAt(2)), 'free');
+      run = answer(advanceTo(run, startOf(2)), 'free');
+      expect(houseOf(run).scars).toEqual([
+        { place: hall(1, 0), kindId: 'room.barracks', level: 2 },
+      ]);
+      const burnt = answer(struck(3, [{ ...fire, weeklyBp: 10_000 }]), 'free');
+      const built = play(burnt, {
+        type: 'house.build',
+        day: today(burnt),
+        place: hall(1, 0),
+        kindId: 'room.barracks',
+      });
+      expect(houseOf(built).scars).toEqual([]);
+    });
+
+    it('lets the fire watch go into debt, but refuses other paid answers the chest cannot pay, and an answer with no letter or on the wrong day', () => {
+      const watch = answer(struck(3, [fire], {}, -10_000), 'paid'); // in debt after the grant and wages
+      expect(paid(watch, 'incident')).toEqual([-40]);
+      const poor = struck(4, [sickness], {}, -10_000);
+      expect(() => answer(poor, 'paid')).toThrow(/chest/);
+      expect(letterOf(poor)).not.toBeNull();
+      expect(() => answer(poor, 'free')).not.toThrow();
+      const calm = struck(3, [{ ...fire, weeklyBp: 0 }]);
+      expect(() => answer(calm, 'free')).toThrow(/No incident letter/);
+      expect(() =>
+        play(struck(3, [fire]), { type: 'incident.answer', day: 2, answer: 'free' }),
+      ).toThrow(/not today/);
+      expect(() => answer(begun(3), 'free')).toThrow(/no incidents/);
     });
   });
 });

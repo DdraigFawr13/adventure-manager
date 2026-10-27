@@ -19,5 +19,5 @@ export { PLAYER_ID } from './career/year.ts';
 export * from './staff/types.ts';
 export * from './crisis/types.ts';
 export * from './house/types.ts';
-export { bedsOf, sickbedsOf, trainingPlacesOf, upkeepOf } from './house/house.ts';
+export { bedsOf, incidentChanceBp, sickbedsOf, trainingPlacesOf, upkeepOf } from './house/house.ts';
 export { yearOf, weekInYear } from './guild/turn.ts';
