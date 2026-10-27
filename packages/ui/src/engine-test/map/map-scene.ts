@@ -25,7 +25,32 @@ export type SceneText = Readonly<Record<string, string>>;
 /** How often (seconds) names are checked against the fog, to keep names off uncharted ground. */
 const LOOK_EVERY = 0.4;
 
+export type MarkKind = 'town' | 'village' | 'landmark' | 'threat' | 'guild' | 'party';
+
+/** A tappable mark: its centre in sheet pixels and how far a finger may be from it, in screen pixels. */
+export interface Mark {
+  id: string;
+  kind: MarkKind;
+  x: number;
+  y: number;
+  r: number;
+}
+
+export interface SceneOptions {
+  /** Lowest label scale; the phone map raises it so no lettering is under 15 px. Default 0.95. */
+  labelFloor?: number;
+}
+
+/** Hit radius in screen pixels: half of a 44 px target. */
+const HIT_RADIUS = 22;
+
 export interface Scene {
+  /** The tappable marks at `seconds` and zoom `z` (banners and the party sit at screen offsets). */
+  marks: (seconds: number, z: number) => Mark[];
+  /** Whether the party is walking, and if it stopped, whether that is at the far end of its route. */
+  partyState: (seconds: number) => { walking: boolean; far: boolean };
+  /** The settlement (index into the sites, 0 the hall) at the far end of the route, or -1. */
+  farSite: number;
   render: (
     ctx: CanvasRenderingContext2D,
     cam: Camera,
@@ -38,7 +63,7 @@ export interface Scene {
 }
 
 /** Guilds stand at a settlement (index into the sites, 0 the hall) with a tier numeral. */
-const GUILDS = [
+export const GUILDS = [
   { site: 0, nameKey: 'guild.ours', colour: SEAL, tier: 2 },
   { site: 2, nameKey: 'guild.rival-0', colour: '#5b4a8b', tier: 1 },
   { site: 4, nameKey: 'guild.rival-1', colour: '#3f6f8f', tier: 3 },
@@ -48,7 +73,13 @@ const FACTIONS = [
   { site: 5, nameKey: 'faction.1', colour: '#b8923e', r: 25, charge: 'waves' as const },
 ];
 
-export function createScene(data: MapData, atlas: Atlas, text: SceneText): Scene {
+export function createScene(
+  data: MapData,
+  atlas: Atlas,
+  text: SceneText,
+  options: SceneOptions = {},
+): Scene {
+  const labelFloor = options.labelFloor ?? 0.95;
   const { cells } = data;
   const W = cells.width;
   const H = cells.height;
@@ -161,7 +192,7 @@ export function createScene(data: MapData, atlas: Atlas, text: SceneText): Scene
     // Screen layers: banners, names and the party, in pixels.
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const u = Math.min(1.25, Math.max(0.85, Math.sqrt(z)));
-    const ls = Math.min(1.25, Math.max(0.95, Math.pow(z, 0.3) * 1.1));
+    const ls = Math.min(1.25, Math.max(labelFloor, Math.pow(z, 0.3) * 1.1));
     const sx = (wx: number) => (wx - cam.x) * z;
     const sy = (wy: number) => (wy - cam.y) * z;
     rooms.reset();
@@ -269,5 +300,50 @@ export function createScene(data: MapData, atlas: Atlas, text: SceneText): Scene
     }
   }
 
-  return { render };
+  const farCell = data.route[journey.lastLeg] ?? data.guildCell;
+  const farSite = sites.indexOf(farCell);
+
+  const partyState: Scene['partyState'] = (seconds) => {
+    const p = journey.partyAt(seconds);
+    return { walking: p.walking, far: !p.walking && p.idx > journey.lastLeg / 2 };
+  };
+
+  // Positions as `render` places them; it draws banners and the party at pixel offsets from the map.
+  const marks: Scene['marks'] = (seconds, z) => {
+    const u = Math.min(1.25, Math.max(0.85, Math.sqrt(z)));
+    const out: Mark[] = [];
+    const add = (id: string, kind: MarkKind, x: number, y: number, r = HIT_RADIUS) =>
+      out.push({ id, kind, x, y, r });
+    sites.forEach((c, k) => {
+      if (!hidden[k]) add(`town.${k}`, 'town', cx(c), cy(c) - 4);
+    });
+    data.villageCells.forEach((c, k) => {
+      if (!veiled(c)) add(`village.${k}`, 'village', cx(c), cy(c));
+    });
+    if (!hidden[hiddenLandmark]) {
+      add('landmark.0', 'landmark', cx(data.landmarkCell), cy(data.landmarkCell));
+    }
+    add('threat.0', 'threat', cx(data.closedRoadCell), cy(data.closedRoadCell));
+    GUILDS.forEach((g, n) => {
+      if (hidden[g.site]) return;
+      const bx = cx(sites[g.site]!) + townReach(g.site).rx * 0.62;
+      add(`guild.${n}`, 'guild', bx + (8 * u) / z, cy(sites[g.site]!) + (3 - 30 * u) / z);
+    });
+    const party = journey.partyAt(seconds);
+    const { routeX, routeY, lastLeg } = journey;
+    const at = Math.min(lastLeg, Math.max(0, Math.floor(party.idx)));
+    const next = Math.min(lastLeg, at + 1);
+    const f = party.idx - at;
+    const home = !party.walking && at === 0;
+    add(
+      'party.0',
+      'party',
+      routeX[at]! + (routeX[next]! - routeX[at]!) * f,
+      routeY[at]! + (routeY[next]! - routeY[at]!) * f + (home ? (26 * u) / z : 0),
+      HIT_RADIUS + 6,
+    );
+    return out;
+  };
+
+  return { render, marks, partyState, farSite };
 }
