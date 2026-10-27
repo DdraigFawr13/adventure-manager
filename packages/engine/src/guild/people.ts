@@ -51,6 +51,7 @@ export function drawPerson(turn: GuildTurn, mods: PersonMods = {}): Prospect {
     id: `adv.${guild.nextPersonNo}`,
     ...drawIdentity(turn, mods.stream),
     ...drawLife(turn, attributes, mods),
+    ...drawBackground(turn, mods.stream),
     classId: leaning.classId,
     position: leaning.position,
     attributes,
@@ -72,6 +73,14 @@ function drawIdentity(turn: GuildTurn, stream?: string): Pick<Adventurer, 'name'
       ? [...naming.given.she, ...naming.given.he, ...naming.given.any]
       : [...naming.given[pronouns], ...naming.given.any];
   return { name: { given: rng.pick(given), family: rng.pick(naming.family) }, pronouns };
+}
+
+/** Home and former trade on their own stream, drawn last, so no other roll moves (SPEC.md, Backgrounds). */
+function drawBackground(turn: GuildTurn, stream?: string): Pick<Adventurer, 'background'> {
+  const backgrounds = turn.rules.backgrounds;
+  if (!backgrounds) return {};
+  const rng = streamFor(turn.state, stream ? `${stream}-backgrounds` : 'guild.backgrounds');
+  return { background: { home: rng.pick(backgrounds.homes), trade: rng.pick(backgrounds.trades) } };
 }
 
 /** Puts a person on the roster and on wages. */

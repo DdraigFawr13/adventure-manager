@@ -1,5 +1,6 @@
 // Careers v0, people (SPEC.md, Adventurers): a life drawn at signing, growth by doing, lasting
 // injuries, ageing past the prime, and asking to retire.
+import { leaveStanding } from '../guild/standing.ts';
 import { clamp, divRoundDown } from '../core/math.ts';
 import { BP_CERTAIN, streamFor } from '../core/rng.ts';
 import type { GuildTurn } from '../guild/turn.ts';
@@ -130,7 +131,13 @@ export function ageAndRetire(turn: GuildTurn, causeId: string, stops: Set<StopRe
     turn.guild.members.splice(turn.guild.members.indexOf(member), 1);
     const at = turn.state.roster.findIndex((a) => a.id === who.id);
     turn.state.roster[at] = { ...who, retiredYear: year };
-    turn.sink.emit({ type: 'adventurer.retired', causeId, subjectIds: [who.id], age });
+    const retired = turn.sink.emit({
+      type: 'adventurer.retired',
+      causeId,
+      subjectIds: [who.id],
+      age,
+    });
+    leaveStanding(turn, who.id, retired);
     stops.add('retirement');
   }
 }

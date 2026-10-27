@@ -20,6 +20,7 @@
 // FEE_SCALE_PERCENT is the one factor tuned so the default policy's year-end surplus lands in
 // +10..20% of spending (tools/year-sim.ts, after the travel change and the death costs of D-138); the base fees below are the brief's 900/2250/5600/14000.
 import type { GuildRules } from '@adventure-manager/engine';
+import { baseBackgroundRules, baseStandingRules } from './people.ts';
 import { baseNaming } from './reports.ts';
 
 export const FEE_SCALE_PERCENT = 135;
@@ -30,6 +31,8 @@ function fee(baseCopper: number): number {
 
 export const baseGuildRules: GuildRules = {
   naming: baseNaming,
+  standing: baseStandingRules,
+  backgrounds: baseBackgroundRules,
   weeksPerYear: 48,
   daysPerWeek: 7,
   assemblyWeeks: 4,

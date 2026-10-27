@@ -1,0 +1,439 @@
+{
+  "_note": "People's histories for the step 4 prototype (D-196, D-199): background lines, history lines and the chaplain's memorial letter. Voice: STYLE §9b, grounded with dry wit; deaths plain and sincere (D-059). Grammar: packages/engine/src/core/text.ts. Facts and slots: packages/engine/src/history/SPEC.md. Homes, trades and party names are invented (no real-world brands).",
+  "names": {
+    "home.withy-cross": "Withy Cross",
+    "home.ferriby-staithe": "Ferriby Staithe",
+    "home.coldmere": "Coldmere",
+    "home.reedham-end": "Reedham End",
+    "home.hollins-fen": "Hollins Fen",
+    "home.saltcote": "Saltcote",
+    "home.eelby": "Eelby",
+    "home.thornhythe": "Thornhythe",
+    "home.brackwater": "Brackwater",
+    "home.duncote": "Duncote",
+    "home.larkfen": "Larkfen",
+    "home.sedge-barton": "Sedge Barton",
+    "home.wendle": "Wendle",
+    "home.marrow-lock": "Marrow Lock",
+    "trade.ferry": "a ferry hand",
+    "trade.tanner": "a tanner",
+    "trade.eel-catcher": "an eel-catcher",
+    "trade.reed-cutter": "a reed-cutter",
+    "trade.striker": "a smith's striker",
+    "trade.drover": "a drover",
+    "trade.miller": "a miller's hand",
+    "trade.levy": "a levy soldier",
+    "trade.shepherd": "a shepherd",
+    "trade.carter": "a carter",
+    "trade.peat-digger": "a peat-digger",
+    "trade.novice": "a temple novice",
+    "trade.poacher": "a poacher, by most accounts",
+    "trade.clerk": "a clerk",
+    "party.fen-lanterns": "the Fen Lanterns",
+    "party.reed-wardens": "the Reed Wardens",
+    "party.heron-watch": "the Heron Watch",
+    "party.mere-hounds": "the Mere Hounds",
+    "party.ninth-causeway": "the Ninth Causeway",
+    "party.grey-sedge": "the Grey Sedge",
+    "party.withy-band": "the Withy Band",
+    "party.lock-keepers": "the Lock Keepers",
+    "party.ember-oars": "the Ember Oars",
+    "party.drowned-bell": "the Drowned Bell",
+    "party.low-road": "the Low Road",
+    "party.saltcote-company": "the Saltcote Company"
+  },
+  "pronouns": {
+    "she": {
+      "they": "she",
+      "them": "her",
+      "their": "her",
+      "theirs": "hers",
+      "themself": "herself",
+      "plural": false
+    },
+    "he": {
+      "they": "he",
+      "them": "him",
+      "their": "his",
+      "theirs": "his",
+      "themself": "himself",
+      "plural": false
+    },
+    "they": {
+      "they": "they",
+      "them": "them",
+      "their": "their",
+      "theirs": "theirs",
+      "themself": "themself",
+      "plural": true
+    }
+  },
+  "memorial": {
+    "sections": [
+      {
+        "family": "memorial.salutation",
+        "formula": true
+      },
+      {
+        "family": "memorial.opening"
+      },
+      {
+        "family": "memorial.origin"
+      },
+      {
+        "list": "deeds",
+        "max": 2
+      },
+      {
+        "family": "memorial.quiet"
+      },
+      {
+        "list": "friends",
+        "max": 2
+      },
+      {
+        "family": "memorial.leader"
+      },
+      {
+        "family": "memorial.burial"
+      },
+      {
+        "family": "memorial.signoff",
+        "formula": true
+      }
+    ],
+    "chaplains": [
+      "Brother Anselm",
+      "Sister Wynn",
+      "Mother Ebba",
+      "Brother Cuthred",
+      "Sister Hawise",
+      "Father Osric"
+    ]
+  },
+  "library": {
+    "background.ferry": [
+      "born in {home}, {who.they} poled barges on the fen rivers until the flood year took the boat.",
+      "grew up on the ferry at {home}, and can still tell deep water by its colour."
+    ],
+    "background.tanner": [
+      "came out of the tan pits at {home}, and the smell went with {who.them} for a year.",
+      "worked hides at {home} until {who.they} decided other people's trouble paid better."
+    ],
+    "background.eel-catcher": [
+      "set eel traps in the dykes around {home}; patient, and quick with a knife.",
+      "born in {home}, where {who.they} caught eels and sold them to people who complained about eels."
+    ],
+    "background.reed-cutter": [
+      "cut reed for thatch at {home} from the age of nine.",
+      "a reed-cutter's child from {home}, used to cold water and long days."
+    ],
+    "background.striker": [
+      "swung the big hammer for the smith at {home} until {who.their} arms were wanted elsewhere.",
+      "struck iron at {home}; {who.they} still {who~judges|judge} a blade by its ring."
+    ],
+    "background.drover": [
+      "drove cattle from {home} to the market towns and back, in every weather.",
+      "walked the drove roads out of {home}, and knows every inn that waters its ale."
+    ],
+    "background.miller": [
+      "hauled sacks at the mill in {home} until the miller's debts closed it.",
+      "worked the mill at {home}, and learned there that wheels break at the worst time."
+    ],
+    "background.levy": [
+      "came home to {home} from a lord's levy with a spear and no pay.",
+      "served a season in the levy out of {home}, and did not care for the officers."
+    ],
+    "background.shepherd": [
+      "kept sheep on the high ground above {home}; wolves taught {who.them} the rest.",
+      "a shepherd from {home}, slow to talk and hard to frighten."
+    ],
+    "background.carter": [
+      "drove a cart between {home} and the coast until the road got too dangerous to drive.",
+      "carted peat and salt out of {home}; {who.they} {who~knows|know} every bad bridge in the March."
+    ],
+    "background.peat-digger": [
+      "cut peat in the black fields of {home}; {who.they} found a bog body once and {who~does|do} not speak of it.",
+      "dug peat at {home}, which is hard work for no thanks."
+    ],
+    "background.novice": [
+      "left the temple at {home} before taking vows, for reasons {who.they} {who~keeps|keep} to {who.themself}.",
+      "a temple novice from {home} who found the quiet life too quiet."
+    ],
+    "background.poacher": [
+      "took the lord's deer around {home}, by most accounts, and came to the guild one step ahead of the reeve.",
+      "grew up in {home} knowing which woods had keepers and which had none."
+    ],
+    "background.clerk": [
+      "kept the tithe rolls at {home}; {who.they} can still add a column faster than anyone in the guild.",
+      "a clerk from {home} who wanted to see the places in the ledgers."
+    ],
+    "history.joined": [
+      {
+        "text": "joined with {party} at the founding.",
+        "if": ["founding", "party"]
+      },
+      {
+        "text": "signed on at the founding, with {party}.",
+        "if": ["founding", "party"]
+      },
+      {
+        "text": "signed on at the founding.",
+        "if": ["founding"],
+        "unless": ["party"]
+      },
+      {
+        "text": "joined at the founding as an extra pair of hands.",
+        "if": ["founding"],
+        "unless": ["party"]
+      },
+      {
+        "text": "signed on with the guild.",
+        "if": ["signed"]
+      },
+      {
+        "text": "took the guild's coin and signed on.",
+        "if": ["signed"]
+      }
+    ],
+    "history.quest": ["{@hq.what} {site}{@hq.outcome}.{@hq.saved}{@hq.hurt}"],
+    "hq.what": [
+      {
+        "text": "{deed} at",
+        "if": ["deed"]
+      },
+      {
+        "text": "went to",
+        "if": ["no-deed"]
+      },
+      {
+        "text": "took a contract at",
+        "if": ["no-deed"]
+      },
+      {
+        "text": "marched on",
+        "if": ["no-deed"]
+      }
+    ],
+    "hq.outcome": [
+      {
+        "text": "; the job was done",
+        "if": ["outcome.won"]
+      },
+      {
+        "text": "; a clean win",
+        "if": ["outcome.won"]
+      },
+      {
+        "text": "; half the job done",
+        "if": ["outcome.partial"]
+      },
+      {
+        "text": "; the party fell back",
+        "if": ["outcome.retreated"]
+      },
+      {
+        "text": "; the party pulled out",
+        "if": ["outcome.retreated"]
+      },
+      {
+        "text": "; the party was routed",
+        "if": ["outcome.routed"]
+      }
+    ],
+    "hq.saved": [
+      {
+        "text": " {saver} kept {who.them} from dying.",
+        "if": ["saved"]
+      },
+      {
+        "text": " {saver} held {who.them} back from the edge.",
+        "if": ["saved"]
+      }
+    ],
+    "hq.hurt": [
+      {
+        "text": " Came home badly hurt.",
+        "if": ["badly-hurt"],
+        "unless": ["saved"]
+      }
+    ],
+    "history.deed.saved": ["kept {patient} from slipping away", "held {patient} back from dying"],
+    "history.deed.guard": ["held the line", "stood over the fallen"],
+    "history.deed.striker": ["landed {count} blows", "struck {count} times and true"],
+    "history.deed.mend": ["patched up the wounded", "kept the party on its feet"],
+    "history.deed.cleave": ["cut down two foes at a stroke", "cleaved through the press"],
+    "history.deed.scout": ["scouted the way ahead", "found the way in"],
+    "history.deed.shadow-strike": ["struck from the shadows", "slipped behind the enemy"],
+    "history.deed.ward": ["warded the party from harm", "kept a ward up through the fight"],
+    "history.injured": [
+      {
+        "text": "came back from {site} with a lasting injury; out {days} days.",
+        "if": ["site"]
+      },
+      {
+        "text": "laid up {days} days with an injury from {site}.",
+        "if": ["site"]
+      },
+      {
+        "text": "laid up {days} days with an injury.",
+        "unless": ["site"]
+      }
+    ],
+    "history.attribute": [
+      {
+        "text": "grew in {attribute} on the road ({from} → {to}).",
+        "if": ["reason.growth"]
+      },
+      {
+        "text": "learned something on the road: {attribute} {from} → {to}.",
+        "if": ["reason.growth"]
+      },
+      {
+        "text": "grew in {attribute} at drill ({from} → {to}).",
+        "if": ["reason.training"]
+      },
+      {
+        "text": "the years told on {who.their} {attribute} ({from} → {to}).",
+        "if": ["reason.age"]
+      },
+      {
+        "text": "lost some {attribute} to the injury ({from} → {to}).",
+        "if": ["reason.injury"]
+      }
+    ],
+    "history.friend": [
+      "became friends with {friend}, after {count} quests together.",
+      "fast friends with {friend} now, {count} roads on."
+    ],
+    "history.fell-ill": [
+      "fell ill in the house; abed {days} days.",
+      "took a fever in the barracks; {days} days abed."
+    ],
+    "history.died": [
+      {
+        "text": "died at {site}, struck down by {killer}.",
+        "if": ["cause.foe"]
+      },
+      {
+        "text": "died at {site}, cut down by {killer} as the party fell back.",
+        "if": ["cause.retreat"]
+      },
+      {
+        "text": "died on the way into {site}.",
+        "if": ["cause.scene"]
+      }
+    ],
+    "history.retired": [
+      "retired from the guild at {age}.",
+      "left the road at {age}, to everyone's surprise but {who.their} own."
+    ],
+    "memorial.salutation": ["Guildmaster,"],
+    "memorial.opening": [
+      "it is with sorrow that we write. {who} died at {site}{@mo.how}.",
+      "we write with sorrow: {who} is dead, at {site}{@mo.how}.",
+      "{who} fell at {site}{@mo.how}. We are sorry to write it."
+    ],
+    "mo.how": [
+      {
+        "text": ", struck down by {killer}",
+        "if": ["cause.foe"]
+      },
+      {
+        "text": ", struck down by {killer} as the party fell back",
+        "if": ["cause.retreat"]
+      },
+      {
+        "text": ", before the fight was ever reached",
+        "if": ["cause.scene"]
+      }
+    ],
+    "memorial.origin": [
+      {
+        "text": "{who} came to you from {home}, where {who.they} {who~was|were} {trade}; this was {who.their} first contract.",
+        "if": ["background", "first-quest"]
+      },
+      {
+        "text": "{who} came to you from {home}, where {who.they} {who~was|were} {trade}, and served {quests} quests, more than most.",
+        "if": ["background", "veteran"]
+      },
+      {
+        "text": "{who} came to you from {home}, where {who.they} {who~was|were} {trade}, and served {quests} {quests~quest|quests}.",
+        "if": ["background"],
+        "unless": ["first-quest", "veteran"]
+      },
+      {
+        "text": "{who} served the guild on {quests} {quests~quest|quests}.",
+        "if": ["no-background"]
+      }
+    ],
+    "md.lead": [
+      {
+        "text": "{who.They} {who~is|are} remembered for ",
+        "if": ["first"]
+      },
+      {
+        "text": "and for ",
+        "if": ["later"]
+      }
+    ],
+    "memorial.deed.saved": ["{@md.lead}keeping a comrade alive at {site}."],
+    "memorial.deed.guard": ["{@md.lead}holding the line at {site}."],
+    "memorial.deed.striker": ["{@md.lead}the blows {who.they} struck at {site}."],
+    "memorial.deed.mend": ["{@md.lead}tending the wounded at {site}."],
+    "memorial.deed.cleave": ["{@md.lead}cutting down two foes at a stroke at {site}."],
+    "memorial.deed.scout": ["{@md.lead}finding the way in at {site}."],
+    "memorial.deed.shadow-strike": ["{@md.lead}striking from the shadows at {site}."],
+    "memorial.deed.ward": ["{@md.lead}keeping the ward up at {site}."],
+    "memorial.quiet": [
+      {
+        "text": "{who.They} had barely begun.",
+        "if": ["no-deeds", "first-quest"]
+      },
+      {
+        "text": "{who.They} did the work without fuss, which is rarer than deeds.",
+        "if": ["no-deeds"],
+        "unless": ["first-quest"]
+      }
+    ],
+    "memorial.friend": [
+      {
+        "text": "{friend} walked {count} roads with {who.them} and took the news hard.",
+        "if": ["first"]
+      },
+      {
+        "text": "{friend}, {who.their} friend of {count} quests, has not spoken since.",
+        "if": ["first"]
+      },
+      {
+        "text": "{friend} asks that {who.their} share go to the family.",
+        "if": ["later"]
+      },
+      {
+        "text": "{friend} will carry {who.them} to the ground.",
+        "if": ["later"]
+      }
+    ],
+    "memorial.leader": [
+      {
+        "text": "{leader} brought the word home{@ml.party}.",
+        "if": ["leader"]
+      },
+      {
+        "text": "{leader} wrote it down for you, and asks that {who.they} be remembered by name.",
+        "if": ["leader"]
+      }
+    ],
+    "ml.party": [
+      {
+        "text": ", for {party}",
+        "if": ["party"]
+      }
+    ],
+    "memorial.burial": [
+      "we will lay {who} in the guild's ground this week.",
+      "{who} will be buried in the guild's ground, with the bell."
+    ],
+    "memorial.signoff": ["{chaplain}, the guild's chaplain", "{chaplain}, chaplain to the guild"]
+  }
+}

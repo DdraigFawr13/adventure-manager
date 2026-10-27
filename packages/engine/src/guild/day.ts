@@ -69,11 +69,13 @@ export function foundGuild(
     members: [],
     board: [],
     parties: [],
+    standing: [],
     prospects: [],
     recentShapes: [],
     nextOfferNo: 0,
     nextPartyNo: 0,
     nextPersonNo: 0,
+    nextStandingNo: 0,
   };
   state.guild = guild;
   state.calendar = command.day;

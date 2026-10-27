@@ -21,3 +21,5 @@ export * from './crisis/types.ts';
 export * from './house/types.ts';
 export { bedsOf, incidentChanceBp, sickbedsOf, trainingPlacesOf, upkeepOf } from './house/house.ts';
 export { yearOf, weekInYear } from './guild/turn.ts';
+export * from './history/chronicle.ts';
+export * from './history/writing.ts';

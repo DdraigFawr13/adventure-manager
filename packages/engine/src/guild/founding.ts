@@ -4,6 +4,7 @@ import type { EventSink } from '../core/events.ts';
 import { bedsOf } from '../house/house.ts';
 import type { Command, GameEvent, GameState } from '../resolution/types.ts';
 import { drawPerson, engage, foundingFee } from './people.ts';
+import { formStanding } from './standing.ts';
 import { guildTurn, isWeekStart, pay, type GuildTurn } from './turn.ts';
 import type { FoundingRules, Prospect } from './types.ts';
 
@@ -93,7 +94,7 @@ export function pickDraft(
   const wages = picked.reduce((sum, p) => sum + p.wageCopper, 0);
   if (isWeekStart(state.calendar, rules) && wages > 0) pay(turn, -wages, 'wages', paid);
   delete guild.draft;
-  sink.emit({
+  const pickedId = sink.emit({
     type: 'founding.picked',
     causeId: command.id,
     subjectIds: picked.map((p) => p.adventurer.id),
@@ -101,4 +102,12 @@ export function pickDraft(
     extraIds: [...command.extraIds],
     feeCopper: fee,
   });
+  // The picked starter party stands from the first day (SPEC.md, Standing parties); extras wait.
+  if (rules.standing)
+    formStanding(
+      turn,
+      party.map((p) => p.adventurer.id),
+      rules.standing.defaultPlan,
+      pickedId,
+    );
 }

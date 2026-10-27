@@ -40,6 +40,17 @@ export function checkGuildInvariants(
     if (!guild.members.find((m) => m.id === id)?.away)
       problems.push(`${id} is in ${partyId} but not away.`);
   }
+  const inStanding = new Map<string, string>();
+  for (const party of guild.standing) {
+    if (party.memberIds.length === 0) problems.push(`${party.id} stands empty.`);
+    for (const id of party.memberIds) {
+      const other = inStanding.get(id);
+      if (other) problems.push(`${id} stands in ${other} and ${party.id}.`);
+      inStanding.set(id, party.id);
+      if (!guild.members.some((m) => m.id === id))
+        problems.push(`${id} stands in ${party.id} but is not in the guild.`);
+    }
+  }
   for (const m of guild.members) {
     if (dead.has(m.id)) problems.push(`${m.id} is dead but on wages.`);
     if (m.away && !inParty.has(m.id)) problems.push(`${m.id} is away but in no party.`);

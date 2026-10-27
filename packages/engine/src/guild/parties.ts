@@ -8,6 +8,7 @@ import { growAfterQuest, injuryLoss } from '../career/people.ts';
 import { layUp } from '../house/house.ts';
 import { injuryDays, runsArea } from '../staff/areas.ts';
 import { crisisHome } from '../crisis/chain.ts';
+import { leaveStanding } from './standing.ts';
 import { addRenown, memberOf, pay, type GuildTurn } from './turn.ts';
 import type { Party, StopReason } from './types.ts';
 
@@ -52,6 +53,7 @@ export function arrive(turn: GuildTurn, party: Party, causeId: string, stops: Se
       buryMember(turn, who.id, who.wageCopper, party, diedId);
       guild.members.splice(guild.members.indexOf(who), 1);
       party.memberIds.splice(party.memberIds.indexOf(id), 1);
+      leaveStanding(turn, id, diedId);
       stops.add('death');
       continue;
     }
