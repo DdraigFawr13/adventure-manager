@@ -13,7 +13,12 @@ export interface SimulationResult {
 }
 
 export function simulate(state: GameState, command: Command): SimulationResult {
-  const next = structuredClone(state);
+  // Content is read-only rules, so the copy shares it rather than cloning it on every command:
+  // cloning it took about 40% of the headless simulators' run time.
+  const next: GameState = {
+    ...structuredClone({ ...state, content: null }),
+    content: state.content,
+  };
   const sink = new EventSink<GameEvent>(next, command.day);
   switch (command.type) {
     case 'quest.start':
