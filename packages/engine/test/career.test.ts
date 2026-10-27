@@ -180,7 +180,7 @@ describe('the patron emergency grant (D-146)', () => {
     return play({ ...run, state }, { type: 'day.advance', day: state.calendar + 1 });
   }
 
-  it('offers a guild in debt a grant of weeks of wages, costing confidence and a harder target', () => {
+  it('offers a guild in debt a grant of weeks of wages, costing confidence only', () => {
     let run = inDebt(begun({ emergency }));
     const offer = ofType(run.events, 'patron.offered')[0];
     expect(offer?.grantCopper).toBe(8 * 3 * WAGE);
@@ -189,9 +189,9 @@ describe('the patron emergency grant (D-146)', () => {
     expect(ofType(run.events, 'patron.granted')[0]?.confidence).toBe(45);
     const paid = ofType(run.events, 'money.changed').find((e) => e.reason === 'emergency');
     expect(paid?.amountCopper).toBe(8 * 3 * WAGE);
-    // Next year's target is one step harder than the usual "avoid the bottom".
+    // Next year's target is the usual one for a guild that stays down: still "avoid the bottom".
     run = settle(run, (s) => (s.guild!.chestCopper = 0)); // non-null: founded.
-    expect(ofType(run.events, 'patron.target').at(-1)?.target).toBe('top-half');
+    expect(ofType(run.events, 'patron.target').at(-1)?.target).toBe('avoid-bottom');
   });
 
   it('lapses after the week, and offers again only after the interval', () => {

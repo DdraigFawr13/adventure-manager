@@ -48,7 +48,6 @@ export function startCareer(turn: GuildTurn, causeId: string): void {
     guildmasterBirthYear: yearOf(turn.state.calendar, turn.rules) - age,
     emergencyOffer: null,
     lastGrantYear: null,
-    raiseTarget: false,
     ended: null,
   };
   turn.guild.career = career;
@@ -216,9 +215,6 @@ export function settleYear(turn: GuildTurn, causeId: string, stops: Set<StopReas
   }
   career.renownThisYear = 0;
   career.target = nextTarget(career.tier, place, moved, rules);
-  // A grant taken this year makes next year's target one step harder (D-146).
-  if (career.raiseTarget) career.target = harder(career.target);
-  career.raiseTarget = false;
   turn.sink.emit({
     type: 'patron.target',
     causeId: reviewed,
@@ -227,16 +223,6 @@ export function settleYear(turn: GuildTurn, causeId: string, stops: Set<StopReas
     tier: career.tier,
   });
   return false;
-}
-
-const HARDER: Readonly<Record<TargetKind, TargetKind>> = {
-  'avoid-bottom': 'top-half',
-  'top-half': 'top-two',
-  'top-two': 'top-two',
-};
-
-export function harder(target: TargetKind): TargetKind {
-  return HARDER[target];
 }
 
 function moveTier(career: CareerState, id: string, to: number): void {

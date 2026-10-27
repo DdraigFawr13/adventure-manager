@@ -1,5 +1,5 @@
 // The patron's emergency grant (D-146, SPEC.md): offered at a week start when the guild is in
-// debt, at most one taken every few years; taking it costs confidence and a harder next target.
+// debt, at most one taken every few years; taking it costs patron confidence.
 import type { EventSink } from '../core/events.ts';
 import { clamp } from '../core/math.ts';
 import { guildTurn, pay, weekOf, yearOf, type GuildTurn } from '../guild/turn.ts';
@@ -41,7 +41,6 @@ export function takeEmergency(
   if (turn.guild.chestCopper >= 0) throw new Error('The guild is no longer in debt.');
   career.emergencyOffer = null;
   career.lastGrantYear = yearOf(state.calendar, turn.rules);
-  career.raiseTarget = true;
   career.confidence = clamp(
     career.confidence - rules.confidenceCost,
     0,

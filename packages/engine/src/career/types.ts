@@ -95,10 +95,9 @@ export interface CareerState {
   confidence: number;
   target: TargetKind;
   readonly guildmasterBirthYear: number;
-  /** The patron's standing emergency offer (this week only), the year of the last grant taken, and whether next year's target is one step harder (D-146). */
+  /** The patron's standing emergency offer (this week only) and the year of the last grant taken (D-146). */
   emergencyOffer: { readonly grantCopper: number; readonly week: number } | null;
   lastGrantYear: number | null;
-  raiseTarget: boolean;
   /** The year the career began (1) and, once over, how it ended. */
   ended: { readonly reason: CareerEnd; readonly year: number } | null;
 }
