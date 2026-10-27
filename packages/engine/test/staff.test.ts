@@ -95,6 +95,10 @@ describe('staff (staff SPEC.md)', () => {
       run.state.guild!.members.find((m) => m.id === injury!.subjectIds[0])?.outUntilDay; // non-null: founded, checked.
     // Three weeks out is 21 days at skill 10, and 10 at quality 15 (half, rounded down).
     expect((outUntil(handsThen) ?? 0) - (outUntil(delegated) ?? 0)).toBe(11);
+    const laidUp = (run: Run) =>
+      ofType(run.events, 'member.laid-up').map((e) => [e.subjectIds[0], e.days]);
+    expect(laidUp(handsThen)).toEqual([[injury!.subjectIds[0], 21]]); // non-null: checked above.
+    expect(laidUp(delegated)).toEqual([[injury!.subjectIds[0], 10]]); // non-null: checked above.
     expect(ofType(hands.events, 'stop.raised').some((e) => e.reason === 'infirmary')).toBe(true);
     expect(ofType(delegated.events, 'stop.raised').some((e) => e.reason === 'infirmary')).toBe(
       false,

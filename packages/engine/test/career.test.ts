@@ -206,10 +206,26 @@ describe('the patron emergency grant (D-146)', () => {
     expect(() => play(recovered, { type: 'patron.grant', day: recovered.state.calendar })).toThrow(
       /no longer in debt/,
     );
-    // Untaken offers lapse at the next week start.
-    const fresh = inDebt(inDebt(begun({ emergency })));
-    expect(ofType(fresh.events, 'patron.offered').length).toBe(2);
-    expect(fresh.state.guild!.career!.emergencyOffer?.week).toBe(3); // non-null: careers are on.
+    // An untaken offer lapses at the next week start when the guild is no longer in debt.
+    const offered = inDebt(begun({ emergency }));
+    expect(offered.state.guild!.career!.emergencyOffer?.week).toBe(2); // non-null: careers are on.
+    const state = structuredClone(offered.state);
+    state.calendar = 14;
+    state.guild!.chestCopper = 100_000; // non-null: founded.
+    const lapsed = play({ ...offered, state }, { type: 'day.advance', day: 15 });
+    expect(lapsed.state.guild!.career!.emergencyOffer).toBeNull(); // non-null: careers are on.
+  });
+
+  it('offers again once the interval since the last grant has passed', () => {
+    const after = (lastGrantYear: number) => {
+      const run = begun({ emergency });
+      const state = structuredClone(run.state);
+      state.guild!.career!.lastGrantYear = lastGrantYear; // non-null: careers are on.
+      return ofType(inDebt({ ...run, state }).events, 'patron.offered').length;
+    };
+    // Year 1 now: three years after year -2, two after year -1.
+    expect(after(-2)).toBe(1);
+    expect(after(-1)).toBe(0);
   });
 
   it('offers nothing to a guild with nobody on the roster', () => {

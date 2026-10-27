@@ -217,12 +217,12 @@ console.log(
 // Runaway rival (R2): in the first 30 years, one rival tops the top tier in more than 2/3 of them.
 let runaway = 0;
 for (const r of results) {
-  // Rivals only: the player topping the top tier is not a runaway rival.
-  const span = r.topLeaders.slice(0, 30).filter((id) => id && id !== PLAYER_ID);
+  // Every settled year counts, the player's wins included; only a rival can be the runaway.
+  const span = r.topLeaders.slice(0, 30).filter(Boolean);
   if (span.length < 10) continue;
   const counts = new Map<string, number>();
-  for (const id of span) counts.set(id, (counts.get(id) ?? 0) + 1);
-  if (Math.max(...counts.values()) > (2 * span.length) / 3) runaway += 1;
+  for (const id of span) if (id !== PLAYER_ID) counts.set(id, (counts.get(id) ?? 0) + 1);
+  if (Math.max(0, ...counts.values()) > (2 * span.length) / 3) runaway += 1;
 }
 console.log(
   `R2 runaway rival (tops the top tier in over 2/3 of the first 30 years): ${runaway} of ${careers} careers [none]`,
@@ -328,7 +328,7 @@ function reportR6(): void {
     ['delegated', delegated],
   ] as const;
   console.log(
-    'R6 hands-on vs delegated, same seeds (staff/SPEC.md; assumptions: packages/content/src/base/staff.ts)',
+    'R6 hands-on vs delegated, same seeds; means over all career-years and all injuries (staff/SPEC.md; assumptions: packages/content/src/base/staff.ts)',
   );
   const rows = sides.map(([name, rs]) => ({
     name,

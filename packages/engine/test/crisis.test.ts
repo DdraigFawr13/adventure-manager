@@ -46,7 +46,7 @@ const crises: CrisisRules = {
 };
 const YEAR = 48 * 7;
 
-function begun(): Run {
+function begun(emergency = false): Run {
   const base = game([], { rules: { minChanceBp: 0, maxChanceBp: 10_000 } });
   const state: GameState = {
     ...base,
@@ -57,7 +57,9 @@ function begun(): Run {
       guild: {
         ...guildRules,
         offersPerWeek: { assembly: 0, campaign: 0, winter: 0 },
-        career: testCareer,
+        career: emergency
+          ? { ...testCareer, emergency: { wageWeeks: 8, everyYears: 3, confidenceCost: 5 } }
+          : testCareer,
         crises,
       },
     },
@@ -97,6 +99,17 @@ describe('crises (crisis SPEC.md, D-147)', () => {
     const reviewed = ofType(run.events, 'patron.reviewed').at(-1)!; // non-null: just checked.
     const without = reviewed.met ? 15 : -Math.min(40, 15 * (reviewed.place - 5));
     expect(reviewed.change).toBe(without - (reviewed.inDebt ? 15 : 0) - 10);
+  });
+
+  it("counts the crisis's weekly cost before the patron's emergency offer", () => {
+    const run = settle(begun(true));
+    const state = structuredClone(run.state);
+    // Last day of week 1: enough for wages (3 × 64) and upkeep (500), not for the crisis's 300 too.
+    state.calendar = YEAR + 7;
+    state.guild!.chestCopper = 3 * 64 + 500 + 150; // non-null: founded.
+    const next = play({ ...run, state }, { type: 'day.advance', day: YEAR + 8 });
+    const fresh = next.events.slice(run.events.length);
+    expect(ofType(fresh, 'patron.offered').length).toBe(1);
   });
 
   it('a won step moves the chain on; winning the last ends it with its reward, once a career', () => {
