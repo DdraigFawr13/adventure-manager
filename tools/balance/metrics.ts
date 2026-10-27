@@ -1,7 +1,10 @@
 // Balance metrics and their targets (tools/balance/README.md). Each metric is a number computed
-// from a list of careers, mirroring tools/career-sim.ts's report; counts a year use the mean, which
-// moves with small changes where a median of whole numbers does not. A target names the decision
-// or PLAN line it comes from; "±25%" bands follow R2's pass line (PLAN §9a: medians within ±25%).
+// from a list of careers. Most compute what tools/career-sim.ts reports; three differ on purpose:
+// deaths and stop days a year are means (career-sim prints medians), because a median of whole
+// numbers doesn't move with small changes, and renown is the median of the player's lead over the
+// median rival each year (career-sim prints the two medians apart). A target names the decision or
+// PLAN line it comes from; the "±25%" bands borrow R2's pass line (PLAN §9a, medians within ±25%)
+// and are applied here to the mean.
 import { PLAYER_ID } from '@adventure-manager/engine';
 import { pct, type Career } from '../career-play.ts';
 
@@ -92,7 +95,13 @@ const tierMetrics: Metric[] = TIERS.flatMap((name, t) => [
     label: `renown a year, ${name} tier: player minus median rival (median)`,
     digits: 0,
     compute: (cs) =>
-      median(inTier(cs, t, (c, y) => (c.myRenown[y] ?? 0) - (c.rivalRenown[y] ?? 0))),
+      median(
+        inTier(cs, t, (c, y) => {
+          const mine = c.myRenown[y];
+          const theirs = c.rivalRenown[y];
+          return mine === undefined || theirs === undefined ? undefined : mine - theirs;
+        }),
+      ),
   },
 ]);
 

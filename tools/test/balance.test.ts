@@ -1,7 +1,12 @@
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { baseIncidentRules, houseIncidentGuildRules } from '@adventure-manager/content';
-import { contentFor, type Career } from '../career-play.ts';
-import { hashCareer } from '../balance/baseline.ts';
+import { houseIncidentGuildRules } from '@adventure-manager/content';
+import { contentFor, playCareer, type Career, type CareerSetup } from '../career-play.ts';
+import { hashCareer, loadBaseline, saveBaseline } from '../balance/baseline.ts';
+import { playCareers } from '../balance/pool.ts';
 import { applyOverrides, parseOverride } from '../balance/overrides.ts';
 import { verdict } from '../balance/report.ts';
 import { estimate, paired, resamples } from '../balance/stats.ts';
@@ -12,10 +17,13 @@ describe('balance overrides (tools/balance/README.md)', () => {
     expect(parseOverride('a=false')).toEqual({ path: 'a', value: false });
     expect(parseOverride('a=room.forge')).toEqual({ path: 'a', value: 'room.forge' });
     expect(() => parseOverride('a.b')).toThrow(/path=value/);
+    // Number(' ') is 0; a blank value is a mistake, not a zero.
+    expect(() => parseOverride('a.b= ')).toThrow(/path=value/);
   });
 
   it('changes a copy, picking list entries by [id] or by index, and leaves the content alone', () => {
     const before = structuredClone(houseIncidentGuildRules);
+    const fire = before.house?.incidents?.kinds[0]?.weeklyBp;
     const out = applyOverrides(houseIncidentGuildRules, [
       parseOverride('house.incidents.kinds[incident.fire].weeklyBp=60'),
       parseOverride('house.incidents.levelBp.0=9000'),
@@ -23,7 +31,7 @@ describe('balance overrides (tools/balance/README.md)', () => {
     expect(out.house?.incidents?.kinds[0]?.weeklyBp).toBe(60);
     expect(out.house?.incidents?.levelBp[0]).toBe(9000);
     expect(houseIncidentGuildRules).toEqual(before);
-    expect(baseIncidentRules.kinds[0]?.weeklyBp).toBe(30);
+    expect(houseIncidentGuildRules.house?.incidents?.kinds[0]?.weeklyBp).toBe(fire);
   });
 
   it('refuses a path the content does not have, and a value of another type', () => {
@@ -53,7 +61,8 @@ describe('balance overrides (tools/balance/README.md)', () => {
       ...setup,
       overrides: [parseOverride('guild.house.incidents.innFeeCopper=90')],
     });
-    expect(plain.guild.house?.incidents?.innFeeCopper).toBe(60);
+    const fee = houseIncidentGuildRules.house?.incidents?.innFeeCopper;
+    expect(plain.guild.house?.incidents?.innFeeCopper).toBe(fee);
     expect(changed.guild.house?.incidents?.innFeeCopper).toBe(90);
     expect(contentFor(setup)).toBe(plain);
   });
@@ -88,6 +97,8 @@ describe('balance intervals', () => {
     expect(verdict({ value: 2.7, low: 2.4, high: 3 }, t)).toBe('near');
     expect(verdict({ value: 3, low: 2.8, high: 3.2 }, t)).toBe('OFF');
     expect(verdict({ value: 3, low: 2.8, high: 3.2 }, undefined)).toBe('');
+    // Every resample undefined (say a zero surplus): no interval, so no verdict either.
+    expect(verdict({ value: 3, low: NaN, high: NaN }, t)).toBe('');
   });
 
   it('hashes a career without its runtime', () => {
@@ -95,5 +106,65 @@ describe('balance intervals', () => {
     const career = { years: 3, end: 'cap', seconds: 1.5 } as unknown as Career;
     expect(hashCareer({ ...career, seconds: 9 })).toBe(hashCareer(career));
     expect(hashCareer({ ...career, years: 4 })).not.toBe(hashCareer(career));
+  });
+});
+
+describe('balance baselines and the worker pool', () => {
+  const setup: CareerSetup = {
+    maxYears: 1,
+    staffMode: 'off',
+    size: 15,
+    refuseGrants: false,
+    houseMode: 'off',
+  };
+  const job = (n: number) => ({ seed: `career-${n}`, policy: 'default', delegate: false });
+
+  it('returns careers in job order from several threads, as one thread plays them', async () => {
+    const before = process.env.CAREER_SIM_THREADS;
+    process.env.CAREER_SIM_THREADS = '2';
+    try {
+      const pooled = await playCareers([0, 1, 2].map((n) => ({ setup, job: job(n) })));
+      const direct = [0, 1, 2].map((n) => playCareer(setup, job(n)));
+      expect(pooled.map(hashCareer)).toEqual(direct.map(hashCareer));
+    } finally {
+      if (before === undefined) delete process.env.CAREER_SIM_THREADS;
+      else process.env.CAREER_SIM_THREADS = before;
+    }
+  });
+
+  it('saves and loads a baseline unchanged, seeds and hashes included', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'balance-'));
+    try {
+      const careers = [0, 1].map((n) => playCareer(setup, job(n)));
+      const settings = {
+        careers: 2,
+        years: 1,
+        policy: 'default',
+        house: 'off',
+        incidents: 'off',
+        party: 'balanced',
+        size: 15,
+        grants: 'take',
+        staff: 'off',
+      } as const;
+      const where = pathToFileURL(`${dir}/`);
+      saveBaseline(
+        {
+          scenario: 'test',
+          settings,
+          contentHash: 'abc',
+          careers: careers.map((c, i) => ({ seed: `career-${i}`, hash: hashCareer(c), career: c })),
+        },
+        where,
+      );
+      const loaded = loadBaseline('test', where);
+      expect(loaded?.settings).toEqual(settings);
+      expect(loaded?.contentHash).toBe('abc');
+      expect(loaded?.careers.map((c) => c.seed)).toEqual(['career-0', 'career-1']);
+      expect(loaded?.careers.map((c) => hashCareer(c.career))).toEqual(careers.map(hashCareer));
+      expect(loadBaseline('missing', where)).toBeNull();
+    } finally {
+      rmSync(dir, { recursive: true });
+    }
   });
 });

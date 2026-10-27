@@ -11,8 +11,8 @@ export interface Override {
 /** Parses `path=value`; the value's type is checked against the content when it is applied. */
 export function parseOverride(text: string): Override {
   const at = text.indexOf('=');
-  if (at <= 0 || at === text.length - 1) throw new Error(`--set needs path=value, got "${text}".`);
   const raw = text.slice(at + 1);
+  if (at <= 0 || raw.trim() === '') throw new Error(`--set needs path=value, got "${text}".`);
   const value =
     raw === 'true'
       ? true

@@ -17,7 +17,7 @@ export interface Row {
 
 /** ok: inside the band; near: the interval reaches the band; OFF: the whole interval misses it. */
 export function verdict(e: Estimate, t: Target | undefined): string {
-  if (!t || !Number.isFinite(e.value)) return '';
+  if (!t || ![e.value, e.low, e.high].every(Number.isFinite)) return '';
   const inBand = (v: number) =>
     (t.min === undefined || v >= t.min) && (t.max === undefined || v <= t.max);
   if (inBand(e.value)) return 'ok';
