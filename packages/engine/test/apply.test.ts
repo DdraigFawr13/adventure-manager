@@ -8,7 +8,7 @@ import {
   type StaffRules,
 } from '../src/index.ts';
 import { adventurer, game, steadyPlan } from './fixture.ts';
-import { foundedGuild, testCareer } from './guild-fixture.ts';
+import { guildRules, testCareer } from './guild-fixture.ts';
 
 const YEAR = 48 * 7;
 const STAFF: StaffRules = {
@@ -56,13 +56,24 @@ function runner(
  * year's end and into the next Assembly.
  */
 function guildPlay(step: Parameters<typeof runner>[1]) {
+  // From before the founding, so guild.found goes through the rule path under test too.
+  const base = game([]);
   const r = runner(
-    foundedGuild(3, {
-      career: { ...testCareer, emergency: { wageWeeks: 8, everyYears: 3, confidenceCost: 5 } },
-      staff: STAFF,
-    }).state,
+    {
+      ...base,
+      seed: 'guild-seed',
+      content: {
+        ...base.content,
+        guild: {
+          ...guildRules,
+          career: { ...testCareer, emergency: { wageWeeks: 8, everyYears: 3, confidenceCost: 5 } },
+          staff: STAFF,
+        },
+      },
+    },
     step,
   );
+  r.run({ type: 'guild.found', day: 1, size: 3 });
   const candidate = r.state.guild!.staff!.candidates[0]!; // non-null: listed at the founding.
   r.run({ type: 'staff.hire', day: 1, candidateId: candidate.id });
   r.run({ type: 'recruit.sign', day: 1, prospectId: r.state.guild!.prospects[0]!.adventurer.id }); // non-null: a signing window.
@@ -146,15 +157,16 @@ describe('apply: the in-place rule path (D-148)', () => {
     it(`never returns an event that shares an object with the state (${name} commands)`, () => {
       // After every command, nothing in any event so far may be reachable from the state as it
       // is then, so no later command can change an event already returned.
-      const returned: GameEvent[] = [];
+      // Each event's objects are collected once, when it is returned; the state is walked per command.
+      const returned: { label: string; owned: Set<object> }[] = [];
       const shared: string[] = [];
       playOf(
         inPlace((state, command) => {
           const fresh = apply(state, command);
-          returned.push(...fresh);
+          for (const e of fresh) returned.push({ label: `${e.type} ${e.id}`, owned: objects(e) });
           const inState = objects(state);
           for (const e of returned)
-            if ([...objects(e)].some((o) => inState.has(o))) shared.push(`${e.type} ${e.id}`);
+            if ([...e.owned].some((o) => inState.has(o))) shared.push(e.label);
           return fresh;
         }),
       );
@@ -167,6 +179,7 @@ describe('apply: the in-place rule path (D-148)', () => {
       [...guildPlay(inPlace()).events, ...questPlay(inPlace()).events].map((e) => e.type),
     );
     for (const type of [
+      'week.started',
       'recruit.signed',
       'staff.hired',
       'staff.released',
