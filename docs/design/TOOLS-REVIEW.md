@@ -39,7 +39,7 @@ From AI-Master-Instructions (synced; not hand-edited, SRC-06):
 
 ### At build start (after the engine test, D-090)
 
-4. **Engine tooling in cloud sessions** (needed first, for the engine test itself): extend `session-start.local.sh` to install the .NET SDK and a headless Godot for the engine test; Node is already handled.
+4. **Engine tooling in cloud sessions** (needed first, for the engine test itself): extend `session-start.local.sh` to install the .NET SDK and a headless Godot for the engine test; Node is already handled. (Void since D-163: no Godot fallback, so no .NET or Godot install.)
 5. **Checks per stack** (decided with the engine):
    - Web: TypeScript strict, Vitest (engine tests), Playwright (screen tests and screenshots), Biome or ESLint, Ajv (content schemas), PixiJS (map and board), Electron with steamworks.js.
    - Godot: .NET with xUnit (engine tests), GdUnit4 (scene tests), GodotSteam.

@@ -481,7 +481,7 @@ function pickDistinct(right, pool, n = 3) {
   return out;
 }
 // Near misses for a money answer, used when the ledger has too few other values (every week's wages can be equal).
-const nearMoney = (copper) => [copper + 140, copper - 90, copper + 260, copper - 230, copper + 55].filter((c) => c !== 0 && Math.sign(c) === Math.sign(copper)).map(money);
+const nearMoney = (copper) => [copper + 140, copper - 90, copper + 260, copper - 230, copper + 55, copper - 170, copper + 330].filter((c) => c !== 0 && Math.sign(c) === Math.sign(copper)).map(money);
 function shuffled(arr, seed) { const a = [...arr]; let s = seed; for (let i = a.length - 1; i > 0; i -= 1) { s = (s * 1103515245 + 12345) % 2147483648; const j = s % (i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function questions() {
   // A name two people share would make the question ambiguous, so only unique names are asked about.
@@ -513,8 +513,11 @@ function questions() {
     () => { const x = DATA.weeks[9]; return { q: `How much was in the chest at the end of week ${x.week}?`, a: money(x.chest), pool: [...DATA.weeks.slice(5, 15).map((y) => money(y.chest)), ...nearMoney(x.chest)] }; },
     () => { const dead = DATA.roster.find((p) => p.status.kind === 'dead' && unique(p.name)); return dead ? { q: `Where did ${dead.name} die?`, a: cap(dead.status.where), pool: DATA.board.map((o) => cap(o.site)) } : null; },
   ];
-  for (const s of spares) if (qs.length < 5) { const x = s(); if (x) qs.push(x); }
-  return qs.filter((x) => pickDistinct(x.a, x.pool).length === 3).slice(0, 5).map((x, i) => {
+  // Keep only questions with three distinct wrong options, then top up from the spares to five.
+  const usable = (x) => x && pickDistinct(x.a, x.pool).length === 3;
+  const kept = qs.filter(usable);
+  for (const s of spares) if (kept.length < 5) { const x = s(); if (usable(x)) kept.push(x); }
+  return kept.slice(0, 5).map((x, i) => {
     const wrong = pickDistinct(x.a, x.pool);
     return { q: x.q, a: x.a, options: shuffled([x.a, ...wrong], 7 + i * 31) };
   });
@@ -606,6 +609,8 @@ function render() {
   else if (view.tab === 'desk') s.innerHTML = deskScreen();
   else if (view.tab === 'march') { s.innerHTML = marchScreen(); drawMap(); }
   else s.innerHTML = askScreen();
+  const none = $('nomatch');
+  if (none) none.hidden = !nameQ || document.querySelectorAll('#people [data-name]:not([hidden])').length > 0;
   logView(viewName());
 }
 function go(next) { view = { ...view, ...next }; nameQ = ''; findQ = ''; render(); window.scrollTo(0, 0); }
