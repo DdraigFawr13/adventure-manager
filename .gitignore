@@ -3,3 +3,7 @@ mockup-shots/
 node_modules/
 dist/
 dist-engine-test/
+.env
+.env.*
+.vitest/
+*.log

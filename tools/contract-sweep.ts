@@ -15,7 +15,10 @@ import {
 import { baseResolution, prototypeParty } from '@adventure-manager/content';
 
 const perShape = Number(process.argv[2] ?? 60);
-const approach = (process.argv[3] ?? 'stealth') as Approach;
+const approaches: readonly Approach[] = ['stealth', 'assault', 'diplomacy'];
+const approachArg = approaches.find((a) => a === (process.argv[3] ?? 'stealth'));
+if (!approachArg) throw new Error(`Approach must be one of: ${approaches.join(', ')}.`);
+const approach: Approach = approachArg;
 const contracts = baseResolution.contracts;
 if (!contracts) throw new Error('Base content has no contracts.');
 const TARGET: Record<Danger, number> = { routine: 0.2, hazardous: 0.8, perilous: 2.5, deadly: 7 };

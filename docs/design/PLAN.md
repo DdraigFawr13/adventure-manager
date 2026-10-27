@@ -54,6 +54,8 @@ The game succeeds as a design when a player:
 
 ### 1c. Session lengths (Accepted 2026-10-26, D-064)
 
+**Amended (2026-10-27, D-153):** on the phone a sitting is about 10–30 minutes; the typical and long session lines below were written for PC.
+
 The anchor is **one in-game season ≈ 2–2.5 h** for a typical player (owner's choice). Other figures follow from it and from CONCEPT §4; all are targets to measure in playtests (§10). Weeks per season are set in §2.
 
 - **Adventurer career** (6–12 seasons): about 12–30 h.
@@ -425,7 +427,7 @@ Owner's note: "I like a for the first season but I like having a small prologue 
 
 1. **Every number explains itself.** Hovering or focusing any number shows how it was made (base, modifiers, sources), in plain words. The engine produces the breakdown (GAME-02); the UI never recomputes it.
 2. **One sheet, one job.** Each ledger answers one question (who is fit? what do we owe?); comparisons open side by side instead of in a new mode.
-3. **The top bar never moves** (STYLE §3): date, why the calendar stopped, Continue.
+3. **The top bar never moves** (STYLE §3): date, why the calendar stopped, Continue. On phones the pull handle is Continue (D-149, D-078).
 4. **Every stop has a default** (D-068) and the default is shown on the button.
 5. **Confirm only what can't be undone:** signing and releasing, dismissing staff, revival, sending a party on a Deadly contract. Everything else (plans, kit, training focus) can be changed freely until Continue.
 6. **Uncertainty looks uncertain:** scouted attributes show as ranges until known (CONCEPT §10); predictions show odds in words and numbers ("likely, about 70%").
@@ -435,11 +437,11 @@ Owner's note: "I like a for the first season but I like having a small prologue 
 
 - **Colour-blind:** the fixed status set (D-048) is chosen to stay distinct under the three common types; faction colours always carry a heraldic charge as well.
 - **Text size and readability (Accepted 2026-10-26, D-077):** a size slider from 100% to 150%, plus a **clear print** setting that switches ledgers and letters to a modern book serif (an open-font-licence face, chosen in UI work); titles, seals and the decorated initial keep the old-press faces. Mock-up: `docs/design/mockups/readability.html`. Corrected 2026-10-26: the first mock-up showed the old-press ledger with its default old-style, proportional figures by mistake. The face has lining figures (measured: equal width, all on the line, via `lining-nums`), and all numbers in the game use them. Minimum size: §9c.
-- **Keyboard:** everything playable by keyboard; Space continues; number keys pick stop options; letters jump to ledgers; all bindings can be changed.
+- **Keyboard** (when Windows follows; phones play by touch, D-078): everything playable by keyboard; Space continues; number keys pick stop options; letters jump to ledgers; all bindings can be changed.
 - **No time pressure:** the calendar never moves without Continue; reading a letter or a key moment never has a timer.
 - **Motion:** board animations and map drawing can be shortened or turned off; nothing important is shown only in motion.
 - **Sound:** every sound that carries meaning (the death bell, the key-moment drum, D-055) has a visible counterpart; optional captions for vocal sounds (D-060).
-- **Screen readers:** not promised at launch; the UI is built from labelled controls so it can be added later (assumption to check in §11).
+- **Screen readers:** checked in the phone engine test (D-154) but not promised at launch; the UI is built from labelled controls so it can be added later (assumption to check in §11).
 
 ---
 
@@ -568,7 +570,7 @@ The riskiest question first. All prototypes come after the plan is approved (D-0
 0b. **Resolution v0** (D-113): half a page plus code for how a party, its plan, stats, gear and the site become odds and events; every number in data, tuned later. R1 needs it.
 1. **One quest, watched** (R1): a minimal simulation core drives a text log and a plain board with standees; the owner watches 10 quests. If watching isn't tense, Pillar 2 and the core loop need rethinking before anything else is built.
 2. **Headless year simulator** (R2, R3, R6, R9): the same simulation core with no graphics; 1,000 seeded guild-years reporting deaths, money, ladder movement, stops by class, delegated vs careful play, and guildmaster careers against the §2 and §4 targets.
-3. **Desk-density mock-ups and writing test** (R4, R8): HTML mock-ups at 1366 and 1920 px, and one template family generated 200 times. Neither needs the engine, so they can run alongside step 1 or 2.
+3. **Desk-density mock-ups and writing test** (R4, R8): HTML mock-ups at 1366 and 1920 px (now phone screens, D-154), and one template family generated 200 times. Neither needs the engine, so they can run alongside step 1 or 2.
 4. **Two years in the text prototype** (R7): the attachment check.
 
 **Time-boxes** (D-111, D-113; estimates at 10–20 h a week): engine test 4–6 weeks; resolution v0 and step 1 6–10 weeks; step 2 starts with one guild, no rivals and three classes and widens in steps, 8–12 weeks; step 3 alongside; step 4 (two in-game years played) 4–6 weeks. A step over its box by half goes to the owner at once, not at the gate.
@@ -581,7 +583,7 @@ Mock-up: `docs/design/mockups/readability.html` (first section).
 
 - **Minimum ledger size: 15 px** at 100% (owner's choice); the size slider (D-077) goes up from there.
 - **All numbers use lining figures** (`lining-nums`). Measured at 40 px: the ledger face's default figures are old-style and proportional (13.6–20.8 px wide); lining figures are equal width (21.1 px) and sit on the line.
-- Still to confirm on real monitors at 1366 and 1920 px in the R4 prototype; if it fails there, D-052 (own ledger cut) and clear print (D-077) are the fallbacks.
+- Still to confirm, now on the owner's phone in the phone R4 (D-154, D-159); if it fails there, D-052 (own ledger cut) and clear print (D-077) are the fallbacks.
 
 ### 9d. Added checks (Accepted 2026-10-26, D-113)
 
@@ -641,7 +643,7 @@ Owner's note: "1 but leave 2 open as a future option."
 
 ## 11. Technology and architecture (Accepted 2026-10-26)
 
-Decisions: D-090, D-091, D-110, D-114. Constraints from earlier decisions: PC first, mouse and keyboard, dense screens (D-016); deterministic engine with seeded randomness and injected time (GAME-01); one simulation function, UI never recomputes (GAME-02); content as data (GAME-04, D-044); versioned saves (GAME-05); Ironman autosave each day (D-033); Steam release with achievements as measures (D-088); 15 px old-press ledgers with lining figures (D-084).
+Decisions: D-090, D-091, D-110, D-114. Constraints from earlier decisions (the PC and Steam ones replaced by mobile first: phones by touch, D-151, D-155; phone stores, D-158): PC first, mouse and keyboard, dense screens (D-016); deterministic engine with seeded randomness and injected time (GAME-01); one simulation function, UI never recomputes (GAME-02); content as data (GAME-04, D-044); versioned saves (GAME-05); Ironman autosave each day (D-033); Steam release with achievements as measures (D-088); 15 px old-press ledgers with lining figures (D-084).
 
 ### 11a. Engine and platform (Accepted 2026-10-26, D-090, D-110)
 
@@ -671,7 +673,7 @@ What the game mostly is: ledgers, letters and inspectors (dense typography), plu
 
 ### 11b. Architecture (Accepted 2026-10-26, D-091)
 
-**Amended (2026-10-27, D-154, D-158):** on phones, saves use the stores' own backup in place of Steam Cloud, and the shell is a phone app wrapper in place of Electron for the launch.
+**Amended (2026-10-27, D-151, D-158):** on phones, saves use the stores' own backup in place of Steam Cloud, and the shell is a phone app wrapper in place of Electron for the launch.
 
 Packages (one repository):
 
@@ -806,7 +808,7 @@ Mock-up: `docs/design/mockups/kingdom-map.html` (interactive: base style and lay
 - **Base: hand-illustrated now, procedural later.** The launch March gets a hand-illustrated base map in layers; live marks and later generated regions (D-030) use the procedural ink renderer built for the quest board. Owner's note: "Go with c. But the map will need to look better eventually. The story generator repo might have some use there because it has a good starting point for a map that I would just want more detail on for a region to give it more life." The `DdraigFawr13/Story-Generator` repository was reviewed on 2026-10-26 (facts verified at the cited lines):
   - It is the owner's browser world simulator (TypeScript, React, Vite, Vitest, Playwright) with a seeded world generator: plate terrain and erosion, climate, rivers and lakes, biomes, named regions (ranges, passes, fords, harbours), routes (`src/engine/worldgen/`).
   - Randomness comes from named seeded streams derived from (seed, name), never `Math.random` (`src/engine/core/rng.ts:1-3`), which matches GAME-01.
-  - Its atlas draws an ink-style map on canvas: paper land with biome tints, shaded peaks, hills as arcs, two-tone trees, an ink coastline, double frame, compass rose, region names in spaced italics, realm borders as soft bands (`docs/phases/UI_ROOMS.md:28-44`).
+  - Its atlas draws an ink-style map on canvas: paper land with biome tints, shaded peaks, hills as arcs, two-tone trees, an ink coastline, double frame, compass rose, region names in spaced italics, realm borders as soft bands (Story-Generator `docs/phases/UI_ROOMS.md:28-44`).
   - Uses here: generate the March's terrain, rivers and routes from a seed as the layout an artist paints over; the generator and atlas symbols as a starting point for the procedural ink renderer and later generated regions (D-030).
   - Facts above were checked by opening the cited lines in that repository on 2026-10-26.
   - It is written in TypeScript with canvas rendering: reuse fits the web option of the engine test directly; Godot would need a port to C#. Evidence for D-090, not a decision.

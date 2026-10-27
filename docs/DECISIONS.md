@@ -101,6 +101,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Desktop PC is the primary platform; UI is designed for mouse, keyboard and long sessions. Detail: `docs/design/CONCEPT.md` §13.
 - **Why:** Owner's choice; data-dense management games play best on desktop.
+- **Replaced (2026-10-27, D-151, D-155):** mobile first. The phone leads, held upright, with the guildhall hub as home; the depth stays (D-153). Windows follows after launch.
 
 ## D-017 Templates first, optional AI flavour
 
@@ -394,6 +395,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** A typical player takes about 2–2.5 h per in-game season. Derived targets: adventurer career about 12–30 h, guildmaster career about 40–75 h, first season about 3–4 h with onboarding. Weeks per season are set in PLAN §2. Detail: `docs/design/PLAN.md` §1c.
 - **Why:** Owner's choice (Plan Q1c), between the proposed 3 h (FM-like) and 1.5 h (faster generations); keeps succession within reach of committed players.
 
+- **Amended (2026-10-27, D-153):** a sitting on the phone is about 10–30 minutes; a season is spread over several sittings.
 ## D-065 Design goals and success criteria (starting set)
 
 - **Status:** Accepted (2026-10-26)
@@ -480,6 +482,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Seven screen rules: every number shows its breakdown (from the engine); one sheet, one job; fixed top bar; every stop shows its default; confirm only the irreversible (signing, releasing, dismissing staff, revival, Deadly contracts); uncertainty shown as ranges and worded odds; never colour alone. Accessibility: colour-blind-safe statuses and heraldic charges, full remappable keyboard play, no timers, reducible motion, visible counterparts and captions for meaningful sounds; screen readers not promised at launch but the UI is built from labelled controls. Detail: `docs/design/PLAN.md` §6b–§6c.
 - **Why:** Owner accepted the draft (Plan Q6c).
+- **Amended (2026-10-27, D-149, D-154, D-155):** on phones the pull handle is Continue, in place of the fixed top bar's button, and play is by touch; the keyboard rules apply when Windows follows. The phone engine test includes a screen-reader check; launch support is still not promised.
 
 ## D-079 Launch ancestries: two familiar, two from the March
 
@@ -520,6 +523,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Ledger text is at least 15 px at 100% scale; all numbers use the face's lining figures (`lining-nums`), which are equal width and sit on the line. To be confirmed on real monitors in the desk-density prototype (PLAN §9a R4); fallbacks are D-052 and D-077. Detail: `docs/design/PLAN.md` §9c.
 - **Why:** Owner's choice (Plan Q9b) after real-size specimens at 13–16 px; the measurement showed the default figures are proportional old-style, so lining figures are required for columns.
+- **Amended (2026-10-27, D-154):** confirmed on the owner's phone in the phone R4, not on monitors.
 
 ## D-085 Prototype order: watched quest first
 
@@ -528,6 +532,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Why:** Owner's choice (Plan Q9a): test the assumption the whole game rests on first.
 - **Amended (2026-10-26, D-090):** step 0, the engine test, comes before step 1.
 - **Amended (2026-10-26, D-110, D-113):** the engine test is web-first; resolution v0 comes before step 1; the simulation core is kept as the production engine; each step is time-boxed.
+- **Amended (2026-10-27, D-154):** step 3's mock-ups are phone screens, not 1366 and 1920 px desks.
 - **Note:** first recorded as "headless simulator first"; the owner reported that answer as a misclick the same day and chose quest first.
 
 ## D-086 Riskiest assumptions and their tests
@@ -535,6 +540,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Nine risks, each with its cheapest test and pass line: R1 watching quests is fun; R2 the simulation hits the §4 targets (±25%); R3 a year fits the friction budget (≤ 100 stops, ≤ 3 h); R4 the desk holds FM density (25+ rows at 1366 px); R5 ledgers readable (D-084); R6 the player's focus beats delegation by 10–25%; R7 attachment despite deaths; R8 template writing stays fresh; R9 guildmaster careers of 20–30 years. Fun and feel pass only on the owner's recorded playtest notes (GAME-06). Detail: `docs/design/PLAN.md` §9a.
 - **Why:** Owner accepted the draft (Plan Q9c).
+- **Amended (2026-10-27, D-154):** R4 is a phone test: 5 set facts in under 10 s each, using the hub, the work desk and Ask the clerk; the 25-row rule is dropped.
 
 ## D-087 Kingdom map at launch
 
@@ -614,6 +620,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** An artist draws parts and set pieces; code assembles them (portraits ~200 parts, crests, site maps from ~60 stamps per biome); monsters 72 pieces, icons ~240 drawings, 26 initials, ~10 legendary items, a few textures; a ledger font cut only if D-084's real-monitor check fails. Audio: 60–90 min of commissioned early-music ambience, ~150 desk sounds, 5 biome beds, ~10 stingers, ~40 name-free vocal sounds. Rough estimates: art $23,000–74,000, audio $9,000–37,000, refined in PLAN §14 and replaced by quotes. Pipeline: layered sources exported by script, an asset licence ledger, OFL fonts, contracts that transfer the needed rights. AI-generated images for exploration only (D-094). Detail: `docs/design/PLAN.md` §12a–§12c, §12e.
 - **Amended (2026-10-26, D-109):** about 48 monster pieces and about 160 portrait parts; art about $20,000–66,000.
+- **Amended (2026-10-27, D-156):** mobile first adds hall-room and town-view art (amount in D-157).
 - **Why:** Owner accepted the draft (Plan Q12b) and asked for a review of the Story-Generator repository's map code for art direction.
 
 ## D-099 Milestones M0–M7 with gates
@@ -650,8 +657,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Budget estimates with 20% contingency: about $57,000–185,000 solo, about $128,000–358,000 with one developer hired; about $10,000–32,000 is spent before the hire gate (M1–M2). Self-funded through the slice; at the slice gate the owner chooses between self-funding, a publisher, crowdfunding and Early Access at the alpha gate (D-100); no talks before that decision. Five budget assumptions are checked at each gate. Detail: `docs/design/PLAN.md` §14b, §14d, §14e.
 - **Amended (2026-10-26, D-108, D-109):** about $52,000–174,000 solo and $124,000–347,000 with a hire; about $8,000–27,000 before the hire gate.
 - **Why:** Owner accepted the draft (Plan Q14c); the slice is the pitch, so funding is chosen when there is something to show.
-- **Amended (2026-10-27, D-156):** mobile first; the phone engine test joins M1, phone builds from M2, launch about 39–68 months from plan approval (estimate), with extra art and phone costs listed in D-156.
-- **Restated (2026-10-27, D-157):** the solo budget for mobile first is about $66,000–219,000 with contingency.
+- **Restated (2026-10-27, D-156, D-157):** the budget for mobile first is in D-157.
 
 ## D-104 Price $24.99; English at launch
 
@@ -1017,3 +1023,21 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
   - **Crashes:** the game itself still sends nothing (D-088). The stores' own crash reports, sent by the phone with the player's consent, are read alongside testers' attached logs.
   - **Release checklist:** item 4 (fresh and upgrade installs) becomes "on a small phone and a large phone on each system". Item 5 becomes "cloud saves and achievements work on the store build".
 - **Why:** The owner said "Do what you recommend" (2026-10-27) to the re-plan's remaining items. Steam-specific steps no longer apply to a phone launch.
+
+## D-159 Phone R4: the owner's Pixel, blind facts, timed by the page
+
+- **Status:** Accepted (2026-10-27). Sets how the phone R4 test (D-154) runs.
+- **Decision:** The owner takes R4 on their own Android phone, a Pixel 10 Pro XL (about 412 dp wide at the default display size, an estimate; the test page shows the measured width). Screens are built for 375 points and checked at 375, 412 and 430. The session picks 5 facts from a simulated guild and keeps them hidden until the owner taps Start. The page times each answer, checks it, and saves the results to the published artifact, so the owner pastes nothing.
+- **Why:** Owner's answers (planning round, 2026-10-27): "Android phone", then "Pixel 10 xl I think?", then "Blind, page-timed", the recommended option. A blind test measures finding a fact, not remembering a question the owner wrote.
+
+## D-160 The step 4 text prototype is a phone-first web page
+
+- **Status:** Accepted (2026-10-27). Applies D-150 to PLAN §9b step 4 (R7).
+- **Decision:** The two-year text prototype plays in a phone browser in short sittings (D-153), with the hub's four tabs in plain text. It also works in a PC browser. Its screens are throwaway (D-113); the simulation core is kept.
+- **Why:** Owner (planning round, 2026-10-27): "Maybe phone first web page or we can start a project in vercel? We will want to reassess tools and skills for this shift I think".
+
+## D-161 Vercel Hobby for phone builds while the game is a hobby; tools reassessed for mobile first
+
+- **Status:** Accepted (2026-10-27) for hosting. The tools and skills review is to be done; its choices are Proposed until the owner approves them.
+- **Decision:** Phone-playable builds (the step 4 prototype, the phone engine test) are hosted on Vercel's free Hobby plan while the game is a hobby project. Before any sale, the account moves to Pro (about $20 a month, to recheck), since Hobby is for non-commercial use. The R4 test stays a published artifact, because it saves the timings. Before step 4, the session reassesses the project's tools, skills and agents for mobile first (phone screenshots, touch checks, Vercel previews, a store wrapper later), as an update to `docs/design/TOOLS-REVIEW.md`.
+- **Why:** Owner (planning round, 2026-10-27): "right now this is a hobby game and if I choose to move on to actually put this into sale o would change to the pro plan", and "We will want to reassess tools and skills for this shift". D-152's price and D-157's break-even stay the plan for a commercial launch.

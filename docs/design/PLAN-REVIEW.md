@@ -2,6 +2,8 @@
 
 Owner's request (2026-10-26): review the whole plan for efficient lean design, the gameplay loop and fun, codebase set-up that avoids missteps, and standards and practices. Method: two independent reviewers (D-107) read the docs cold, one for fun and one for lean production; the main session reviewed codebase and standards. Every finding below was checked at the cited line; three reviewer claims were corrected or dropped (end of page). Written as proposals; the owner's decisions are under Outcome.
 
+**Dated 2026-10-26:** figures here predate mobile first; the timeline is now about 39–68 months (D-156) and the budget is in D-157.
+
 Impact: **High** changes what gets built or risks the project; **Medium** shapes it; **Low** is tidy-up.
 
 ## Outcome (2026-10-26)

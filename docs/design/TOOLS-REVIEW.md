@@ -2,6 +2,8 @@
 
 Owner's request (2026-10-26, HANDOFF): look into tools, skills and connectors that improve the development process. Placed after PLAN §11 (D-090, D-091) and before §15. Rule: adopt a tool only when it is measured cheaper or equal at the same quality (DEL-07). Status: accepted 2026-10-26: items 1–3 adopted (D-092); the rest of the list accepted (D-094); audit findings applied (D-095, D-096). Owner's rule from this review: adversarial review before every PR (D-093).
 
+**Dated 2026-10-26, before mobile first (D-150):** its Electron, steamworks.js and Steam sales lines no longer describe the launch; the mobile-first reassessment (D-161) updates this review.
+
 What is measured below was run on this repo on 2026-10-26; everything else is labelled as judgement or estimate (REP-01).
 
 ## 1. Ripgrep (owner's question)

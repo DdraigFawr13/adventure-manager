@@ -70,8 +70,14 @@ const unsafeMathNames = new Set([
   'random',
 ]);
 
+// The layer a file belongs to: `tools` for the repo's tools folder, else its package name.
+function layerOf(fileName) {
+  const fromRoot = path.relative(root, fileName).split(path.sep);
+  return fromRoot[0] === 'tools' ? 'tools' : path.relative(packages, fileName).split(path.sep)[0];
+}
+
 export function checkModule(fileName, sourceText) {
-  const layer = path.relative(packages, fileName).split(path.sep)[0];
+  const layer = layerOf(fileName);
   if (!allowed[layer]) return [`Unknown source layer: ${fileName}`];
   // A system folder's half-page rules spec sits beside its code (STANDARDS.md "Naming and size").
   if (path.basename(fileName) === 'SPEC.md') return [];
@@ -94,7 +100,7 @@ export function checkModule(fileName, sourceText) {
     if (name.startsWith(scope)) destination = name.slice(scope.length).split('/')[0];
     else if (name.startsWith('.')) {
       const target = path.resolve(path.dirname(fileName), name);
-      destination = path.relative(packages, target).split(path.sep)[0];
+      destination = layerOf(target);
     } else {
       // Pure layers import nothing external; ui only React. Shell and tools may import any installed
       // package; package.json holds only the approved list (D-117).
@@ -212,6 +218,9 @@ if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === imp
     const src = path.join(packages, entry.name, 'src');
     if (entry.isDirectory() && existsSync(src)) files.push(...(await sources(src)));
   }
+  // Tools follow the same type rules; their tests, like the packages' tests, are not scanned.
+  for (const entry of await sources(path.join(root, 'tools')))
+    if (/\.tsx?$/.test(entry) && !entry.includes(`${path.sep}test${path.sep}`)) files.push(entry);
   const errors = files.length ? [] : ['No source modules found under packages/*/src.'];
   for (const file of files) {
     errors.push(

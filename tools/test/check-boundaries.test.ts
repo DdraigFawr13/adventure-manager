@@ -29,6 +29,16 @@ describe('package boundary check (STANDARDS.md, PLAN §11h)', () => {
     expect(check(engineFile, code).join(' ')).toContain(message);
   });
 
+  it('treats the tools folder as the tools layer', () => {
+    const toolFile = path.join(root, 'tools/sample.ts');
+    expect(check(toolFile, "import { a } from '@adventure-manager/engine';")).toEqual([]);
+    expect(check(toolFile, "import { a } from './worldgen/a.ts';")).toEqual([]);
+    expect(check(toolFile, "import { a } from '../packages/ui/src/a.ts';").join(' ')).toContain(
+      'cannot import ui',
+    );
+    expect(check(toolFile, 'export let a: any;').join(' ')).toContain('any');
+  });
+
   it('applies type-safety rules everywhere', () => {
     expect(check(uiFile, 'export let a: any;').join(' ')).toContain('any');
     expect(check(uiFile, '// @ts-ignore\nexport const a = 1;').join(' ')).toContain('@ts-ignore');

@@ -22,22 +22,27 @@ const party: [string, string, number][] = [
   ['e', 'class.rogue', 6],
 ];
 
+function attributesFor(lean: number): Adventurer['attributes'] {
+  const attributes = Object.fromEntries(ATTRIBUTES.map((a, i) => [a, 8 + ((i + lean) % 7)]));
+  // cast-ok: built from every name in ATTRIBUTES just above.
+  return attributes as Adventurer['attributes'];
+}
+
 /** Five mid adventurers: attributes spread 8–14. */
 function roster(): Adventurer[] {
   return party.map(([id, classId, lean]) => ({
     id,
     classId,
     position: classId === 'class.cleric' ? 'back' : 'front',
-    attributes: Object.fromEntries(
-      ATTRIBUTES.map((a, i) => [a, 8 + ((i + lean) % 7)]),
-    ) as Adventurer['attributes'],
+    attributes: attributesFor(lean),
     weaponBp: 300,
     armourBp: 300,
     dead: false,
   }));
 }
 
-for (const retreat of ['badly-hurt', 'down', 'leader', 'dying', 'never'] as RetreatThreshold[]) {
+const retreats: readonly RetreatThreshold[] = ['badly-hurt', 'down', 'leader', 'dying', 'never'];
+for (const retreat of retreats) {
   let deaths = 0;
   let injuries = 0;
   const outcomes: Record<string, number> = {};
