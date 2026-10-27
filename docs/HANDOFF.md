@@ -8,6 +8,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Just done
 
+- 2026-10-27 Faster headless runs, part 1 (D-148; branch `ccr-c510692c-px9h9x`): `simulate()` shares the read-only `content` instead of cloning it each command; engine and content tests freeze content (a write throws) and check it is shared. Measured `node tools/year-sim.ts 100`: 48.2 s to 19.1 s, output identical; sweep outputs identical. Parts 2-3 (in-place `apply()` for tools, careers across cores) wait for the step-2 merge; the step-2 session was asked to number its next decision after D-148.
 - 2026-10-26 Step 3 on branch `ccr-7c31ebb2-c4nfh9` (from `main` after PR #13): writing test, contracts from parts, desk mock-ups. Reviewed three times (D-093): 12, 11 and 9 findings, all fixed or answered (the hidden twist leaked through the offer id; deaths were never traced to the foe); findings page linked in the approval ask.
   - Grammar (D-114): pronouns, verb and number agreement, nested families, conditional variants, masking (`packages/engine/src/core/text.ts`). Variant picks now pass FNV-1a through a finaliser (keys sharing a suffix had picked the same variants).
   - Quest report (`packages/engine/src/report/`, SPEC.md): a letter home from one quest's events; words in `packages/content/data/reports.en.json`. Drawn people get names and pronouns on their own stream (naming.json; pronoun weights she 45 / he 45 / they 10 are an assumption).
