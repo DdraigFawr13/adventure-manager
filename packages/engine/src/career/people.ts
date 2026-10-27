@@ -18,7 +18,8 @@ export function drawLife(
 ): Pick<Adventurer, 'birthYear' | 'potential'> {
   const career = turn.rules.career;
   if (!career) return {};
-  const rng = streamFor(turn.state, 'career.potential');
+  // A draft draws its own lives, so it leaves the shared stream for later prospects (D-188).
+  const rng = streamFor(turn.state, mods.stream ? `${mods.stream}-life` : 'career.potential');
   const band = mods.age ?? career.drawAge;
   const age = rng.between(band.min, band.max);
   const bonus = mods.potentialBonus ?? 0;

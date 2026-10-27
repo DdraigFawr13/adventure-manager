@@ -393,6 +393,9 @@ function reportParties(): void {
   console.log(
     `Starter party compared, same ${careers} seeds each (assumptions: packages/content/src/base/founding.ts):`,
   );
+  console.log(
+    '  bad starts are measured against half the purse for every party, so a dear party starts nearer the line; long-run payoff (growth, later renown) is not compared here',
+  );
   for (const party of CHARACTERS) {
     const rs = pick((j) => j.policy === policyName && !j.delegate && j.party === party);
     const ended = new Map<string, number>();

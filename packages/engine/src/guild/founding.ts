@@ -4,7 +4,7 @@ import type { EventSink } from '../core/events.ts';
 import { bedsOf } from '../house/house.ts';
 import type { Command, GameEvent, GameState } from '../resolution/types.ts';
 import { drawPerson, engage, foundingFee } from './people.ts';
-import { guildTurn, pay, type GuildTurn } from './turn.ts';
+import { guildTurn, isWeekStart, pay, type GuildTurn } from './turn.ts';
 import type { FoundingRules, Prospect } from './types.ts';
 
 const STREAM = 'guild.founding';
@@ -89,6 +89,9 @@ export function pickDraft(
           picked.map((p) => p.adventurer.id),
         );
   for (const person of picked) engage(turn, person, paid);
+  // The founding day's week start ran before anyone was picked: their first week's wages are due now.
+  const wages = picked.reduce((sum, p) => sum + p.wageCopper, 0);
+  if (isWeekStart(state.calendar, rules) && wages > 0) pay(turn, -wages, 'wages', paid);
   delete guild.draft;
   sink.emit({
     type: 'founding.picked',

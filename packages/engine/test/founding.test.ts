@@ -102,9 +102,20 @@ describe('founding draft (guild SPEC.md, D-188)', () => {
     expect(Math.max(...Object.values(draftOf(low).parties[0]![0]!.adventurer.attributes))).toBe(1);
   });
 
-  it('leaves the default recruit stream alone, so later prospects match a game without a draft', () => {
-    const withDraft = listed();
-    const without = foundedGuild(0, { career: testCareer }, 'draft-seed');
+  it('leaves the shared streams alone, so later prospects match a game without a draft', () => {
+    // Ages, potential and names vary here, so a draft that used their shared streams would show.
+    const career = { ...testCareer, drawAge: { min: 18, max: 30 }, potential: { min: 0, max: 6 } };
+    const naming = {
+      pronouns: [
+        ['she', 1],
+        ['he', 1],
+        ['they', 1],
+      ] as const,
+      given: { she: ['Ada', 'Bryn'], he: ['Cai', 'Dafydd'], any: ['Eli', 'Ffion'] },
+      family: ['Hale', 'Ketch', 'Ware'],
+    };
+    const withDraft = foundedGuild(0, { ...rules, career, naming }, 'draft-seed');
+    const without = foundedGuild(0, { career, naming }, 'draft-seed');
     // Person numbers differ (the draft numbers its people first); the draws do not.
     const plain = (run: Run) =>
       run.state.guild!.prospects.map((p) => ({ ...p.adventurer, id: '' }));
@@ -130,7 +141,8 @@ describe('founding draft (guild SPEC.md, D-188)', () => {
     const people = [...draft.parties[2]!, ...draft.extras.slice(1, 3)];
     const fee = people.reduce((s, p) => s + 2 * p.wageCopper, 0);
     expect(fee).toBe(2 * 56 * 2 + 2 * WAGE * 2);
-    expect(guild.chestCopper).toBe(before - fee);
+    const wages = people.reduce((s, p) => s + p.wageCopper, 0); // the first week's, due at the pick
+    expect(guild.chestCopper).toBe(before - fee - wages);
     expect(guild.members.map((m) => m.id)).toEqual(ids(people));
     expect(done.state.roster.map((a) => a.id)).toEqual(ids(people));
     expect(guild.draft).toBeUndefined();
@@ -157,6 +169,18 @@ describe('founding draft (guild SPEC.md, D-188)', () => {
     const fee =
       draft.parties[0]!.reduce((s, p) => s + 3 * 2 * p.wageCopper, 0) + 2 * extra.wageCopper; // non-null: three parties.
     expect(ofType(picked.events, 'founding.picked')[0]?.feeCopper).toBe(fee);
+  });
+
+  it("pays the picked people's first week of wages on the founding day, and refuses another day", () => {
+    const run = listed();
+    const extra = draftOf(run).extras[0]!; // non-null: four listed.
+    const picked = pick(run, 1, [extra.adventurer.id]);
+    const wages = ofType(picked.events, 'money.changed').filter((e) => e.reason === 'wages');
+    const due = [...draftOf(run).parties[1]!, extra].reduce((s, p) => s + p.wageCopper, 0); // non-null: three parties.
+    expect(wages.map((e) => e.amountCopper)).toEqual([-due]);
+    expect(() =>
+      play(run, { type: 'guild.pick', day: 2, partyIndex: 1, extraIds: [extra.adventurer.id] }),
+    ).toThrow(/not today/);
   });
 
   it('refuses a pick with the wrong number of extras or an unknown party', () => {

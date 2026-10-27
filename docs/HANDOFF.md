@@ -22,7 +22,8 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 - 2026-10-27 Room effects v1 (D-186), then the owner's redirect: a smaller start and training at home in the yard (D-187), a founding draft (D-188, recorded, not built), patron grace years (D-189). All built except D-188, merged as PR #29 (8c2bb39).
 - Measured (100 careers × 26 years, `node tools/career-sim.ts 100 26 default off 7 take on`): dismissals 15% with the house (house off 10%); full-house plan 8.8 years of surplus; training at home 2 points a year vs 7 from quests (rates are the session's choice; D-187's "near today's" not yet compared); room upkeep 18% of late spending.
 - Steps on the way (100 careers, dismissals): D-186 as decided 24% (the growth half 29% alone); start of 7 without grace 28%; with grace 20%; a 30,000 chest (stand-in for D-188's purse) 13–15%. Simulator policies that didn't help: a reserve before signing (86%), signing before building (22%).
-- 2026-10-27 Founding draft (D-188) built on `ccr-9bba7b72-1kwpaj`: `guild.found` lists 3 parties and 6 extras, `guild.pick` pays fees from a 33,500 purse; seasoned fees 4×, green a quarter (session's numbers). Measured, 100 seeds each: dismissed 9% / 8% / 9% (seasoned / balanced / green); balanced run overall 8% (house off 10%). Not reviewed yet.
+- 2026-10-27 Founding draft (D-188) built on `ccr-9bba7b72-1kwpaj`: `guild.found` lists 3 parties and 6 extras, `guild.pick` pays fees from a 33,500 purse; seasoned fees 4×, green a quarter (session's numbers). Measured after review fixes (first week's wages at the pick, the draft's own streams), 100 seeds each: dismissed 13% / 14% / 15% (seasoned / balanced / green; house off 10%). Reviewed; waits on the owner's approval (D-133).
+
 ## Next
 
 1. Incidents (D-173) with lost beds and inn lodging (D-182). Open: compare D-187's training totals with house off; measure green's long-run payoff (D-188).

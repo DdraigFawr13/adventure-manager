@@ -49,7 +49,7 @@ export function drawPerson(turn: GuildTurn, mods: PersonMods = {}): Prospect {
   guild.nextPersonNo += 1;
   const adventurer: Adventurer = {
     id: `adv.${guild.nextPersonNo}`,
-    ...drawIdentity(turn),
+    ...drawIdentity(turn, mods.stream),
     ...drawLife(turn, attributes, mods),
     classId: leaning.classId,
     position: leaning.position,
@@ -62,10 +62,10 @@ export function drawPerson(turn: GuildTurn, mods: PersonMods = {}): Prospect {
 }
 
 /** Name and pronouns on their own stream, so adding names never moves the recruit rolls. */
-function drawIdentity(turn: GuildTurn): Pick<Adventurer, 'name' | 'pronouns'> {
+function drawIdentity(turn: GuildTurn, stream?: string): Pick<Adventurer, 'name' | 'pronouns'> {
   const naming = turn.rules.naming;
   if (!naming) return {};
-  const rng = streamFor(turn.state, 'guild.names');
+  const rng = streamFor(turn.state, stream ? `${stream}-names` : 'guild.names');
   const pronouns = rng.weighted(naming.pronouns);
   const given =
     pronouns === 'they'
