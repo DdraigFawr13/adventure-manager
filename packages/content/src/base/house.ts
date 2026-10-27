@@ -7,15 +7,16 @@
 // - Cost per cell: level 1 at the kind's base, raising to level 2 twice that, to level 3 four times
 //   that, so a level-3 cell costs 7 times its base. HOUSE_COST_PERCENT scales every base; it is the
 //   one factor tuned so the reference full house (fullHousePlan) costs about 8-12 years of a mid
-//   guild's surplus (D-172). Measured (career-sim with house=on, 40 careers, 26 years, 2026-10-27):
-//   the middle tier's median surplus before house money (building and room upkeep added back) is
-//   about 70,700 copper a year, near the 75,000 of a house-off run; at 175% the plan costs 706,000,
-//   10.0 years of it (plan finishers only, 73% of careers). The first plan step starts in week 42
-//   (median; p10 week 7, p90 week 294, held back by the policy's 12-week reserve); room upkeep is
-//   about 13% of spending from year 10.
+//   guild's surplus (D-172). Measured (career-sim with house=on, 40 careers, 26 years, 2026-10-27,
+//   upkeep 8 / 17 / 34): the middle tier's median surplus before house money (building and room
+//   upkeep added back) is about 71,300 copper a year, near the 75,000 of a house-off run; at 175%
+//   the plan costs 706,000, 9.9 years of it (plan finishers only, 70% of careers, median year 14).
+//   The first plan step starts in week 32 (median; p10 week 6, p90 week 200, held back by the
+//   policy's 12-week reserve); room upkeep is 20% of spending from year 10 (p10 12.5%, p90 26%).
 // - Work: 4 weeks for a cell, 6 and 8 to raise a room to levels 2 and 3; a storey 6, a cellar 8, a
 //   wall 4. Work started in winter takes 75% of that (D-067, D-169).
-// - Upkeep per cell per week by level 5 / 10 / 20 (D-177).
+// - Upkeep per cell per week by level 8 / 17 / 34, set for about 20% of spending from year 10
+//   (owner, D-185; a lever to adjust).
 // - Barracks beds per cell by level 8 / 10 / 12. A new guild has 2 barracks cells, 16 beds, for a
 //   founded roster of 15 (D-170, D-174).
 // - Storeys: the first added 8,000, each later 8,000 more; cellars 10,000 then 10,000 more; a wall
@@ -39,7 +40,7 @@ function kind(
     maxCells,
     cellCostCopper: [base, 2 * base, 4 * base],
     weeks: [4, 6, 8],
-    upkeepCopper: [5, 10, 20],
+    upkeepCopper: [8, 17, 34],
     ...extra,
   };
 }
