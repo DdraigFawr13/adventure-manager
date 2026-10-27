@@ -46,20 +46,22 @@ export function estimate<T>(items: readonly T[], compute: (xs: T[]) => number, d
   );
 }
 
-/** B minus A over the same seeds (a[i] and b[i] are one seed played two ways). */
-export function pairedDifference<T>(
+/** B and B minus A over the same seeds (a[i] and b[i] are one seed played two ways); each draw computes both sides once. */
+export function paired<T>(
   a: readonly T[],
   b: readonly T[],
   compute: (xs: T[]) => number,
   draws: number[][],
-): Estimate {
+): { now: Estimate; change: Estimate } {
   if (a.length !== b.length)
     throw new Error('A paired comparison needs the same seeds on both sides.');
-  const value = compute([...b]) - compute([...a]);
-  return interval(
-    value,
-    draws.map(
-      (d) => compute(d.map((i) => b[i]!)) - compute(d.map((i) => a[i]!)), // non-null: as above.
-    ),
-  );
+  const now = compute([...b]);
+  const bs: number[] = [];
+  const diffs: number[] = [];
+  for (const d of draws) {
+    const bv = compute(d.map((i) => b[i]!)); // non-null: indices are below the length.
+    bs.push(bv);
+    diffs.push(bv - compute(d.map((i) => a[i]!))); // non-null: as above.
+  }
+  return { now: interval(now, bs), change: interval(now - compute([...a]), diffs) };
 }

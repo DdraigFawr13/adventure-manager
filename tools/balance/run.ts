@@ -147,9 +147,11 @@ if (opts.sweep) {
     console.log(
       `baseline: commit ${baseline.commit}${changed.length ? `; this run changes ${changed.map(([k, v]) => `${k} ${String(before[k])} → ${v}`).join(', ')}` : ''}`,
     );
-    console.log(
-      `identical to the baseline: ${same} of ${careers.length} careers${same === careers.length ? ' (every career, event for event)' : ''}`,
-    );
+    // Only a run of the same scenario and content asks whether a code change kept the balance.
+    if (changed.length === 0 && overrides.length === 0)
+      console.log(
+        `identical to the baseline: ${same} of ${careers.length} careers${same === careers.length ? ' (every recorded number matches)' : ''}`,
+      );
   }
   console.log('');
   const table = rows(metrics, ctx, careers, draws, paired);

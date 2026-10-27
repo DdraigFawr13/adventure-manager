@@ -4,7 +4,7 @@ import { contentFor, type Career } from '../career-play.ts';
 import { hashCareer } from '../balance/baseline.ts';
 import { applyOverrides, parseOverride } from '../balance/overrides.ts';
 import { verdict } from '../balance/report.ts';
-import { estimate, pairedDifference, resamples } from '../balance/stats.ts';
+import { estimate, paired, resamples } from '../balance/stats.ts';
 
 describe('balance overrides (tools/balance/README.md)', () => {
   it('reads numbers, flags and words from path=value', () => {
@@ -76,11 +76,10 @@ describe('balance intervals', () => {
 
   it('pairs by seed: a constant shift has an interval of exactly that shift', () => {
     const shifted = values.map((v) => v + 2);
-    const d = pairedDifference(values, shifted, mean, resamples(50));
+    const { now, change: d } = paired(values, shifted, mean, resamples(50));
     expect([d.value, d.low, d.high]).toEqual([2, 2, 2]);
-    expect(() => pairedDifference(values, shifted.slice(1), mean, resamples(50))).toThrow(
-      /same seeds/,
-    );
+    expect(now.value).toBe(mean(shifted));
+    expect(() => paired(values, shifted.slice(1), mean, resamples(50))).toThrow(/same seeds/);
   });
 
   it('calls a target ok inside the band, near when the interval reaches it, OFF otherwise', () => {

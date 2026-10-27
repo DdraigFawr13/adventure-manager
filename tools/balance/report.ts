@@ -2,7 +2,7 @@
 // for comparisons the paired change with its interval ("moved" only when the interval excludes 0).
 import type { Career } from '../career-play.ts';
 import type { Metric, MetricContext, Target } from './metrics.ts';
-import { estimate, pairedDifference, type Estimate } from './stats.ts';
+import { estimate, paired, type Estimate } from './stats.ts';
 
 export interface Row {
   readonly id: string;
@@ -10,7 +10,7 @@ export interface Row {
   readonly now: Estimate;
   readonly target?: Target;
   readonly verdict: string;
-  readonly reference?: Estimate;
+  readonly referenceValue?: number;
   readonly change?: Estimate;
   readonly moved?: boolean;
 }
@@ -35,16 +35,16 @@ export function rows(
 ): Row[] {
   return metrics.map((m) => {
     const compute = (cs: Career[]) => m.compute(cs, ctx);
-    const now = estimate(careers, compute, draws);
+    const both = reference ? paired(reference, careers, compute, draws) : null;
+    const now = both?.now ?? estimate(careers, compute, draws);
     const base = { id: m.id, label: m.label, now, verdict: verdict(now, m.target) };
     const withTarget = m.target ? { ...base, target: m.target } : base;
-    if (!reference) return withTarget;
-    const change = pairedDifference(reference, careers, compute, draws);
+    if (!reference || !both) return withTarget;
     return {
       ...withTarget,
-      reference: estimate(reference, compute, draws),
-      change,
-      moved: change.low > 0 || change.high < 0,
+      referenceValue: compute([...reference]),
+      change: both.change,
+      moved: both.change.low > 0 || both.change.high < 0,
     };
   });
 }
@@ -63,9 +63,9 @@ export function printRows(rs: readonly Row[], metrics: readonly Metric[], refNam
   for (const r of rs) {
     const d = digits.get(r.id) ?? 1;
     const now = `${fmt(r.now.value, d).padStart(9)} [${span(r.now, d)}]`.padEnd(30);
-    if (r.change && r.reference)
+    if (r.change && r.referenceValue !== undefined)
       console.log(
-        `${r.label.padEnd(w)}  ${fmt(r.reference.value, d).padStart(9)} → ${now} ${`${signed(r.change.value, d)} [${span(r.change, d)}]`.padEnd(26)} ${r.moved ? 'MOVED' : '     '}  ${r.verdict.padEnd(4)} ${targetText(r.target)}`,
+        `${r.label.padEnd(w)}  ${fmt(r.referenceValue, d).padStart(9)} → ${now} ${`${signed(r.change.value, d)} [${span(r.change, d)}]`.padEnd(26)} ${r.moved ? 'MOVED' : '     '}  ${r.verdict.padEnd(4)} ${targetText(r.target)}`,
       );
     else console.log(`${r.label.padEnd(w)}  ${now} ${r.verdict.padEnd(4)} ${targetText(r.target)}`);
   }
@@ -90,7 +90,7 @@ export function printSweep(
   for (const m of metrics) {
     const compute = (cs: Career[]) => m.compute(cs, ctx);
     const cells = variants.map((v) => {
-      const c = pairedDifference(reference, v.careers, compute, draws);
+      const c = paired(reference, v.careers, compute, draws).change;
       const mark = c.low > 0 || c.high < 0 ? '*' : ' ';
       return `${fmt(compute([...v.careers]), m.digits)} (${signed(c.value, m.digits)})${mark}`.padStart(
         22,
