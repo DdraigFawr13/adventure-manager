@@ -17,14 +17,14 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
   - Reviews (D-093): 3 rounds, 12 + 8 + 3 findings, no blockers; all fixed or kept with reasons. Findings page: https://claude.ai/artifact/CjcdmX55Nk5uaNmuzMQ6fE
   - Not fixed, for the owner: chests grow to millions of copper over long careers (no money sinks yet; gear and buildings, D-143, are the planned sinks).
 - 2026-10-26 Step 3 merged as PR #14 (writing test R8 passed, contracts from parts D-139, desk mock-ups; R4 round 3 awaits the owner's fact test). Engine test (PR #12) and year simulator first slice (PR #13) merged. Detail in the archive.
-- 2026-10-27 Faster headless runs, part 1 (D-148; branch `ccr-c510692c-px9h9x`): `simulate()` shares the read-only `content` instead of cloning it each command; engine and content tests freeze content (a write throws) and check it is shared. Measured `node tools/year-sim.ts 100`: 48.2 s to 19.1 s, output identical; sweep outputs identical. Parts 2-3 (in-place `apply()` for tools, careers across cores) wait for the step-2 merge; the step-2 branch's next decision is numbered after D-148.
+- 2026-10-27 Faster headless runs, part 1 (D-148; branch `ccr-c510692c-px9h9x`): `simulate()` shares the read-only `content` instead of cloning it each command; engine and content tests freeze content (a write throws) and check it is shared. Measured `node tools/year-sim.ts 100`: 48.2 s to 19.1 s, output identical; sweep outputs identical. Parts 2-3 (in-place `apply()` for tools, careers across cores) are unblocked now that step 2 is merged (PR #16).
 - Older entries (plan phase, to M0): `docs/archive/handoff-2026-10.md`.
 
 ## Next
 
 1. R4: the owner runs the round-3 fact test in the published desk mock-up at 1366 px and pastes the result (round 1 missed the 10 s line).
 2. Step 2 merged as PR #16. Standing parties (D-014, D-142) move to step 4, where the text prototype needs them.
-3. Faster runs, parts 2–3 (D-148): in-place `apply()` for headless tools and careers across cores, on a fresh branch from `main` after this merge.
+3. Faster runs, parts 2–3 (D-148): in-place `apply()` for headless tools and careers across cores, on a fresh branch from `main`.
 4. Step 4: the two-year text prototype (R7), with histories and memorial letters built on the report grammar.
 5. Engine test verdict (D-110): the owner runs `npm start -w @adventure-manager/shell` on Windows for real fps (60 fps bar at 1366×768; container software rendering gave 48 idle, 44 panning).
 6. Gear (D-143, amends D-012): RPG-style slots per adventurer, hand-equipped or by the quartermaster's policy; a smith's shop for basics; buildings for discounts or rarer stock later. Slot list, item tiers and prices not designed: workshop with the owner before the year simulator uses gear.
