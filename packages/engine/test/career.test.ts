@@ -190,8 +190,11 @@ describe('the patron emergency grant (D-146)', () => {
     const paid = ofType(run.events, 'money.changed').find((e) => e.reason === 'emergency');
     expect(paid?.amountCopper).toBe(8 * 3 * WAGE);
     // Next year's target is the usual one for a guild that stays down: still "avoid the bottom".
+    const targets = ofType(run.events, 'patron.target').length;
     run = settle(run, (s) => (s.guild!.chestCopper = 0)); // non-null: founded.
-    expect(ofType(run.events, 'patron.target').at(-1)?.target).toBe('avoid-bottom');
+    // A new target was set at this Assembly, and it is not made harder by the grant.
+    expect(ofType(run.events, 'patron.target').length).toBe(targets + 1);
+    expect(run.state.guild!.career!.target).toBe('avoid-bottom'); // non-null: careers are on.
   });
 
   it('lapses after the week, and offers again only after the interval', () => {
