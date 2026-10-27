@@ -147,7 +147,16 @@ export function fromStored(text: string): Save | null {
   try {
     // cast-ok: checked by version below; a save written by toStored has this shape.
     const save = JSON.parse(text) as Save;
-    if (save?.version !== SAVE_VERSION || !save.state || !save.chronicle) return null;
+    if (
+      save?.version !== SAVE_VERSION ||
+      !save.state ||
+      !save.chronicle ||
+      !Array.isArray(save.letters) ||
+      !Array.isArray(save.log) ||
+      !Array.isArray(save.sittings) ||
+      typeof save.pending !== 'object'
+    )
+      return null;
     save.state = { ...save.state, content };
     return save;
   } catch {

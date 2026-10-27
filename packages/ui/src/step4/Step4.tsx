@@ -25,6 +25,7 @@ import {
   fromStored,
   guildOf,
   newGame,
+  playHouse,
   pull,
   rules,
   run,
@@ -105,6 +106,7 @@ export function Step4() {
     }
   };
 
+  // A new guild replaces the save object; every other change saves through changed().
   useEffect(() => store(save), [save]);
 
   const guild = save.state.guild;
@@ -130,7 +132,15 @@ export function Step4() {
 
   const doPull = () => {
     const before = save.letters.filter((l) => !l.read).length;
-    const days = pull(save);
+    let days = 0;
+    try {
+      days = pull(save);
+    } catch (error) {
+      // Days already played stay played; show the engine's reason and keep them saved.
+      changed();
+      setNotice(t('refused', { reason: error instanceof Error ? error.message : String(error) }));
+      return;
+    }
     changed();
     const unread = save.letters.filter((l) => !l.read).length;
     setNotice(t('pulled', { days }));
@@ -395,6 +405,8 @@ function Draft({ save, onPick, notice }: { save: Save; onPick: TryAct; notice: s
             onClick={() =>
               onPick(() => {
                 run(save, { type: 'guild.pick', day: 1, partyIndex: party, extraIds: extras });
+                // The simulator's player looks at the house on the founding day too.
+                playHouse(save);
                 save.log.push({
                   sitting: save.sitting,
                   day: 1,

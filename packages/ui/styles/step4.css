@@ -194,7 +194,7 @@ button.row {
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
   cursor: pointer;
-  min-height: 32px;
+  min-height: 44px;
 }
 
 .names {
@@ -335,7 +335,7 @@ p.pill {
   border-radius: 14px;
   background: none;
   padding: 4px 10px;
-  min-height: 36px;
+  min-height: 44px;
   font-size: 15px;
   cursor: pointer;
 }
