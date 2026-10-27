@@ -151,6 +151,7 @@ Phase 1 concept. Each section records what the owner decided, with their own not
 ## 20. Business model
 
 - **Decided (review, 2026-10-25; replaces free-to-play):** Premium one-off purchase with a free demo (for example, the first seasons free).
+- **Amended (2026-10-27, D-152):** on the phones, a free download whose first season is the demo, then one $14.99 in-app unlock.
 - No microtransactions and no gameplay advantage for sale. Paid expansions are not decided.
 - Owner chose this after the review noted that cosmetics-only free-to-play earns little in an offline single-player game.
 

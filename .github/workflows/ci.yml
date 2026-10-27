@@ -1,14 +1,17 @@
 # Per-push checks (D-105): drift and docs checks, then npm run check (format, typecheck,
-# package boundaries, tests). Markdown and docs/ are not formatted or compiled, so docs-only
-# changes skip CI; run the docs check locally for those (AGENTS.md).
+# package boundaries, tests). docs/, README.md, package AGENTS.md files and system SPEC.md
+# files are not formatted or compiled, so changes to only those skip CI; run the docs check
+# locally for them (AGENTS.md). Other Markdown still runs CI: the drift check guards .claude/
+# and the size budget of AGENTS.md and CLAUDE.md, and the boundary check rejects stray
+# Markdown in packages/*/src.
 name: CI
 
 on:
   pull_request:
-    paths-ignore: ["**/*.md", "docs/**"]
+    paths-ignore: ["docs/**", "README.md", "packages/*/AGENTS.md", "packages/*/src/**/SPEC.md"]
   push:
     branches: [main]
-    paths-ignore: ["**/*.md", "docs/**"]
+    paths-ignore: ["docs/**", "README.md", "packages/*/AGENTS.md", "packages/*/src/**/SPEC.md"]
   workflow_dispatch:
 
 permissions:
@@ -26,7 +29,7 @@ jobs:
       - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: npm
       - run: node .claude/master/sync.mjs --check
       - run: node tools/docs-check.mjs

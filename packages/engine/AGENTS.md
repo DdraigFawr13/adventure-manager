@@ -2,7 +2,7 @@
 
 The game rules: pure code with no UI. Full rules: `docs/STANDARDS.md` ("The engine is pure" and "Engine foundations"); this file is the short list.
 
-- One entry point, `simulate(state, command)`, for preview and commit (GAME-02). Nothing else changes state.
+- One rule function, `simulate(state, command)`, for preview and commit (GAME-02); it is a copy plus `apply`, which headless tools use (D-148). Nothing else changes state.
 - `state.content` is shared between states, not copied (D-148): never write to content or to objects reachable from it.
 - No clock, `Math.random`, I/O, DOM, `process`, `Intl`, `localeCompare` or timers; no `Math.sin`, `exp`, `pow`, `log` or `**`. `npm run boundaries` enforces this.
 - Imports nothing outside this package; no external modules.

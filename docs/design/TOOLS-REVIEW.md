@@ -2,6 +2,8 @@
 
 Owner's request (2026-10-26, HANDOFF): look into tools, skills and connectors that improve the development process. Placed after PLAN §11 (D-090, D-091) and before §15. Rule: adopt a tool only when it is measured cheaper or equal at the same quality (DEL-07). Status: accepted 2026-10-26: items 1–3 adopted (D-092); the rest of the list accepted (D-094); audit findings applied (D-095, D-096). Owner's rule from this review: adversarial review before every PR (D-093).
 
+**Dated 2026-10-26, before mobile first (D-150):** its Electron, steamworks.js and Steam sales lines no longer describe the launch; the mobile-first reassessment (D-161) updates this review.
+
 What is measured below was run on this repo on 2026-10-26; everything else is labelled as judgement or estimate (REP-01).
 
 ## 1. Ripgrep (owner's question)
@@ -37,11 +39,11 @@ From AI-Master-Instructions (synced; not hand-edited, SRC-06):
 
 ### At build start (after the engine test, D-090)
 
-4. **Engine tooling in cloud sessions** (needed first, for the engine test itself): extend `session-start.local.sh` to install the .NET SDK and a headless Godot for the engine test; Node is already handled.
+4. **Engine tooling in cloud sessions** (needed first, for the engine test itself): extend `session-start.local.sh` to install the .NET SDK and a headless Godot for the engine test; Node is already handled. (Void since D-163: no Godot fallback, so no .NET or Godot install.)
 5. **Checks per stack** (decided with the engine):
    - Web: TypeScript strict, Vitest (engine tests), Playwright (screen tests and screenshots), Biome or ESLint, Ajv (content schemas), PixiJS (map and board), Electron with steamworks.js.
-   - Godot: .NET with xUnit (engine tests), GdUnit4 (scene tests), GodotSteam.
-   - Both: the determinism test (GAME-06), the content validator and the headless simulator (D-091).
+   - Godot: .NET with xUnit (engine tests), GdUnit4 (scene tests), GodotSteam. (Void since D-163.)
+   - Either stack: the determinism test (GAME-06), the content validator and the headless simulator (D-091).
 6. **Review skills on pull requests:** `code-review` and `security-review` before merge; `simplify` for cleanups; the `reviewer` agent for large diffs.
 7. **`run` skill:** launch the game and screenshot it to confirm a change works (VER-06).
 8. **CI:** add the project's checks through the `efficient-github-actions` skill with path filters, so docs-only pushes stay free (CI-01..CI-06). Add the AI-Master `stacks/` layer for the chosen engine (HANDOFF).

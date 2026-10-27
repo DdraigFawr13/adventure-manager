@@ -1,25 +1,19 @@
 # Agent instructions
 
-Adventure Manager: a management game where the player runs an adventurers' guild (Football Manager's depth of squad, staff, finances and scouting, applied to Pathfinder-style parties, classes and quests). Single-player; Windows first (D-106); TypeScript, web-first engine test (D-110).
+Adventure Manager: a management game where the player runs an adventurers' guild (Football Manager's depth of squad, staff, finances and scouting, applied to Pathfinder-style parties, classes and quests). Single-player; phones first, iPhone and Android held upright, Windows after launch (D-151); TypeScript web tech, no Godot fallback (D-163).
 
 Shared rules come from AI-Master-Instructions and load through CLAUDE.md (`.claude/master/RULES.md`). This file holds only what is specific to this project. Keep it under 80 lines.
 
 ## Read first
 
 1. `docs/HANDOFF.md`: current state and next step.
-2. `docs/DECISIONS.md`: settled rules. Don't reopen them.
+2. `docs/DECISIONS.md`: settled rules. Don't reopen them. Read the index (`grep '^## D-' docs/DECISIONS.md`), then only the entries you need.
 3. `docs/LESSONS.md`: entries for the area you are about to work in.
-4. `docs/design/CONCEPT.md`: the game concept (once written). Style guide and plan follow in `docs/design/`.
+4. `docs/design/CONCEPT.md`, `STYLE.md` and `PLAN.md` in `docs/design/`: the concept, style and plan, by section.
 
 ## Phases
 
-The owner runs this project in order; don't skip ahead:
-
-1. **Concept** until the owner calls it 100% fleshed out (`docs/design/CONCEPT.md`).
-2. **Style design**: theme, tone and visual identity (`docs/design/STYLE.md`).
-3. **Full plan**: game-design best practices first, then architecture and milestones (`docs/design/PLAN.md`).
-
-No game code before phase 3 is approved.
+Concept, style and plan are done; the plan was approved on 2026-10-26 (D-115), and the build runs through milestones M1–M7 (`docs/design/PLAN.md` §13). Don't skip a milestone gate.
 
 ## Local checks (run before pushing)
 
@@ -32,7 +26,7 @@ No game code before phase 3 is approved.
 
 ## What CI runs
 
-- **CI** (`ci.yml`): on every PR update and `main` push, one Linux job runs the drift check, the docs check and `npm run check`. Markdown-only and `docs/` changes skip it, so run the docs check locally for those.
+- **CI** (`ci.yml`): on every PR update and `main` push, one Linux job runs the drift check, the docs check and `npm run check`. Changes only to `docs/`, README.md, package AGENTS.md files or system SPEC.md files skip it, so run the docs check locally for those.
 - No deploys yet.
 
 ## Project rules

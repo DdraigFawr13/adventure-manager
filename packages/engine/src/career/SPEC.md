@@ -37,4 +37,4 @@ The guild's years run on, one after another, until the guildmaster's career ends
 
 ## Not yet
 
-Standing parties (D-014), delegation and staff (R6), gear by slot (D-143), crises (D-112) and named rivals' stars come in later slices; the simulator reports what it cannot yet measure.
+Standing parties (D-014), gear by slot (D-143) and named rivals' stars come in later slices (staff and the first crisis: `../staff/SPEC.md`, `../crisis/SPEC.md`); the simulator reports what it cannot yet measure.

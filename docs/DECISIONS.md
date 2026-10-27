@@ -101,6 +101,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Desktop PC is the primary platform; UI is designed for mouse, keyboard and long sessions. Detail: `docs/design/CONCEPT.md` §13.
 - **Why:** Owner's choice; data-dense management games play best on desktop.
+- **Replaced (2026-10-27, D-151, D-155):** mobile first. The phone leads, held upright, with the guildhall hub as home; the depth stays (D-153). Windows follows after launch.
 
 ## D-017 Templates first, optional AI flavour
 
@@ -393,6 +394,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** A typical player takes about 2–2.5 h per in-game season. Derived targets: adventurer career about 12–30 h, guildmaster career about 40–75 h, first season about 3–4 h with onboarding. Weeks per season are set in PLAN §2. Detail: `docs/design/PLAN.md` §1c.
 - **Why:** Owner's choice (Plan Q1c), between the proposed 3 h (FM-like) and 1.5 h (faster generations); keeps succession within reach of committed players.
+- **Amended (2026-10-27, D-153):** a sitting on the phone is about 10–30 minutes; a season is spread over several sittings.
 
 ## D-065 Design goals and success criteria (starting set)
 
@@ -480,6 +482,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Seven screen rules: every number shows its breakdown (from the engine); one sheet, one job; fixed top bar; every stop shows its default; confirm only the irreversible (signing, releasing, dismissing staff, revival, Deadly contracts); uncertainty shown as ranges and worded odds; never colour alone. Accessibility: colour-blind-safe statuses and heraldic charges, full remappable keyboard play, no timers, reducible motion, visible counterparts and captions for meaningful sounds; screen readers not promised at launch but the UI is built from labelled controls. Detail: `docs/design/PLAN.md` §6b–§6c.
 - **Why:** Owner accepted the draft (Plan Q6c).
+- **Amended (2026-10-27, D-149, D-154, D-155):** on phones the pull handle is Continue, in place of the fixed top bar's button, and play is by touch; the keyboard rules apply when Windows follows. The phone engine test includes a screen-reader check; launch support is still not promised.
 
 ## D-079 Launch ancestries: two familiar, two from the March
 
@@ -520,6 +523,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Ledger text is at least 15 px at 100% scale; all numbers use the face's lining figures (`lining-nums`), which are equal width and sit on the line. To be confirmed on real monitors in the desk-density prototype (PLAN §9a R4); fallbacks are D-052 and D-077. Detail: `docs/design/PLAN.md` §9c.
 - **Why:** Owner's choice (Plan Q9b) after real-size specimens at 13–16 px; the measurement showed the default figures are proportional old-style, so lining figures are required for columns.
+- **Amended (2026-10-27, D-154):** confirmed on the owner's phone in the phone R4, not on monitors.
 
 ## D-085 Prototype order: watched quest first
 
@@ -528,6 +532,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Why:** Owner's choice (Plan Q9a): test the assumption the whole game rests on first.
 - **Amended (2026-10-26, D-090):** step 0, the engine test, comes before step 1.
 - **Amended (2026-10-26, D-110, D-113):** the engine test is web-first; resolution v0 comes before step 1; the simulation core is kept as the production engine; each step is time-boxed.
+- **Amended (2026-10-27, D-154):** step 3's mock-ups are phone screens, not 1366 and 1920 px desks.
 - **Note:** first recorded as "headless simulator first"; the owner reported that answer as a misclick the same day and chose quest first.
 
 ## D-086 Riskiest assumptions and their tests
@@ -535,6 +540,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Nine risks, each with its cheapest test and pass line: R1 watching quests is fun; R2 the simulation hits the §4 targets (±25%); R3 a year fits the friction budget (≤ 100 stops, ≤ 3 h); R4 the desk holds FM density (25+ rows at 1366 px); R5 ledgers readable (D-084); R6 the player's focus beats delegation by 10–25%; R7 attachment despite deaths; R8 template writing stays fresh; R9 guildmaster careers of 20–30 years. Fun and feel pass only on the owner's recorded playtest notes (GAME-06). Detail: `docs/design/PLAN.md` §9a.
 - **Why:** Owner accepted the draft (Plan Q9c).
+- **Amended (2026-10-27, D-154):** R4 is a phone test: 5 set facts in under 10 s each, using the hub, the work desk and Ask the clerk; the 25-row rule is dropped.
 
 ## D-087 Kingdom map at launch
 
@@ -561,6 +567,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The engine is chosen between web tech in Electron (TypeScript) and Godot 4 (C#) after prototype step 0: the same roster ledger and kingdom-map view built in both, judged on the owner's look-and-feel notes plus measured build time, frame rate and memory at 1366×768, download size and the find-the-fact task. Unity is out. The architecture in PLAN §11b–§11g is engine-neutral. Detail: `docs/design/PLAN.md` §11a; adds step 0 to D-085.
 - **Amended (2026-10-26, D-110):** web-first: build the test pieces in web tech; Godot only if web misses its bar.
+- **Superseded (2026-10-27, D-163):** web tech is the engine; there is no Godot fallback.
 - **Why:** Owner's choice (Plan Q11a) after the trade-off: web tech favours dense ledgers and speed of building; Godot favours the animated map and board.
 
 ## D-091 Engine-neutral architecture
@@ -608,12 +615,14 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** The launch March has a hand-illustrated base map in layers; live marks and later generated regions use the procedural ink renderer built for the quest board. Launch layers: areas and places, factions, guilds (with tier), action (moving parties, key-moment seals) and threats (spreading stains, closed roads), each linked to its Trace. Deeds and rumours on the map come later (meanwhile Chronicle and inbox). The map is to look better over time; the owner's Story-Generator repository is a lead for its art direction. Detail: `docs/design/PLAN.md` §12d; mock-up `docs/design/mockups/kingdom-map.html`.
 - **Amended (2026-10-26, D-109, D-113):** launch layers are places, guilds and action; factions and threats layers follow in an update. The slice's corner is drawn at M2 and the full base after alpha balance.
 - **Why:** Owner's choice (Plan Q12a): the best-looking launch map with a path to generated regions; a smaller launch layer set.
+- **Amended (2026-10-27, D-164):** the map pans and zooms freely, and every mark opens a pop-up with details and an image.
 
 ## D-098 Art and audio production lists and rough costs
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** An artist draws parts and set pieces; code assembles them (portraits ~200 parts, crests, site maps from ~60 stamps per biome); monsters 72 pieces, icons ~240 drawings, 26 initials, ~10 legendary items, a few textures; a ledger font cut only if D-084's real-monitor check fails. Audio: 60–90 min of commissioned early-music ambience, ~150 desk sounds, 5 biome beds, ~10 stingers, ~40 name-free vocal sounds. Rough estimates: art $23,000–74,000, audio $9,000–37,000, refined in PLAN §14 and replaced by quotes. Pipeline: layered sources exported by script, an asset licence ledger, OFL fonts, contracts that transfer the needed rights. AI-generated images for exploration only (D-094). Detail: `docs/design/PLAN.md` §12a–§12c, §12e.
 - **Amended (2026-10-26, D-109):** about 48 monster pieces and about 160 portrait parts; art about $20,000–66,000.
+- **Amended (2026-10-27, D-156):** mobile first adds hall-room and town-view art (amount in D-157).
 - **Why:** Owner accepted the draft (Plan Q12b) and asked for a review of the Story-Generator repository's map code for art direction.
 
 ## D-099 Milestones M0–M7 with gates
@@ -650,8 +659,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Budget estimates with 20% contingency: about $57,000–185,000 solo, about $128,000–358,000 with one developer hired; about $10,000–32,000 is spent before the hire gate (M1–M2). Self-funded through the slice; at the slice gate the owner chooses between self-funding, a publisher, crowdfunding and Early Access at the alpha gate (D-100); no talks before that decision. Five budget assumptions are checked at each gate. Detail: `docs/design/PLAN.md` §14b, §14d, §14e.
 - **Amended (2026-10-26, D-108, D-109):** about $52,000–174,000 solo and $124,000–347,000 with a hire; about $8,000–27,000 before the hire gate.
 - **Why:** Owner accepted the draft (Plan Q14c); the slice is the pitch, so funding is chosen when there is something to show.
-- **Amended (2026-10-27, D-156):** mobile first; the phone engine test joins M1, phone builds from M2, launch about 39–68 months from plan approval (estimate), with extra art and phone costs listed in D-156.
-- **Restated (2026-10-27, D-157):** the solo budget for mobile first is about $66,000–219,000 with contingency.
+- **Restated (2026-10-27, D-156, D-157):** the budget for mobile first is in D-157.
 
 ## D-104 Price $24.99; English at launch
 
@@ -700,6 +708,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** The engine-test pieces (ledger and kingdom map) are built in web tech (Electron, TypeScript), reusing the Story-Generator map code. Godot 4 (C#) is built only if web misses its bar: 60 fps map at 1366×768, readable 15 px ledger, the find-the-fact task. A screen-reader check joins the judging list. Amends D-090. Detail: `docs/design/PLAN.md` §11a.
 - **Why:** Owner's choice (plan review Q3) on new evidence: Story-Generator is TypeScript and canvas, and building both engines costs weeks a solo builder does not have.
 - **Amended (2026-10-27, D-154):** the engine test is rebuilt as a phone app and judged on the owner's phone.
+- **Amended (2026-10-27, D-163):** no Godot fallback; the engine test's bars stay, and a miss goes to the owner.
 
 ## D-111 Stop and slip rules
 
@@ -944,7 +953,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** A phone version, if built, follows "Hall and Road" with the owner's change. Accepted: the guildhall cutaway is the hub, with one system per room; a work desk, reachable as a tab and as the study in the hall, holds what spans the whole guild (notices, the contract board, the year's numbers and the patron's target, the full roster ledger); the living map is the outside; Ask the clerk answers plain questions; Continue is a pull-down handle; four tabs (Hall, March, Desk, Ask). Proposed, for the owner's review: which system sits in which of the eleven rooms (barracks for members, infirmary, training yard, armoury, smith, library, tavern, gate, strongroom, Hall of Heroes, works), and each room showing who runs it with the never-delegated choices (D-038) marked. Not settled: the tablet layout (the open-book spread was the session's suggestion, not chosen). Phone only: STYLE §3 stays the PC rule; on the phone the pull handle replaces the top bar's fixed Continue. Rough estimate: 1,200–2,420 hours and about $9,000–30,000 more art, less if the hall and map are built for Windows first. Detail: `docs/design/mockups/mobile-hall-desk.html`; earlier rounds `mobile-concepts.html`, `mobile-concepts-2.html`, `mobile-hall-and-road.html`.
 - **Why:** Owner (2026-10-27), after four rounds of mock-ups: liked the recommended phone mix with the guildhall and living map added, then "I want satchel to be changed to something like work desk where you can go through notifications and deeper into rosters some of the overall stats that the individual rooms don't provide… the guild house is the hub and the work desk is for overall stuff and notifications and contracts."
 - **Amended (2026-10-27):** the room-by-room split (barracks, infirmary, training yard, armoury, smith, library, tavern, gate, strongroom, Hall of Heroes, works) and the staff display in each room are Accepted. The owner said "Do what you recommend", and the session had recommended the split as proposed. The tablet layout stays not settled.
-- **Superseded in part (2026-10-27, D-150, D-151, D-155):** mobile first. The phone is now the launch platform, and the hub is home on every platform, so the "Windows-only launch stands" and "Phone only" lines above no longer apply.
+- **Superseded in part (2026-10-27, D-150, D-151, D-155):** mobile first. The phone is now the launch platform, and the hub is home on every platform, so the "no mobile work is scheduled", "Windows-only launch stands" and "Phone only" lines above no longer apply.
 
 ## D-150 Mobile first: the phone becomes the lead platform
 
@@ -1017,3 +1026,40 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
   - **Crashes:** the game itself still sends nothing (D-088). The stores' own crash reports, sent by the phone with the player's consent, are read alongside testers' attached logs.
   - **Release checklist:** item 4 (fresh and upgrade installs) becomes "on a small phone and a large phone on each system". Item 5 becomes "cloud saves and achievements work on the store build".
 - **Why:** The owner said "Do what you recommend" (2026-10-27) to the re-plan's remaining items. Steam-specific steps no longer apply to a phone launch.
+
+## D-159 Phone R4: the owner's Pixel, blind facts, timed by the page
+
+- **Status:** Accepted (2026-10-27). Sets how the phone R4 test (D-154) runs.
+- **Decision:** The owner takes R4 on their own Android phone, a Pixel 10 Pro XL (about 412 dp wide at the default display size, an estimate; the test page shows the measured width). Screens are built for 375 points and checked at 375, 412 and 430. The session picks 5 facts from a simulated guild and keeps them hidden until the owner taps Start. The page times each answer, checks it, and saves the results to the published artifact, so the owner pastes nothing.
+- **Why:** Owner's answers (planning round, 2026-10-27): "Android phone", then "Pixel 10 xl I think?", then "Blind, page-timed", the recommended option. A blind test measures finding a fact, not remembering a question the owner wrote.
+- **Corrected (2026-10-27):** measured on the owner's phone in the Claude app, the page is 443 × 790 px at 2.4375× (round 1), not about 412; screenshots now also check 443.
+
+## D-160 The step 4 text prototype is a phone-first web page
+
+- **Status:** Accepted (2026-10-27). Applies D-150 to PLAN §9b step 4 (R7).
+- **Decision:** The two-year text prototype plays in a phone browser in short sittings (D-153), with the hub's four tabs in plain text. It should also work in a PC browser (from the recommended option's wording, not the owner's reply). Its screens are throwaway (D-113); the simulation core is kept.
+- **Why:** Owner (planning round, 2026-10-27): "Maybe phone first web page or we can start a project in vercel? We will want to reassess tools and skills for this shift I think".
+
+## D-161 Vercel Hobby for phone builds while the game is a hobby; tools reassessed for mobile first
+
+- **Status:** Accepted (2026-10-27) for hosting. The tools and skills review is to be done; its choices are Proposed until the owner approves them.
+- **Decision:** Phone-playable builds (the step 4 prototype, the phone engine test) are hosted on Vercel's free Hobby plan while the game is a hobby project. Before any sale, the account moves to Pro (about $20 a month, to recheck), since Hobby is for non-commercial use. The R4 test stays a published artifact, because it saves the timings. Before step 4, the session reassesses the project's tools, skills and agents for mobile first (phone screenshots, touch checks, Vercel previews, a store wrapper later), as an update to `docs/design/TOOLS-REVIEW.md`.
+- **Why:** Owner (planning round, 2026-10-27): "right now this is a hobby game and if I choose to move on to actually put this into sale o would change to the pro plan", and "We will want to reassess tools and skills for this shift". D-152's price and D-157's break-even stay the plan for a commercial launch.
+
+## D-162 Phone R4 round 2: names A–Z with a filter, money on the desk, a Find field
+
+- **Status:** Accepted (2026-10-27). Changes the phone R4 page (D-154, D-159) after round 1.
+- **Decision:** (1) Lists of people (Barracks, Infirmary, the desk roster) run A–Z by name with a filter box at the top. (2) The work desk gets a Money page with the week-by-week ledger and the year's figures, in place of Overview; the Strongroom keeps its ledger. (3) A Find field on the hall and the work desk answers as the owner types a name, a week, a site or a topic, with the clerk's answer shown in place. Round 2 runs on a new seed.
+- **Why:** Round 1 (2026-10-27, seed phone-1): 5 of 5 right, 0 under 10 s (12.5, 21.1, 46.1, 11.6, 10.6 s). The paths showed names hunted in party-grouped or date-sorted lists, the weekly wages sought on 7 desk screens before the Strongroom, and Ask the clerk never used. Owner's choice: "All three fixes", the recommended option.
+
+## D-163 Web tech is the engine; no Godot fallback
+
+- **Status:** Accepted (2026-10-27). Supersedes D-090's two-engine choice and D-110's Godot fallback.
+- **Decision:** The game is built in web tech (TypeScript), one codebase wrapped for both phone stores (D-151). Godot is not built as a fallback. The phone engine test (D-154) keeps its bars; if the web build misses one, the owner decides what follows (the session's wording of the consequence, not the owner's).
+- **Why:** Owner (2026-10-27), asked whether the fallback still stands after D-151: "Godot fallback does not stand".
+
+## D-164 The March is a free pan-and-zoom map where everything shown can be tapped
+
+- **Status:** Accepted (2026-10-27) as the direction for the March tab (D-149) and the kingdom map (D-087, D-097). The images' scope and cost are to be set in the map workshop (D-144).
+- **Decision:** The March is one canvas the player moves and zooms freely, with pinch and drag on phones, rather than fixed zoom steps. Towns, places, parties, events and the other marks of the launch layers (places, guilds, action; D-097) show on it, and tapping any of them opens a pop-up with its details and an image. The phone engine test (D-154) builds this first: free pan and zoom at 60 fps, tappable marks and a pop-up with a placeholder image. The R4 fact test keeps its still map, so round 2 stays comparable with round 1 (the session's choice, told to the owner).
+- **Why:** Owner (2026-10-27): "for the march by the way I want it to be like a free move zoom canvas map and I want towns and places and events and whatnot to show on the map and be clickable to show a pop-up screen with details and images". It replaces the stepped March, Shire and town zoom of the D-149 mock-up.

@@ -1,6 +1,6 @@
 # Guild year v0
 
-The calendar, the contract board, wages, recovery and recruitment for one guild, so a whole year runs through `simulate` (PLAN §9b step 2, first slice: one guild, no rivals, three classes; D-085, D-113). Every number below is a starting value in content data (`packages/content/src/base/guild.ts`), to be tuned by R2 and R3; none is in engine code. The headless simulator (`tools/year-sim.ts`) plays the player's side with a fixed policy and reports against PLAN §2 and §4.
+The calendar, the contract board, wages, recovery and recruitment for one guild, so a whole year runs through `simulate` (PLAN §9b step 2, first slice: one guild, no rivals, three classes; D-085, D-113; rivals, the ladder and careers since then: `../career/SPEC.md`). Every number below is a starting value in content data (`packages/content/src/base/guild.ts`), to be tuned by R2 and R3; none is in engine code. The headless simulator (`tools/year-sim.ts`) plays the player's side with a fixed policy and reports against PLAN §2 and §4.
 
 ## Time (PLAN §2a, §2b)
 
@@ -9,7 +9,7 @@ The calendar, the contract board, wages, recovery and recruitment for one guild,
 
 ## The board (contracts)
 
-- On each week start the board drops expired offers and adds new ones: a number per week by part of the year (winter is thin), each drawn by weighted danger from the content's quest templates of that danger (no ranking tiers yet; they come with rivals), with a fee, travel days each way and an expiry week.
+- On each week start the board drops expired offers and adds new ones: a number per week by part of the year (winter is thin), each drawn by weighted danger from the content's quest templates of that danger (in careers the guild's tier also sets the weights and fees, `../career/SPEC.md`), with a fee, travel days each way and an expiry week.
 - Fees per danger from content (rising about 2.5 times a step, PLAN §4b), with a small spread. Loot is a share of the fee paid on a win.
 - `contract.take` (offer id, member ids, plan; `day` must be today) needs an idle party of at least the minimum size whose members are all fit enough (not out injured). The offer leaves the board and the party leaves that day; the quest resolves on arrival (travel days later) with the resolution v0 rules, unwatched, so the leader's call answers every moment (D-125); the party is home after travelling back. Dead members leave the guild's members and wage bill on arrival; the roster keeps them, flagged dead.
 
