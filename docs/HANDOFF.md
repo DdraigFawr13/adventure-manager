@@ -8,7 +8,8 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Just done
 
-- 2026-10-27 Step 2 widened on branch `ccr-7c31ebb2-c4nfh9` (reviewed; awaiting the owner's approval). `node tools/career-sim.ts [careers] [years] [policy|compare] [staff=off|compare] [size] [grants=take|refuse]`; specs in `packages/engine/src/{career,staff,crisis}/SPEC.md`; every number is a labelled assumption in `packages/content/src/base/{career,staff,crises}.ts`.
+- 2026-10-27 Faster runs, parts 2–3 (D-148) on branch `ccr-7c31ebb2-c4nfh9` (restarted from `main` after PR #16), owner chose it before step 4: `apply(state, command)` changes state in place and `simulate` is a copy plus `apply`; `tools/year-sim-play.ts` uses `apply`; `tools/career-sim.ts` plays careers on worker threads (`tools/career-play.ts`, `tools/career-worker.ts`; `CAREER_SIM_THREADS` overrides). Measured against a baseline worktree of `main` (b00d65c): outputs identical (6 careers in 4 modes, `year-sim 100`, 4 careers at size 18, and 100 careers against the pre-merge run); 100 careers 36 s (was about 10 min); `year-sim 100` 8 s (was 21 s). Events never hold state objects (engine AGENTS.md rule): `test/apply.test.ts` runs every command type both ways, from before the founding, and walks the state after each one; injecting an alias by hand made it fail. Reviewed three times (D-093); owner approval next.
+- 2026-10-27 Step 2 widened, merged as PR #16 (owner approved). `node tools/career-sim.ts [careers] [years] [policy|compare] [staff=off|compare] [size] [grants=take|refuse]`; specs in `packages/engine/src/{career,staff,crisis}/SPEC.md`; every number is a labelled assumption in `packages/content/src/base/{career,staff,crises}.ts`.
   - Careers v0 (D-140, D-141): many years, 17 abstract rivals on a 3×6 ladder, the patron's yearly target and confidence, guildmaster retirement on health, adventurers' ageing, growth by doing, injuries, retirement.
   - Staff v0 (D-145): training and recovery run by the guildmaster (skills grow by doing) or hired staff. Emergency grant (D-146). One crisis chain, the Wendle troll (D-147).
   - 100 careers, default plan, guild of 15 (measured; review page linked below): R9 median 26 years (90% retire); R2 first promotion year 4, runaway rival 0 of 100; stops 71–80 a year by tier; deaths 1–2 a year. R6: hands-on training +13.5% growth, recovery 21.8% fewer injury days, delegated careers 24 vs 26 years. §9d: cautious vs bold each ahead in some seeds; bad starts 28 of 35 last 10+ years; a crisis woke in years 5–15 in 93% of careers reaching year 10; guild of 18: top-tier stops 77 (≤130).
@@ -16,18 +17,17 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
   - Reviews (D-093): 3 rounds, 12 + 8 + 3 findings, no blockers; all fixed or kept with reasons. Findings page: https://claude.ai/artifact/CjcdmX55Nk5uaNmuzMQ6fE
   - Not fixed, for the owner: chests grow to millions of copper over long careers (no money sinks yet; gear and buildings, D-143, are the planned sinks).
 - 2026-10-26 Step 3 merged as PR #14 (writing test R8 passed, contracts from parts D-139, desk mock-ups; R4 round 3 awaits the owner's fact test). Engine test (PR #12) and year simulator first slice (PR #13) merged. Detail in the archive.
-- 2026-10-27 Faster headless runs, part 1 (D-148; branch `ccr-c510692c-px9h9x`): `simulate()` shares the read-only `content` instead of cloning it each command; engine and content tests freeze content (a write throws) and check it is shared. Measured `node tools/year-sim.ts 100`: 48.2 s to 19.1 s, output identical; sweep outputs identical. Parts 2-3 (in-place `apply()` for tools, careers across cores) wait for the step-2 merge; the step-2 branch's next decision is numbered after D-148.
+- 2026-10-27 Faster headless runs, part 1 (D-148; branch `ccr-c510692c-px9h9x`): `simulate()` shares the read-only `content` instead of cloning it each command; engine and content tests freeze content (a write throws) and check it is shared. Measured `node tools/year-sim.ts 100`: 48.2 s to 19.1 s, output identical; sweep outputs identical. Parts 2–3: see the entry above.
 - Older entries (plan phase, to M0): `docs/archive/handoff-2026-10.md`.
 
 ## Next
 
 1. R4: the owner runs the round-3 fact test in the published desk mock-up at 1366 px and pastes the result (round 1 missed the 10 s line).
-2. Step 2: finish the D-133 flow for this branch (adversarial review, findings artifact, owner approval, PR, merge). Standing parties (D-014, D-142) move to step 4, where the text prototype needs them.
-3. Faster runs, parts 2–3 (D-148): in-place `apply()` for headless tools and careers across cores, on a fresh branch from `main` after this merge.
-4. Step 4: the two-year text prototype (R7), with histories and memorial letters built on the report grammar.
-5. Engine test verdict (D-110): the owner runs `npm start -w @adventure-manager/shell` on Windows for real fps (60 fps bar at 1366×768; container software rendering gave 48 idle, 44 panning).
-6. Gear (D-143, amends D-012): RPG-style slots per adventurer, hand-equipped or by the quartermaster's policy; a smith's shop for basics; buildings for discounts or rarer stock later. Slot list, item tiers and prices not designed: workshop with the owner before the year simulator uses gear.
-7. R1 notes (D-132): twists now give traps a home (D-139); hidden items and branching paths still wait for quest design. Tuning left: reckless doubles deaths only on perilous work; injuries per death ~2.5–5 on composed contracts (target ~5).
+2. Faster runs (this branch): adversarial review, findings artifact, owner approval, PR, merge (D-133).
+3. Step 4: the two-year text prototype (R7), with histories and memorial letters built on the report grammar.
+4. Engine test verdict (D-110): the owner runs `npm start -w @adventure-manager/shell` on Windows for real fps (60 fps bar at 1366×768; container software rendering gave 48 idle, 44 panning).
+5. Gear (D-143, amends D-012): RPG-style slots per adventurer, hand-equipped or by the quartermaster's policy; a smith's shop for basics; buildings for discounts or rarer stock later. Slot list, item tiers and prices not designed: workshop with the owner before the year simulator uses gear.
+6. R1 notes (D-132): twists now give traps a home (D-139); hidden items and branching paths still wait for quest design. Tuning left: reckless doubles deaths only on perilous work; injuries per death ~2.5–5 on composed contracts (target ~5).
 
 ## Open questions
 
