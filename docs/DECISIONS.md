@@ -301,8 +301,8 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Fixed top bar (date, stop reason, Continue); grouped ledger tabs on the left; the home screen is the region map with parties as miniatures, a weekly strip and the letter tray; ledgers open as full paper sheets. Detail: `docs/design/STYLE.md` §3.
 - **Why:** Owner's choice (Style Q3); keeps FM navigation speed while putting the region at the centre (pillar 4).
-
 - **Replaced (2026-10-27, D-155):** the guildhall hub is home on every platform; see D-149 and D-155.
+
 ## D-050 Quest board: cartographer's map with standees
 
 - **Status:** Accepted (2026-10-26)
