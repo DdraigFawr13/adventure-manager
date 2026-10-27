@@ -27,6 +27,7 @@ No game code before phase 3 is approved.
 - Every HTML mock-up or page before publishing: `node tools/mockup-shot.mjs <file>` (desktop and phone render, fonts, no sideways scroll), then look at the screenshots (VER-06).
 - Every push that touches code: `npm run check` (format, typecheck, package boundaries, tests). Install with npm 11 (`npx npm@11.9.0 ci`); npm 10 crashes on this lockfile's optional peers.
 - Chain checks, commit and push with `&&`, never `;`, so a failed check stops the commit (LESSONS ×2).
+- Stop a background run by its PID (`ps -eo pid,args`), never `pkill -f`: the pattern matches the shell running it (LESSONS ×3).
 - Code rules: `docs/STANDARDS.md`; each package's `AGENTS.md` adds its local rules.
 
 ## What CI runs

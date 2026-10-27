@@ -1,10 +1,10 @@
 // One seeded guild year played by a fixed policy (used by tools/year-sim.ts).
 import {
+  apply,
   checkGuildInvariants,
   checkInvariants,
   isFree,
   shapeOf,
-  simulate,
   stopDays,
   type Command,
   type GameEvent,
@@ -89,7 +89,7 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
   const size = options.size ?? GUILD_SIZE;
   const lastDay = options.lastDay ?? DAYS;
   const started = performance.now();
-  let state: GameState = {
+  const state: GameState = {
     seed,
     rng: {},
     nextEventNo: 1,
@@ -104,13 +104,12 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
   const run = (command: Bare) => {
     const id = `c${commandIds.length}`;
     commandIds.push(id);
+    // The tool owns this state, so it changes it in place (D-148): no copy per command.
     // cast-ok: the tool adds the id the caller left out; the union member is otherwise whole.
-    const result = simulate(state, { ...command, id } as Command);
-    state = result.state;
-    events.push(...result.events);
+    events.push(...apply(state, { ...command, id } as Command));
   };
 
-  /** The guild as it stands; simulate returns a new state each command, so never keep an old one. */
+  /** The guild as it stands, read fresh each time. */
   const now = () => state.guild!; // non-null: the guild is founded before anything reads it.
   let lowestChest = Infinity;
   let weeksInDebt = 0;
