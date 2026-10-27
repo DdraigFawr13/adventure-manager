@@ -8,7 +8,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Just done
 
-- 2026-10-27 Mobile exploration on branch `ccr-62acb8a3-wki6rj`: four rounds of mock-ups with hour estimates ending in the owner's direction, D-149. Reviewed twice (D-093): 16 + 5 findings, all fixed but one optional nit. Owner then chose "Mobile first" for planning: to be recorded and planned on a fresh branch.
+- 2026-10-27 Mobile exploration merged as PR #17: four rounds of mock-ups ending in D-149 (hall as hub, work desk, living map); reviewed three times (D-093). Then the owner chose "Mobile first" (D-150): the phone leads, PC follows. Re-plan started on branch `ccr-62acb8a3-wki6rj` (restarted from `main`).
 - 2026-10-27 Faster runs, parts 2–3 (D-148), merged as PR #18, on branch `ccr-7c31ebb2-c4nfh9` (restarted from `main` after PR #16), owner chose it before step 4: `apply(state, command)` changes state in place and `simulate` is a copy plus `apply`; `tools/year-sim-play.ts` uses `apply`; `tools/career-sim.ts` plays careers on worker threads (`tools/career-play.ts`, `tools/career-worker.ts`; `CAREER_SIM_THREADS` overrides). Measured against a baseline worktree of `main` (b00d65c): outputs identical (6 careers in 4 modes, `year-sim 100`, 4 careers at size 18, and 100 careers against the pre-merge run); 100 careers 36 s (was about 10 min); `year-sim 100` 8 s (was 21 s). Events never hold state objects (engine AGENTS.md rule): `test/apply.test.ts` runs every command type both ways, from before the founding, and walks the state after each one; injecting an alias by hand made it fail. Reviewed three times (D-093), approved and merged.
 - 2026-10-27 Step 2 widened, merged as PR #16 (owner approved). `node tools/career-sim.ts [careers] [years] [policy|compare] [staff=off|compare] [size] [grants=take|refuse]`; specs in `packages/engine/src/{career,staff,crisis}/SPEC.md`; every number is a labelled assumption in `packages/content/src/base/{career,staff,crises}.ts`.
   - Careers v0 (D-140, D-141): many years, 17 abstract rivals on a 3×6 ladder, the patron's yearly target and confidence, guildmaster retirement on health, adventurers' ageing, growth by doing, injuries, retirement.
@@ -23,18 +23,19 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Next
 
-1. R4: the owner runs the round-3 fact test in the published desk mock-up at 1366 px and pastes the result (round 1 missed the 10 s line).
-2. Step 4: the two-year text prototype (R7), with histories and memorial letters built on the report grammar; standing parties (D-014, D-142) join here.
-3. Engine test verdict (D-110): the owner runs `npm start -w @adventure-manager/shell` on Windows for real fps (60 fps bar at 1366×768; container software rendering gave 48 idle, 44 panning).
-4. Gear (D-143, amends D-012): RPG-style slots per adventurer, hand-equipped or by the quartermaster's policy; a smith's shop for basics; buildings for discounts or rarer stock later. Slot list, item tiers and prices not designed: workshop with the owner before the year simulator uses gear.
-5. R1 notes (D-132): twists now give traps a home (D-139); hidden items and branching paths still wait for quest design. Tuning left: reckless doubles deaths only on perilous work; injuries per death ~2.5–5 on composed contracts (target ~5).
+1. Mobile-first re-plan (D-150), this branch: questions to the owner in order (launch platforms, stores and price, target player, screen and engine bars, R4 replacement, milestones and budget), each recorded as it is answered; then update PLAN, review (D-093), approval, PR.
+2. R4: the owner runs the round-3 fact test in the published desk mock-up at 1366 px and pastes the result (round 1 missed the 10 s line).
+3. Step 4: the two-year text prototype (R7), with histories and memorial letters built on the report grammar; standing parties (D-014, D-142) join here.
+4. Engine test verdict (D-110): the owner runs `npm start -w @adventure-manager/shell` on Windows for real fps (60 fps bar at 1366×768; container software rendering gave 48 idle, 44 panning).
+5. Gear (D-143, amends D-012): RPG-style slots per adventurer, hand-equipped or by the quartermaster's policy; a smith's shop for basics; buildings for discounts or rarer stock later. Slot list, item tiers and prices not designed: workshop with the owner before the year simulator uses gear.
+6. R1 notes (D-132): twists now give traps a home (D-139); hidden items and branching paths still wait for quest design. Tuning left: reckless doubles deaths only on perilous work; injuries per death ~2.5–5 on composed contracts (target ~5).
 
 ## Open questions
 
 - Reference party for PLAN §4c targets: settled, a well-built party with the sample party as reference (D-137).
 - Permissions (from the PR #3 review): tighten the allow list (`cat`/`grep`/`find` can read `.env`; `git branch:*` allows `-D`; `find:*` allows `-delete`) and widen the force-push ask rules (`-fu`, `origin +main`, `git -C`)? Owner to decide; see D-096 limits.
 - Kingdom map art direction continues past §12 (D-097): Story-Generator layout as the artist's base; the workshop now includes a geography review (D-144: sensible rivers and roads, towns placed for a reason with specialties, another major city, wild-country outposts).
-- Mobile direction (D-149): the guildhall as hub with one system per room, a work desk (notices, contracts, overview, full roster), the living map, Ask the clerk, pull to continue. Mock-ups: `docs/design/mockups/mobile-hall-desk.html` (the desk, 11 rooms and 5 March screens), https://claude.ai/artifact/5HsQ7krT9epLXSWZmEA6mA; earlier rounds `mobile-concepts.html`, `mobile-concepts-2.html`, `mobile-hall-and-road.html`. Open: the room-by-room split (Proposed); the owner chose "Mobile first" (2026-10-27), which reopens D-106, CONCEPT §13 and STYLE §3 and needs its own planning branch and decision.
+- Mobile first (D-150) reopens D-106, CONCEPT §13, STYLE §3, D-091/D-110 screen bars, R4, D-063, D-104, D-099/D-108 and D-103; settle each with the owner one question at a time and record the replacements. Design: D-149, `docs/design/mockups/mobile-hall-desk.html` (https://claude.ai/artifact/5HsQ7krT9epLXSWZmEA6mA); the room-by-room split is still Proposed.
 - Later: 20 class levels (D-074) need a pacing decision; facility compound / city-building style guildhall (D-075) not scoped.
 - Intrigue and underhanded dealings (owner's note, D-069): Later tier; content not decided.
 - Exploring the wilds (owner's wish, D-136): explorers uncover hidden places and items; design with expeditions, the map's charting and the R1 hidden-items note; tier not set.
