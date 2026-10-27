@@ -2,6 +2,7 @@
 import type { CareerEnd, CareerRules, CareerState, TargetKind } from '../career/types.ts';
 import type { PronounKey } from '../core/text.ts';
 import type { CrisisLink, CrisisRules, CrisisState } from '../crisis/types.ts';
+import type { ExtendDirection, HouseJob, HouseRules, HouseState, Place } from '../house/types.ts';
 import type { Area, StaffRules, StaffState } from '../staff/types.ts';
 import type { Adventurer, Attribute, Danger, Plan, QuestOutcome } from '../resolution/types.ts';
 
@@ -49,6 +50,8 @@ export interface GuildRules {
   readonly career?: CareerRules;
   /** Absent: no staff; training and recovery run at their neutral rate (staff/SPEC.md). */
   readonly staff?: StaffRules;
+  /** Absent: no house: no rooms, no upkeep, no bed limit (house/SPEC.md). */
+  readonly house?: HouseRules;
   /** Absent: no crises (crisis/SPEC.md). */
   readonly crises?: CrisisRules;
   readonly weeksPerYear: number;
@@ -144,6 +147,8 @@ export interface GuildState {
   career?: CareerState;
   /** Who runs training and recovery; absent when the rules have no staff. */
   staff?: StaffState;
+  /** The guild house's rooms and work; absent when the rules have no house. */
+  house?: HouseState;
   /** The standing crisis and those already had; absent until the first Assembly that checks. */
   crisis?: CrisisState;
   /** Real shape ids the board drew recently, oldest first, per danger (contract/SPEC.md). Engine-only: it can name a hidden twist, so views never read it. */
@@ -165,6 +170,8 @@ export type MoneyReason =
   | 'funeral'
   | 'sign-on'
   | 'staff'
+  | 'building'
+  | 'rooms'
   | 'emergency'
   | 'crisis';
 export type StopClass = 'must' | 'digest';
@@ -216,7 +223,26 @@ export type GuildCommand =
       readonly day: number;
       readonly area: Area;
     }
-  | { readonly type: 'patron.grant'; readonly id: string; readonly day: number };
+  | { readonly type: 'patron.grant'; readonly id: string; readonly day: number }
+  | {
+      readonly type: 'house.build';
+      readonly id: string;
+      readonly day: number;
+      readonly place: Place;
+      readonly kindId: string;
+    }
+  | {
+      readonly type: 'house.upgrade';
+      readonly id: string;
+      readonly day: number;
+      readonly place: Place;
+    }
+  | {
+      readonly type: 'house.extend';
+      readonly id: string;
+      readonly day: number;
+      readonly direction: ExtendDirection;
+    };
 
 export type GuildEventBody =
   | { readonly type: 'week.started'; readonly week: number; readonly year: number }
@@ -294,6 +320,27 @@ export type GuildEventBody =
       readonly wageCopper: number;
     }
   | { readonly type: 'staff.released'; readonly area: Area }
+  /** Work paid for and under way; `places` are copies, `kindId` and `level` (the level built or raised to) apply to build and upgrade, `direction` to extend (house/SPEC.md). */
+  | {
+      readonly type: 'house.started';
+      readonly job: HouseJob['kind'];
+      readonly places: readonly Place[];
+      readonly kindId?: string;
+      readonly level?: number;
+      readonly direction?: ExtendDirection;
+      readonly costCopper: number;
+      /** The absolute week at whose start the work is done. */
+      readonly doneWeek: number;
+    }
+  | {
+      readonly type: 'house.finished';
+      readonly job: HouseJob['kind'];
+      readonly places: readonly Place[];
+      readonly kindId?: string;
+      readonly level?: number;
+      readonly direction?: ExtendDirection;
+      readonly doneWeek: number;
+    }
   | {
       readonly type: 'stop.raised';
       readonly stopClass: StopClass;

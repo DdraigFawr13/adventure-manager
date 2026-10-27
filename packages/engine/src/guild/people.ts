@@ -5,6 +5,7 @@ import { streamFor } from '../core/rng.ts';
 import type { Adventurer, Attribute, Command, GameEvent, GameState } from '../resolution/types.ts';
 import { ATTRIBUTES } from '../resolution/types.ts';
 import { drawLife } from '../career/people.ts';
+import { bedsOf } from '../house/house.ts';
 import { guildTurn, type GuildTurn, pay } from './turn.ts';
 import type { GuildRules, Prospect } from './types.ts';
 
@@ -104,6 +105,9 @@ export function signRecruit(
 ): void {
   const turn = guildTurn(state, sink);
   if (command.day !== state.calendar) throw new Error(`Day ${command.day} is not today.`);
+  const { house } = turn.guild;
+  if (turn.rules.house && house && turn.guild.members.length >= bedsOf(house, turn.rules.house))
+    throw new Error('Every bed is taken.');
   const at = turn.guild.prospects.findIndex((p) => p.adventurer.id === command.prospectId);
   const person = turn.guild.prospects[at];
   if (!person) throw new Error(`${command.prospectId} is not on the shortlist.`);

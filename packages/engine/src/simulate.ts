@@ -8,6 +8,7 @@ import { EventSink } from './core/events.ts';
 import { takeContract } from './guild/board.ts';
 import { advanceDay, foundGuild } from './guild/day.ts';
 import { signRecruit } from './guild/people.ts';
+import { buildRoom, extendHouse, upgradeRoom } from './house/house.ts';
 import { hireStaff, releaseStaff } from './staff/areas.ts';
 import { chooseMoment, startQuest, stepQuest } from './resolution/quest.ts';
 import type { Command, GameEvent, GameState } from './resolution/types.ts';
@@ -59,6 +60,15 @@ export function apply(state: GameState, command: Command): readonly GameEvent[] 
       break;
     case 'staff.release':
       releaseStaff(state, command, sink);
+      break;
+    case 'house.build':
+      buildRoom(state, command, sink);
+      break;
+    case 'house.upgrade':
+      upgradeRoom(state, command, sink);
+      break;
+    case 'house.extend':
+      extendHouse(state, command, sink);
       break;
     case 'patron.grant':
       takeEmergency(state, command, sink);

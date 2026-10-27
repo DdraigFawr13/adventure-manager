@@ -66,8 +66,18 @@ export interface BuiltCell {
 }
 
 export type HouseJob =
-  | { readonly kind: 'build'; readonly place: Place; readonly kindId: string; readonly level: number }
-  | { readonly kind: 'upgrade'; readonly places: readonly Place[]; readonly toLevel: number }
+  | {
+      readonly kind: 'build';
+      readonly place: Place;
+      readonly kindId: string;
+      readonly level: number;
+    }
+  | {
+      readonly kind: 'upgrade';
+      readonly kindId: string;
+      readonly places: readonly Place[];
+      readonly toLevel: number;
+    }
   | { readonly kind: 'extend'; readonly direction: ExtendDirection };
 
 export interface HouseWork {

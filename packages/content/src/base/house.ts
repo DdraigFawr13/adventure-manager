@@ -8,7 +8,10 @@
 //   that, so a level-3 cell costs 7 times its base. HOUSE_COST_PERCENT scales every base; it is the
 //   one factor tuned so the reference full house (fullHousePlan) costs about 8-12 years of the
 //   middle tier's median surplus (D-172), measured at about 75,000 copper a year (career-sim,
-//   40 careers, 2026-10-27): 180% puts the plan near 725,000 by hand count, before tuning.
+//   40 careers, 2026-10-27). Measured with house=on (40 careers, 26 years): at 150% the plan costs
+//   610,000, 10.2 years of the middle tier's median surplus before building (59,782 a year); the
+//   first room is started and finished in year 1 (median; p90 year 5); room upkeep is about 14% of
+//   spending from year 10.
 // - Work: 4 weeks for a cell, 6 and 8 to raise a room to levels 2 and 3; a storey 6, a cellar 8, a
 //   wall 4. Work started in winter takes 75% of that (D-067, D-169).
 // - Upkeep per cell per week by level 5 / 10 / 20 (D-177).
@@ -19,7 +22,7 @@
 import type { GuildRules, HouseRules, Place, RoomKind } from '@adventure-manager/engine';
 import { careerGuildRules } from './career.ts';
 
-export const HOUSE_COST_PERCENT = 180;
+export const HOUSE_COST_PERCENT = 150;
 
 function kind(
   id: string,

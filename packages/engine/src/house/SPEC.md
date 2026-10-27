@@ -17,6 +17,7 @@ All building is by command, paid in full when it starts (`money.changed`, reason
 - `house.build` (place, kind): a new cell of that kind in an empty cell or plot. Next to a room of the same kind, the new cell joins it at that room's level and costs the kind's cell cost summed over levels 1 to that level; otherwise it is level 1.
 - `house.upgrade` (place of any cell of a room): raises every cell of the room that is at the room's level by one, at that level's cost per cell.
 - `house.extend` (direction): `up` adds an empty floor on top, `down` digs an empty cellar below the lowest floor, `west` or `east` adds an empty plot at the far end of that side, up to the content's maximum. Each step costs more than the last: the content's base plus its step for each one already added (D-172, D-183).
+- A second `house.extend` in a direction already under work is refused. A new cell counts same-kind cells under work toward the run's length cap.
 - Work time is the content's weeks for the job; a job started in winter takes `winterWeeksBp` of that, rounded up (best done in winter, D-067, D-169; the size of the saving is an assumption).
 - Events: `house.started` when paid, `house.finished` when done. Neither holds state objects.
 
