@@ -1258,3 +1258,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Amends D-192's fire and the house rule that building needs coin in the chest, for repairs only.
 - **Decision:** Rebuilding what a fire took (a burnt-out cell, or a lowered one back to its old level) is a repair: half the build cost of the levels it restores, the usual weeks of work, and allowed into debt like upkeep (D-190). Paying the fire watch may also go into debt. New building and upgrades still need the coin in the chest. The half is a content number.
 - **Why:** Owner's choice (2026-10-27), the recommended "Cheap repairs, into debt", over full-price repairs into debt, a fire that never burns out a cell, and keeping the rule with fires made rarer. In the simulator (100 careers × 26 years, fire only at 0.19 a year) a guild in debt couldn't rebuild burnt barracks, so its members lodged at the inn indefinitely, it couldn't sign anyone, and dismissals rose from 14% to 24%; one roster fell from 13 to 3.
+
+## D-194 Handoff and roadmap updates go straight to main
+
+- **Status:** Accepted (2026-10-27). Amends D-133 for session bookkeeping.
+- **Decision:** A commit that changes only `docs/HANDOFF.md` and `docs/roadmap.html` is pushed straight to `main`, with no pull request, review or approval. The docs check (`node tools/docs-check.mjs`) and the drift check still run before the push. Every other change, docs included, still goes through D-133.
+- **Why:** Owner (2026-10-27), after the end-of-session handoff needed a second pull request: "if it's just a doc change you should be pushing it automatically". Chosen over the recommended "last commit in the same PR" (exempt from re-review) and over keeping a second handoff PR.
