@@ -1,0 +1,274 @@
+<title>Step 4 Prototype</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+DW+Pica:ital@0;1&family=Sorts+Mill+Goudy:ital@0;1&display=swap">
+<style>
+/* Step 4 text prototype (R7, D-160, D-195–D-198): eight phone screens at real size, in plain text on paper.
+   Tokens from STYLE §2–§5 (candlelit oak, old-press type), as in mobile-hall-desk.html. */
+:root {
+  --desk: #3b2a1e; --desk2: #2c1f16; --desk3: #4a3626;
+  --paper: #efe4cc; --paper2: #e5d7b9; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5;
+  --seal: #8e2a22; --brass: #b8923e; --brass2: #d7b66a;
+  --good: #3f6f8f; --warn: #c08a1e; --bad: #8e2a22;
+  --chrome: #f1e6cf; --chrome2: #c8b48f;
+  --title: "IM Fell English SC", Georgia, serif;
+  --letter: "IM Fell DW Pica", Georgia, serif;
+  --ledger: "Sorts Mill Goudy", Georgia, serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--desk2); color: var(--chrome); font-family: var(--ledger); font-size: 16px; line-height: 1.5; font-variant-numeric: lining-nums; padding: 24px 16px 48px; }
+.page { max-width: 1240px; margin: 0 auto; display: grid; gap: 32px; }
+h1, h2, h3 { font-family: var(--title); font-weight: 400; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(1.9rem, 5vw, 2.8rem); color: var(--brass2); line-height: 1.1; }
+h2 { font-size: 1.5rem; color: var(--brass2); }
+p { margin: 0; }
+.lede { display: grid; gap: 10px; max-width: 72ch; color: var(--chrome2); }
+.lede b { color: var(--paper); font-weight: 400; }
+.tag { display: inline-block; font-family: var(--title); font-size: 15px; letter-spacing: .08em; color: var(--desk2); background: var(--brass); padding: 1px 8px; border-radius: 2px; }
+.phones { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px 24px; justify-items: center; }
+figure { margin: 0; display: grid; gap: 8px; width: 100%; max-width: 375px; align-content: start; }
+figcaption { color: var(--chrome2); font-size: .95rem; }
+figcaption b { color: var(--brass2); font-family: var(--title); font-weight: 400; letter-spacing: .03em; }
+
+/* Device */
+.device { width: 100%; height: 720px; border: 8px solid #15100b; border-radius: 30px; background: var(--paper); color: var(--ink); overflow: hidden; display: flex; flex-direction: column; font-size: 15px; line-height: 1.4; box-shadow: 0 10px 28px rgba(0,0,0,.5); }
+.top { flex: none; display: flex; align-items: baseline; gap: 8px; padding: 10px 12px 8px; background: var(--desk2); color: var(--chrome); border-bottom: 2px solid var(--brass); }
+.top .g { font-family: var(--title); color: var(--brass2); font-size: 16px; white-space: nowrap; }
+.top .d { margin-left: auto; font-size:15px; color: var(--chrome2); white-space: nowrap; }
+.body { flex: 1; min-height: 0; overflow: hidden; padding: 10px 14px; display: flex; flex-direction: column; gap: 10px; }
+.body h4 { font-family: var(--title); font-weight: 400; font-size: 18px; margin: 0; }
+.k { font-family: var(--title); font-size:15px; letter-spacing: .06em; color: var(--ink2); border-bottom: 1px solid var(--ink2); padding-bottom: 2px; }
+.muted { color: var(--ink2); }
+.row { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--rule); min-height: 44px; align-items: center; }
+.row .n { font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
+.name { color: var(--seal); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+.pill { display: inline-block; font-size:15px; padding: 0 7px; border-radius: 9px; color: var(--paper); white-space: nowrap; }
+.pill.good { background: var(--good); } .pill.warn { background: var(--warn); color: var(--ink); } .pill.bad { background: var(--bad); }
+.letter { font-family: var(--letter); font-size: 16px; line-height: 1.45; display: grid; gap: 8px; }
+.letter .sign { text-align: right; font-style: italic; }
+.btn { display: flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 4px; padding: 8px; font-family: var(--title); font-size: 16px; border: 1.5px solid var(--ink); background: transparent; color: var(--ink); }
+.btn.main { background: var(--seal); color: var(--paper); border-color: var(--seal); }
+.btns { display: flex; gap: 8px; } .btns .btn { flex: 1; }
+.seg { display: flex; border: 1.5px solid var(--ink); border-radius: 4px; overflow: hidden; }
+.seg span { flex: 1; text-align: center; min-height: 40px; display: grid; place-items: center; font-size:15px; border-right: 1px solid var(--ink); }
+.seg span:last-child { border-right: 0; }
+.seg span.on { background: var(--ink); color: var(--paper); }
+.hist { display: grid; gap: 4px; font-size: 15px; }
+.hist div { display: grid; grid-template-columns: 62px 1fr; gap: 6px; }
+.hist .when { color: var(--ink2); font-variant-numeric: lining-nums tabular-nums; font-size:15px; }
+.field { border: 1.5px solid var(--ink2); border-radius: 4px; min-height: 44px; padding: 8px 10px; background: #f6eedb; font-family: var(--letter); font-size: 16px; }
+.field.blank { color: var(--ink2); font-style: italic; }
+.pull { flex: none; background: var(--desk); color: var(--brass2); text-align: center; padding: 8px 0 6px; font-family: var(--title); font-size:15px; }
+.pull small { display: block; color: var(--chrome2); font-family: var(--ledger); font-size:15px; }
+.tabs { flex: none; display: flex; background: var(--desk2); border-top: 1px solid #5c4532; }
+.tabs span { flex: 1; text-align: center; min-height: 48px; display: grid; place-items: center; font-family: var(--title); font-size: 15px; color: var(--chrome2); }
+.tabs span.on { color: var(--brass2); box-shadow: inset 0 3px 0 var(--brass); }
+.bell { text-align: center; font-family: var(--title); color: var(--seal); letter-spacing: .2em; font-size:15px; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.notes > div { background: var(--desk3); border: 1px solid #5c4532; border-radius: 3px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; }
+.notes ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; color: var(--chrome2); }
+.notes h3 { font-size: 1.1rem; color: var(--brass2); }
+</style>
+
+<div class="page">
+  <header class="lede">
+    <span class="tag">Step 4 · R7 · for review</span>
+    <h1>The two-year text prototype</h1>
+    <p><b>What you'd play:</b> your guild for two in-game years on your phone, in sittings of 10–30 minutes. You pick contracts, send a standing party with a plan, sign recruits and answer letters. The house and staff run on defaults (D-195). Quests are told in letters home (D-197). Every adventurer keeps a dated history, a background line and friends (D-196). A death brings a memorial letter. When you pause, the page asks whom you remember (D-198).</p>
+    <p>Plain text on paper, the hub's four tabs (D-160). These screens are throwaway; the engine underneath is kept. Names, numbers and wording below are examples, not drawn from a real save.</p>
+  </header>
+
+  <section class="phones" aria-label="Prototype screens">
+
+    <figure>
+      <div class="device">
+        <div class="top"><span class="g">The Lantern Guild</span><span class="d">Wk 9 · Yr 1 · 412 s</span></div>
+        <div class="body">
+          <h4>The hall</h4>
+          <div class="k">Ground floor</div>
+          <div class="row"><span>Gate</span><span class="muted">level 1</span></div>
+          <div class="row"><span>Tavern · 3 at table</span><span class="muted">level 1</span></div>
+          <div class="k">First floor</div>
+          <div class="row"><span>Barracks · 9 of 10 beds</span><span class="pill warn">nearly full</span></div>
+          <div class="row"><span>Infirmary · <span class="name">Odric Hale</span>, 6 days</span><span class="muted">level 1</span></div>
+          <div class="k">Compound</div>
+          <div class="row"><span>Training yard · 4 at drill</span><span class="muted">level 1</span></div>
+          <p class="muted">The steward runs building and staff this year (D-195). Tap a room to see who is in it.</p>
+        </div>
+        <div class="pull">▼ Pull to continue<small>to Thursday: a party is due home</small></div>
+        <div class="tabs"><span class="on">Hall</span><span>March</span><span>Desk</span><span>Ask</span></div>
+      </div>
+      <figcaption><b>1 · Hall.</b> Home. The house as rooms in text, with who is in each. Pull down to move on until the next stop.</figcaption>
+    </figure>
+
+    <figure>
+      <div class="device">
+        <div class="top"><span class="g">The Lantern Guild</span><span class="d">Wk 9 · Yr 1 · 412 s</span></div>
+        <div class="body">
+          <h4>Desk</h4>
+          <div class="seg"><span class="on">Letters 3</span><span>Contracts 4</span><span>Roster</span><span>Year</span></div>
+          <div class="row"><span><b style="font-weight:400;font-family:var(--title)">● From Wenna Reed</b><br><span class="muted">We are home from the Hollow Barrow…</span></span><span class="n muted">today</span></div>
+          <div class="row"><span><b style="font-weight:400;font-family:var(--title)">● The Brothers of Saint Aldo</b><br><span class="muted">It is with sorrow…</span></span><span class="n muted">today</span></div>
+          <div class="row"><span><b style="font-weight:400;font-family:var(--title)">● The patron's clerk</b><br><span class="muted">Your target for the year stands…</span></span><span class="n muted">wk 8</span></div>
+          <div class="row"><span>Week 8 report<br><span class="muted">1 quest won, wages 96 s, chest 412 s</span></span><span class="n muted">wk 8</span></div>
+          <p class="muted">Letters that need an answer (a death, a fire, a signing window) stop the calendar until read.</p>
+        </div>
+        <div class="tabs"><span>Hall</span><span>March</span><span class="on">Desk</span><span>Ask</span></div>
+      </div>
+      <figcaption><b>2 · Desk.</b> Letters first, then contracts, the full roster and the year's numbers against the patron's target.</figcaption>
+    </figure>
+
+    <figure>
+      <div class="device">
+        <div class="top"><span class="g">Contract</span><span class="d">expires wk 11</span></div>
+        <div class="body">
+          <h4>Clear the Hollow Barrow</h4>
+          <p class="muted">Restless dead · perilous · twist: foul weather · 3 days out, 3 back · fee 180 s</p>
+          <div class="k">Party</div>
+          <div class="row"><span>The Fen Lanterns</span><span class="pill good">all fit</span></div>
+          <div class="hist" style="font-size:15px">
+            <div><span class="when">front</span><span><span class="name">Wenna Reed</span>, warrior · <span class="name">Bram Ketch</span>, warrior</span></div>
+            <div><span class="when">back</span><span><span class="name">Ash Thorne</span>, cleric · <span class="name">Kit Mallow</span>, rogue</span></div>
+          </div>
+          <p class="muted">Swap a member for this contract only: tap a name.</p>
+          <div class="k">Plan</div>
+          <div class="seg"><span>Stealth</span><span class="on">Assault</span><span>Talk</span></div>
+          <div class="seg"><span>Cautious</span><span class="on">Steady</span><span>Bold</span></div>
+          <div class="seg"><span>Badly hurt</span><span class="on">Down</span><span>Dying</span><span>Never</span></div>
+          <div class="btns" style="margin-top:auto"><span class="btn">Back</span><span class="btn main">Send them</span></div>
+        </div>
+      </div>
+      <figcaption><b>3 · Send a party.</b> A contract from the Desk: the standing party, swaps for this contract only, and the plan's three levers (D-014, D-121).</figcaption>
+    </figure>
+
+    <figure>
+      <div class="device">
+        <div class="top"><span class="g">A letter home</span><span class="d">Wk 9 · Yr 1</span></div>
+        <div class="body">
+          <div class="letter">
+            <p>Guildmaster,</p>
+            <p>We are home from the Hollow Barrow, the dead in it laid to rest again, though they did not care to go. The rain never stopped.</p>
+            <p><span class="name">Bram Ketch</span> held the passage while <span class="name">Kit Mallow</span> was carried out. <span class="name">Ash Thorne</span> kept Kit from slipping away on the fen road.</p>
+            <p>Kit will mend, the healer says, though slowly. We bring the fee and a little more besides.</p>
+            <p class="sign">Wenna Reed, for the Fen Lanterns</p>
+          </div>
+          <div class="k">Written into their histories</div>
+          <p class="muted">Bram: held the passage · Ash: saved Kit · Kit: badly hurt, out 4 weeks</p>
+          <div class="btns" style="margin-top:auto"><span class="btn main">File it</span></div>
+        </div>
+      </div>
+      <figcaption><b>4 · Letter home.</b> The quest report v0 (already in the engine) with tappable names; its deeds go into each person's history (D-196, D-197).</figcaption>
+    </figure>
+
+    <figure>
+      <div class="device">
+        <div class="top"><span class="g">Bram Ketch</span><span class="d">warrior · 27</span></div>
+        <div class="body">
+          <p class="letter" style="font-size:15px">Born in Withy Cross, a ferryman's son; poled barges on the Stour until the flood year.</p>
+          <div class="hist">
+            <div><span class="when">Might</span><span class="n">14 · Agility 11 · Grit 13 · Wits 9</span></div>
+            <div><span class="when">Record</span><span>7 quests · 6 won · 1 injury · 61 s a week</span></div>
+          </div>
+          <div class="k">Friends</div>
+          <p><span class="name">Kit Mallow</span> (6 quests together) · <span class="name">Wenna Reed</span> (5)</p>
+          <div class="k">History</div>
+          <div class="hist">
+            <div><span class="when">Wk 9 Y1</span><span>Held the passage at the Hollow Barrow while Kit was carried out.</span></div>
+            <div><span class="when">Wk 7 Y1</span><span>Became friends with Kit Mallow, after their sixth road together.</span></div>
+            <div><span class="when">Wk 6 Y1</span><span>Broke an arm at Gallows Ford; out 5 weeks.</span></div>
+            <div><span class="when">Wk 3 Y1</span><span>Grew stronger at drill (Might 13 → 14).</span></div>
+            <div><span class="when">Wk 1 Y1</span><span>Joined with the Fen Lanterns at the founding.</span></div>
+          </div>
+        </div>
+      </div>
+      <figcaption><b>5 · Person card.</b> Background line, numbers, friends, and a dated history of deeds drawn from recorded events (D-196).</figcaption>
+    </figure>
+
+    <figure>
+      <div class="device">
+        <div class="top"><span class="g">In memory</span><span class="d">Wk 23 · Yr 1</span></div>
+        <div class="body">
+          <p class="bell">· the bell tolls ·</p>
+          <div class="letter">
+            <p>Guildmaster,</p>
+            <p>It is with sorrow that we write. <span class="name">Kit Mallow</span> died at Coldharbour Mill on the twenty-third week, struck down by the miller's hounds as the party fell back.</p>
+            <p>Kit came to you from the Ferriby tanneries and served eleven quests. They are remembered for slipping the bolt at Gallows Ford, and for the night at the Hollow Barrow.</p>
+            <p><span class="name">Bram Ketch</span> carried Kit home and has not spoken since. <span class="name">Wenna Reed</span> asks that Kit's share go to the family.</p>
+            <p>We will lay Kit in the guild's ground on Thursday.</p>
+            <p class="sign">Brother Anselm, of Saint Aldo's</p>
+          </div>
+          <div class="btns" style="margin-top:auto"><span class="btn">Kit's card</span><span class="btn main">Close</span></div>
+        </div>
+      </div>
+      <figcaption><b>6 · Memorial letter.</b> Written sincerely (D-059) from Kit's history: where they came from, deeds, how they fell, and friends' reactions (PLAN §8b).</figcaption>
+    </figure>
+
+    <figure>
+      <div class="device">
+        <div class="top"><span class="g">The March</span><span class="d">Wk 9 · Yr 1 · 412 s</span></div>
+        <div class="body">
+          <h4>On the road</h4>
+          <div class="row"><span>The Reed Wardens → Gallows Ford<br><span class="muted">arrive Tue, home Sat</span></span><span class="pill warn">hazardous</span></div>
+          <div class="k">At home</div>
+          <div class="row"><span>The Fen Lanterns</span><span class="muted">resting, 1 hurt</span></div>
+          <div class="row"><span>Unassigned · 2</span><span class="muted">Hob Pike, Essa Carr</span></div>
+          <div class="k">Places</div>
+          <div class="row"><span>Hollow Barrow</span><span class="muted">3 days · won wk 9</span></div>
+          <div class="row"><span>Gallows Ford</span><span class="muted">2 days · lost wk 6</span></div>
+          <div class="row"><span>Coldharbour Mill</span><span class="muted">4 days</span></div>
+          <p class="muted">A text list for now; the map comes with the engine test (D-164).</p>
+        </div>
+        <div class="tabs"><span>Hall</span><span class="on">March</span><span>Desk</span><span>Ask</span></div>
+      </div>
+      <figcaption><b>7 · March.</b> Parties on the road and at home, and places with their last result. Standing parties are kept and named here (D-014).</figcaption>
+    </figure>
+
+    <figure>
+      <div class="device">
+        <div class="top"><span class="g">Before you go</span><span class="d">sitting 3 · 24 min</span></div>
+        <div class="body">
+          <p class="letter">Name three of your adventurers and something that happened to them. From memory: the roster is hidden.</p>
+          <div class="field">Bram, he held the barrow door</div>
+          <div class="field">Kit, died at the mill, Bram carried them home</div>
+          <div class="field blank">Third name…</div>
+          <p class="muted">Kept with this sitting's log in your phone's save. Nothing is sent anywhere.</p>
+          <div class="btns" style="margin-top:auto"><span class="btn">Skip</span><span class="btn main">Save and copy report</span></div>
+          <p class="muted" style="font-size:15px">Paste the report into the chat; the session checks it against what happened (D-198).</p>
+        </div>
+      </div>
+      <figcaption><b>8 · Pause.</b> The R7 check, asked when you stop a sitting. Ask (the fourth tab) answers a few plain questions: who is fit, when wages fall due, what the patron wants.</figcaption>
+    </figure>
+
+  </section>
+
+  <section class="notes" aria-label="What this needs">
+    <div>
+      <h3>Engine work (kept)</h3>
+      <ul>
+        <li>Standing parties: named, kept between quests, reshuffled per contract (D-014).</li>
+        <li>Histories: a person's dated entries read from events (deeds from the quest report, wounds, injuries, growth, joining, friends made).</li>
+        <li>Backgrounds: a home and former trade drawn on its own stream, words in content.</li>
+        <li>Bonds: friends after a number of quests together (a content number); flavour only.</li>
+        <li>Memorial letter: a template family like the quest report, with friends' reactions.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Page work (throwaway)</h3>
+      <ul>
+        <li>Four tabs and the pull to continue, in plain text at 15 px and up.</li>
+        <li>Daily autosave in the browser (Ironman, D-033); a new-game button.</li>
+        <li>Default player for house and staff (the simulator's policy).</li>
+        <li>The pause check and Copy report (D-198).</li>
+        <li>Built by Vercel from <code>main</code> for your phone (D-161, D-167).</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Still open</h3>
+      <ul>
+        <li>How many quests together make friends (assumption: 5).</li>
+        <li>Who writes the memorial: the guild's chaplain or the party's leader.</li>
+        <li>Whether the founding draft (D-188) opens the game, or a fixed start.</li>
+      </ul>
+    </div>
+  </section>
+</div>

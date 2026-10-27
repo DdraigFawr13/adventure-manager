@@ -1264,3 +1264,33 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Amends D-133 for session bookkeeping.
 - **Decision:** A commit that changes only `docs/HANDOFF.md` and `docs/roadmap.html` is pushed straight to `main`, with no pull request, review or approval. The docs check (`node tools/docs-check.mjs`) and the drift check still run before the push. Every other change, docs included, still goes through D-133.
 - **Why:** Owner (2026-10-27), after the end-of-session handoff needed a second pull request: "if it's just a doc change you should be pushing it automatically". Chosen over the recommended "last commit in the same PR" (exempt from re-review) and over keeping a second handoff PR.
+
+## D-195 Step 4 prototype: the player runs the people, the house and staff run on defaults
+
+- **Status:** Accepted (2026-10-27). Sets the scope of PLAN §9b step 4 (R7, D-160).
+- **Decision:** In the two-year text prototype the player chooses contracts, which party goes and its plan, signs recruits and answers letters (deaths, incidents, the patron). House building and staff run on sensible defaults, shown but not managed. The prototype adds what R7 tests: people's histories, person cards and memorial letters.
+- **Why:** Owner's choice (2026-10-27), the recommended "Focused on people", over every engine system playable (more screens, a risk to the 4–6 week box) and watch-only (attachment without choices may say little about the real game). R7's pass line is naming 3 adventurers and something that happened to them.
+
+## D-196 Step 4 histories: deeds, a background line and bonds from shared quests
+
+- **Status:** Accepted (2026-10-27). For the step 4 prototype (D-195); serves PLAN §8b rule 6 (deaths are never quiet).
+- **Decision:** Each adventurer has a dated history of deeds drawn from recorded events (quests, wounds, rescues, falls, injuries, growth), a one-line background (home and former trade) and bonds: comrades who go out together often become friends, and friends react in the memorial letter. Bonds are flavour only, with no rule effect until party chemistry (D-014) is designed. Traits (D-075) wait for their own workshop.
+- **Why:** Owner's choice (2026-10-27), the recommended "Deeds + background + bonds", over deeds only (no friends' reactions, short of PLAN §8b) and adding traits (needs rules to mean anything, pulling a trait workshop into step 4).
+
+## D-197 Step 4 quests are told in letters home
+
+- **Status:** Accepted (2026-10-27). For the step 4 prototype (D-195).
+- **Decision:** Contract quests resolve while the party is away, as in the year simulator, with the leader's call answering every moment (D-125). The player reads the party's letter home (quest report v0) when they return, and its deeds go into each person's history (D-196). Watching a contract beat by beat is not in step 4.
+- **Why:** Owner's choice (2026-10-27), the recommended "Letters home", over watching any quest and over letters with a stop on danger; both of those need the contract path made steppable in the engine and a phone version of the R1 view. Letters fit short phone sittings (D-153).
+
+## D-198 Step 4 records the R7 check on the page, and the owner sends it
+
+- **Status:** Accepted (2026-10-27). For the step 4 prototype (D-195); PLAN §9a R7, §10b.
+- **Decision:** When the owner pauses a sitting, the page asks, with the roster out of sight, "Name three of your adventurers and something that happened to them". It keeps the answers with a short play log in the browser's save, and a Copy report button gives text the owner pastes into the chat. The session checks the answers against the save's recorded events. No backend.
+- **Why:** Owner's choice (2026-10-27), the recommended "Page asks, you send", over telling the session in chat (nothing to check the answers against) and hosting as a claude.ai artifact (against D-161, which puts phone builds on Vercel).
+
+## D-199 Step 4 screens approved as a prototype; friends after 5 quests, the chaplain writes, the draft opens
+
+- **Status:** Accepted (2026-10-27). For the step 4 prototype (D-195–D-198).
+- **Decision:** The eight phone screens in `docs/design/mockups/step4-prototype.html` (Hall, Desk, Send a party, Letter home, Person card, Memorial letter, March, Pause check) are the plan for the prototype's page. Two people become friends after 5 quests together (a content number). The guild's chaplain writes memorial letters; friends and the party leader appear as reactions. Each new game opens with the founding draft (D-188).
+- **Why:** Owner (2026-10-27) on the mock-up (https://claude.ai/artifact/Juj8jvugedBsjqhaY4Brm8): "Approved but just as a prototype it will need a lot of polishing later". The three open points: the recommended "5 quests, chaplain, draft", over the leader writing (needs a fallback when the leader dies) and 3 quests with a fixed start.
