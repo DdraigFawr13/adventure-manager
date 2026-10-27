@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-10-27 (end of the eighth session; PR #32 merged, 3393c0f). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-10-27 (end of the ninth session; PR #33 merged, 311e0bf). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
@@ -17,11 +17,13 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 - 2026-10-27 Incidents (D-190–D-193): an unpaid inn fee is debt; neglect = low level + debt (+ full rooms); fire, break-in, sickness as letters with a paid answer and a free default; repairs after a fire cost half and may go into debt (the simulator showed burnt barracks trapping indebted guilds: 24% dismissed, now 12–16%). Engine: `house/house.ts` (rolls, letters, lodgers' inn fee, `house.repair`); content `baseIncidentRules`; measured 1.24 incidents a year, 12% dismissed (14% without), full house year 13 (12 without). Run: `node tools/career-sim.ts 100 26 default off 7 take on balanced on`.
 
+- 2026-10-27 Step 4 text prototype designed with the owner (D-195–D-199, PR #33): the player runs the people (contracts, standing parties and plans, recruits, letters), house and staff on defaults; histories of deeds, a background line and bonds (friends after 5 quests, flavour only); quests told in letters home, leaders take retreat calls (prototype-only exception to D-032/D-038, owner approved); the page asks the R7 question at pause and the owner pastes a Copy report into chat; the chaplain writes memorials; the founding draft opens. Mock-up: https://claude.ai/artifact/Juj8jvugedBsjqhaY4Brm8 (`docs/design/mockups/step4-prototype.html`); review: https://claude.ai/artifact/6PsSCk3yqtPz8Jwk2gDQAf.
+
 ## Next
 
-1. House incidents follow-ups (D-173, merged in PR #32): the owner hasn't confirmed the incident numbers; sickness is rare (0.07 a year) because the barracks is seldom full after year 1; the inn fee is one number until the town's inn is in the engine. Review: https://claude.ai/artifact/RGLFzTRbGgAbMmFmZJ6wZ9.
+1. Build step 4 to D-195–D-199 and the mock-up, in two PRs. (a) Engine: standing parties (D-014), backgrounds on their own stream, bonds, histories read from events (quest report deeds), the memorial letter family in content with a golden test; spec in `guild/SPEC.md` or a new `history/SPEC.md`. (b) Page in `packages/ui` (Vercel builds `main`, `vercel.json`): four tabs, pull to continue, daily autosave in the browser, default player for house and staff (the simulator's policy), the pause check and Copy report.
+2. House incidents follow-ups (D-173, merged in PR #32): the owner hasn't confirmed the incident numbers; sickness is rare (0.07 a year) because the barracks is seldom full after year 1; the inn fee is one number until the town's inn is in the engine. Review: https://claude.ai/artifact/RGLFzTRbGgAbMmFmZJ6wZ9.
    Also open from this work: compare D-187's total growth with house off (its aim is "near today's"); measure the green party's long-run payoff (D-188); the owner hasn't confirmed the draft's purse and fee numbers; the town sites (D-171, D-179, D-184) are designed but not in the engine.
-2. Step 4, the two-year text prototype (R7) as a phone-first web page (D-160), with histories and memorial letters; standing parties (D-014, D-142) join here.
 3. Engine test verdict (D-110, D-154, D-167): rebuild the engine test as a phone web page on the Vercel link, with an on-page frame-rate panel; the owner judges it on their phone (60 fps map with smooth pinch, 15 px text, screen reader). The map is free pan and zoom with tappable towns, places, parties and events opening a pop-up with details and a placeholder image (D-164).
 4. Gear (D-143): workshop with the owner before the year simulator uses gear.
 5. R1 notes (D-132): hidden items and branching paths wait for quest design. Tuning left: reckless doubles deaths only on perilous work; injuries per death ~2.5–5 on composed contracts (target ~5).
