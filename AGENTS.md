@@ -26,6 +26,7 @@ No game code before phase 3 is approved.
 - Every push: `node .claude/master/sync.mjs --check` and `node tools/docs-check.mjs` (decision ids exist; no draft markers left in accepted PLAN sections).
 - Every HTML mock-up or page before publishing: `node tools/mockup-shot.mjs <file>` (desktop and phone render, fonts, no sideways scroll), then look at the screenshots (VER-06).
 - Every push that touches code: `npm run check` (format, typecheck, package boundaries, tests). Install with npm 11 (`npx npm@11.9.0 ci`); npm 10 crashes on this lockfile's optional peers.
+- Chain checks, commit and push with `&&`, never `;`, so a failed check stops the commit (LESSONS ×2).
 - Code rules: `docs/STANDARDS.md`; each package's `AGENTS.md` adds its local rules.
 
 ## What CI runs
