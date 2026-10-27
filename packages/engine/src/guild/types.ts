@@ -6,6 +6,18 @@ import type { ExtendDirection, HouseJob, HouseRules, HouseState, Place } from '.
 import type { Area, StaffRules, StaffState } from '../staff/types.ts';
 import type { Adventurer, Attribute, Danger, Plan, QuestOutcome } from '../resolution/types.ts';
 
+/** Standing parties (D-014, SPEC.md): name ids drawn for new parties, and the plan a new party starts with. */
+export interface StandingRules {
+  readonly names: readonly string[];
+  readonly defaultPlan: Plan;
+}
+
+/** Homes and former trades drawn people come from (D-196, SPEC.md); content ids, words in content. */
+export interface BackgroundRules {
+  readonly homes: readonly string[];
+  readonly trades: readonly string[];
+}
+
 export interface DangerRules {
   readonly danger: Danger;
   /** Share of new offers (whole-number weight). */
@@ -97,6 +109,10 @@ export interface GuildRules {
   readonly crises?: CrisisRules;
   /** Absent: `guild.found` draws `size` people and pays `startingChestCopper` (SPEC.md, Founding draft). */
   readonly founding?: FoundingRules;
+  /** Absent: no standing parties (SPEC.md, Standing parties). */
+  readonly standing?: StandingRules;
+  /** Absent: drawn people have no background (SPEC.md, Backgrounds). */
+  readonly backgrounds?: BackgroundRules;
   readonly weeksPerYear: number;
   readonly daysPerWeek: number;
   /** Weeks 1..assemblyWeeks are the Assembly; winter starts at winterFromWeek. */
@@ -164,8 +180,18 @@ export interface Offer {
   readonly crisis?: CrisisLink;
 }
 
+/** A named party kept between quests (D-014); sending it is `contract.take` with its id. */
+export interface StandingParty {
+  readonly id: string;
+  readonly nameId: string;
+  readonly memberIds: string[];
+  plan: Plan;
+}
+
 export interface Party {
   readonly id: string;
+  /** The standing party sent, if any; the members and plan are this contract's own. */
+  readonly standingId: string | null;
   readonly memberIds: string[];
   readonly plan: Plan;
   readonly offer: Offer;
@@ -185,6 +211,8 @@ export interface GuildState {
   readonly members: GuildMember[];
   readonly board: Offer[];
   readonly parties: Party[];
+  /** Standing parties (SPEC.md); empty without standing rules. */
+  readonly standing: StandingParty[];
   readonly prospects: Prospect[];
   /** The founding draft awaiting `guild.pick`; absent without founding rules and once picked. */
   draft?: Draft;
@@ -202,6 +230,7 @@ export interface GuildState {
   nextOfferNo: number;
   nextPartyNo: number;
   nextPersonNo: number;
+  nextStandingNo: number;
 }
 
 export type { CareerEnd, TargetKind };
@@ -263,6 +292,30 @@ export type GuildCommand =
       readonly day: number;
       readonly offerId: string;
       readonly partyIds: readonly string[];
+      readonly plan: Plan;
+      /** The standing party sent; the members and plan above may differ for this contract only. */
+      readonly standingId?: string;
+    }
+  | {
+      readonly type: 'party.form';
+      readonly id: string;
+      readonly day: number;
+      readonly memberIds: readonly string[];
+      readonly plan: Plan;
+    }
+  | {
+      readonly type: 'party.assign';
+      readonly id: string;
+      readonly day: number;
+      readonly memberId: string;
+      /** Null leaves the member unassigned. */
+      readonly standingId: string | null;
+    }
+  | {
+      readonly type: 'party.plan';
+      readonly id: string;
+      readonly day: number;
+      readonly standingId: string;
       readonly plan: Plan;
     }
   | {
@@ -334,7 +387,21 @@ export type GuildEventBody =
       readonly reason: MoneyReason;
       readonly chestCopper: number;
     }
-  | { readonly type: 'party.departed'; readonly arriveDay: number; readonly homeDay: number }
+  | {
+      readonly type: 'party.departed';
+      readonly arriveDay: number;
+      readonly homeDay: number;
+      readonly standingId: string | null;
+    }
+  /** Standing parties (SPEC.md): subjects are the standing party, then its members for `formed`. */
+  | { readonly type: 'party.formed'; readonly nameId: string; readonly plan: Plan }
+  | {
+      readonly type: 'party.assigned';
+      readonly from: string | null;
+      readonly to: string | null;
+    }
+  | { readonly type: 'party.planned'; readonly plan: Plan }
+  | { readonly type: 'party.disbanded' }
   | { readonly type: 'party.returned'; readonly outcome: QuestOutcome }
   | { readonly type: 'renown.changed'; readonly amount: number; readonly renown: number }
   | { readonly type: 'member.recovered' }

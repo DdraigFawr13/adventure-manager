@@ -24,6 +24,7 @@ function withReturningParty(run: Run, outcome: QuestOutcome): Run {
   for (const m of guild.members) if (ids.includes(m.id)) m.away = true;
   guild.parties.push({
     id: 'party.test',
+    standingId: null,
     memberIds: ids,
     plan: steadyPlan,
     offer: {

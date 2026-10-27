@@ -30,11 +30,26 @@ The calendar, the contract board, wages, recovery and recruitment for one guild,
 
 ## Invariants
 
-Money adds up (every `money.changed` carries the running chest; the last equals the state), no adventurer is in two parties, the dead are in no party and on no wage list, every event has a cause, and the resolution invariants hold for every quest.
+Money adds up (every `money.changed` carries the running chest; the last equals the state), no adventurer is in two parties (out or standing), standing parties hold only living members and none is empty, the dead are in no party and on no wage list, every event has a cause, and the resolution invariants hold for every quest.
 
 ## Derived state
 
 Some fields are bookkeeping read back from events, not changes of their own: who is away (set by `party.departed`, cleared by `party.returned`), the day a member is fit again (shown by `member.recovered`), today's date (the command's day), and the shortlist being emptied outside a window (it only ever holds the last `prospect.listed`). They need no events of their own.
+
+## Standing parties (D-014, step 4)
+
+With `standing` rules in content, the guild keeps named standing parties between quests (D-014, D-195). Each has an id (`sp.N`), a name id drawn from content's list on its own stream (`guild.party-names`, never a name another standing party holds), its members (up to the party maximum, never fewer than one) and a default plan.
+
+- **At the founding:** `guild.pick` forms the picked starter party as the first standing party with content's default plan; extras stay unassigned. Without the draft nobody is in a standing party until the player forms one.
+- **`party.form`** (member ids, plan): a new standing party. Each member leaves any standing party they were in. **`party.assign`** (member id, standing id or null): moves one member, or leaves them unassigned. **`party.plan`** (standing id, plan): sets the default plan. A standing party left with nobody is disbanded. All refuse unknown or departed people and parties over the maximum; being away or recovering does not matter (the roster is a plan, not a departure).
+- **Sending one:** `contract.take` may name a standing party (`standingId`). The members and plan sent are the command's, so a swap or a different plan holds for this contract only and the standing party is unchanged. The party out remembers which standing party it was (`party.departed` carries `standingId`, null when none). Size, fitness and away checks are `contract.take`'s as before.
+- **Leaving:** a member who dies or retires leaves their standing party in the same command (`party.assigned` to none, caused by the death or the retirement); a party left empty is disbanded.
+- Events: `party.formed` (name id, plan), `party.assigned` (from, to; subject the member), `party.planned` (plan), `party.disbanded`. Standing parties have no rule effect: chemistry waits for its own design (D-014, D-196).
+- Without `standing` rules nothing here runs and the simulator is unchanged.
+
+## Backgrounds (D-196)
+
+With `backgrounds` in content, each drawn person gets a home and a former trade (content ids) on their own stream (`guild.backgrounds`; the founding draft's `guild.founding-backgrounds`), drawn after the person's other draws, so no other roll moves. They are words only (history/SPEC.md writes the line).
 
 ## Founding draft (D-188)
 

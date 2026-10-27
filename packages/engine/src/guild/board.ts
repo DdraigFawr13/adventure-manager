@@ -135,6 +135,9 @@ export function takeContract(
   const offer = guild.board[at];
   if (!offer) throw new Error(`${command.offerId} is not on the board.`);
   const ids = command.partyIds;
+  const standingId = command.standingId ?? null;
+  if (standingId !== null && !guild.standing.some((p) => p.id === standingId))
+    throw new Error(`There is no standing party ${standingId}.`);
   const { min, max } = rules.partySize;
   if (ids.length < min || ids.length > max)
     throw new Error(`A party has ${min}–${max} members, not ${ids.length}.`);
@@ -149,6 +152,7 @@ export function takeContract(
   const arriveDay = state.calendar + offer.travelDays;
   const party = {
     id: `party.${guild.nextPartyNo}`,
+    standingId,
     memberIds: [...ids],
     plan: { ...command.plan },
     offer,
@@ -164,5 +168,6 @@ export function takeContract(
     subjectIds: [party.id, offer.id, ...ids],
     arriveDay,
     homeDay: party.homeDay,
+    standingId,
   });
 }

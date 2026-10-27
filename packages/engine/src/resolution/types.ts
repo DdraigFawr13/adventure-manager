@@ -41,6 +41,8 @@ export interface Adventurer {
   readonly birthYear?: number;
   readonly potential?: Readonly<Record<Attribute, number>>;
   readonly retiredYear?: number;
+  /** Home and former trade (content ids, guild/SPEC.md Backgrounds); words only. */
+  readonly background?: { readonly home: string; readonly trade: string };
   readonly classId: string;
   readonly position: Position;
   readonly attributes: Readonly<Record<Attribute, number>>;

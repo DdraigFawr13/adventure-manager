@@ -327,27 +327,40 @@ function capitalise(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-/** The living members' best deeds, one per person, in the content's order of preference. */
-function deedItems(
+/** One member's deed on one quest: the kind, its line's family, the count and, for a save, who. */
+export interface DeedNote {
+  readonly id: string;
+  readonly kind: DeedKind;
+  readonly family: string;
+  readonly count: number;
+  readonly patientId?: string;
+}
+
+/**
+ * The living members' best deeds, one per person, in the content's order of preference; people in
+ * `exclude` get none (the letter leaves out its writer). The chronicle uses the same pass (history/SPEC.md).
+ */
+export function assignDeeds(
   summary: QuestSummary,
-  text: ReportText,
-  person: (id: string) => PersonSlot,
-): Item[] {
+  deeds: ReportText['deeds'],
+  exclude: readonly string[],
+): DeedNote[] {
   const dead = new Set(summary.deaths.map((d) => d.id));
-  const items: Item[] = [];
-  // The writer does not praise themself; their deeds go unwritten.
-  const used = new Set<string>(summary.writerId ? [summary.writerId] : []);
-  for (const deed of text.deeds) {
+  const notes: DeedNote[] = [];
+  const used = new Set<string>(exclude);
+  for (const deed of deeds) {
     if (deed.kind === 'saved') {
       const save = summary.saves.find(([healer]) => !used.has(healer));
       if (!save) continue;
       const [healer, patient] = save;
       used.add(healer);
       if (dead.has(healer)) continue;
-      items.push({
+      notes.push({
+        id: healer,
+        kind: deed.kind,
         family: deed.family,
-        vars: { who: person(healer), patient: person(patient) },
-        facts: [],
+        count: 1,
+        patientId: patient,
       });
       continue;
     }
@@ -360,11 +373,29 @@ function deedItems(
       .sort((a, b) => count(b) - count(a) || (a < b ? -1 : 1))[0];
     if (!best) continue;
     used.add(best);
-    items.push({
-      family: deed.family,
-      vars: { who: person(best), count: count(best) },
-      facts: [count(best) === 1 ? 'once' : 'many'],
-    });
+    notes.push({ id: best, kind: deed.kind, family: deed.family, count: count(best) });
   }
-  return items;
+  return notes;
+}
+
+/** The letter's deeds: every member's but the writer's (the writer does not praise themself). */
+function deedItems(
+  summary: QuestSummary,
+  text: ReportText,
+  person: (id: string) => PersonSlot,
+): Item[] {
+  return assignDeeds(summary, text.deeds, summary.writerId ? [summary.writerId] : []).map(
+    (note): Item =>
+      note.patientId !== undefined
+        ? {
+            family: note.family,
+            vars: { who: person(note.id), patient: person(note.patientId) },
+            facts: [],
+          }
+        : {
+            family: note.family,
+            vars: { who: person(note.id), count: note.count },
+            facts: [note.count === 1 ? 'once' : 'many'],
+          },
+  );
 }

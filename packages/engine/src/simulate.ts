@@ -9,6 +9,7 @@ import { takeContract } from './guild/board.ts';
 import { advanceDay, foundGuild } from './guild/day.ts';
 import { pickDraft } from './guild/founding.ts';
 import { signRecruit } from './guild/people.ts';
+import { standingCommand } from './guild/standing.ts';
 import { answerIncident, buildRoom, extendHouse, repairRoom, upgradeRoom } from './house/house.ts';
 import { hireStaff, releaseStaff } from './staff/areas.ts';
 import { chooseMoment, startQuest, stepQuest } from './resolution/quest.ts';
@@ -55,6 +56,11 @@ export function apply(state: GameState, command: Command): readonly GameEvent[] 
       break;
     case 'contract.take':
       takeContract(state, command, sink);
+      break;
+    case 'party.form':
+    case 'party.assign':
+    case 'party.plan':
+      standingCommand(state, command, sink);
       break;
     case 'recruit.sign':
       signRecruit(state, command, sink);

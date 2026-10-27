@@ -1281,6 +1281,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-27). For the step 4 prototype (D-195).
 - **Decision:** Contract quests resolve while the party is away, as in the year simulator, with the leader's call answering every moment (D-125). The player reads the party's letter home (quest report v0) when they return, and its deeds go into each person's history (D-196). Watching a contract beat by beat is not in step 4. This is a prototype-only exception to D-032 and D-038 (major moments stop the calendar and are never delegated): in step 4 the leader also takes the major retreat calls, as in the year simulator. The full game keeps those stops. The owner approved the exception on review (2026-10-27).
+- **Owner's note (2026-10-27):** "For now danger later": letters only in the prototype; in the full game, letters with a stop when a party is in danger (the "letters, watch on danger" option), so major retreat calls come to the player (D-032, D-038). How it works is Proposed until designed with the owner.
 - **Why:** Owner's choice (2026-10-27), the recommended "Letters home", over watching any quest and over letters with a stop on danger; both of those need the contract path made steppable in the engine and a phone version of the R1 view. Letters fit short phone sittings (D-153).
 
 ## D-198 Step 4 records the R7 check on the page, and the owner sends it
@@ -1294,3 +1295,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). For the step 4 prototype (D-195–D-198).
 - **Decision:** The eight phone screens in `docs/design/mockups/step4-prototype.html` (Hall, Desk, Send a party, Letter home, Person card, Memorial letter, March, Pause check) are the plan for the prototype's page. Two people become friends after 5 quests together (a content number). The guild's chaplain writes memorial letters; friends and the party leader appear as reactions. Each new game opens with the founding draft (D-188).
 - **Why:** Owner (2026-10-27) on the mock-up (https://claude.ai/artifact/Juj8jvugedBsjqhaY4Brm8): "Approved but just as a prototype it will need a lot of polishing later". The three open points: the recommended "5 quests, chaplain, draft", over the leader writing (needs a fallback when the leader dies) and 3 quests with a fixed start.
+
+## D-200 The step 4 prototype takes the main Vercel link; the Quest Watch moves aside
+
+- **Status:** Accepted (2026-10-27). For the step 4 page (D-199) on Vercel (D-161, D-167).
+- **Decision:** When the prototype's page merges, it is the page at the root of the Vercel link. The R1 Quest Watch moves to `/quest-watch.html` so it stays reachable.
+- **Why:** Owner's choice (2026-10-27), the recommended option: "Go with recommended". The owner asked why the Vercel link still showed the Quest Watch; it is the only page `vercel.json` builds (`packages/ui/index.html`), and the prototype is what the owner will play repeatedly.
