@@ -222,7 +222,7 @@ export function pull(save: Save): number {
   return days;
 }
 
-/** Weeks of spending the default player keeps in the chest after paying for a step (the simulator's, D-204). */
+/** Weeks of spending the default player keeps in the chest after paying for a step (the simulator's, D-205). */
 const HOUSE_RESERVE_WEEKS = 24;
 
 const samePlace = (a: Place, b: Place) =>

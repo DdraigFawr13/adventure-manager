@@ -96,7 +96,7 @@ export interface RunOptions {
 /** With the house on: the roster the policy grows toward as beds allow. */
 const HOUSE_ROSTER = 15;
 
-/** Weeks of spending the house policy keeps in the chest after paying for a step (24 since D-204; at 12, most guilds built themselves into debt in year 1). */
+/** Weeks of spending the house policy keeps in the chest after paying for a step (24 since D-205; at 12, most guilds built themselves into debt in year 1). */
 const HOUSE_RESERVE_WEEKS = 24;
 
 export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tracked {

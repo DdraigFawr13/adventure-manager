@@ -15,10 +15,8 @@
 // the character named by party (default balanced) and the 2 cheapest extras. With party=compare, each
 // seed is played with all three characters and the report compares them (dismissals, year-1 chest,
 // first-year renown, bad starts); the main report is the balanced party's. The size is unused then.
-// Careers run on worker threads across the machine's cores (D-148); results are put back in seed
-// order, so the report is the same however many threads ran it. CAREER_SIM_THREADS overrides.
-import { availableParallelism } from 'node:os';
-import { Worker } from 'node:worker_threads';
+// Careers run on worker threads across the machine's cores (tools/balance/pool.ts, D-148).
+// For named scenarios, targets with intervals and baselines, use tools/balance/run.ts.
 import { PLAYER_ID } from '@adventure-manager/engine';
 import {
   baseFoundingRules,
@@ -29,6 +27,7 @@ import {
 } from '@adventure-manager/content';
 import { pct, type Career, type CareerJob, type CareerSetup } from './career-play.ts';
 import { GUILD_SIZE, POLICIES } from './year-sim-play.ts';
+import { playCareers } from './balance/pool.ts';
 
 const careers = Number(process.argv[2] ?? 100);
 const maxYears = Number(process.argv[3] ?? 40);
@@ -95,34 +94,8 @@ const delegated = pick((j) => j.delegate);
 const cautious = comparePolicies ? pick((j) => j.policy === 'cautious') : [];
 const bold = comparePolicies ? pick((j) => j.policy === 'bold') : [];
 
-/** Deals the jobs round-robin to worker threads and returns the careers in job order. */
-async function playAll(all: readonly CareerJob[]): Promise<Career[]> {
-  const threads = Math.max(
-    1,
-    Math.min(all.length, Number(process.env.CAREER_SIM_THREADS ?? availableParallelism())),
-  );
-  const out: Career[] = new Array(all.length);
-  await Promise.all(
-    Array.from({ length: threads }, (_, t) => {
-      const mine = all.map((job, index) => ({ index, job })).filter((_, i) => i % threads === t);
-      return new Promise<void>((resolve, reject) => {
-        const worker = new Worker(new URL('./career-worker.ts', import.meta.url), {
-          workerData: { setup, jobs: mine },
-        });
-        worker.on('message', (m: { index: number; career: Career }) => (out[m.index] = m.career));
-        worker.on('error', reject);
-        worker.on('exit', (code) =>
-          code === 0 ? resolve() : reject(new Error(`A career thread stopped with code ${code}.`)),
-        );
-      });
-    }),
-  );
-  // A thread that ends without reporting every career would leave a gap; fail rather than print
-  // a report over fewer careers.
-  const missing = all.findIndex((_, i) => out[i] === undefined);
-  if (missing >= 0)
-    throw new Error(`No result for ${all[missing]!.seed} (${all[missing]!.policy}).`); // non-null: an index of all.
-  return out;
+function playAll(all: readonly CareerJob[]): Promise<Career[]> {
+  return playCareers(all.map((job) => ({ setup, job })));
 }
 
 console.log(

@@ -1,4 +1,4 @@
-// Pure logic of the phone map (D-154, D-164, D-203): pinch maths, tap and hit tests, the game clock
+// Pure logic of the phone map (D-154, D-164, D-204): pinch maths, tap and hit tests, the game clock
 // and the frame-rate statistics. No DOM here, so the tests run it directly.
 import type { Camera } from '../map/map-camera.ts';
 import type { Mark } from '../map/map-scene.ts';
@@ -62,7 +62,7 @@ export function hitMark(
   return best;
 }
 
-/** The game clock (D-203): map seconds that run only while playing, times the speed. */
+/** The game clock (D-204): map seconds that run only while playing, times the speed. */
 export interface Clock {
   seconds: number;
   playing: boolean;

@@ -63,7 +63,7 @@ describe('phone map taps', () => {
   });
 });
 
-describe('phone map clock (D-203)', () => {
+describe('phone map clock (D-204)', () => {
   const clock = (over: Partial<Clock> = {}): Clock => ({
     seconds: 0,
     playing: true,

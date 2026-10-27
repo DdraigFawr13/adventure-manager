@@ -886,7 +886,7 @@ describe('house (house SPEC.md)', () => {
         sickbeds: [1, 2, 3],
       };
       const ill = (run: Run) => ofType(run.events, 'member.fell-ill');
-      // Only a crowded barracks falls ill (D-205): 2 members on 4 beds do not, 3 (3/4) do.
+      // Only a crowded barracks falls ill (D-206): 2 members on 4 beds do not, 3 (3/4) do.
       expect(ofType(struck(2, [sickness]).events, 'incident.struck')).toEqual([]);
       expect(ofType(struck(3, [sickness]).events, 'incident.struck')).toHaveLength(1);
       const free = answer(struck(4, [sickness]), 'free');

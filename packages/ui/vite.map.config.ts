@@ -1,4 +1,4 @@
-// The phone kingdom map (D-154, D-164, D-203) at /map.html: one JS and one CSS file beside the other
+// The phone kingdom map (D-154, D-164, D-204) at /map.html: one JS and one CSS file beside the other
 // pages in dist. Fonts are inlined by the asset limit, as in the other pages.
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';

@@ -55,7 +55,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Time advances day by day on Continue, auto-stopping for events, key moments, offers and reports; parties run in parallel. Detail: `docs/design/CONCEPT.md` §7.
-- **Amended (2026-10-27, D-203):** the calendar runs in real time with pause at 2–3 speeds, still stopping itself for what needs the player.
+- **Amended (2026-10-27, D-204):** the calendar runs in real time with pause at 2–3 speeds, still stopping itself for what needs the player.
 - **Why:** Owner's choice; proven management-game pacing.
 
 ## D-010 One region, grounded high fantasy
@@ -1218,7 +1218,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Amends D-169 (the starting rooms) and the training half of D-186.
 - **Decision:** A new guild starts small: about one adventuring party and a few backups to grow into a second (the simulator founds 7 and signs more as beds allow, a session reading), with a 1-cell barracks of 8 beds. It starts with a small training yard of 3-4 places, and either no infirmary or a rudimentary one with a few beds that can be upgraded into a proper infirmary (both to be measured). The yard adds **training at home**: each week, a member at home and fit may grow a point; members with a yard place train at 1.5 times a base rate, members without one at 0.75 times. Growth after quests stays as it was, with no place penalty, so D-186's "half the growth chance without a place" is replaced. The base rate is tuned so a guild's total growth stays near today's, with yard members clearly ahead. Places go to members at home, youngest first (the head's default policy, D-170).
 - **Why:** Owner (2026-10-27), after the simulator showed D-186 doubling patron dismissals (10% to 24%): "I want my beginning guild to be able to have basically one adventuring party and a few backup members to grow into a second. I think training yard should start small and boost passive growth of members assigned to it that are not on missions to 1.5x while unplaced get 0.75x. the yard starts small though with let's say 3-4 slots. Also let's try without an infirmary or like a rudimentary infirmary with only a few beds that can be upgraded later to be a proper informary." Then, asked what passive growth means, the recommended "Add home training" over scaling all growth and over both.
-- **Amended (2026-10-27, owner):** the aim is a guild's total growth up to about a quarter above the house-off run. Measured at D-204's numbers: 9.2 attribute points a year (7.2 from quests, 2.0 training at home) against 7.6 with the house off, +21%; the owner chose "Keep +21%" over halving the home rate. With D-205's sickness: 9.1 (7.1 and 2.0), +20%. The house's cost (building, upkeep) pays for it.
+- **Amended (2026-10-27, owner):** the aim is a guild's total growth up to about a quarter above the house-off run. Measured at D-205's numbers: 9.2 attribute points a year (7.2 from quests, 2.0 training at home) against 7.6 with the house off, +21%; the owner chose "Keep +21%" over halving the home rate. With D-206's sickness: 9.1 (7.1 and 2.0), +20%. The house's cost (building, upkeep) pays for it.
 
 ## D-188 Founding: pick a starter party and a few extras, paid from one purse
 
@@ -1226,7 +1226,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** A new game offers 3 ready-made starter parties of 5, each with a clear character (for example seasoned and dear; balanced; green and cheap with a promising youngster). The player picks one, then picks 2-3 individuals from a shortlist of about 6. The guild starts with one founding purse; each party and each extra has a signing fee that rises with its quality, like the sign-on fee (D-138), and what is left is the starting chest. Wages then follow who was picked. Parties, extras and fees are drawn from the seed (GAME-01) and set in content (GAME-04). Not settled: the purse size, the fee scale, what each party character means in numbers, and how the simulator's player picks (to be set with the year simulator).
 - **Why:** Owner (2026-10-27): "at the start of the game I want to pick between a few parties as the starter parties for my guild and I want to select a few individuals as well and all of this affects my starting funds." Then the recommended options: "3 parties, then 2-3 extras" over 4-5 parties and over building the party person by person; "Signing fees from one purse" over wages only and over fees plus a higher patron target.
 - **Note (2026-10-27):** the "not settled" numbers are now set as the session's assumptions in `packages/content/src/base/founding.ts` (purse 33,500; fees 8 weeks of wage, seasoned party 4x, green a quarter; characters' shifts and ages), measured in the career simulator; the owner has not confirmed them.
-- **Amended (2026-10-27, D-204):** the purse is 50,000.
+- **Amended (2026-10-27, D-205):** the purse is 50,000.
 
 ## D-189 The patron gives a new guild two grace years with growth goals
 
@@ -1255,7 +1255,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
   - **Sickness** in a full barracks: a few members at home fall ill for 1–2 weeks; free infirmary sickbeds shorten it. Answers: pay a healer (shorter) or quarantine (free, longer; default).
   Chances follow D-191 (level, debt, fullness) and are tuned toward 1–2 incidents a year. Fees, shares and durations are content numbers set with the simulator.
 - **Why:** Owner's choice (2026-10-27), the recommended "Approve as drafted", over fire and sickness only (leaving the break-in until rivals keep accounts) and over adding more kinds now.
-- **Amended (2026-10-27, D-205):** sickness strikes a barracks 3/4 full or more, not only a full one.
+- **Amended (2026-10-27, D-206):** sickness strikes a barracks 3/4 full or more, not only a full one.
 
 ## D-193 Repairs after a fire cost half and may go into debt
 
@@ -1312,28 +1312,34 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** On the step 4 page, Continue waits only for letters that need the player: a memorial, a house incident and the patron's emergency offer. The signing window's letter still arrives and the recruits wait on the Roster, but Continue doesn't wait for it to be opened.
 - **Why:** Owner's choice (2026-10-27), the recommended "Don't hold", over keeping the mock-up's rule. The page review found a signing letter every window week (weeks 1–4 and 20–21), one forced tap each.
 
-## D-202 R7 round 1 does not pass: letters and people feel flat
+## D-202 A balance runner: named scenarios, targets with intervals, content overrides, paired baselines
+
+- **Status:** Accepted (2026-10-27). Built on branch `ccr-d64ef022-hkas1n`.
+- **Decision:** `tools/balance/run.ts` plays named scenarios (`classic`, `house`, `house-incidents`, `staff-hands-on`) over the career simulator's seeds and player and prints each metric with a 95% interval over seeds (1,000 resamples) and a verdict against its target, which names its source. `--set path=value` changes a copy of the content in memory; `--sweep` tries several values in one worker pool; `--compare` pairs seed by seed with a stored baseline (`tools/balance/baselines/*.jsonl.gz`, whole careers plus a hash each) and counts identical careers, replacing the worktree run of `main` for "did the balance move?" in the four stored scenarios (other comparisons still play both sides). Deaths and stop days a year are measured as means, with R2's ±25% band read onto the mean (a new reading; career-sim prints medians). A PR that changes balance on purpose re-saves the affected baselines; numbers go into DECISIONS and HANDOFF from 100-career runs. `tools/career-sim.ts` stays and shares the worker pool. Not built yet (proposed, not approved): a CI balance smoke check and an HTML report.
+- **Why:** Owner (2026-10-27), after a review of the testing and balancing pipelines: "begin working on all recommended" (scenarios, targets, overrides, paired baselines), and measure the gain against the current workflow. The review found tuning meant editing content files, 10 positional arguments, reading text by eye and a hand-built worktree for each baseline (LESSONS ×2), and recorded differences inside the noise: 13/14/15% dismissed over 100 careers each has a 95% interval of about ±7 points. Measured on this branch: careers and career-sim output identical to `main` (house off, incidents, party compare); a baseline check of 100 careers takes 43 s (house off) and 51 s (incidents) against 72 s and 88 s for two runs plus a worktree; a three-value sweep at 20 careers takes 29 s in one command against about 46 s for four runs and three edits; pairing narrows the interval of a change by up to a third (dismissals ±6 points paired vs ±9 unpaired, bad starts ±7 vs ±11, at 100 careers). Detail: `tools/balance/README.md`.
+
+## D-203 R7 round 1 does not pass: letters and people feel flat
 
 - **Status:** Accepted (2026-10-27). The first R7 sitting (PLAN §9a, D-198) on the step 4 page.
-- **Decision:** R7 does not pass yet. The owner gave notes instead of a Copy report, and named no adventurers. Their findings: the letters are stale, boring and disjointed and describe little; the characters feel impersonal; jumping through time is boring; nothing felt punchy or impactful. The owner expects to flesh these out in later work, so the step 4 page is not tuned now. R7 is rerun once letters, people and time flow change (D-203), at the latest in M2 (testers name 3 adventurers).
+- **Decision:** R7 does not pass yet. The owner gave notes instead of a Copy report, and named no adventurers. Their findings: the letters are stale, boring and disjointed and describe little; the characters feel impersonal; jumping through time is boring; nothing felt punchy or impactful. The owner expects to flesh these out in later work, so the step 4 page is not tuned now. R7 is rerun once letters, people and time flow change (D-204), at the latest in M2 (testers name 3 adventurers).
 - **Owner's note (2026-10-27):** "The letters are a bit stale and boring and disjointed. They don't really describe much at all. The characters feel impersonal in this build and just jumping through time is boring. I want to be able to run continuous real time actually with pause I think so I can like look at the map and see them moving and whatnot. Nothing felt very punchy or impactful but I think we will flesh that out in future developments."
 - **Why:** R7's pass line is naming and describing 3 adventurers after a session; the owner's notes say the attachment isn't there yet. The notes point at the letters (R8's template work) and at the missing map and moving parties, not at the histories' data.
 
-## D-203 Time runs in real time with pause, and still stops itself for what needs the player
+## D-204 Time runs in real time with pause, and still stops itself for what needs the player
 
 - **Status:** Accepted (2026-10-27). Amends D-009 (Continue advances day by day).
 - **Decision:** The calendar runs on its own at 2–3 speeds and the player can pause at any time. It still pauses itself for letters, key moments and offers that need the player, as D-009's stops did, so the friction budget (D-068) still counts those stops. Underneath, the engine still steps one day at a time (GAME-01: seeds and saves stay deterministic); the map moves parties smoothly between day steps, so the player can watch them travel. The engine test map (D-164) shows it first: parties walking, with play, pause and speed.
 - **Why:** Owner (2026-10-27, after the R7 sitting): "I want to be able to run continuous real time actually with pause I think so I can like look at the map and see them moving". Then the recommended "Real time + auto-stops", over testing it first as Proposed and over a clock that never pauses itself.
 
-## D-204 A bigger founding purse, so about half of new guilds need the emergency grant
+## D-205 A bigger founding purse, so about half of new guilds need the emergency grant
 
 - **Status:** Accepted (2026-10-27). Sets D-188's purse; tunes the simulator's house policy (house/SPEC.md "Simulator").
 - **Decision:** The founding purse is 50,000 copper (was 33,500). The simulated player keeps 24 weeks of spending in the chest before starting a house job (was 12). Measured (100 careers × 26 years, house and incidents on, balanced party): 50 careers took the emergency grant (D-146), the first in year 2 (median), against 81 in year 1 before; 14% of guildmasters dismissed (12% before); full house in year 14 (13 before). Starter parties on the same seeds, dismissed 7% / 14% / 7% (seasoned / balanced / green). The fees stay as they were.
 - **Owner's note (2026-10-27):** "Bigger purse but maybe not massive. Maybe so like t0% of games take emergency grant". Read as 50% (the session's reading, told to the owner).
 - **Why:** Owner's choice, the recommended "Bigger purse", over cheaper fees and over keeping it tight. A bigger purse alone barely helped (80,000 still gave 67 grants), because the simulated player spent the extra on building; a longer reserve plus a modest purse reached the target.
 
-## D-205 Sickness strikes a crowded barracks, not only a full one; incident numbers confirmed
+## D-206 Sickness strikes a crowded barracks, not only a full one; incident numbers confirmed
 
 - **Status:** Accepted (2026-10-27). Amends D-192's sickness target; confirms D-173's incident numbers as measured.
-- **Decision:** Sickness can strike when the barracks holds members for at least 3/4 of its beds (a content number, `crowdedBp`), and a full barracks still doubles the chance. Its weekly chance is 110 bp (was 400). Measured (100 careers × 26 years, house and incidents on, D-204's purse): 1.47 incidents a year (fire 0.67, break-in 0.54, sickness 0.26; target 1–2), 12% of guildmasters dismissed, full house in year 13, theft 3.7% and repairs 3.9% of spending from year 10. The other incident numbers stand as measured.
+- **Decision:** Sickness can strike when the barracks holds members for at least 3/4 of its beds (a content number, `crowdedBp`), and a full barracks still doubles the chance. Its weekly chance is 110 bp (was 400). Measured (100 careers × 26 years, house and incidents on, D-205's purse): 1.47 incidents a year (fire 0.67, break-in 0.54, sickness 0.26; target 1–2), 12% of guildmasters dismissed, full house in year 13, theft 3.7% and repairs 3.9% of spending from year 10. The other incident numbers stand as measured.
 - **Why:** Owner's choice (2026-10-27), the recommended "Sickness when nearly full", over approving the measured numbers (sickness 0.07 a year, because the barracks is seldom full after year 1) and over sickness at any time.

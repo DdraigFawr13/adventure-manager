@@ -1,5 +1,5 @@
 // The bottom sheet of the phone map (D-164): a mark's details with a placeholder picture, or a
-// letter when the clock stops itself (D-203). A modal dialog: focus moves in, Escape closes.
+// letter when the clock stops itself (D-204). A modal dialog: focus moves in, Escape closes.
 import { useEffect, useRef } from 'react';
 import type { MarkKind } from '../map/map-scene.ts';
 

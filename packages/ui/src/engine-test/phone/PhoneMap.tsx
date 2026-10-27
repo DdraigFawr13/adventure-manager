@@ -1,4 +1,4 @@
-// The kingdom map as a phone page (D-154, D-164, D-203): full screen, pinch and drag, tappable marks
+// The kingdom map as a phone page (D-154, D-164, D-204): full screen, pinch and drag, tappable marks
 // that open a bottom sheet, a game clock with pause and speeds that stops itself when the party
 // arrives, and an on-page frame-rate panel. The map drawing is the desktop scene (../map/); words
 // come from content text (engine-test.en.json, phone.* keys).

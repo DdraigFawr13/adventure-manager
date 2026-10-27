@@ -25,6 +25,7 @@
     "packages/*/test",
     "tools/test",
     "tools/*.ts",
+    "tools/balance",
     "tools/worldgen",
     "vitest.config.ts",
     "packages/ui/vite.config.ts",

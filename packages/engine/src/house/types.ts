@@ -68,7 +68,7 @@ export type IncidentKind = IncidentBase &
       }
     | {
         readonly effect: 'sickness';
-        /** Members as a share of beds (basis points) at which sickness may strike: crowded, not only full (D-205). */
+        /** Members as a share of beds (basis points) at which sickness may strike: crowded, not only full (D-206). */
         readonly crowdedBp: number;
         readonly count: number;
         readonly freeDays: number;
