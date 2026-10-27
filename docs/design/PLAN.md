@@ -1,6 +1,6 @@
 # Plan
 
-Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: **approved by the owner on 2026-10-26 (M0, D-115)**, with the plan review's decisions (D-108..D-114). Changes from here go through DECISIONS.
+Phase 3 plan. Outline approved by the owner on 2026-10-26 (D-062). Each section is drafted in order, with decisions flagged and asked one at a time. Status: **approved by the owner on 2026-10-26 (M0, D-115)**, with the plan review's decisions (D-108..D-114). Changes from here go through DECISIONS. On 2026-10-27 the sections that mobile first changed (D-150–D-158, D-163) were rewritten to state the current plan in place of stacked amendment notes; the earlier Windows and Steam versions are in DECISIONS and git history.
 
 Inputs: `docs/design/CONCEPT.md` (locked, D-045), `docs/design/STYLE.md` (locked, D-061), `docs/DECISIONS.md`.
 
@@ -45,38 +45,30 @@ The game succeeds as a design when a player:
 
 ### 1b. Target player (Accepted 2026-10-26, D-063)
 
-**Amended (2026-10-27, D-153):** the same player on a phone, in sittings of about 10–30 minutes; a season still totals about 2–2.5 hours.
-
-- **Primary:** management-sim veterans who already like depth and spreadsheets: Football Manager, Battle Brothers, Darkest Dungeon, RimWorld, Crusader Kings players with a taste for fantasy. They accept dense screens (D-016, CONCEPT §13) and learn by playing, not by tutorial.
+- **Primary:** management-sim veterans who already like depth and spreadsheets: Football Manager, Battle Brothers, Darkest Dungeon, RimWorld, Crusader Kings players with a taste for fantasy. They play on a phone, in the style of a Football Manager Mobile player, in sittings of about 10–30 minutes (D-153). The depth is not cut for the phone: it is reached through the guildhall hub, the work desk and Ask the clerk (D-149, D-155). They learn by playing, not by tutorial.
 - **Secondary:** tabletop RPG players (Pathfinder, D&D) who know classes and parties but are new to management sims. They need the gentle first season (CONCEPT §19) and delegation to carry them.
 - **Not targeted:** players who want to control fights directly, or who want a short session-based roguelite. Both are served better by other games, and chasing them would pull against D-003 and the generational save.
 - Why the primary is management veterans: the concept (FM-level depth, Ironman saves, a desk-only guildmaster) is built for them; designing for them first and onboarding the secondary group is cheaper than diluting depth.
 
 ### 1c. Session lengths (Accepted 2026-10-26, D-064)
 
-**Amended (2026-10-27, D-153):** on the phone a sitting is about 10–30 minutes; the typical and long session lines below were written for PC.
-
-The anchor is **one in-game season ≈ 2–2.5 h** for a typical player (owner's choice). Other figures follow from it and from CONCEPT §4; all are targets to measure in playtests (§10). Weeks per season are set in §2.
+The anchor is **one in-game season ≈ 2–2.5 h** for a typical player (owner's choice), spread over several sittings on the phone (D-153). Other figures follow from it and from CONCEPT §4; all are targets to measure in playtests (§10). Weeks per season are set in §2.
 
 - **Adventurer career** (6–12 seasons): about 12–30 h.
 - **Guildmaster career** (20–30 seasons): about 40–75 h, so most committed players see at least one succession (Pillar 3).
-- **Short session:** 20–30 min. Quitting is safe at any point because of the daily autosave (D-033, CONCEPT §29).
-- **Typical session:** 1–2 h, ending at a natural stop (a quest's end, a week report).
-- **Long session:** 3 h or more, more than a season.
+- **Sitting:** about 10–30 min (D-153), ending at a natural stop (a quest's end, a week report). Quitting is safe at any point because of the daily Ironman autosave (D-033, CONCEPT §29); the next sitting resumes exactly there.
 - **First season:** about 3–4 h for a new player, including onboarding.
 - Delegation (CONCEPT §19) and time-skip (CONCEPT §4) let fast players go quicker; neither is assumed in these figures.
 
 ### 1d. Success criteria (Accepted 2026-10-26, D-065)
 
-**Under review (2026-10-27, D-150):** the Steam-review and Steam-data measures need phone sources. The owner decides them (D-065, D-088).
-
-Accepted 2026-10-26 as a starting set (D-065); numbers are estimates, revisited in §10 and §14. Measured after release from opt-in, offline-friendly telemetry or store data (method decided in §10):
+Accepted 2026-10-26 as a starting set (D-065); numbers are estimates, revisited in §10 and §14. Measured after release from store data (method in §10c). The measures were written for Steam; which phone-store data measures them is for the owner to decide (D-150, D-088).
 
 - **Demo:** at least 15% of demo players who finish the free seasons buy the game.
 - **First season:** at least 70% of new saves finish their first season.
 - **Retention:** median playtime of buyers over 20 h.
 - **Pillar 3 check:** at least 25% of players with over 40 h reach a second guildmaster.
-- **Reception:** Steam reviews at least 80% positive ("Very Positive" band).
+- **Reception:** store reviews at least 80% positive (on Steam, the "Very Positive" band; the phone equivalent is still to be set, D-150).
 - **Readability:** in playtests, no dense screen (roster, finances, scouting) needs more than one explanation per player (ties to STYLE §5 risk).
 
 ---
@@ -424,7 +416,7 @@ Owner's note: "I like a for the first season but I like having a small prologue 
 
 ### 6b. Screen rules (Accepted 2026-10-26, D-078)
 
-**Amended (2026-10-27, D-154, D-155):** screens are built for phones 375 points wide and up, held upright; home is the guildhall hub on every platform.
+Screens are built for phones 375 points wide and up, held upright (D-154); home is the guildhall hub on every platform (D-155).
 
 1. **Every number explains itself.** Hovering or focusing any number shows how it was made (base, modifiers, sources), in plain words. The engine produces the breakdown (GAME-02); the UI never recomputes it.
 2. **One sheet, one job.** Each ledger answers one question (who is fit? what do we owe?); comparisons open side by side instead of in a new mode.
@@ -546,7 +538,7 @@ Decisions: D-084..D-086, D-110, D-113. A prototype answers one question cheaply.
 
 ### 9a. Riskiest assumptions (Accepted 2026-10-26, D-086)
 
-**Amended (2026-10-27, D-154):** R4 is now a phone test. Find 5 facts in under 10 seconds each, using the hub, the work desk and Ask the clerk. The 25-row rule is dropped. How it runs: D-159; round 2 changes: D-162. **Passed** in round 2 (D-165).
+Passed so far: R1 (D-132), R4 on the phone in round 2 (D-165; how it runs: D-159, round 2 changes: D-162) and R5 (D-166).
 
 Ranked by how much of the game fails if the assumption is wrong. "Cheapest test" is the smallest thing that answers it.
 
@@ -555,8 +547,8 @@ Ranked by how much of the game fails if the assumption is wrong. "Cheapest test"
 | R1 | Watching a quest (log and board) is tense and fun | The core loop (Pillar 2) is dull; players auto-resolve everything | One quest, simulated: text log plus a plain board with standees; owner watches 10 quests | Owner wants to watch the next one; auto-resolve feels like a loss; key moments feel like real choices |
 | R2 | The simulation hits the §4 targets: ~2 deaths a year, money tight early, ladder movement | Balance needs rework after art is built | Headless year simulator (no graphics): 1,000 seeded guild-years, report deaths, money, promotions | Medians within ±25% of §4 targets; no runaway rival in 30 simulated years |
 | R3 | A year fits the friction budget: ~80 stops, ~145 min (D-068) | Sessions drag or feel empty | Same headless simulator counts stops by class; then a timed playtest of one year in the text prototype | ≤ 100 stops a year for the mid-sized guild (top guild: §9d); owner plays a year in ≤ 3 h |
-| R4 | The desk layout holds FM density (30-row roster, finances) on a 1366 px screen | Dense screens need a redesign late | Clickable HTML mock-ups of roster, finances and contract board at 1366 and 1920 px | 25+ roster rows visible at 1366 px; owner finds 5 set facts in under 10 s each |
-| R5 | Old-press ledgers are readable | Dense screens tire players (STYLE §5) | Rendered ledger specimens at real sizes (done, §9c: 15 px, lining figures) | Confirmed on real monitors during R4 (now: confirmed on the owner's phone in R4, D-166) |
+| R4 | The phone's hub, work desk and Ask the clerk hold FM depth (roster, finances) (D-149, D-154) | Dense screens need a redesign late | Clickable phone mock-ups of the hub, the work desk and Ask the clerk | Owner finds 5 set facts in under 10 s each on their phone |
+| R5 | Old-press ledgers are readable | Dense screens tire players (STYLE §5) | Rendered ledger specimens at real sizes (done, §9c: 15 px, lining figures) | Confirmed on the owner's phone during R4 (D-166) |
 | R6 | Staff are competent but limited: the player's own focus visibly beats delegation (D-038) | Delegating everything is optimal; the player becomes a spectator | Headless simulator: same seeds, delegated vs a careful player policy | Player focus 10–25% better on the chosen area; delegation never ruinous |
 | R7 | Players get attached to adventurers who die about twice a year | Deaths feel like stat loss, not loss | Owner plays two years in the text prototype with generated histories and memorial letters | Owner can name and describe 3 adventurers after a session |
 | R8 | Template writing stays fresh at ~4,500 lines (D-080, D-109) | Repetition breaks the fiction within a few years | Write one template family (quest reports) with variants; generate 200 reports; count repeated sentences | No sentence repeats more than once in 50 reports |
@@ -572,7 +564,7 @@ The riskiest question first. All prototypes come after the plan is approved (D-0
 0b. **Resolution v0** (D-113): half a page plus code for how a party, its plan, stats, gear and the site become odds and events; every number in data, tuned later. R1 needs it.
 1. **One quest, watched** (R1): a minimal simulation core drives a text log and a plain board with standees; the owner watches 10 quests. If watching isn't tense, Pillar 2 and the core loop need rethinking before anything else is built.
 2. **Headless year simulator** (R2, R3, R6, R9): the same simulation core with no graphics; 1,000 seeded guild-years reporting deaths, money, ladder movement, stops by class, delegated vs careful play, and guildmaster careers against the §2 and §4 targets.
-3. **Desk-density mock-ups and writing test** (R4, R8): HTML mock-ups at 1366 and 1920 px (now phone screens, D-154), and one template family generated 200 times. Neither needs the engine, so they can run alongside step 1 or 2.
+3. **Desk-density mock-ups and writing test** (R4, R8): phone mock-ups of the hub, the work desk and Ask the clerk (D-154), and one template family generated 200 times. Neither needs the engine, so they can run alongside step 1 or 2.
 4. **Two years in the text prototype** (R7): the attachment check, as a phone-first web page (D-160). Scope, histories, letters home, the on-page R7 check and the screens: D-195–D-199, mock-up `docs/design/mockups/step4-prototype.html`.
 
 **Time-boxes** (D-111, D-113; estimates at 10–20 h a week): engine test 4–6 weeks; resolution v0 and step 1 6–10 weeks; step 2 starts with one guild, no rivals and three classes and widens in steps, 8–12 weeks; step 3 alongside; step 4 (two in-game years played) 4–6 weeks. A step over its box by half goes to the owner at once, not at the gate.
@@ -610,7 +602,7 @@ Decisions: D-088, D-089. Ties the §1 targets (D-065) and the §9 pass lines (D-
 | Stage | Players | What it answers |
 |---|---|---|
 | Prototypes (§9b) | The owner | R1–R9; fun and feel pass only on the owner's recorded notes (GAME-06) |
-| Vertical slice | 6–10 invited players: about two thirds management-sim veterans, one third tabletop players (D-063) | First season (D-076), readability (D-084), desk density, attachment |
+| Vertical slice | 6–10 invited players: about two thirds management-sim veterans, one third tabletop players (D-063) | First season (D-076), readability (D-084), depth on the phone screens, attachment |
 | Alpha | 30–50 closed testers | Full year and multi-year play, balance (§4), friction budget (D-068), crashes |
 | Free demo | Public | Demo conversion (D-065), first-season completion, store feedback |
 | Beta | 200+ testers | Long saves, succession (R9), save upgrades (GAME-05), performance |
@@ -627,12 +619,10 @@ Decisions: D-088, D-089. Ties the §1 targets (D-065) and the §9 pass lines (D-
 
 ### 10c. How data is collected (Accepted 2026-10-26, D-088)
 
-**Under review (2026-10-27, D-150):** the release still sends nothing, but the Steam data and achievement rates named here have no phone equivalent yet.
-
 Owner's note: "1 but leave 2 open as a future option."
 
 - **Playtest builds** write a local log of the §10b measures; testers choose to send it with their feedback. No server.
-- **The release game sends nothing.** §1d targets are measured from Steam's own data (median playtime, reviews, demo-to-purchase) and achievement unlock rates used as measures: for example "Survived the first year" (first-season completion) and "A new guildmaster" (Pillar 3).
+- **The release game sends nothing.** §1d targets are measured from the store's own data and from achievement unlock rates used as measures: for example "Survived the first year" (first-season completion) and "A new guildmaster" (Pillar 3). The plan named Steam's data (median playtime, reviews, demo-to-purchase); which phone-store data replaces it is for the owner to decide (D-150). The achievements can be the optional Game Center and Google Play Games ones (D-158).
 - **Future option:** anonymous, opt-in telemetry from released copies. It needs a backend, a privacy policy and consent handling, so it comes back to the owner as a cost decision (SAFE-03) if ever wanted. The playtest log format is designed so the same events could be sent later.
 
 ### 10d. Acting on results (Accepted 2026-10-26, D-089)
@@ -645,23 +635,18 @@ Owner's note: "1 but leave 2 open as a future option."
 
 ## 11. Technology and architecture (Accepted 2026-10-26)
 
-Decisions: D-090, D-091, D-110, D-114. Constraints from earlier decisions (the PC and Steam ones replaced by mobile first: phones by touch, D-151, D-155; phone stores, D-158): PC first, mouse and keyboard, dense screens (D-016); deterministic engine with seeded randomness and injected time (GAME-01); one simulation function, UI never recomputes (GAME-02); content as data (GAME-04, D-044); versioned saves (GAME-05); Ironman autosave each day (D-033); Steam release with achievements as measures (D-088); 15 px old-press ledgers with lining figures (D-084).
+Decisions: D-090, D-091, D-110, D-114, D-163. Constraints from earlier decisions: phones held upright, 375 points wide and up, played by touch (D-151, D-154, D-155); deterministic engine with seeded randomness and injected time (GAME-01); one simulation function, UI never recomputes (GAME-02); content as data (GAME-04, D-044); versioned saves (GAME-05); Ironman autosave each day (D-033); release through the two phone stores, with achievements as measures (D-088, D-158); 15 px old-press ledgers with lining figures (D-084).
 
 ### 11a. Engine and platform (Accepted 2026-10-26, D-090, D-110)
 
-**Amended (2026-10-27, D-150, D-151, D-154):** mobile first. Launch is on iPhone and Android phones from one web-tech codebase, and the engine test is rebuilt as a phone app judged on the owner's phone. Windows follows after launch.
+**Web tech is the engine** (D-163): TypeScript, one codebase wrapped for both phone stores (D-151); the store wrapper is Capacitor, adopted at the vertical slice with its own approval (D-167). Windows follows after launch. There is no Godot fallback: if the web build misses a bar, the owner decides what follows. Unity is out. How it got here: the plan first built both engines to choose (D-090), then went web-first with Godot as the fallback (D-110), then dropped the fallback after mobile first (D-150, D-163). The comparison below is the record of that choice.
 
-**Amended (2026-10-27, D-163):** web tech is the engine; the Godot fallback below no longer stands. The comparison stays as the record.
+**Engine test** (prototype step 0, before the watched quest, D-085). The first version was a desktop web page (D-110); it is rebuilt as a phone web page on the Vercel link with an on-page frame-rate panel (D-154, D-167).
 
-**Web-first** (owner's choice after the plan review, D-110, amends D-090): build the two test pieces in web tech (Electron, TypeScript), reusing Story-Generator's map code (§12d). Superseded by D-163: Godot is not built, and a missed bar goes to the owner. The bars stayed: 60 fps on the map at 1366×768, the 15 px ledger readable, the find-the-fact task (R4) passed (phone versions: D-154). Unity is out. Earlier plan (D-090): build both, then choose; the comparison below still stands as the record.
+- **Build:** (1) one roster ledger: 30 rows, sorting, a breakdown on a number (D-078), 15 px old-press type with lining figures (D-084), clear print and the 100–150% size slider (D-077); (2) one kingdom-map view (D-087, D-164): layered illustration, free pan and pinch zoom, a party moving, faction and guild marks, a threat stain, one ink-reveal effect. The map piece tests the technique; faction marks and threat stains are not at launch (D-109).
+- **Judged on the owner's phone** (D-154): a 60 fps map with smooth pinch and pan, text no smaller than 15 px, and a screen-reader check (labelled controls, §6c), plus the owner's look-and-feel notes (GAME-06). Measurements in the container count only as a floor (VER-07). R4, the find-the-fact task, already passed on the phone (D-165).
 
-**Engine test** (prototype step 0, before the watched quest, D-085):
-
-- **Build (web; the Godot fallback is superseded, D-163):** (1) one roster ledger: 30 rows, sorting, a hover breakdown on a number (D-078), 15 px old-press type with lining figures (D-084), clear print and the 100–150% size slider (D-077); (2) one kingdom-map view (D-087): layered illustration, zoom and pan, a party moving, faction and guild marks, a threat stain, one ink-reveal effect. The map piece tests the technique; faction marks and threat stains are not at launch (D-109).
-- **Judged on:** the owner's look-and-feel notes (GAME-06), plus measured build time, frames per second and memory at 1366×768, download size, the find-the-fact task (R4), and whether the ledger works with a screen reader (labelled controls, §6c).
-- The rest of §11 holds for the web engine (D-163).
-
-Comparison at the time of the choice (2026-10-26):
+Comparison at the time of the choice (2026-10-26), written for a Windows launch on Steam:
 
 What the game mostly is: ledgers, letters and inspectors (dense typography), plus two illustrated 2D views (the kingdom map, D-087, and the quest board, D-050). No 3D, no physics.
 
@@ -677,14 +662,12 @@ What the game mostly is: ledgers, letters and inspectors (dense typography), plu
 
 ### 11b. Architecture (Accepted 2026-10-26, D-091)
 
-**Amended (2026-10-27, D-151, D-158):** on phones, saves use the stores' own backup in place of Steam Cloud, and the shell is a phone app wrapper in place of Electron for the launch.
-
 Packages (one repository):
 
 - **engine**: the rules. Pure code, no UI, no clock, no unseeded randomness (GAME-01). One `simulate(state, command)` used for preview and commit (GAME-02); random streams live in the state (§11h, D-114). Every change is an **event** with a cause id.
 - **content**: classes, ancestries, monsters, sites, quests, key moments, text templates as data files with schemas (GAME-04).
 - **ui**: screens that read state and events, send commands, never compute rules.
-- **shell**: desktop window, saves on disk, Steam (achievements, cloud saves).
+- **shell**: the phone app wrapper (Capacitor from the vertical slice, D-167): saves on the device, the phone's backup, and Game Center and Google Play Games achievements (D-158). A desktop shell comes when Windows follows (D-151).
 - **tools**: the headless year simulator (§9b step 2), a content validator, a save inspector.
 
 The **event log** is the spine: the Trace and inspector histories (D-082), the Chronicle (D-042), the week report, letters (D-083) and playtest logs (D-088) are all views of the same events, so they can never disagree.
@@ -698,7 +681,7 @@ flowchart LR
   LOG --> TRACE[Trace and histories]
   LOG --> CHRON[Chronicle]
   LOG --> PLAYLOG[playtest log]
-  SHELL[shell: saves, Steam] <--> ENGINE
+  SHELL[shell: saves, phone stores] <--> ENGINE
   TOOLS[tools: headless simulator, validator] --> ENGINE
 ```
 
@@ -717,7 +700,7 @@ flowchart LR
 
 - One save per guild in Ironman mode, written each day tick (D-033): write to a temporary file, then swap, keeping the last good save as a backup.
 - Every save carries a save-format version and the content version; older saves upgrade on load through a chain of small migrations; an unreadable save is never overwritten (GAME-05).
-- Steam Cloud syncs the save folder.
+- The phone's own backup (iCloud, Google backup) restores saves on a new phone. It is not live sync, and Google's backup has a per-app size cap (about 25 MB, to recheck); live sync across devices (Game Center or Play Games saved games) is decided when builds start (D-158).
 
 ### 11f. Optional AI flavour (Early update) (Accepted 2026-10-26, D-091)
 
@@ -726,9 +709,7 @@ flowchart LR
 
 ### 11g. Performance targets (Accepted 2026-10-26, D-091)
 
-**Amended (2026-10-27, D-154):** the targets apply on a phone 375 points wide and up. They are 60 fps for the map with smooth pinch and pan, and 15 px minimum text. The verdict comes from the owner's device.
-
-- Minimum screen 1366×768; 60 fps on the map and board on a mid-range laptop from about 2020.
+- Phones 375 points wide and up, held upright (D-154): the iPhone SE and most Android phones from about 2019 on. 60 fps on the map and board with smooth pinch and pan, and 15 px minimum text. The verdict comes from the owner's phone (VER-07).
 - A day tick with no stop under 50 ms; a headless simulated guild-year under 1 s, so the 1,000 seeded guild-years in §9b take under about 17 minutes run one after another.
 - Save and load under 1 s for a 30-year save.
 
@@ -833,37 +814,35 @@ Mock-up: `docs/design/mockups/kingdom-map.html` (interactive: base style and lay
 
 ## 13. Milestones (Accepted 2026-10-26)
 
-Decisions: D-099..D-101, D-108, D-111. Inputs: prototype order (§9b, D-085), playtest stages (§10a, D-089), engine test (D-090), scope tiers (CONCEPT §28), launch content (D-080, D-081), art and audio (D-098). **Durations are estimates** (REP-01), restated on 2026-10-26 for the owner building solo with AI help at 10–20 hours a week (D-108; the first figures assumed a small team) and for the lean launch cut (D-109).
+Decisions: D-099..D-101, D-108, D-111, D-156. Inputs: prototype order (§9b, D-085), playtest stages (§10a, D-089), engine test (D-090), scope tiers (CONCEPT §28), launch content (D-080, D-081), art and audio (D-098). **Durations are estimates** (REP-01), restated on 2026-10-26 for the owner building solo with AI help at 10–20 hours a week (D-108; the first figures assumed a small team) and for the lean launch cut (D-109).
 
 ### 13a. The ladder (Accepted 2026-10-26, D-099)
 
-**Amended (2026-10-27, D-156):** the phone engine test joins M1, and phone builds run from M2 on. Launch is about 39–68 months from plan approval (estimate). The figures below are the earlier Windows plan.
+Mobile first (D-150, D-156) keeps the ladder and the lean cut: the phone engine test joins M1, the phone app is built from the vertical slice (M2) on, and every later milestone ships to both phone stores through their test tracks (D-158).
 
 Each milestone ends at a gate: the owner reviews the exit checks and says go, loop or stop. A missed check loops the milestone; the same miss twice is a design problem that goes to the owner (D-089).
 
 | # | Milestone | What is built | Who plays (§10a) | Exit checks | Estimate |
 |---|---|---|---|---|---|
 | M0 | Plan approved | PLAN §1–§15 and the plan review (done 2026-10-26, D-115) | — | Owner approves the whole plan (D-001) | done |
-| M1 | Prototypes | §9b steps 0–4: engine test, one watched quest, headless year simulator, desk mock-ups and writing test, two years in the text prototype. The simulation core is kept; prototype screens are throwaway (§9, D-113) | Owner | Engine settled web-first (D-110); R1–R4 and R6–R8 pass lines met (D-086); R9 proxy shows 20–30-year careers; §9d checks pass | 5–8 months |
-| M2 | Vertical slice | The production engine, content, ui and shell packages (§11b). The prologue and first season (D-076) in one corner of the March: 2 biomes, 3 settlements, 4 classes, ~10 monster kinds, ~6 quest templates; final art and audio for that corner only; the slice's corner of the kingdom map in final style, the rest sketched (D-113) | 6–10 invited players | First season in 3–4 h (D-064); no dense screen needs more than one explanation (D-065); testers name 3 adventurers (R7); determinism test and save upgrade test pass (GAME-05, GAME-06); a tester's bug replays from their save (D-114) | 7–10 months |
+| M1 | Prototypes | §9b steps 0–4: engine test (rebuilt for the phone, D-154), one watched quest, headless year simulator, desk mock-ups and writing test, two years in the text prototype. The simulation core is kept; prototype screens are throwaway (§9, D-113) | Owner | Engine settled web-first (D-110); R1–R4 and R6–R8 pass lines met (D-086); R9 proxy shows 20–30-year careers; §9d checks pass | 5–8 months |
+| M2 | Vertical slice | The production engine, content, ui and shell packages (§11b). The prologue and first season (D-076) in one corner of the March: 2 biomes, 3 settlements, 4 classes, ~10 monster kinds, ~6 quest templates; final art and audio for that corner only; the slice's corner of the kingdom map in final style, the rest sketched (D-113); the first phone app build (D-156) | 6–10 invited players, on the stores' closed test tracks (D-158) | First season in 3–4 h (D-064); no dense screen needs more than one explanation (D-065); testers name 3 adventurers (R7); determinism test and save upgrade test pass (GAME-05, GAME-06); a tester's bug replays from their save (D-114) | 7–10 months |
 | M3 | Alpha | All 14 launch systems (D-070) in, playable over many years; whole March with about half the launch content; placeholder art allowed outside the slice | 30–50 closed testers | Medians within ±25% of the §4 targets over real play; ≤ 100 stops a year for the mid-sized guild (D-068, §9d); no unreadable saves; feature complete for launch | 10–15 months |
-| M4 | Free demo | The first season as a free build (D-040), cut from the alpha with final art for what it shows; Steam page live since M2 | Public (e.g. a Steam festival) | ≥ 70% of demo starts finish the first season (D-065); crash-free sessions; store feedback logged | 2–3 months, alongside M5 |
-| M5 | Beta | All launch content (D-080, D-081 as cut by D-109), final art and audio, achievements, Steam Cloud; balance and writing passes | 200+ testers | 30-year saves load and upgrade; succession reached in long saves (R9); §11g performance met on the minimum machine; no known save-losing bug | 7–10 months |
+| M4 | Free demo | The first season, free inside the one app before the unlock (D-040, D-152, D-158), with final art for what it shows; a store presence since M2 (its phone form is for the owner, D-150) | Public (e.g. a Steam festival) | ≥ 70% of demo starts finish the first season (D-065); crash-free sessions; store feedback logged | 2–3 months, alongside M5 |
+| M5 | Beta | All launch content (D-080, D-081 as cut by D-109), final art and audio, achievements, cloud saves through the phone's backup (D-158); balance and writing passes | 200+ testers, on the stores' open test tracks (D-158) | 30-year saves load and upgrade; succession reached in long saves (R9); §11g performance met on a small phone; no known save-losing bug | 7–10 months |
 | M6 | Launch | Release build, store assets, day-one patch plan | Everyone | Release checklist (§15) passes; owner signs off | 2–3 months |
 | M7 | Post-launch | Free updates (§13c) | Everyone | Each update keeps old saves loading (GAME-05) | ongoing |
 
-Total to launch: **about 31–46 months** (about 2.5–4 years) from plan approval, solo at 10–20 h a week with the lean cut (sum of the ranges with the demo run alongside the beta; estimate, D-108). The first estimate, 18–28 months, assumed a small team. Slip and stop rules: §9b (D-111).
+Total to launch: **about 39–68 months** (about 3–5.5 years) from plan approval, solo at 10–20 h a week with the lean cut (estimate, D-156). The row estimates above sum to about 31–46 months (the demo runs alongside the beta, D-108); mobile first adds about 500–1,400 hours, about 8–22 months at 15 hours a week, not yet split by milestone (D-156). The first estimate, 18–28 months, assumed a small team. Slip and stop rules: §9b (D-111).
 
 ### 13b. Rules across milestones (Accepted 2026-10-26, D-099, D-100)
-
-**Under review (2026-10-27, D-150):** the Steam page from M2 and Early Access are Steam-only. Their phone equivalents are open.
 
 - **Art money follows proof.** No bulk art or music is commissioned before M1 passes R1 and R2 (the game is fun to watch and the economy holds). M2 commissions only the slice's corner, and the map's full base waits for alpha balance (§12d); bulk art starts once alpha balance is stable, so systems that change late don't waste drawings (§12).
 - **The slice sets the bar, the alpha sets the breadth.** The slice is small but final quality, so it tests feel and readability; the alpha is wide but rough, so it tests systems and balance.
 - **Content grows as data.** Content added after M2 is data entries only (GAME-04); the content validator runs in CI from M2.
 - **Saves are protected from M2.** Every build from the slice on keeps older saves loading through migrations (GAME-05); testers' long saves are the beta's best evidence for R9.
-- **Steam page at M2** so wishlists build through the alpha before the demo, and for about 19–28 months before launch (sum of M3, M5 and M6; estimate). Wishlist targets: §14f.
-- **Launch model: decided at the alpha gate** (owner's choice, Plan Q13a). The plan assumes a full 1.0 after the beta. At the M3 exit the owner looks again, with the budget (§14) and alpha results in hand, at Early Access instead: selling from the alpha's end and growing to 1.0 over 6–12 months. Early Access brings money sooner and gives real 40 h+ saves for R9; it costs early reviews of a rough build, and old saves must survive every big change.
+- **A store page at M2** so an audience builds through the alpha before the demo, and for about 19–28 months before launch (sum of M3, M5 and M6; estimate). The plan was a Steam page with wishlists (targets: §14f); the phone equivalent is for the owner to decide (D-150).
+- **Launch model: decided at the alpha gate** (owner's choice, Plan Q13a). The plan assumes a full 1.0 after the beta. At the M3 exit the owner looks again, with the budget (§14) and alpha results in hand, at Early Access instead (a Steam model; its phone equivalent is for the owner to decide, D-150): selling from the alpha's end and growing to 1.0 over 6–12 months. Early Access brings money sooner and gives real 40 h+ saves for R9; it costs early reviews of a rough build, and old saves must survive every big change.
 
 ### 13c. Post-launch roadmap (Accepted 2026-10-26, D-101)
 
@@ -895,75 +874,68 @@ Owner's choice (Plan Q14a): **start solo, hire later.**
 
 ### 14b. Budget (Accepted 2026-10-26, D-103)
 
-**Amended (2026-10-27, D-156, D-157):** for mobile first, the solo budget is about $66,000–219,000 with contingency. D-157 lists each change from the table below, which predates mobile first.
-
-Two cases: solo all the way, and solo plus one developer hired at a gate. Contingency 20%. All figures in US dollars, estimates.
+Two cases: solo all the way, and solo plus one developer hired at a gate. Contingency 20%. All figures in US dollars, estimates; store prices and fees are to be rechecked when spent. Restated for mobile first (D-157).
 
 | Item | Low | High | Basis (estimate) |
 |---|---|---|---|
 | Art (D-098, D-109) | 20,000 | 66,000 | §12c |
+| Hall-room and town-view art (D-156) | 9,000 | 30,000 | The guildhall hub's rooms and the town views |
 | Audio (D-098) | 9,000 | 37,000 | §12c |
 | Writing (optional contractor) | 3,500 | 10,000 | ~4,500 lines (D-109) ≈ 67,500 words at $0.05–0.15 a word; $0 if the owner writes with AI help |
 | Marketing | 5,000 | 15,000 | Trailer, store capsule art, festival build polish; festivals themselves are free |
 | Legal and business | 2,000 | 6,000 | Contractor agreements that transfer rights (§12e), a name and trademark check, company set-up if needed |
-| AI and dev tools | 3,000 | 9,000 | $100–200 a month for 31–46 months (D-108; plan prices to check) |
-| Test hardware | 1,000 | 2,000 | A minimum-spec laptop for §11g |
-| Steam Direct fee | 100 | 100 | Fact: $100 per app, recouped after $1,000 of sales (Steam's terms, to recheck at sign-up) |
-| **Subtotal** | **43,600** | **145,100** | |
-| **Solo total with 20% contingency** | **~52,000** | **~174,000** | |
+| AI and dev tools | 3,900 | 13,600 | $100–200 a month for 39–68 months (D-157; plan prices to check) |
+| Test hardware | 1,000 | 2,000 | A minimum-spec laptop (D-103; may not be needed before launch now that Windows follows it) |
+| Test phones | 300 | 1,000 | Two or three phones (D-157) |
+| Mac or Mac rental | 600 | 1,500 | iPhone builds need a Mac (D-151, D-157) |
+| Store fees | 425 | 625 | Apple about $99 a year over 4–6 years, Google about $25 once (D-157) |
+| **Subtotal** | **54,725** | **182,725** | |
+| **Solo total with 20% contingency** | **~66,000** | **~219,000** | |
 | One developer, 12–18 months (if hired) | 60,000 | 144,000 | $5,000–8,000 a month; varies a lot by country |
-| **Total with a hire, with contingency** | **~124,000** | **~347,000** | |
+| **Total with a hire, with contingency** | **~138,000** | **~392,000** | |
 
-Figures restated on 2026-10-26 for the lean cut and solo timeline (D-108, D-109); first figures: ~$57,000–185,000 solo, ~$128,000–358,000 with a hire.
+Earlier figures: ~$52,000–174,000 solo and ~$124,000–347,000 with a hire for the Windows launch (D-103, D-108, D-109); ~$57,000–185,000 and ~$128,000–358,000 before the lean cut. The Steam fee ($100) is no longer needed at launch (D-157).
 
-**Spend before the hire gate (M1–M2):** about $8,000–27,000 (rounded estimate, including 12–18 months of tools): the slice's corner of the map and a sketch of the rest ($1,000–3,000, D-113), about a fifth of the other art and audio for the slice's corner, tools, the Steam fee and first contracts. Bulk art waits for M1 to pass (D-099).
+**Spend before the hire gate (M1–M2):** about $9,000–30,000 (rounded estimate, D-157): the slice's corner of the map and a sketch of the rest ($1,000–3,000, D-113), about a fifth of the other art and audio for the slice's corner, 12–18 months of tools, the Mac, the test phones, the first store fees and first contracts. Bulk art waits for M1 to pass (D-099).
 
 ### 14c. Price and revenue (Accepted 2026-10-26, D-104)
 
-**Amended (2026-10-27, D-152, D-157):** on the phone stores the game is a free download with a $14.99 unlock, about $10–12 net per sale. Break-even is about 5,500–22,000 unlocks (estimates).
-
-- **Launch price: $24.99** (owner's choice, Plan Q14b). Comparable deep management games sit around $25–35 (for example Darkest Dungeon, Wildermyth, Battle Brothers, RimWorld; list prices to recheck at launch); Football Manager is higher with an established brand.
-- **Net per copy: about $12.50–15** (50–60% of the list price, estimate). Steam keeps 30% (fact for the first $10 million of sales); sales tax and VAT come out of prices in many regions, and regional pricing, launch discounts and refunds take more.
-- **Break-even (estimate):** solo budget about **3,500–14,000 copies**; with a hire about **8,000–28,000 copies**. This covers cash costs only: not the owner's time, income tax, company costs or post-launch work (D-113).
+- **Price: a free download with one $14.99 unlock** (D-152). The first season is free; the unlock opens the full game for good, with no other purchases (D-040). It replaces the $24.99 Steam price (D-104).
+- **Net per unlock: about $10–12** after the store's cut and sales taxes (estimate; the small-developer cut of about 15% is to be rechecked at sign-up, D-152).
+- **Break-even (estimate, D-157):** solo budget about **5,500–22,000 unlocks**; with a hire about **11,500–39,000 unlocks**. This covers cash costs only: not the owner's time, income tax, company costs or post-launch work (D-113).
 - **Post-launch work** (free updates, D-101) is owner time plus art per update, budgeted after launch from sales.
-- **Demo:** the first season, free (D-040, M4); D-065's 15% demo conversion is the measure.
+- **Demo:** the first season, free inside the same app (D-040, D-158, M4); D-065's 15% demo conversion is the measure (a Steam-era target, to check against phone-store data).
 - **§1d targets** (D-065) were revisited for this budget and stand unchanged; break-even needs no extra target.
 - **Paid expansions:** stay undecided (D-040); decide after launch on sales and the post-launch plan (D-101). Free updates first.
 - **Languages:** English at launch. Text lives in template files ready for translation (D-091); translation is decided after launch on sales by region.
 
 ### 14d. Funding route (Accepted 2026-10-26, D-103)
 
-- **M1–M2: self-funded** (about $8,000–27,000, §14b).
-- **At the slice gate** the slice is the pitch. Routes to choose between then: keep self-funding; a publisher deal (money and marketing for a revenue share and some control); crowdfunding (money and an early audience, but promises to keep); Early Access at the alpha gate (D-100).
+- **M1–M2: self-funded** (about $9,000–30,000, §14b).
+- **At the slice gate** the slice is the pitch. Routes to choose between then: keep self-funding; a publisher deal (money and marketing for a revenue share and some control); crowdfunding (money and an early audience, but promises to keep); Early Access at the alpha gate (D-100; its phone form is for the owner, D-150).
 - No publisher, investor or crowdfunding talks before the owner decides (SAFE-01).
 
 ### 14e. Assumptions to check (Accepted 2026-10-26, D-103)
 
-**Amended (2026-10-27, D-157):** check the restated mobile-first figures in D-157, not the Steam ones below.
-
 Each is an assumption the budget rests on; if one breaks, §14 is revisited at the next gate.
 
-1. Art and audio quotes land within the §12c ranges.
+1. Art and audio quotes land within the §12c ranges, plus the hall-room and town-view art (D-156).
 2. AI-assisted solo development at 10–20 h a week reaches the vertical slice in 12–18 months (M1 + M2, D-108).
-3. Wishlists from the Steam page (live from M2) and the demo carry the launch; no paid advertising in the budget.
-4. The list price and net share above hold at launch.
+3. A store page from M2 and the free first season carry the launch; no paid advertising in the budget. The plan relied on Steam wishlists; how a phone launch builds that audience is for the owner to decide (D-150).
+4. The $14.99 unlock and about $10–12 net per sale hold at launch (D-152).
 5. The owner's time stays at 10–20 h a week (D-108); a lasting change re-plans at the next gate.
 
 ### 14f. Wishlists and testers (Accepted 2026-10-26, D-113)
 
-**Under review (2026-10-27, D-150):** wishlists and Steam playtest recruiting have no phone version yet. Test builds go through the stores' test tracks (D-158).
-
-- **Wishlist targets** (estimates, to check against current store data when the page goes up at M2): about 1,000 at the slice gate, about 5,000 after the demo's first festival, 10,000 or more at launch. Missing a target by half goes to the owner at that gate.
-- **Audience:** a short devlog about once a month from M2 (map art, letters, a death in the Chronicle), linked from the Steam page.
-- **Testers:** alpha and beta testers come from a sign-up on the Steam page (Steam's own playtest feature) and the devlog. A community space (such as a Discord server) is the owner's call at M2 (SAFE-01).
+- **Wishlist targets** (estimates, set for a Steam page): about 1,000 at the slice gate, about 5,000 after the demo's first festival, 10,000 or more at launch. Missing a target by half goes to the owner at that gate. Phone stores have no wishlists, so the phone measure and its targets are for the owner to decide (D-150).
+- **Audience:** a short devlog about once a month from M2 (map art, letters, a death in the Chronicle), linked from the store page.
+- **Testers:** alpha and beta testers join through the stores' test tracks, TestFlight and Google Play's testing tracks (D-158); they are recruited from the devlog. How they are recruited beyond it (the plan used Steam's playtest sign-up) is for the owner to decide (D-150). A community space (such as a Discord server) is the owner's call at M2 (SAFE-01).
 
 ---
 
 ## 15. Quality, CI and release process (Accepted 2026-10-26)
 
-**Amended (2026-10-27, D-158):** for the phone launch, the stores' test tracks, staged rollouts, fix-forward releases and phone screen tests (375 and 430 points) replace the Steam and 1366×768 items below.
-
-Decisions: D-105, D-106, D-114. Inputs: tools review (D-092..D-094, `docs/design/TOOLS-REVIEW.md` §3), architecture and saves (D-091), milestones (D-099), playtest logs (D-088), team (D-102), shared rules CI-01..CI-06, VER-01..VER-07, GAME-01..GAME-06. Tool names for the checks follow the engine test (D-090); the shape below holds for either engine.
+Decisions: D-105, D-106, D-114, D-151, D-158. Inputs: tools review (D-092..D-094, D-167, `docs/design/TOOLS-REVIEW.md` §3, §6), architecture and saves (D-091), milestones (D-099), playtest logs (D-088), team (D-102), shared rules CI-01..CI-06, VER-01..VER-07, GAME-01..GAME-06. The engine is web tech (D-163). Store terms are to be rechecked at sign-up (D-158).
 
 ### 15a. Checks (Accepted 2026-10-26, D-105)
 
@@ -977,23 +949,24 @@ Every check runs locally before a push (VER-02); CI repeats the fast ones.
 | Content validator | Every data file matches its schema; ids and references resolve (D-091) | Every push |
 | Invariant checks | Money adds up, no negative health, every event has a cause (D-114) | Every balance run |
 | Save fixtures | A saved game from every released version (and every alpha and beta build) loads and upgrades (GAME-05) | Every push from M2 |
-| Screen tests | Key screens render at 1366×768 and 1920×1080, 15 px ledgers, no clipped text at 150% size (D-077, D-084) | Every push touching ui |
+| Screen tests | Key screens render upright at 375 and 430 points wide, 15 px minimum text, no clipping at 150% text size (D-077, D-084, D-158) | Every push touching ui |
 | Docs and drift checks | Decision ids exist; no draft markers; master rules in sync (D-092) | Every push |
 | Balance run | 1,000 seeded guild-years against the §4 and §9a targets (under ~17 min, §11g) | Before each gate and release, and on demand; not per push |
-| Performance | §11g targets on the minimum machine | Before each gate and release |
+| Performance | §11g targets on a small phone (D-154) | Before each gate and release |
 | Review | Adversarial review of the whole diff before a PR and before ready (D-093); `code-review` and `security-review` skills on code PRs (D-094) | Every PR |
 
 ### 15b. CI (Accepted 2026-10-26, D-105)
 
 - **Pull requests and `main`:** the "every push" checks above, with path filters so docs-only changes stay free (CI-01, CI-04). One job, time limit, least privilege, per-branch concurrency (CI-06). Added through the `efficient-github-actions` skill with the chosen stack's `stacks/` layer.
-- **Release tags only:** build the game for each launch platform (§15e) and upload it to a Steam branch. Builds never run on ordinary pushes.
+- **Release tags only:** build the game for both phone stores (§15d) and upload it to their test tracks. iPhone builds run on the owner's Mac or a rented one; CI stays on Linux, because macOS runners cost many times more minutes (D-158, CI-01). Builds never run on ordinary pushes.
 - **Manual:** the balance run and performance run, triggered before gates and releases (CI-04).
-- **Steam credentials** live as repository secrets used only by the release job, set up by the owner (SAFE-01, SAFE-02).
+- **Store credentials** are set up by the owner and used only for release builds (SAFE-01, SAFE-02).
+- **Previews:** every PR gets a Vercel preview link and `main` a stable link for the owner's phone, built by Vercel rather than Actions (D-167).
 
 ### 15c. Bugs and crashes (Accepted 2026-10-26, D-105)
 
 - **Where:** GitHub issues, one per bug, with the build version, the save and the playtest log (D-088) attached.
-- **Crash log and replay:** the game writes a local crash report next to the playtest log; nothing is sent automatically (D-088). Testers attach it with their save, which carries the commands since the last daily snapshot, so the bug replays exactly (D-114).
+- **Crash log and replay:** the game writes a local crash report next to the playtest log; the game itself sends nothing (D-088). The stores' own crash reports, sent by the phone with the player's consent, are read alongside testers' attached logs (D-158). Testers attach it with their save, which carries the commands since the last daily snapshot, so the bug replays exactly (D-114).
 - **Severity:**
   1. **Blocker:** loses or corrupts a save, or crashes on a common path. Stops a release; fixed before anything else.
   2. **Major:** a wrong rule result, a stuck screen, or a broken Trace (D-082). Fixed before the next gate.
@@ -1002,12 +975,11 @@ Every check runs locally before a push (VER-02); CI repeats the fast ones.
 
 ### 15d. Versions and builds (Accepted 2026-10-26, D-105, D-106)
 
-**Amended (2026-10-27, D-151, D-158):** launch is on iPhone and Android phones, and Windows follows. D-158 replaces the Steam branches, Cloud, achievements and rollback below for the phone launch, and adapts checklist items 4 and 5.
-
-- **Launch platform: Windows** (owner's choice, Plan Q15a). Linux and Steam Deck players can run the Windows build through Proton, but it is not promised on the store page. Steam Deck support (a 1280×800 layout below the 1366×768 minimum, D-091, and controller play) and a Mac build are decided after launch.
+- **Launch platforms: iPhone and Android phones at the same time, held upright** (D-151), from one web-tech codebase. Tablets run the phone layout scaled up. Windows follows after launch; the order of later platforms (Windows, Mac, Steam Deck) is decided then. The first plan was a Windows launch (D-106).
 - **Version:** `major.minor.patch` for the game, plus the save-format and content versions stored in every save (D-091).
-- **Steam branches:** `playtest` for slice and alpha testers (M2, M3), `beta` for M5 and later opt-in previews, `default` for the release. The free demo (D-040) is a separate Steam app, as Steam sets up demos (to recheck at sign-up).
-- **Rollback:** Steam keeps earlier builds; a bad release is rolled back by setting the previous build live, and saves made by the bad build must still load in the next fixed one.
+- **Test builds:** Apple's TestFlight and Google Play's testing tracks. Slice and alpha testers (M2, M3) use the closed tracks; the beta (M5) uses the open ones (D-158).
+- **Releases:** the demo and the full game are one app with the in-app unlock (D-152), so there is no separate demo app. Updates go out as staged rollouts on both stores, and a bad rollout is paused. Apple's phased release covers updates only, not the first version (to recheck).
+- **Rollback:** neither store can set an earlier build live again (to recheck). A bad release is fixed forward with a higher version number, and saves made by the bad build must load in the fixed one (GAME-05).
 
 ### 15e. Release checklist (Accepted 2026-10-26, D-105)
 
@@ -1016,8 +988,8 @@ Used at M4 (demo), M6 (launch, D-099) and for every patch:
 1. All "every push" checks green on the release commit; balance and performance runs within targets.
 2. No open blocker; majors reviewed by the owner.
 3. Save fixtures from every earlier public build load.
-4. Fresh install and upgrade install tested on the minimum machine for each launch platform.
-5. Achievements and Steam Cloud work on the release branch (D-088, D-091).
+4. Fresh install and upgrade install tested on a small phone and a large phone on each system (D-158).
+5. Cloud saves and achievements work on the store build (D-088, D-158).
 6. Asset licence ledger complete (`assets/LICENSES.md`, §12e, SAFE-05); store page's AI-content disclosure answered if any generated content shipped (D-094).
 7. Patch notes written in plain words; the version in the game matches the tag.
 8. Owner signs off (SAFE-01); the build is set live.
@@ -1025,5 +997,5 @@ Used at M4 (demo), M6 (launch, D-099) and for every patch:
 ### 15f. After release (Accepted 2026-10-26, D-105)
 
 - **Hotfix:** a blocker found after release gets a patch release as soon as it is fixed and checked; nothing else rides on it.
-- **Updates:** the free updates (D-101) go to the `beta` branch first, then `default`.
+- **Updates:** the free updates (D-101) go to the stores' open test tracks first, then out as a staged rollout (D-158).
 - **Old saves:** every update keeps every older save loading (GAME-05); save fixtures are never deleted.
