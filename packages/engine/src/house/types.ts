@@ -44,6 +44,53 @@ export interface StartCell {
   readonly level: number;
 }
 
+interface IncidentBase {
+  readonly id: string;
+  /** Kinds a fire or sickness may strike; for theft, the kinds that set the chest's level (the strongroom). */
+  readonly roomKindIds: readonly string[];
+  /** The weekly chance (basis points) before the multipliers. */
+  readonly weeklyBp: number;
+  /** The fee for the paid answer. */
+  readonly paidCopper: number;
+}
+
+/** One incident kind as data (GAME-04): the engine knows three effects (SPEC.md, Incidents). */
+export type IncidentKind = IncidentBase &
+  (
+    | { readonly effect: 'fire' }
+    | {
+        readonly effect: 'theft';
+        /** Share of the chest taken, by strongroom level. */
+        readonly shareBp: readonly number[];
+        readonly noRoomShareBp: number;
+        /** Chance the paid answer gets the coin back. */
+        readonly recoverBp: number;
+      }
+    | {
+        readonly effect: 'sickness';
+        readonly count: number;
+        readonly freeDays: number;
+        readonly paidDays: number;
+        /** Days for a sick member with a free sickbed, as a share. */
+        readonly sickbedBp: number;
+      }
+  );
+
+export interface IncidentRules {
+  readonly kinds: readonly IncidentKind[];
+  /** Chance multiplier by room level (level 1 first), in basis points. */
+  readonly levelBp: readonly number[];
+  /** Stands in for `levelBp` when theft finds no strongroom. */
+  readonly noRoomBp: number;
+  /** Multiplier while the chest is below zero, and for a full target. */
+  readonly debtBp: number;
+  readonly fullBp: number;
+  /** Copper a week for each member who lodges at the inn (members beyond the beds). */
+  readonly innFeeCopper: number;
+  /** A repair's share of the cell costs of the levels it restores (D-193). */
+  readonly repairBp: number;
+}
+
 export interface HouseRules {
   readonly kinds: readonly RoomKind[];
   /** The fixed cell that holds the work desk; not a kind, never built or charged. */
@@ -71,6 +118,8 @@ export interface HouseRules {
     readonly placedBp: number;
     readonly unplacedBp: number;
   };
+  /** House incidents and inn lodgers (v2); absent: none. */
+  readonly incidents?: IncidentRules;
 }
 
 export interface BuiltCell {
@@ -91,13 +140,32 @@ export type HouseJob =
       readonly places: readonly Place[];
       readonly toLevel: number;
     }
-  | { readonly kind: 'extend'; readonly direction: ExtendDirection };
+  | { readonly kind: 'extend'; readonly direction: ExtendDirection }
+  | {
+      readonly kind: 'repair';
+      readonly place: Place;
+      readonly kindId: string;
+      readonly level: number;
+    };
 
 export interface HouseWork {
   readonly id: string;
   readonly job: HouseJob;
   /** Absolute week (counted across years) at whose start the work is done. */
   readonly doneWeek: number;
+}
+
+/** The standing incident letter, until it is answered or the next week start. */
+export interface IncidentLetter {
+  readonly kindId: string;
+  /** The struck cell; null for theft. */
+  readonly place: Place | null;
+  /** The absolute week it struck. */
+  readonly week: number;
+  /** The paid answer's fee. */
+  readonly feeCopper: number;
+  /** Theft: what the thieves took at the strike. */
+  readonly stolenCopper?: number;
 }
 
 export interface HouseState {
@@ -112,4 +180,7 @@ export interface HouseState {
   /** Who holds a sickbed, and the day they are fit again (D-186). */
   readonly sickbeds: { readonly memberId: string; readonly untilDay: number }[];
   nextWorkNo: number;
+  letter: IncidentLetter | null;
+  /** What fires took (D-193): each scarred place, its kind and its level before the first fire. */
+  readonly scars: { readonly place: Place; readonly kindId: string; readonly level: number }[];
 }

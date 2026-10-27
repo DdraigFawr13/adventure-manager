@@ -36,6 +36,7 @@ const STOP_CLASS: Readonly<Record<StopReason, StopClass>> = {
   infirmary: 'digest',
   'patron-offer': 'must',
   crisis: 'must',
+  incident: 'must',
 };
 
 const STOP_ORDER: readonly StopReason[] = [
@@ -44,6 +45,7 @@ const STOP_ORDER: readonly StopReason[] = [
   'retirement',
   'patron-offer',
   'crisis',
+  'incident',
   'signing-window',
   'week-report',
   'new-contracts',
@@ -155,7 +157,7 @@ function weekStart(turn: GuildTurn, causeId: string, stops: Set<StopReason>): vo
   if (wages > 0) pay(turn, -wages, 'wages', started);
   pay(turn, -rules.runningCostCopper, 'upkeep', started);
   const campaigning = week > rules.assemblyWeeks && week < rules.winterFromWeek;
-  houseWeek(turn, started);
+  houseWeek(turn, started, stops);
   staffWeek(turn, campaigning ? week - rules.assemblyWeeks : null, started, stops);
   expireOffers(turn, weekOf(state.calendar, rules), started);
   postOffers(turn, week, weekOf(state.calendar, rules), started);

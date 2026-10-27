@@ -3,16 +3,20 @@
 import {
   AREAS,
   PLAYER_ID,
+  bedsOf,
   stopDays,
   yearOf,
   type Area,
+  type BuiltCell,
   type GameEvent,
+  type HouseState,
 } from '@adventure-manager/engine';
 import {
   baseResolution,
   careerGuildRules,
   fullHousePlan,
   houseGuildRules,
+  houseIncidentGuildRules,
   staffGuildRules,
 } from '@adventure-manager/content';
 import { POLICIES, rules, runYear } from './year-sim-play.ts';
@@ -23,6 +27,8 @@ export interface CareerSetup {
   readonly size: number;
   readonly refuseGrants: boolean;
   readonly houseMode: 'off' | 'on';
+  /** With house=on: incidents and inn lodgers (house/SPEC.md). */
+  readonly incidentsMode?: 'off' | 'on';
 }
 
 /** One career to play: its seed, the player policy's name, and whether staff run both areas. */
@@ -78,7 +84,29 @@ export interface Career {
   houseFirstWeek: number | null;
   roomsLateCopper: number;
   spendingLateCopper: number;
+  /** Incidents: struck letters by kind id, fires settled, barracks cells burnt out, week starts played, week starts with lodgers, and inn fees and theft taken in years 10+. */
+  incidentsByKind: Record<string, number>;
+  fires: number;
+  firesBurntBarracks: number;
+  weeks: number;
+  lodgerWeeks: number;
+  innLateCopper: number;
+  theftLateCopper: number;
+  repairLateCopper: number;
   seconds: number;
+}
+
+/** Where the barracks cells are, as keys, so a burnt-out cell shows as one gone from the day before. */
+function barracksKeys(house: HouseState): Set<string> {
+  const keys = new Set<string>();
+  const scan = (row: string, cells: readonly (BuiltCell | null)[]) =>
+    cells.forEach((cell, at) => {
+      if (cell?.kindId === 'room.barracks') keys.add(`${row}.${at}`);
+    });
+  for (const [floor, cells] of Object.entries(house.floors)) scan(`hall${floor}`, cells);
+  scan('west', house.compound.west);
+  scan('east', house.compound.east);
+  return keys;
 }
 
 export function playCareer(setup: CareerSetup, job: CareerJob): Career {
@@ -90,7 +118,9 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     ...baseResolution,
     guild:
       setup.houseMode === 'on'
-        ? houseGuildRules
+        ? setup.incidentsMode === 'on'
+          ? houseIncidentGuildRules
+          : houseGuildRules
         : setup.staffMode === 'compare'
           ? staffGuildRules
           : careerGuildRules,
@@ -99,6 +129,8 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
   const skillDays: Record<Area, number> = { training: 0, recovery: 0 };
   let days = 0;
   const rosterByYear: number[] = [];
+  const counts = { weeks: 0, lodgerWeeks: 0, firesBurntBarracks: 0 };
+  let barracksCells = new Set<string>();
   // runYear runs the guild and resolution invariants over the whole career and throws on a problem.
   const { events } = runYear(seed, planToUse, {
     content,
@@ -109,6 +141,19 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     ...(job.party ? { party: job.party } : {}),
     ...(setup.houseMode === 'on' ? { housePlan: fullHousePlan } : {}),
     onDay: (state) => {
+      const house = state.guild?.house;
+      const houseRules = state.content.guild?.house;
+      if (house && houseRules?.incidents) {
+        if ((state.calendar - 1) % rules.daysPerWeek === 0) {
+          counts.weeks += 1;
+          if ((state.guild?.members.length ?? 0) > bedsOf(house, houseRules))
+            counts.lodgerWeeks += 1;
+        }
+        // A barracks cell that was there yesterday and is gone now burned out (only a fire removes one).
+        const now = barracksKeys(house);
+        for (const key of barracksCells) if (!now.has(key)) counts.firesBurntBarracks += 1;
+        barracksCells = now;
+      }
       if (state.calendar % yearDays === 0)
         rosterByYear[state.calendar / yearDays - 1] = state.guild?.members.length ?? 0;
       const staff = state.guild?.staff;
@@ -150,6 +195,14 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     houseFirstWeek: null,
     roomsLateCopper: 0,
     spendingLateCopper: 0,
+    incidentsByKind: {},
+    fires: 0,
+    firesBurntBarracks: counts.firesBurntBarracks,
+    weeks: counts.weeks,
+    lodgerWeeks: counts.lodgerWeeks,
+    innLateCopper: 0,
+    theftLateCopper: 0,
+    repairLateCopper: 0,
     seconds: 0,
   };
   let housesFinished = 0;
@@ -192,11 +245,15 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     if (e.type === 'patron.offered') c.firstOfferYear ??= yearOfEvent(e);
     if (e.type === 'money.changed' && e.reason === 'emergency' && yearOfEvent(e) <= 2)
       c.earlyGrantCopper += e.amountCopper;
-    if (e.type === 'house.started') {
+    if (e.type === 'incident.struck')
+      c.incidentsByKind[e.kindId] = (c.incidentsByKind[e.kindId] ?? 0) + 1;
+    if (e.type === 'incident.settled' && e.effect === 'fire') c.fires += 1;
+    // Repairs after fires (D-193) are not plan steps; their cost counts as an incident cost.
+    if (e.type === 'house.started' && e.job !== 'repair') {
       c.houseFirstStarted ??= yearOfEvent(e);
       c.houseFirstWeek ??= Math.floor((e.day - 1) / rules.daysPerWeek) + 1;
     }
-    if (e.type === 'house.finished') {
+    if (e.type === 'house.finished' && e.job !== 'repair') {
       c.houseFirstFinished ??= yearOfEvent(e);
       housesFinished += 1;
       if (housesFinished === fullHousePlan.length) c.houseCompleted = yearOfEvent(e);
@@ -209,6 +266,9 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     if (e.type === 'money.changed' && e.amountCopper < 0 && yearOfEvent(e) >= 10) {
       c.spendingLateCopper -= e.amountCopper;
       if (e.reason === 'rooms') c.roomsLateCopper -= e.amountCopper;
+      if (e.reason === 'inn') c.innLateCopper -= e.amountCopper;
+      if (e.reason === 'theft') c.theftLateCopper -= e.amountCopper;
+      if (e.reason === 'repair') c.repairLateCopper -= e.amountCopper;
     }
     if (e.type === 'money.changed') c.chestByYear[yearOfEvent(e) - 1] = e.chestCopper;
   }

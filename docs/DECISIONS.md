@@ -1184,7 +1184,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 ## D-182 Members who lose their bed lodge at the inn, for a fee
 
 - **Status:** Accepted (2026-10-27). Settles the open point in D-174.
-- **Decision:** If an incident (D-173) or anything else destroys beds while members are signed, the members without a bed lodge at the home town's inn for a weekly fee per member, shown on the Money page, until beds are rebuilt. The fee is lower when the guild funds the inn (D-171). No one can be signed while any member lodges at the inn (owner's confirmation, 2026-10-27), so the inn is never a way round D-174; lodgers are the one case where the roster exceeds the beds (D-170). The inn always takes lodgers: funding it only lowers the fee, so losing the inn to a rival raises it (owner's choice, 2026-10-27, both recommended options). Open: what happens if the guild can't pay the fee. Fee amounts are set with the year simulator.
+- **Decision:** If an incident (D-173) or anything else destroys beds while members are signed, the members without a bed lodge at the home town's inn for a weekly fee per member, shown on the Money page, until beds are rebuilt. The fee is lower when the guild funds the inn (D-171). No one can be signed while any member lodges at the inn (owner's confirmation, 2026-10-27), so the inn is never a way round D-174; lodgers are the one case where the roster exceeds the beds (D-170). The inn always takes lodgers: funding it only lowers the fee, so losing the inn to a rival raises it (owner's choice, 2026-10-27, both recommended options). If the guild can't pay, the fee goes into debt like wages (D-190). Fee amounts are set with the year simulator.
 - **Why:** Owner's choice (2026-10-27), "Lodge at the inn, for a fee", over the recommended option (sleep rough with a morale cost until rebuilt) and over releasing members until the roster fits. It ties a house incident to the town.
 
 ## D-183 The compound starts at 3 plots a side and its walls can be pushed out
@@ -1230,3 +1230,31 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Amends the patron's yearly review (D-036, D-141) for a new guild; follows from the smaller start (D-187).
 - **Decision:** For the guild's first 2 seasons the patron sets growth goals instead of a ladder-place target: for example field a second party, build a room, earn some renown. Met or missed goals move the patron's confidence as targets do, but the patron can't dismiss the guildmaster before the third Assembly. From the third season the ladder target returns. The goal list and how they are scored are content (GAME-04), set with the year simulator.
 - **Why:** Owner's choice (2026-10-27), the recommended "Grace years with growth goals", over targets that scale with the roster and over keeping the patron as tuned. With a one-party start (D-187), the simulator showed 28% of guildmasters dismissed against 10% before, mostly in years 3-4, because a guild of 7 earns too little renown early for the ladder targets.
+
+## D-190 An unpaid inn fee is debt, like wages
+
+- **Status:** Accepted (2026-10-27). Settles the open point in D-182.
+- **Decision:** The inn fee for lodgers (D-182) is one more weekly cost paid at the week start with wages and room upkeep. If the chest can't cover it, the chest goes below zero like any other cost; the existing debt rules apply (patron confidence at year's end, the emergency grant, D-146). The inn never turns lodgers out and keeps no tab of its own.
+- **Why:** Owner's choice (2026-10-27), the recommended "Debt, like wages", over the inn turning lodgers out to sleep rough, a tab with the town that lowers town standing, and lodgers leaving the guild. No new rule, and the pressure to rebuild beds stays on the Money page.
+
+## D-191 A neglected room is a low-level room in a guild in debt
+
+- **Status:** Accepted (2026-10-27). Details D-173's "more likely when a room is neglected or full".
+- **Decision:** No wear or repair state. An incident's chance in a room falls as the room's level rises, rises while the chest is in debt (upkeep effectively unpaid, repairs skipped, D-190), and rises when the room is full (every bed, sickbed or place in use). Upgrading a room is therefore also how to make it safer. The multipliers are content numbers set with the simulator.
+- **Why:** Owner's choice (2026-10-27), the recommended "Low level + debt", over wear that builds up with a repair command (a chore on the phone, D-153), risk from a missing staff head (most rooms have no head in the engine yet) and fullness only (upgrading would never make a room safer).
+
+## D-192 The first house incidents: fire, break-in and sickness
+
+- **Status:** Accepted (2026-10-27). The first incident kinds for D-173; each is a data entry (GAME-04).
+- **Decision:** Three kinds, each a letter with a paid answer and a free default, which applies if the player ignores the letter and which the simulator always takes:
+  - **Fire** in the forge, tavern, works or barracks: one cell drops a level, and a level-1 cell burns out. A burnt barracks cell loses its beds, so members without one lodge at the inn (D-182, D-190). Answers: pay the fire watch (a fee, no damage) or let it burn (rebuild later by command; default).
+  - **Break-in** by a rival's thieves: takes a share of the chest; a strongroom cuts the share by its level, and no strongroom is the worst case. Answers: hire thief-takers (a fee, a chance to get the coin back) or write it off (default).
+  - **Sickness** in a full barracks: a few members at home fall ill for 1–2 weeks; free infirmary sickbeds shorten it. Answers: pay a healer (shorter) or quarantine (free, longer; default).
+  Chances follow D-191 (level, debt, fullness) and are tuned toward 1–2 incidents a year. Fees, shares and durations are content numbers set with the simulator.
+- **Why:** Owner's choice (2026-10-27), the recommended "Approve as drafted", over fire and sickness only (leaving the break-in until rivals keep accounts) and over adding more kinds now.
+
+## D-193 Repairs after a fire cost half and may go into debt
+
+- **Status:** Accepted (2026-10-27). Amends D-192's fire and the house rule that building needs coin in the chest, for repairs only.
+- **Decision:** Rebuilding what a fire took (a burnt-out cell, or a lowered one back to its old level) is a repair: half the build cost of the levels it restores, the usual weeks of work, and allowed into debt like upkeep (D-190). Paying the fire watch may also go into debt. New building and upgrades still need the coin in the chest. The half is a content number.
+- **Why:** Owner's choice (2026-10-27), the recommended "Cheap repairs, into debt", over full-price repairs into debt, a fire that never burns out a cell, and keeping the rule with fires made rarer. In the simulator (100 careers × 26 years, fire only at 0.19 a year) a guild in debt couldn't rebuild burnt barracks, so its members lodged at the inn indefinitely, it couldn't sign anyone, and dismissals rose from 14% to 24%; one roster fell from 13 to 3.

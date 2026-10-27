@@ -1,4 +1,4 @@
-// House v0 (SPEC.md): the guild house's space, what building costs and takes, upkeep, and beds.
+// The guild house (SPEC.md): space, what building costs and takes, upkeep, beds, room effects and incidents.
 import type { EventSink } from '../core/events.ts';
 import { divRoundDown } from '../core/math.ts';
 import { BP_CERTAIN, streamFor } from '../core/rng.ts';
@@ -6,6 +6,7 @@ import { ageOf, setAttribute } from '../career/people.ts';
 import { trainingBp } from '../staff/areas.ts';
 import { guildTurn, isFree, pay, weekInYear, weekOf, type GuildTurn } from '../guild/turn.ts';
 import { ATTRIBUTES, type Command, type GameEvent, type GameState } from '../resolution/types.ts';
+import type { IncidentAnswer, IncidentResult, StopReason } from '../guild/types.ts';
 import type {
   BuiltCell,
   CompoundSide,
@@ -13,6 +14,8 @@ import type {
   HouseJob,
   HouseRules,
   HouseState,
+  IncidentKind,
+  IncidentRules,
   Place,
   RoomKind,
 } from './types.ts';
@@ -170,6 +173,8 @@ export function startHouse(turn: GuildTurn, size: number): void {
     sickbeds: [],
     added: { up: 0, down: 0, west: 0, east: 0 },
     nextWorkNo: 0,
+    letter: null,
+    scars: [],
   };
   for (const kind of rules.kinds) {
     const levels = kind.cellCostCopper.length;
@@ -196,11 +201,27 @@ export function startHouse(turn: GuildTurn, size: number): void {
   turn.guild.house = house;
 }
 
+/** Cells of a kind that running builds and repairs will add, so runs count them before they finish. */
+function pendingCells(house: HouseState, kindId: string): Place[] {
+  return house.work.flatMap((w) =>
+    (w.job.kind === 'build' || w.job.kind === 'repair') && w.job.kindId === kindId
+      ? [w.job.place]
+      : [],
+  );
+}
+
 /** Every place a running job holds, so no other command can touch it. */
 function placesHeld(house: HouseState): Place[] {
-  return house.work.flatMap((w) =>
-    w.job.kind === 'build' ? [w.job.place] : w.job.kind === 'upgrade' ? [...w.job.places] : [],
+  const held = house.work.flatMap((w) =>
+    w.job.kind === 'build' || w.job.kind === 'repair'
+      ? [w.job.place]
+      : w.job.kind === 'upgrade'
+        ? [...w.job.places]
+        : [],
   );
+  // A standing letter's cell can't take work until it is answered, so no work erases a fire (SPEC.md).
+  if (house.letter?.place) held.push(house.letter.place);
+  return held;
 }
 
 function jobParts(job: HouseJob): {
@@ -213,6 +234,13 @@ function jobParts(job: HouseJob): {
   if (job.kind === 'build')
     return {
       job: 'build',
+      places: [copyPlace(job.place)],
+      kindId: job.kindId,
+      level: job.level,
+    };
+  if (job.kind === 'repair')
+    return {
+      job: 'repair',
       places: [copyPlace(job.place)],
       kindId: job.kindId,
       level: job.level,
@@ -241,14 +269,17 @@ function begin(
   job: HouseJob,
   costCopper: number,
   weeks: number,
+  intoDebt = false,
 ): void {
-  if (costCopper > turn.guild.chestCopper)
+  if (!intoDebt && costCopper > turn.guild.chestCopper)
     throw new Error(`The chest holds ${turn.guild.chestCopper} copper; this costs ${costCopper}.`);
   const doneWeek = weekOf(turn.state.calendar, turn.rules) + winterWeeks(turn, weeks, rules);
   house.nextWorkNo += 1;
   const id = `house.work.${house.nextWorkNo}`;
   house.work.push({ id, job, doneWeek });
-  const paid = pay(turn, -costCopper, 'building', command.id, [id]);
+  const paid = pay(turn, -costCopper, job.kind === 'repair' ? 'repair' : 'building', command.id, [
+    id,
+  ]);
   turn.sink.emit({
     type: 'house.started',
     causeId: paid,
@@ -291,9 +322,7 @@ export function buildRoom(
   if (place.area !== kind.where) throw new Error(`${kind.id} goes in the ${kind.where}.`);
   if (kind.belowGround && !(place.area === 'hall' && place.floor < 0))
     throw new Error(`${kind.id} goes below ground.`);
-  const pending = house.work.flatMap((w) =>
-    w.job.kind === 'build' && w.job.kindId === kind.id ? [w.job.place] : [],
-  );
+  const pending = pendingCells(house, kind.id);
   const run = runAround(house, place, kind.id, pending);
   // A room with a cell under work can't be joined: the new cell would take a level about to change.
   const held = placesHeld(house);
@@ -318,6 +347,9 @@ export function buildRoom(
     cost,
     kind.weeks[0] ?? 0,
   );
+  // Building on a burnt-out place, at full price, replaces any repair it was owed (D-193).
+  const scar = house.scars.findIndex((x) => samePlace(x.place, place));
+  if (scar >= 0) house.scars.splice(scar, 1);
 }
 
 export function upgradeRoom(
@@ -334,9 +366,7 @@ export function upgradeRoom(
   if (cell === undefined) throw new Error(`There is no ${where}.`);
   if (cell === null) throw new Error(`The ${where} holds no room.`);
   const kind = kindOf(rules, cell.kindId);
-  const pending = house.work.flatMap((w) =>
-    w.job.kind === 'build' && w.job.kindId === kind.id ? [w.job.place] : [],
-  );
+  const pending = pendingCells(house, kind.id);
   // A room with a cell under work (a new cell joining it, or an upgrade) can't be raised.
   const whole = runAround(house, place, kind.id, pending);
   if (whole.some((p) => held.some((q) => samePlace(p, q))))
@@ -353,6 +383,44 @@ export function upgradeRoom(
     { kind: 'upgrade', kindId: kind.id, places: targets.map(copyPlace), toLevel: level + 1 },
     (kind.cellCostCopper[level] ?? 0) * targets.length,
     kind.weeks[level] ?? 0,
+  );
+}
+
+/** `house.repair` (D-193): restores a place a fire took to its old level, at a share of the cost, into debt if need be. */
+export function repairRoom(
+  state: GameState,
+  command: Extract<Command, { type: 'house.repair' }>,
+  sink: EventSink<GameEvent>,
+): void {
+  const { turn, house, rules } = houseTurn(state, command, sink);
+  const incidents = rules.incidents;
+  if (!incidents) throw new Error('This house has no incidents.');
+  const { place } = command;
+  const where = describe(place);
+  const scar = house.scars.find((x) => samePlace(x.place, place));
+  if (!scar) throw new Error(`The ${where} has no fire damage.`);
+  if (placesHeld(house).some((p) => samePlace(p, place)))
+    throw new Error(`The ${where} is under work.`);
+  const cell = slot(house, place);
+  if (cell && cell.kindId !== scar.kindId) throw new Error(`The ${where} holds another room.`);
+  const kind = kindOf(rules, scar.kindId);
+  if (
+    runAround(house, place, kind.id, [place, ...pendingCells(house, kind.id)]).length >
+    kind.maxCells
+  )
+    throw new Error(`${kind.id} runs to at most ${kind.maxCells} cells.`);
+  const from = cell?.level ?? 0;
+  let cost = 0;
+  for (let n = from; n < scar.level; n += 1) cost += kind.cellCostCopper[n] ?? 0;
+  begin(
+    turn,
+    house,
+    rules,
+    command,
+    { kind: 'repair', place: copyPlace(place), kindId: scar.kindId, level: scar.level },
+    divRoundDown(cost * incidents.repairBp, BP),
+    kind.weeks[scar.level - 1] ?? 0,
+    true,
   );
 }
 
@@ -382,12 +450,17 @@ export function extendHouse(
   );
 }
 
-/** Each week start: finish the work that is due, then charge upkeep for every finished cell. */
-export function houseWeek(turn: GuildTurn, causeId: string): void {
+/**
+ * Each week start: settle an unanswered letter by default, finish the work that is due, charge
+ * upkeep for every finished cell, then the inn fee for lodgers, training, and the incident rolls.
+ */
+export function houseWeek(turn: GuildTurn, causeId: string, stops: Set<StopReason>): void {
   const house = turn.guild.house;
   const rules = turn.rules.house;
   if (!house || !rules) return;
   const week = weekOf(turn.state.calendar, turn.rules);
+  const incidents = rules.incidents;
+  if (incidents && house.letter) settle(turn, house, rules, incidents, 'free', true, causeId);
   for (const work of [...house.work]) {
     if (work.doneWeek > week) continue;
     house.work.splice(house.work.indexOf(work), 1);
@@ -401,9 +474,250 @@ export function houseWeek(turn: GuildTurn, causeId: string): void {
       doneWeek: work.doneWeek,
     });
   }
+  // A scar heals once its place is back at its old level, or holds another kind (D-193).
+  const healed = house.scars.filter((x) => {
+    const cell = slot(house, x.place);
+    return cell && (cell.kindId !== x.kindId || cell.level >= x.level);
+  });
+  for (const x of healed) house.scars.splice(house.scars.indexOf(x), 1);
   const upkeep = upkeepOf(house, rules);
   if (upkeep > 0) pay(turn, -upkeep, 'rooms', causeId);
+  if (incidents) {
+    const lodgers = turn.guild.members.length - bedsOf(house, rules);
+    if (lodgers > 0) pay(turn, -lodgers * incidents.innFeeCopper, 'inn', causeId);
+  }
   trainAtHome(turn, house, rules, causeId);
+  if (incidents) rollIncidents(turn, house, rules, incidents, causeId, stops);
+}
+
+/** Every built cell's place, in place order: hall floors low to high, cells left to right, then west, then east plots. */
+function cellPlaces(house: HouseState): Place[] {
+  const places: Place[] = [];
+  for (let floor = house.lowestFloor; floor <= house.highestFloor; floor += 1)
+    (house.floors[floor] ?? []).forEach((c, cell) => {
+      if (c) places.push({ area: 'hall', floor, cell });
+    });
+  for (const side of SIDES)
+    house.compound[side].forEach((c, plot) => {
+      if (c) places.push({ area: 'compound', side, plot });
+    });
+  return places;
+}
+
+/** The room's level at a cell: the lowest level among the cells of its run. */
+function roomLevelAt(house: HouseState, place: Place, kindId: string): number {
+  const levels = runAround(house, place, kindId, []).flatMap((p) => slot(house, p)?.level ?? []);
+  return Math.min(...levels);
+}
+
+/** The chance (basis points) a target strikes this week: each multiplier in basis points, rounded down at each step. */
+export function incidentChanceBp(
+  rules: IncidentRules,
+  weeklyBp: number,
+  level: number | null,
+  inDebt: boolean,
+  full: boolean,
+): number {
+  const byLevel = level === null ? rules.noRoomBp : (rules.levelBp[level - 1] ?? BP);
+  let bp = divRoundDown(weeklyBp * byLevel, BP);
+  if (inDebt) bp = divRoundDown(bp * rules.debtBp, BP);
+  if (full) bp = divRoundDown(bp * rules.fullBp, BP);
+  return bp;
+}
+
+/** Whether a room kind's cell is full: beds all taken, every sickbed held, or every yard place filled. */
+function isFull(turn: GuildTurn, house: HouseState, rules: HouseRules, kind: RoomKind): boolean {
+  const today = turn.state.calendar;
+  if (kind.beds) return turn.guild.members.length >= bedsOf(house, rules);
+  if (kind.sickbeds) {
+    const held = house.sickbeds.filter(
+      (b) => b.untilDay > today && turn.guild.members.some((m) => m.id === b.memberId),
+    );
+    return held.length >= sickbedsOf(house, rules);
+  }
+  if (kind.trainingPlaces)
+    return (
+      turn.guild.members.filter((m) => isFree(m, today)).length >= trainingPlacesOf(house, rules)
+    );
+  return false;
+}
+
+/** The incident rolls (SPEC.md, Chance): kinds in content order, targets in place order; the first strike ends them. */
+function rollIncidents(
+  turn: GuildTurn,
+  house: HouseState,
+  rules: HouseRules,
+  incidents: IncidentRules,
+  causeId: string,
+  stops: Set<StopReason>,
+): void {
+  if (house.letter) return;
+  const rng = streamFor(turn.state, 'house.incidents');
+  const inDebt = turn.guild.chestCopper < 0;
+  const held = placesHeld(house);
+  const strike = (kind: IncidentKind, place: Place | null, stolenCopper?: number) => {
+    house.letter = {
+      kindId: kind.id,
+      place: place ? copyPlace(place) : null,
+      week: weekOf(turn.state.calendar, turn.rules),
+      feeCopper: kind.paidCopper,
+      ...(stolenCopper === undefined ? {} : { stolenCopper }),
+    };
+    const struck = turn.sink.emit({
+      type: 'incident.struck',
+      causeId,
+      subjectIds: [],
+      kindId: kind.id,
+      effect: kind.effect,
+      place: place ? copyPlace(place) : null,
+      feeCopper: kind.paidCopper,
+    });
+    if (stolenCopper) pay(turn, -stolenCopper, 'theft', struck);
+    stops.add('incident');
+  };
+  for (const kind of incidents.kinds) {
+    if (kind.effect === 'theft') {
+      if (turn.guild.chestCopper <= 0) continue;
+      const best = cellsOf(house)
+        .filter((c) => kind.roomKindIds.includes(c.kindId))
+        .map((c) => c.level);
+      const level = best.length > 0 ? Math.max(...best) : null;
+      const bp = incidentChanceBp(incidents, kind.weeklyBp, level, inDebt, false);
+      if (!rng.chance(bp)) continue;
+      const share = level === null ? kind.noRoomShareBp : (kind.shareBp[level - 1] ?? 0);
+      const stolen = divRoundDown(turn.guild.chestCopper * share, BP);
+      // A chest too thin to lose a coin is no break-in worth a letter.
+      if (stolen === 0) continue;
+      strike(kind, null, stolen);
+      return;
+    }
+    for (const place of cellPlaces(house)) {
+      const cell = slot(house, place);
+      if (!cell || !kind.roomKindIds.includes(cell.kindId)) continue;
+      if (held.some((p) => samePlace(p, place))) continue;
+      const full = isFull(turn, house, rules, kindOf(rules, cell.kindId));
+      if (kind.effect === 'sickness' && !full) continue;
+      const level = roomLevelAt(house, place, cell.kindId);
+      if (!rng.chance(incidentChanceBp(incidents, kind.weeklyBp, level, inDebt, full))) continue;
+      strike(kind, place);
+      return;
+    }
+  }
+}
+
+/** Settles the standing letter: the paid fee, then the effect (SPEC.md, Fire, Theft, Sickness). */
+function settle(
+  turn: GuildTurn,
+  house: HouseState,
+  rules: HouseRules,
+  incidents: IncidentRules,
+  answer: IncidentAnswer,
+  byDefault: boolean,
+  causeId: string,
+): void {
+  const letter = house.letter;
+  if (!letter) return;
+  const kind = incidents.kinds.find((k) => k.id === letter.kindId);
+  if (!kind) throw new Error(`${letter.kindId} is not an incident kind.`);
+  house.letter = null;
+  const paid = answer === 'paid';
+  const fee = paid ? pay(turn, -letter.feeCopper, 'incident', causeId) : causeId;
+  let result: IncidentResult = 'saved';
+  let recovered = false;
+  if (kind.effect === 'fire') {
+    const cell = letter.place ? slot(house, letter.place) : null;
+    if (!paid && letter.place && cell) {
+      if (!house.scars.some((x) => samePlace(x.place, letter.place!)))
+        // non-null: checked in the condition above.
+        house.scars.push({
+          place: copyPlace(letter.place),
+          kindId: cell.kindId,
+          level: cell.level,
+        });
+      if (cell.level > 1) {
+        cell.level -= 1;
+        result = 'lowered';
+      } else {
+        const found = rowOf(house, letter.place);
+        if (found) found.row[found.at] = null;
+        result = 'burnt-out';
+      }
+    }
+  } else if (kind.effect === 'theft') {
+    result = 'written-off';
+    if (paid) {
+      recovered = streamFor(turn.state, 'house.incidents').chance(kind.recoverBp);
+      result = recovered ? 'recovered' : 'not-recovered';
+    }
+  } else result = 'ill';
+  const settled = turn.sink.emit({
+    type: 'incident.settled',
+    causeId: fee,
+    subjectIds: [],
+    kindId: kind.id,
+    effect: kind.effect,
+    place: letter.place ? copyPlace(letter.place) : null,
+    answer,
+    byDefault,
+    result,
+  });
+  if (kind.effect === 'theft' && recovered && letter.stolenCopper)
+    pay(turn, letter.stolenCopper, 'theft', settled);
+  if (kind.effect === 'sickness') fallIll(turn, house, rules, kind, paid, settled);
+}
+
+/** Sickness: `count` members at home and fit, drawn on the incident stream, fall ill (SPEC.md, Sickness). */
+function fallIll(
+  turn: GuildTurn,
+  house: HouseState,
+  rules: HouseRules,
+  kind: Extract<IncidentKind, { effect: 'sickness' }>,
+  paid: boolean,
+  causeId: string,
+): void {
+  const today = turn.state.calendar;
+  const rng = streamFor(turn.state, 'house.incidents');
+  const pool = turn.guild.members.filter((m) => isFree(m, today));
+  const base = paid ? kind.paidDays : kind.freeDays;
+  for (let n = Math.min(kind.count, pool.length); n > 0; n -= 1) {
+    const [member] = pool.splice(rng.int(pool.length), 1);
+    if (!member) continue;
+    const held = house.sickbeds.filter(
+      (b) => b.untilDay > today && turn.guild.members.some((m) => m.id === b.memberId),
+    );
+    house.sickbeds.splice(0, house.sickbeds.length, ...held);
+    const sickbed = held.length < sickbedsOf(house, rules);
+    const days = sickbed ? Math.max(1, divRoundDown(base * kind.sickbedBp, BP)) : base;
+    member.outUntilDay = today + days;
+    if (sickbed) house.sickbeds.push({ memberId: member.id, untilDay: member.outUntilDay });
+    turn.sink.emit({
+      type: 'member.fell-ill',
+      causeId,
+      subjectIds: [member.id],
+      days,
+      sickbed,
+    });
+  }
+}
+
+/** `incident.answer`: the standing letter's paid or free answer (SPEC.md, The letter). */
+export function answerIncident(
+  state: GameState,
+  command: Extract<Command, { type: 'incident.answer' }>,
+  sink: EventSink<GameEvent>,
+): void {
+  const { turn, house, rules } = houseTurn(state, command, sink);
+  const incidents = rules.incidents;
+  if (!incidents) throw new Error('This house has no incidents.');
+  const letter = house.letter;
+  if (!letter) throw new Error('No incident letter stands.');
+  const fireWatch = incidents.kinds.find((k) => k.id === letter.kindId)?.effect === 'fire';
+  // The fire watch may go into debt (D-193); the other paid answers need the coin.
+  if (command.answer === 'paid' && !fireWatch && letter.feeCopper > turn.guild.chestCopper)
+    throw new Error(
+      `The chest holds ${turn.guild.chestCopper} copper; this costs ${letter.feeCopper}.`,
+    );
+  settle(turn, house, rules, incidents, command.answer, false, command.id);
 }
 
 /** Training at home (SPEC.md, D-187): members at home and fit, youngest first; the yard's places go first. */
@@ -446,7 +760,7 @@ function trainAtHome(turn: GuildTurn, house: HouseState, rules: HouseRules, caus
 }
 
 function finish(house: HouseState, rules: HouseRules, job: HouseJob): void {
-  if (job.kind === 'build') {
+  if (job.kind === 'build' || job.kind === 'repair') {
     const found = rowOf(house, job.place);
     if (found) found.row[found.at] = { kindId: job.kindId, level: job.level };
     return;

@@ -9,7 +9,7 @@ import { takeContract } from './guild/board.ts';
 import { advanceDay, foundGuild } from './guild/day.ts';
 import { pickDraft } from './guild/founding.ts';
 import { signRecruit } from './guild/people.ts';
-import { buildRoom, extendHouse, upgradeRoom } from './house/house.ts';
+import { answerIncident, buildRoom, extendHouse, repairRoom, upgradeRoom } from './house/house.ts';
 import { hireStaff, releaseStaff } from './staff/areas.ts';
 import { chooseMoment, startQuest, stepQuest } from './resolution/quest.ts';
 import type { Command, GameEvent, GameState } from './resolution/types.ts';
@@ -73,6 +73,12 @@ export function apply(state: GameState, command: Command): readonly GameEvent[] 
       break;
     case 'house.extend':
       extendHouse(state, command, sink);
+      break;
+    case 'house.repair':
+      repairRoom(state, command, sink);
+      break;
+    case 'incident.answer':
+      answerIncident(state, command, sink);
       break;
     case 'patron.grant':
       takeEmergency(state, command, sink);

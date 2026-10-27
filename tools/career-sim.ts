@@ -3,12 +3,14 @@
 // and the one-year simulator's player policy. The invariants run over every career.
 // Usage: node tools/career-sim.ts [careers=100] [maxYears=40] [policy=default|cautious|bold|compare]
 //   [staff=off|compare] [size=15, or 7 with house=on] [grants=take|refuse] [house=off|on]
-//   [party=balanced|seasoned|green|compare]
+//   [party=balanced|seasoned|green|compare] [incidents=off|on]
 // With policy=compare, each seed is also played cautious and bold, for §9d's no-dominant-safe-play check.
 // With staff=compare, each seed is played hands-on (the guildmaster runs training and recovery)
 // and delegated (the best affordable hire runs both), and R6 compares the two (staff/SPEC.md).
 // With house=on, the guild plays with the house rules and builds the content's fullHousePlan one
 // job at a time (house/SPEC.md, D-172); the house lines are added to the report.
+// With incidents=on (house=on only) the house has fire, theft and sickness incidents and inn lodgers
+// (house/SPEC.md); the simulator never answers a letter, so every one takes the default (D-192).
 // With house=on the guild is founded through the draft (D-188): the player picks the starter party of
 // the character named by party (default balanced) and the 2 cheapest extras. With party=compare, each
 // seed is played with all three characters and the report compares them (dismissals, year-1 chest,
@@ -23,6 +25,7 @@ import {
   careerGuildRules,
   fullHousePlan,
   houseGuildRules,
+  houseIncidentGuildRules,
 } from '@adventure-manager/content';
 import { pct, type Career, type CareerJob, type CareerSetup } from './career-play.ts';
 import { GUILD_SIZE, POLICIES } from './year-sim-play.ts';
@@ -52,7 +55,18 @@ const CHARACTERS = baseFoundingRules.characters.map((c) => c.id);
 const compareParties = partyArg === 'compare';
 const partyName = compareParties ? 'balanced' : partyArg;
 if (!CHARACTERS.includes(partyName)) throw new Error(`Unknown party ${partyName}.`);
-const setup: CareerSetup = { maxYears, staffMode, size, refuseGrants, houseMode };
+const incidentsMode = process.argv[10] ?? 'off';
+if (incidentsMode !== 'off' && incidentsMode !== 'on')
+  throw new Error(`Unknown incidents mode ${incidentsMode}.`);
+if (incidentsMode === 'on' && houseMode !== 'on') throw new Error('incidents=on needs house=on.');
+const setup: CareerSetup = {
+  maxYears,
+  staffMode,
+  size,
+  refuseGrants,
+  houseMode,
+  incidentsMode,
+};
 const TIERS = ['bottom', 'middle', 'top'];
 
 const line = (label: string, values: number[], target: string, digits = 1) =>
@@ -193,7 +207,12 @@ console.log(
 );
 /** §9d's bad start: the same test whether grants are taken or refused. */
 const isBadStart = (r: Career) => {
-  const rules = houseMode === 'on' ? houseGuildRules : careerGuildRules;
+  const rules =
+    houseMode === 'on'
+      ? incidentsMode === 'on'
+        ? houseIncidentGuildRules
+        : houseGuildRules
+      : careerGuildRules;
   const start = rules.founding?.purseCopper ?? rules.startingChestCopper;
   // In debt at a week start in years 1-2, or the chest after two years, less any grant money,
   // below half the start.
@@ -293,6 +312,7 @@ function reportR6(): void {
   );
 }
 if (houseMode === 'on') reportHouse();
+if (incidentsMode === 'on') reportIncidents();
 if (compareParties && houseMode === 'on') reportParties();
 else if (compareParties) console.log('party=compare needs house=on (the draft).');
 
@@ -377,6 +397,38 @@ function reportHouse(): void {
     .filter((r) => r.spendingLateCopper > 0)
     .map((r) => (100 * r.roomsLateCopper) / r.spendingLateCopper);
   console.log(line('  room upkeep share of all spending, years 10+ (%)', share, 'tuning'));
+}
+
+/** Incidents (house/SPEC.md): a year by kind, fires that burned out a barracks cell, lodgers, and what they cost. */
+function reportIncidents(): void {
+  const mean = (v: number[]) => v.reduce((a, b) => a + b, 0) / Math.max(1, v.length);
+  const careerYears = results.reduce((n, r) => n + r.years, 0);
+  const kinds = Object.keys(results.reduce((all, r) => ({ ...all, ...r.incidentsByKind }), {}));
+  console.log(
+    `Incidents (assumptions: packages/content/src/base/house.ts; every letter takes the default answer); ${careerYears} career-years`,
+  );
+  console.log(
+    `  incidents a year, mean over career-years [1-2 in all]: ${kinds.map((k) => `${k} ${(results.reduce((n, r) => n + (r.incidentsByKind[k] ?? 0), 0) / Math.max(1, careerYears)).toFixed(2)}`).join(', ')}; in all ${(results.reduce((n, r) => n + Object.values(r.incidentsByKind).reduce((a, b) => a + b, 0), 0) / Math.max(1, careerYears)).toFixed(2)}`,
+  );
+  const fires = results.reduce((n, r) => n + r.fires, 0);
+  const burnt = results.reduce((n, r) => n + r.firesBurntBarracks, 0);
+  console.log(
+    `  fires that burned out a barracks cell: ${burnt} of ${fires} (${((100 * burnt) / Math.max(1, fires)).toFixed(0)}%)`,
+  );
+  const weeks = results.reduce((n, r) => n + r.weeks, 0);
+  const lodged = results.reduce((n, r) => n + r.lodgerWeeks, 0);
+  console.log(
+    `  career-weeks with lodgers: ${lodged} of ${weeks} (${((100 * lodged) / Math.max(1, weeks)).toFixed(1)}%)`,
+  );
+  const late = results.filter((r) => r.spendingLateCopper > 0);
+  const share = (pick: (r: Career) => number) =>
+    late.map((r) => (100 * pick(r)) / r.spendingLateCopper);
+  console.log(
+    `  share of all spending, years 10+ (mean of careers): inn fees ${mean(share((r) => r.innLateCopper)).toFixed(2)}%, theft ${mean(share((r) => r.theftLateCopper)).toFixed(2)}%, repairs ${mean(share((r) => r.repairLateCopper)).toFixed(2)}%`,
+  );
+  console.log(
+    `  dismissals (see how careers ended above): ${results.filter((r) => r.end === 'dismissed').length} of ${careers}`,
+  );
 }
 
 console.log(
