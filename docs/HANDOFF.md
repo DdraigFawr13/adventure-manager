@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-10-27 (eighth session, in progress: house incidents on branch `ccr-2c5f4c35-xm3v9k`). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-10-27 (end of the eighth session; PR #32 merged, 3393c0f). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
@@ -19,7 +19,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Next
 
-1. House incidents (D-173): built, tuned, reviewed (findings fixed); waiting on the owner's approval, then the PR (review: https://claude.ai/artifact/RGLFzTRbGgAbMmFmZJ6wZ9). Left open: the incidents' numbers are unconfirmed assumptions; sickness is rare (0.07 a year) because the barracks is seldom full after year 1; the inn fee is one number until the town's inn is in the engine.
+1. House incidents follow-ups (D-173, merged in PR #32): the owner hasn't confirmed the incident numbers; sickness is rare (0.07 a year) because the barracks is seldom full after year 1; the inn fee is one number until the town's inn is in the engine. Review: https://claude.ai/artifact/RGLFzTRbGgAbMmFmZJ6wZ9.
    Also open from this work: compare D-187's total growth with house off (its aim is "near today's"); measure the green party's long-run payoff (D-188); the owner hasn't confirmed the draft's purse and fee numbers; the town sites (D-171, D-179, D-184) are designed but not in the engine.
 2. Step 4, the two-year text prototype (R7) as a phone-first web page (D-160), with histories and memorial letters; standing parties (D-014, D-142) join here.
 3. Engine test verdict (D-110, D-154, D-167): rebuild the engine test as a phone web page on the Vercel link, with an on-page frame-rate panel; the owner judges it on their phone (60 fps map with smooth pinch, 15 px text, screen reader). The map is free pan and zoom with tappable towns, places, parties and events opening a pop-up with details and a placeholder image (D-164).
