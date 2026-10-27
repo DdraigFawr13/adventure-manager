@@ -1301,3 +1301,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). For the step 4 page (D-199) on Vercel (D-161, D-167).
 - **Decision:** When the prototype's page merges, it is the page at the root of the Vercel link. The R1 Quest Watch moves to `/quest-watch.html` so it stays reachable.
 - **Why:** Owner's choice (2026-10-27), the recommended option: "Go with recommended". The owner asked why the Vercel link still showed the Quest Watch; it is the only page `vercel.json` builds (`packages/ui/index.html`), and the prototype is what the owner will play repeatedly.
+
+## D-201 Step 4: a signing window's letter doesn't hold the calendar
+
+- **Status:** Accepted (2026-10-27). Amends the step 4 mock-up's Desk note (D-199).
+- **Decision:** On the step 4 page, Continue waits only for letters that need the player: a memorial, a house incident and the patron's emergency offer. The signing window's letter still arrives and the recruits wait on the Roster, but Continue doesn't wait for it to be opened.
+- **Why:** Owner's choice (2026-10-27), the recommended "Don't hold", over keeping the mock-up's rule. The page review found a signing letter every window week (weeks 1–4 and 20–21), one forced tap each.

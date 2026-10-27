@@ -187,15 +187,11 @@ export function guildOf(save: Save) {
   return guild;
 }
 
-/** Letters that stop the calendar until answered or read (the Desk's note on the mock-up). */
+/** Letters that stop the calendar until answered or read: a death, an incident, the patron's offer. */
 export function blocking(save: Save): Letter[] {
+  // A signing letter doesn't hold the calendar (D-201); the recruits wait on the Roster.
   return save.letters.filter(
-    (l) =>
-      !l.read &&
-      (l.kind === 'memorial' ||
-        l.kind === 'incident' ||
-        l.kind === 'patron-offer' ||
-        l.kind === 'signing'),
+    (l) => !l.read && (l.kind === 'memorial' || l.kind === 'incident' || l.kind === 'patron-offer'),
   );
 }
 

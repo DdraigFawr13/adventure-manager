@@ -89,7 +89,7 @@
     "desk.year": "Year",
     "letters.none": "No letters yet.",
     "letters.older": "Older letters ({n})",
-    "letters.note": "Letters that need an answer (a death, a fire, the patron, a signing window) hold the calendar until read.",
+    "letters.note": "Letters that need you (a death, trouble at the house, the patron) hold the calendar until read.",
     "letter.home.from": "From {who}",
     "letter.home.none": "News of a party",
     "letter.memorial.title": "In memory of {who}",
