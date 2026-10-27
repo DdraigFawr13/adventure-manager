@@ -1,5 +1,6 @@
 // Watched-quest prototype data (D-127): the sample party and the English log text.
 import type { Adventurer } from '@adventure-manager/engine';
+import desk from '../../data/desk.en.json' with { type: 'json' };
 import party from '../../data/prototype-party.json' with { type: 'json' };
 import text from '../../data/text.en.json' with { type: 'json' };
 
@@ -16,3 +17,6 @@ export function prototypeParty(): Adventurer[] {
   // cast-ok: a fixed data file written to the Adventurer shape; content tests start a quest with it.
   return party.party.map((a) => ({ ...a, dead: false }) as Adventurer);
 }
+
+/** Interface words for the Guild Desk, the step 4 text prototype (R7, D-150). */
+export const deskText: Readonly<Record<string, string>> = desk;
