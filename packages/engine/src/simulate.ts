@@ -1,6 +1,8 @@
 // The one entry point (GAME-02, PLAN §11b): preview and commit both call simulate, and it never
 // changes the state it is given, so a preview leaves the real game untouched. The new state shares
 // the given state's read-only content object (D-148), so nothing may write to content.
+// `apply` is the same rule path changing the state in place, for headless tools that own their
+// state (D-148); `simulate` is a copy plus `apply`, so preview and commit still share one function.
 import { takeEmergency } from './career/emergency.ts';
 import { EventSink } from './core/events.ts';
 import { takeContract } from './guild/board.ts';
@@ -16,44 +18,53 @@ export interface SimulationResult {
 }
 
 export function simulate(state: GameState, command: Command): SimulationResult {
-  // Content is read-only rules, so the copy shares it rather than cloning it on every command
-  // (measured: year-sim 2.5x faster, career-sim 1.7x).
+  // Content is read-only rules, so the copy shares it rather than cloning it on every command.
   const next: GameState = {
     ...structuredClone({ ...state, content: null }),
     content: state.content,
   };
-  const sink = new EventSink<GameEvent>(next, command.day);
+  return { state: next, events: apply(next, command) };
+}
+
+/**
+ * Runs a command on the given state in place and returns its events. If it throws, the state may
+ * be half changed: callers that must survive a refused command use `simulate`.
+ */
+export function apply(state: GameState, command: Command): readonly GameEvent[] {
+  const sink = new EventSink<GameEvent>(state, command.day);
   switch (command.type) {
     case 'quest.start':
-      startQuest(next, command, sink);
+      startQuest(state, command, sink);
       break;
     case 'quest.step':
-      stepQuest(next, command.id, sink);
+      stepQuest(state, command.id, sink);
       break;
     case 'quest.choose':
-      chooseMoment(next, command, sink);
+      chooseMoment(state, command, sink);
       break;
     case 'guild.found':
-      foundGuild(next, command, sink);
+      foundGuild(state, command, sink);
       break;
     case 'day.advance':
-      advanceDay(next, command, sink);
+      advanceDay(state, command, sink);
       break;
     case 'contract.take':
-      takeContract(next, command, sink);
+      takeContract(state, command, sink);
       break;
     case 'recruit.sign':
-      signRecruit(next, command, sink);
+      signRecruit(state, command, sink);
       break;
     case 'staff.hire':
-      hireStaff(next, command, sink);
+      hireStaff(state, command, sink);
       break;
     case 'staff.release':
-      releaseStaff(next, command, sink);
+      releaseStaff(state, command, sink);
       break;
     case 'patron.grant':
-      takeEmergency(next, command, sink);
+      takeEmergency(state, command, sink);
       break;
   }
-  return { state: next, events: sink.events };
+  // No event may hold an object that belongs to the state (engine AGENTS.md), so later commands
+  // can't change events already returned; test/apply.test.ts checks it.
+  return sink.events;
 }

@@ -6,24 +6,21 @@
 // With policy=compare, each seed is also played cautious and bold, for §9d's no-dominant-safe-play check.
 // With staff=compare, each seed is played hands-on (the guildmaster runs training and recovery)
 // and delegated (the best affordable hire runs both), and R6 compares the two (staff/SPEC.md).
-import {
-  AREAS,
-  PLAYER_ID,
-  stopDays,
-  yearOf,
-  type Area,
-  type GameEvent,
-} from '@adventure-manager/engine';
-import { baseResolution, careerGuildRules, staffGuildRules } from '@adventure-manager/content';
-import { GUILD_SIZE, POLICIES, rules, runYear } from './year-sim-play.ts';
+// Careers run on worker threads across the machine's cores (D-148); results are put back in seed
+// order, so the report is the same however many threads ran it. CAREER_SIM_THREADS overrides.
+import { availableParallelism } from 'node:os';
+import { Worker } from 'node:worker_threads';
+import { PLAYER_ID } from '@adventure-manager/engine';
+import { careerGuildRules } from '@adventure-manager/content';
+import { pct, type Career, type CareerJob, type CareerSetup } from './career-play.ts';
+import { GUILD_SIZE, POLICIES } from './year-sim-play.ts';
 
 const careers = Number(process.argv[2] ?? 100);
 const maxYears = Number(process.argv[3] ?? 40);
 const policyArg = process.argv[4] ?? 'default';
 const comparePolicies = policyArg === 'compare';
 const policyName = comparePolicies ? 'default' : policyArg;
-const plan = POLICIES[policyName];
-if (!plan) throw new Error(`Unknown policy ${policyName}.`);
+if (!POLICIES[policyName]) throw new Error(`Unknown policy ${policyName}.`);
 const staffMode = process.argv[5] ?? 'off';
 if (staffMode !== 'off' && staffMode !== 'compare')
   throw new Error(`Unknown staff mode ${staffMode}.`);
@@ -32,153 +29,54 @@ const grantsArg = process.argv[7] ?? 'take';
 if (grantsArg !== 'take' && grantsArg !== 'refuse')
   throw new Error(`Unknown grants mode ${grantsArg}.`);
 const refuseGrants = grantsArg === 'refuse';
-const content = {
-  ...baseResolution,
-  guild: staffMode === 'compare' ? staffGuildRules : careerGuildRules,
-};
-const yearDays = rules.weeksPerYear * rules.daysPerWeek;
+const setup: CareerSetup = { maxYears, staffMode, size, refuseGrants };
 const TIERS = ['bottom', 'middle', 'top'];
 
-interface Career {
-  years: number;
-  end: string;
-  firstPromotion: number | null;
-  tierByYear: number[];
-  placeByYear: number[];
-  deathsByYear: number[];
-  stopsByYear: number[];
-  chestByYear: number[];
-  topLeaders: string[];
-  /** Per settled year: the player's renown, and the median rival's in the player's tier. */
-  myRenown: number[];
-  rivalRenown: number[];
-  confidence: number[];
-  /** R6: attribute points grown each year; days each lasting injury added to time out (`member.laid-up`); the skill running each area, summed over days. */
-  growthByYear: number[];
-  grants: number;
-  /** The year of the first emergency grant, if any. */
-  firstGrantYear: number | null;
-  /** §9d bad starts: the year of the patron's first emergency offer (the guild in debt at a week start), and grant money received in years 1-2. */
-  firstOfferYear: number | null;
-  earlyGrantCopper: number;
-  /** The crisis: the year it woke and the year it ended, if it did. */
-  crisisYear: number | null;
-  crisisEnded: number | null;
-  injuryDays: number[];
-  skillDays: Record<Area, number>;
-  days: number;
-  seconds: number;
-}
-
-function play(seed: string, delegate = false, planToUse = plan!): Career {
-  const started = performance.now();
-  const skillDays: Record<Area, number> = { training: 0, recovery: 0 };
-  let days = 0;
-  // runYear runs the guild and resolution invariants over the whole career and throws on a problem.
-  const { events } = runYear(seed, planToUse, {
-    content,
-    size,
-    lastDay: maxYears * yearDays,
-    delegate,
-    refuseGrants,
-    onDay: (state) => {
-      const staff = state.guild?.staff;
-      if (!staff) return;
-      days += 1;
-      for (const area of AREAS) skillDays[area] += staff.staff[area]?.quality ?? staff.skills[area];
-    },
-  }); // non-null: checked above.
-  const c: Career = {
-    years: 0,
-    end: 'cap',
-    firstPromotion: null,
-    tierByYear: [],
-    placeByYear: [],
-    deathsByYear: [],
-    stopsByYear: [],
-    chestByYear: [],
-    topLeaders: [],
-    myRenown: [],
-    rivalRenown: [],
-    confidence: [],
-    growthByYear: [],
-    grants: 0,
-    firstGrantYear: null,
-    firstOfferYear: null,
-    earlyGrantCopper: 0,
-    crisisYear: null,
-    crisisEnded: null,
-    injuryDays: [],
-    skillDays,
-    days,
-    seconds: 0,
-  };
-  const yearOfEvent = (e: GameEvent) => yearOf(e.day, rules);
-  for (const e of events) {
-    if (e.type === 'year.settled') {
-      c.tierByYear[e.year - 1] = e.tier;
-      c.placeByYear[e.year - 1] = e.standings.findIndex((s) => s.id === PLAYER_ID) + 1;
-      c.topLeaders[e.year - 1] = e.leaders[e.leaders.length - 1] ?? '';
-      c.myRenown[e.year - 1] = e.standings.find((s) => s.id === PLAYER_ID)?.renown ?? 0;
-      const others = e.standings.filter((s) => s.id !== PLAYER_ID).map((s) => s.renown);
-      c.rivalRenown[e.year - 1] = pct(others, 50);
-    }
-    if (e.type === 'tier.changed' && e.to > e.from && c.firstPromotion === null)
-      c.firstPromotion = yearOfEvent(e) - 1;
-    if (e.type === 'patron.reviewed') c.confidence[yearOfEvent(e) - 2] = e.confidence;
-    if (e.type === 'adventurer.died') {
-      const y = yearOfEvent(e) - 1;
-      c.deathsByYear[y] = (c.deathsByYear[y] ?? 0) + 1;
-    }
-    if (e.type === 'career.ended') {
-      c.years = e.years;
-      c.end = e.reason;
-    }
-    if (e.type === 'crisis.started') c.crisisYear ??= yearOfEvent(e);
-    if (e.type === 'crisis.ended') c.crisisEnded ??= yearOfEvent(e);
-    if (e.type === 'patron.granted') {
-      c.grants += 1;
-      c.firstGrantYear ??= yearOfEvent(e);
-    }
-    if (e.type === 'attribute.changed' && e.reason === 'growth') {
-      const y = yearOfEvent(e) - 1;
-      c.growthByYear[y] = (c.growthByYear[y] ?? 0) + 1;
-    }
-    if (e.type === 'member.laid-up') c.injuryDays.push(e.days);
-    if (e.type === 'patron.offered') c.firstOfferYear ??= yearOfEvent(e);
-    if (e.type === 'money.changed' && e.reason === 'emergency' && yearOfEvent(e) <= 2)
-      c.earlyGrantCopper += e.amountCopper;
-    if (e.type === 'money.changed') c.chestByYear[yearOfEvent(e) - 1] = e.chestCopper;
-  }
-  if (c.end === 'cap') c.years = maxYears;
-  for (const day of stopDays(events)) {
-    const y = yearOf(day, rules) - 1;
-    c.stopsByYear[y] = (c.stopsByYear[y] ?? 0) + 1;
-  }
-  c.seconds = (performance.now() - started) / 1000;
-  return c;
-}
-
-function pct(values: number[], p: number): number {
-  const sorted = [...values].sort((a, b) => a - b);
-  return (
-    sorted[Math.min(sorted.length - 1, Math.floor((p * (sorted.length - 1)) / 100 + 0.5))] ?? NaN
-  );
-}
 const line = (label: string, values: number[], target: string, digits = 1) =>
   `${label.padEnd(46)} median ${pct(values, 50).toFixed(digits).padStart(7)}  p10 ${pct(values, 10).toFixed(digits).padStart(7)}  p90 ${pct(values, 90).toFixed(digits).padStart(7)}  [${target}]`;
 
-const results: Career[] = [];
-const delegated: Career[] = [];
-const cautious: Career[] = [];
-const bold: Career[] = [];
+// Every career to play, in report order: each seed by the default (or chosen) policy, then as
+// the comparisons ask.
+const jobs: CareerJob[] = [];
 for (let n = 0; n < careers; n += 1) {
-  results.push(play(`career-${n}`));
-  if (staffMode === 'compare') delegated.push(play(`career-${n}`, true));
+  const seed = `career-${n}`;
+  jobs.push({ seed, policy: policyName, delegate: false });
+  if (staffMode === 'compare') jobs.push({ seed, policy: policyName, delegate: true });
   if (comparePolicies) {
-    cautious.push(play(`career-${n}`, false, POLICIES.cautious!)); // non-null: a fixed policy.
-    bold.push(play(`career-${n}`, false, POLICIES.bold!)); // non-null: a fixed policy.
+    jobs.push({ seed, policy: 'cautious', delegate: false });
+    jobs.push({ seed, policy: 'bold', delegate: false });
   }
+}
+const played = await playAll(jobs);
+const pick = (keep: (job: CareerJob) => boolean) => played.filter((_, i) => keep(jobs[i]!)); // non-null: one result per job.
+const results = pick((j) => j.policy === policyName && !j.delegate);
+const delegated = pick((j) => j.delegate);
+const cautious = comparePolicies ? pick((j) => j.policy === 'cautious') : [];
+const bold = comparePolicies ? pick((j) => j.policy === 'bold') : [];
+
+/** Deals the jobs round-robin to worker threads and returns the careers in job order. */
+async function playAll(all: readonly CareerJob[]): Promise<Career[]> {
+  const threads = Math.max(
+    1,
+    Math.min(all.length, Number(process.env.CAREER_SIM_THREADS ?? availableParallelism())),
+  );
+  const out: Career[] = new Array(all.length);
+  await Promise.all(
+    Array.from({ length: threads }, (_, t) => {
+      const mine = all.map((job, index) => ({ index, job })).filter((_, i) => i % threads === t);
+      return new Promise<void>((resolve, reject) => {
+        const worker = new Worker(new URL('./career-worker.ts', import.meta.url), {
+          workerData: { setup, jobs: mine },
+        });
+        worker.on('message', (m: { index: number; career: Career }) => (out[m.index] = m.career));
+        worker.on('error', reject);
+        worker.on('exit', (code) =>
+          code === 0 ? resolve() : reject(new Error(`A career thread stopped with code ${code}.`)),
+        );
+      });
+    }),
+  );
+  return out;
 }
 
 console.log(
