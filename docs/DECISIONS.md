@@ -619,6 +619,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Build in seven milestones after plan approval, each ending at an owner gate (go, loop or stop): M1 prototypes (§9b, engine chosen), M2 vertical slice (production packages; prologue and first season in one corner of the March: 2 biomes, 3 settlements, 4 classes, ~10 monster kinds, ~6 quest templates, final art for that corner), M3 alpha (all 14 launch systems, about half the content, 30–50 testers), M4 free demo (the first season, alongside the beta), M5 beta (all content, final art and audio, 200+ testers), M6 launch, M7 free updates. Estimate: about 18–28 months to launch for a small team, scheduled in §14. Rules: no bulk art or music before M1 passes R1 and R2; old saves keep loading from M2; content after M2 is data only; Steam page live from M2. Detail: `docs/design/PLAN.md` §13a, §13b.
 - **Amended (2026-10-26, D-108, D-111, D-113):** estimates restated for solo at 10–20 h a week: about 31–46 months to launch. The simulation core from M1 is kept. Map base waits for alpha balance. Slip and stop rules in D-111.
 - **Why:** Owner accepted the draft (Plan Q13c); proving fun and balance before paying for bulk art protects the art budget (D-098).
+- **Amended (2026-10-27, D-156):** mobile first; the phone engine test joins M1, phone builds from M2, launch about 39–68 months from plan approval (estimate), with extra art and phone costs listed in D-156.
 
 ## D-100 Launch model decided at the alpha gate
 
@@ -644,6 +645,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Budget estimates with 20% contingency: about $57,000–185,000 solo, about $128,000–358,000 with one developer hired; about $10,000–32,000 is spent before the hire gate (M1–M2). Self-funded through the slice; at the slice gate the owner chooses between self-funding, a publisher, crowdfunding and Early Access at the alpha gate (D-100); no talks before that decision. Five budget assumptions are checked at each gate. Detail: `docs/design/PLAN.md` §14b, §14d, §14e.
 - **Amended (2026-10-26, D-108, D-109):** about $52,000–174,000 solo and $124,000–347,000 with a hire; about $8,000–27,000 before the hire gate.
 - **Why:** Owner accepted the draft (Plan Q14c); the slice is the pitch, so funding is chosen when there is something to show.
+- **Amended (2026-10-27, D-156):** mobile first; the phone engine test joins M1, phone builds from M2, launch about 39–68 months from plan approval (estimate), with extra art and phone costs listed in D-156.
 
 ## D-104 Price $24.99; English at launch
 
@@ -677,6 +679,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The owner builds at about 10–20 hours a week. With the lean cut (D-109) the estimate is about 31–46 months to launch: M1 5–8, M2 7–10, M3 10–15, M4 2–3 alongside M5 7–10, M6 2–3 months. A lasting change in hours re-plans at the next gate. Detail: `docs/design/PLAN.md` §13a, §14e.
 - **Why:** Owner's answer (plan review Q1); the first estimate (18–28 months) assumed a small team, but the owner chose solo (D-102).
+- **Amended (2026-10-27, D-156):** mobile first; the phone engine test joins M1, phone builds from M2, launch about 39–68 months from plan approval (estimate), with extra art and phone costs listed in D-156.
 
 ## D-109 Lean launch cut
 
@@ -968,3 +971,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Replaces D-049 and STYLE §3 (re-plan under D-150).
 - **Decision:** On every platform, home is the guildhall hub with its rooms (D-149). The work desk holds the whole-guild views, and the living map is the outside. Pull to continue is the phone's Continue. When Windows follows, its wide screen shows the hub and the work desk side by side, with the same rooms, desk views and map. The PC gets no separate desk interface. Two parts of STYLE §1 still hold on every platform: the in-world look frames set pieces, and data screens sit on a clean paper layer.
 - **Why:** Owner's choice (re-plan question 5, 2026-10-27), the recommended option: "Hall hub everywhere". One design to build and test serves a solo builder (D-102), and it lets the PC version follow the phone, as D-150 intends.
+
+## D-156 Mobile first takes longer: about 39–68 months to launch, accepted
+
+- **Status:** Accepted (2026-10-27). Amends D-099, D-103 and D-108 for the phone launch (re-plan under D-150).
+- **Decision:** The milestone ladder (D-099) and the lean content cut (D-109) stay. M1 gains the phone engine test (D-154). The phone app is built from the vertical slice (M2) on, and every later milestone ships to both phone stores. Estimated extra work is about 500–1,400 hours: the phone interface (the hub, 11 rooms, the work desk, map navigation), less the PC desk it replaces, plus two stores and phone testing. At about 15 hours a week that is about 8–22 months more, so launch moves to about 39–68 months from plan approval (estimate). Estimated extra money: about $9,000–30,000 of art for the hall rooms and town views; a Mac or Mac rental for iPhone builds; two or three test phones; Apple's developer fee of about $99 a year and Google's of about $25 once. Prices are to be rechecked when spent. The hire stays an option at the slice gate (D-102, D-103). The stop and slip rules (D-111) apply as before.
+- **Why:** Owner's choice (re-plan question 6, 2026-10-27), the recommended option: "Accept the longer timeline", rather than trimming the hall or bringing the hire forward.

@@ -45,6 +45,8 @@ The game succeeds as a design when a player:
 
 ### 1b. Target player (Accepted 2026-10-26, D-063)
 
+**Amended (2026-10-27, D-153):** the same player on a phone, in sittings of about 10–30 minutes; a season still totals about 2–2.5 hours.
+
 - **Primary:** management-sim veterans who already like depth and spreadsheets: Football Manager, Battle Brothers, Darkest Dungeon, RimWorld, Crusader Kings players with a taste for fantasy. They accept dense screens (D-016, CONCEPT §13) and learn by playing, not by tutorial.
 - **Secondary:** tabletop RPG players (Pathfinder, D&D) who know classes and parties but are new to management sims. They need the gentle first season (CONCEPT §19) and delegation to carry them.
 - **Not targeted:** players who want to control fights directly, or who want a short session-based roguelite. Both are served better by other games, and chasing them would pull against D-003 and the generational save.
@@ -417,6 +419,8 @@ Owner's note: "I like a for the first season but I like having a small prologue 
 
 ### 6b. Screen rules (Accepted 2026-10-26, D-078)
 
+**Amended (2026-10-27, D-154, D-155):** screens are built for phones 375 points wide and up, held upright; home is the guildhall hub on every platform.
+
 1. **Every number explains itself.** Hovering or focusing any number shows how it was made (base, modifiers, sources), in plain words. The engine produces the breakdown (GAME-02); the UI never recomputes it.
 2. **One sheet, one job.** Each ledger answers one question (who is fit? what do we owe?); comparisons open side by side instead of in a new mode.
 3. **The top bar never moves** (STYLE §3): date, why the calendar stopped, Continue.
@@ -536,6 +540,8 @@ Decisions: D-084..D-086, D-110, D-113. A prototype answers one question cheaply.
 
 ### 9a. Riskiest assumptions (Accepted 2026-10-26, D-086)
 
+**Amended (2026-10-27, D-154):** R4 is now a phone test. Find 5 facts in under 10 seconds each, using the hub, the work desk and Ask the clerk. The 25-row rule is dropped.
+
 Ranked by how much of the game fails if the assumption is wrong. "Cheapest test" is the smallest thing that answers it.
 
 | # | Assumption | If wrong | Cheapest test | Passes when |
@@ -635,6 +641,8 @@ Decisions: D-090, D-091, D-110, D-114. Constraints from earlier decisions: PC fi
 
 ### 11a. Engine and platform (Accepted 2026-10-26, D-090, D-110)
 
+**Amended (2026-10-27, D-150, D-151, D-154):** mobile first. Launch is on iPhone and Android phones from one web-tech codebase, and the engine test is rebuilt as a phone app judged on the owner's phone. Windows follows after launch.
+
 **Web-first** (owner's choice after the plan review, D-110, amends D-090): build the two test pieces in web tech (Electron, TypeScript), reusing Story-Generator's map code (§12d). Godot 4 (C#) is built only if the web ledger or map misses its bar: 60 fps on the map at 1366×768, the 15 px ledger readable, the find-the-fact task (R4) passed. Unity is out. Earlier plan (D-090): build both, then choose; the comparison below still stands as the record.
 
 **Engine test** (prototype step 0, before the watched quest, D-085):
@@ -705,6 +713,8 @@ flowchart LR
 - The engine never waits on it: template text shows first and AI text replaces it if it arrives. Provider and cost decided when the feature is built (SAFE-03).
 
 ### 11g. Performance targets (Accepted 2026-10-26, D-091)
+
+**Amended (2026-10-27, D-154):** the targets apply on a phone 375 points wide and up. They are 60 fps for the map with smooth pinch and pan, and 15 px minimum text. The verdict comes from the owner's device.
 
 - Minimum screen 1366×768; 60 fps on the map and board on a mid-range laptop from about 2020.
 - A day tick with no stop under 50 ms; a headless simulated guild-year under 1 s, so the 1,000 seeded guild-years in §9b take under about 17 minutes run one after another.
@@ -815,6 +825,8 @@ Decisions: D-099..D-101, D-108, D-111. Inputs: prototype order (§9b, D-085), pl
 
 ### 13a. The ladder (Accepted 2026-10-26, D-099)
 
+**Amended (2026-10-27, D-156):** the phone engine test joins M1, and phone builds run from M2 on. Launch is about 39–68 months from plan approval (estimate). The figures below are the earlier Windows plan.
+
 Each milestone ends at a gate: the owner reviews the exit checks and says go, loop or stop. A missed check loops the milestone; the same miss twice is a design problem that goes to the owner (D-089).
 
 | # | Milestone | What is built | Who plays (§10a) | Exit checks | Estimate |
@@ -869,6 +881,8 @@ Owner's choice (Plan Q14a): **start solo, hire later.**
 
 ### 14b. Budget (Accepted 2026-10-26, D-103)
 
+**Amended (2026-10-27, D-156):** add about $9,000–30,000 of art for the hall rooms and town views, plus a Mac or Mac rental, test phones and the store fees (estimates in D-156). The table below predates mobile first.
+
 Two cases: solo all the way, and solo plus one developer hired at a gate. Contingency 20%. All figures in US dollars, estimates.
 
 | Item | Low | High | Basis (estimate) |
@@ -891,6 +905,8 @@ Figures restated on 2026-10-26 for the lean cut and solo timeline (D-108, D-109)
 **Spend before the hire gate (M1–M2):** about $8,000–27,000 (rounded estimate, including 12–18 months of tools): the slice's corner of the map and a sketch of the rest ($1,000–3,000, D-113), about a fifth of the other art and audio for the slice's corner, tools, the Steam fee and first contracts. Bulk art waits for M1 to pass (D-099).
 
 ### 14c. Price and revenue (Accepted 2026-10-26, D-104)
+
+**Amended (2026-10-27, D-152):** on the phone stores the game is a free download with a $14.99 unlock, about $10–12 net per sale (estimate). Break-even is to be redone.
 
 - **Launch price: $24.99** (owner's choice, Plan Q14b). Comparable deep management games sit around $25–35 (for example Darkest Dungeon, Wildermyth, Battle Brothers, RimWorld; list prices to recheck at launch); Football Manager is higher with an established brand.
 - **Net per copy: about $12.50–15** (50–60% of the list price, estimate). Steam keeps 30% (fact for the first $10 million of sales); sales tax and VAT come out of prices in many regions, and regional pricing, launch discounts and refunds take more.
@@ -965,6 +981,8 @@ Every check runs locally before a push (VER-02); CI repeats the fast ones.
 - Every fixed blocker or major bug gets a test that would have caught it (VER-07), and a LESSONS line if a process let it through (SRC-05).
 
 ### 15d. Versions and builds (Accepted 2026-10-26, D-105, D-106)
+
+**Amended (2026-10-27, D-151):** launch is on iPhone and Android phones, and Windows follows. Store builds replace Steam branches for the launch; the release checklist is to be adapted when builds start.
 
 - **Launch platform: Windows** (owner's choice, Plan Q15a). Linux and Steam Deck players can run the Windows build through Proton, but it is not promised on the store page. Steam Deck support (a 1280×800 layout below the 1366×768 minimum, D-091, and controller play) and a Mac build are decided after launch.
 - **Version:** `major.minor.patch` for the game, plus the save-format and content versions stored in every save (D-091).
