@@ -205,6 +205,18 @@ console.log(
     0,
   ),
 );
+// D-187's aim, a guild's total growth near the house-off run's: points from quests and from training
+// at home, a year per career, and per member on the roster at year ends.
+{
+  const sum = (v: (number | undefined)[]) => v.reduce<number>((a, b) => a + (b ?? 0), 0);
+  const careerYears = results.reduce((n, r) => n + r.years, 0);
+  const quests = sum(results.map((r) => sum(r.growthByYear)));
+  const training = sum(results.map((r) => sum(r.trainingByYear)));
+  const memberYears = sum(results.map((r) => sum(r.rosterByYear.slice(0, r.years))));
+  console.log(
+    `attribute points a year, mean per career-year: from quests ${(quests / Math.max(1, careerYears)).toFixed(1)}, from training at home ${(training / Math.max(1, careerYears)).toFixed(1)}, in all ${((quests + training) / Math.max(1, careerYears)).toFixed(1)}; per member on the roster at year ends ${((quests + training) / Math.max(1, memberYears)).toFixed(2)} [D-187: up to about a quarter above the house-off run's]`,
+  );
+}
 /** §9d's bad start: the same test whether grants are taken or refused. */
 const isBadStart = (r: Career) => {
   const rules =
@@ -234,7 +246,10 @@ console.log(
   );
 }
 console.log(
-  `  emergency grants taken (D-146): ${results.filter((r) => r.grants > 0).length} careers took one; ${results.reduce((n, r) => n + r.grants, 0)} in all`,
+  `  emergency grants taken (D-146): ${results.filter((r) => r.grants > 0).length} careers took one; ${results.reduce((n, r) => n + r.grants, 0)} in all; first grant in year ${pct(
+    results.filter((r) => r.firstGrantYear !== null).map((r) => r.firstGrantYear!), // non-null: filtered.
+    50,
+  )} (median)`,
 );
 {
   const long = results.filter((r) => r.years >= 10);
@@ -446,7 +461,7 @@ function reportParties(): void {
     `Starter party compared, same ${careers} seeds each (assumptions: packages/content/src/base/founding.ts):`,
   );
   console.log(
-    '  bad starts are measured against half the purse for every party, so a dear party starts nearer the line; long-run payoff (growth, later renown) is not compared here',
+    '  bad starts are measured against half the purse for every party, so a dear party starts nearer the line',
   );
   for (const party of CHARACTERS) {
     const rs = pick((j) => j.policy === policyName && !j.delegate && j.party === party);
@@ -461,6 +476,31 @@ function reportParties(): void {
         rs.map((r) => r.myRenown[0] ?? 0),
         50,
       ).toFixed(0)}; bad starts ${bad}`,
+    );
+  }
+  // Long-run payoff (D-188: the green party is cheap now and should pay later): over the first 10
+  // years, so a longer career does not win by lasting.
+  console.log('  long run, first 10 years (careers that ended sooner count the years they had):');
+  for (const party of CHARACTERS) {
+    const rs = pick((j) => j.policy === policyName && !j.delegate && j.party === party);
+    const ten = (v: (number | undefined)[]) =>
+      v.slice(0, 10).reduce<number>((a, b) => a + (b ?? 0), 0);
+    console.log(
+      `  ${party.padEnd(9)} attribute points median ${pct(
+        rs.map((r) => ten(r.growthByYear) + ten(r.trainingByYear)),
+        50,
+      ).toFixed(0)}; renown median ${pct(
+        rs.map((r) => ten(r.myRenown)),
+        50,
+      ).toFixed(0)}; chest at the end of year 10 median ${pct(
+        rs.map((r) => r.chestByYear[Math.min(9, r.years - 1)] ?? 0),
+        50,
+      ).toFixed(
+        0,
+      )}; promoted by year 10 ${((100 * rs.filter((r) => r.firstPromotion !== null && r.firstPromotion <= 10).length) / careers).toFixed(0)}%; deaths median ${pct(
+        rs.map((r) => ten(r.deathsByYear)),
+        50,
+      ).toFixed(0)}`,
     );
   }
 }
