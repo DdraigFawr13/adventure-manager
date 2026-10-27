@@ -4,6 +4,7 @@ import { divRoundDown } from '../core/math.ts';
 import { streamFor } from '../core/rng.ts';
 import type { Adventurer, Attribute, Command, GameEvent, GameState } from '../resolution/types.ts';
 import { ATTRIBUTES } from '../resolution/types.ts';
+import { drawLife } from '../career/people.ts';
 import { guildTurn, type GuildTurn, pay } from './turn.ts';
 import type { GuildRules, Prospect } from './types.ts';
 
@@ -43,6 +44,7 @@ export function drawPerson(turn: GuildTurn): Prospect {
   const adventurer: Adventurer = {
     id: `adv.${guild.nextPersonNo}`,
     ...drawIdentity(turn),
+    ...drawLife(turn, attributes),
     classId: leaning.classId,
     position: leaning.position,
     attributes,

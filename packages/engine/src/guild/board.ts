@@ -18,12 +18,22 @@ export function expireOffers(turn: GuildTurn, week: number, causeId: string): vo
   }
 }
 
-export function postOffers(turn: GuildTurn, week: number, causeId: string): void {
+/** New offers for a week: `week` is the week in its year, `absoluteWeek` counts across years. */
+export function postOffers(
+  turn: GuildTurn,
+  week: number,
+  absoluteWeek: number,
+  causeId: string,
+): void {
   const { rules, guild } = turn;
   const rng = streamFor(turn.state, 'guild.board');
   const count = rules.offersPerWeek[partOf(week, rules)];
+  // A guild on the ladder sees its tier's danger mix and fee scale (career/SPEC.md).
+  const tier = guild.career ? rules.career?.tiers[guild.career.tier] : undefined;
   for (let n = 0; n < count; n += 1) {
-    const dangerRules = rng.weighted(rules.dangers.map((d) => [d, d.weight] as const));
+    const dangerRules = rng.weighted(
+      rules.dangers.map((d) => [d, tier ? tier.dangerWeights[d.danger] : d.weight] as const),
+    );
     const drawn = drawWork(turn, rng, dangerRules.danger);
     const spreadBp = rng.between(-dangerRules.feeSpreadBp, dangerRules.feeSpreadBp);
     guild.nextOfferNo += 1;
@@ -33,11 +43,14 @@ export function postOffers(turn: GuildTurn, week: number, causeId: string): void
       shownTemplateId: drawn.shownTemplateId,
       danger: dangerRules.danger,
       feeCopper: divRoundDown(
-        dangerRules.feeCopper * (BP_CERTAIN + spreadBp + (drawn.shownTwist?.feeBp ?? 0)),
+        divRoundDown(
+          dangerRules.feeCopper * (BP_CERTAIN + spreadBp + (drawn.shownTwist?.feeBp ?? 0)),
+          BP_CERTAIN,
+        ) * (tier ? tier.feeBp : BP_CERTAIN),
         BP_CERTAIN,
       ),
       travelDays: dangerRules.travelDays + rng.between(0, dangerRules.travelSpreadDays),
-      expiresWeek: week + rules.offerLifeWeeks,
+      expiresWeek: absoluteWeek + rules.offerLifeWeeks,
     };
     guild.board.push(offer);
     turn.sink.emit({

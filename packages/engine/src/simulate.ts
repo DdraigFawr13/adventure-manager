@@ -1,10 +1,12 @@
 // The one entry point (GAME-02, PLAN §11b): preview and commit both call simulate, and it never
 // changes the state it is given, so a preview leaves the real game untouched. The new state shares
 // the given state's read-only content object (D-148), so nothing may write to content.
+import { takeEmergency } from './career/emergency.ts';
 import { EventSink } from './core/events.ts';
 import { takeContract } from './guild/board.ts';
 import { advanceDay, foundGuild } from './guild/day.ts';
 import { signRecruit } from './guild/people.ts';
+import { hireStaff, releaseStaff } from './staff/areas.ts';
 import { chooseMoment, startQuest, stepQuest } from './resolution/quest.ts';
 import type { Command, GameEvent, GameState } from './resolution/types.ts';
 
@@ -42,6 +44,15 @@ export function simulate(state: GameState, command: Command): SimulationResult {
       break;
     case 'recruit.sign':
       signRecruit(next, command, sink);
+      break;
+    case 'staff.hire':
+      hireStaff(next, command, sink);
+      break;
+    case 'staff.release':
+      releaseStaff(next, command, sink);
+      break;
+    case 'patron.grant':
+      takeEmergency(next, command, sink);
       break;
   }
   return { state: next, events: sink.events };
