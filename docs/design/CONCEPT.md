@@ -110,6 +110,7 @@ Phase 1 concept. Each section records what the owner decided, with their own not
 ## 13. Platform
 
 - **Decided (2026-10-25):** PC first (desktop, Steam-style): dense information screens, mouse and keyboard, long sessions. Other platforms only later, if at all.
+- Note (2026-10-27, D-149): if a phone or tablet version is made later, it uses the guildhall as hub, a work desk and the living map.
 
 ## 14. Generated writing
 

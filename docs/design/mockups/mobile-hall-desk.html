@@ -304,13 +304,29 @@ table.rooms tr.deskrow td { background: #e6d6ad; }
 <section class="concept" aria-labelledby="rh">
   <header>
     <h2 id="rh">Inside the rooms</h2>
-    <p class="sub">Each room opens on a drawn view of the room with its people in it, the staff member who runs it, then what it shows and what you can do there. Four examples:</p>
+    <p class="sub">Each room opens on a drawn view of the room with its people in it, the staff member who runs it, then what it shows and what you can do there. The first four:</p>
   </header>
   <div class="devices">
     <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="barracks"></div></div><figcaption>Barracks: your people by party, their mood, the promises you've made, and who wants a word.</figcaption></figure>
     <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="infirmary"></div></div><figcaption>Infirmary: who is in bed, for how long, what may scar, and what the healer can do.</figcaption></figure>
     <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="armoury"></div></div><figcaption>Armoury: the quartermaster's policy (D-143), what needs mending, and the storied items.</figcaption></figure>
     <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="strongroom"></div></div><figcaption>Strongroom: the chest, bills, wages and the six-week money line.</figcaption></figure>
+  </div>
+</section>
+
+<section class="concept" aria-labelledby="oh">
+  <header>
+    <h2 id="oh">The other rooms</h2>
+    <p class="sub">The remaining seven, in the same pattern: the room and its people, who runs it, what it shows, what you can do.</p>
+  </header>
+  <div class="devices">
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="yard"></div></div><figcaption>Training yard: each member's focus and growth, talents at level-up, or run training yourself.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="smith"></div></div><figcaption>Smith: basic kit to buy, old kit to sell (D-143).</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="library"></div></div><figcaption>Library: what the guild knows about monsters, sites and rivals (CONCEPT §30).</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="tavern"></div></div><figcaption>Tavern: the guild's mood, who drinks with whom, and rumours that can become leads.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="gate"></div></div><figcaption>Gate: scouts' reports seen through the fog (ranges until known), recruits, rivals' people, parties coming and going.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="heroes"></div></div><figcaption>Hall of Heroes: memorials, records and the Chronicle (CONCEPT §31).</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="works"></div></div><figcaption>Works: what can be built or improved, what it costs, how long it takes.</figcaption></figure>
   </div>
 </section>
 
@@ -436,6 +452,64 @@ const S = {
     <div style="display:grid; gap:2px"><span style="font-family:var(--title); font-size:14px">Net gold, last six weeks</span>${bars()}</div>
     <table class="led" style="font-size:14px"><thead><tr><th>Six weeks</th><th class="r">Gold</th></tr></thead><tbody><tr><td>Contract fees</td><td class="r">1,665</td></tr><tr><td>Loot sold</td><td class="r">316</td></tr><tr><td>Wages</td><td class="r">−1,569</td></tr><tr><td>Upkeep</td><td class="r">−322</td></tr><tr><td>Healing and smith</td><td class="r">−272</td></tr><tr><td><b>Net</b></td><td class="r"><b>−182</b></td></tr></tbody></table>
     <div class="acts" style="margin-top:auto"><span>Wage budget</span><span>Ask for a loan</span><span class="main">Full ledger on the desk</span></div>
+  </div>` + nav('Hall'),
+  yard: () => sb + topBar('‹ Hall', 'Training yard') + roomhead('Training yard', up(4), '<b style="width:8px;height:56px"></b><b style="width:34px;height:34px; border-radius:50%; background:var(--paper); border:3px solid var(--seal)"></b>') + staff('Run by Garth Brennock, trainer · skill 12', 'them') + `<div class="paper" style="gap:6px">
+    <div class="ask-card"><b>Teal Gosling reached level 2</b><span>Choose a talent:</span><div class="acts"><span class="main">Shadow step · strike first from hiding</span><span>Quick hands · disarm traps faster</span></div></div>
+    <table class="led" style="font-size:14px"><thead><tr><th>Name</th><th>Focus</th><th>To next level</th><th class="r">Lately</th></tr></thead><tbody>
+    ${[['Sabine Cray','Strength',70,'+1 Str'],['Teal Gosling','Agility',5,'level 2'],['Kit Ambry','Healing',40,''],['Jory Rushmere','Weapon skill',55,'+1 Wpn'],['Ada Sedge','Awareness',25,''],['Wat Comber','Endurance',60,'']].map(([n,f,pc,l]) => `<tr><td>${n}</td><td>${f} ▾</td><td><div class="meter" style="width:70px"><i style="width:${pc}%; background:var(--brass)"></i></div></td><td class="r muted">${l}</td></tr>`).join('')}</tbody></table>
+    <span class="muted" style="font-size:13px">Hurt and tired members rest instead of training. Older members grow more slowly.</span>
+    <div class="acts" style="margin-top:auto"><span>Focus for everyone</span><span class="main">Run it myself · raises your Coaching</span></div>
+  </div>` + nav('Hall'),
+  smith: () => sb + topBar('‹ Hall', 'Smith') + roomhead('Smith', up(1), '<b style="width:44px;height:22px"></b><b style="width:26px;height:44px; background:var(--seal); border-radius:13px 13px 2px 2px"></b>') + staff('Bought for by Hew Tanner, quartermaster', 'them') + `<div class="paper" style="gap:6px">
+    <div class="row2" style="display:flex; justify-content:space-between"><span style="font-family:var(--title); font-size:15px">For sale this week</span><span class="muted" style="font-size:13px">chest 4,180 g</span></div>
+    <table class="led" style="font-size:14px"><thead><tr><th>Item</th><th class="r">Tier</th><th class="r">Price</th><th></th></tr></thead><tbody>
+    ${[['Arming sword',1,'24 g'],['Mail coat (new)',2,'36 g'],['Kite shield',1,'18 g'],['Hunting bow',1,'22 g'],['Padded jack',1,'12 g'],['Field kit',1,'8 g'],['Ward-salt',0,'15 g']].map(([n,t,pr]) => `<tr><td>${n}</td><td class="r">${t||'—'}</td><td class="r">${pr}</td><td class="r"><span class="chip" style="color:var(--seal); border-color:var(--seal)">Buy</span></td></tr>`).join('')}</tbody></table>
+    <div class="grp">Sell<span>unused a year or more</span></div>
+    <table class="led" style="font-size:14px"><tbody><tr><td>Old boar spear</td><td class="r">6 g</td></tr><tr><td>Dented helm</td><td class="r">4 g</td></tr></tbody></table>
+    <span class="muted" style="font-size:13px; margin-top:auto">Upgrades to the hall may bring discounts or rarer stock later (D-143).</span>
+  </div>` + nav('Hall'),
+  library: () => sb + topBar('‹ Hall', 'Library') + roomhead('Library', up(1), '<b style="width:16px;height:60px"></b><b style="width:16px;height:52px"></b><b style="width:16px;height:60px"></b><b style="width:16px;height:46px"></b>') + staff('Run by Agnes Wick, librarian', 'them') + `<div class="paper" style="gap:6px">
+    <div class="grp">Monsters<span>notes of 5</span></div>
+    ${[['Drowned dead',2],['Wolves',4],['Bandits',3],['Vermin',5],['Trolls',1],['The hanged',0]].map(([n,k]) => `<div style="display:grid; grid-template-columns: 1fr 90px 30px; gap:8px; align-items:center; font-size:14px"><span>${n}</span><div class="meter"><i style="width:${k*20}%; background:var(--ink2)"></i></div><span class="muted r" style="text-align:right">${k}/5</span></div>`).join('')}
+    <span class="muted" style="font-size:13px">More notes reveal more choices at key moments and better odds in the briefing.</span>
+    <div class="grp">Studying now<span>2 weeks left</span></div>
+    <span style="font-size:14px">Drowned dead, for the chapel contract.</span>
+    <div class="grp">New from survivors</div>
+    <span style="font-size:14px; font-family:var(--letter)">Kit Ware's account of Reedmere Farm: "Large rats. Larger than you'd think." +1 note on vermin.</span>
+    <div class="acts" style="margin-top:auto"><span>Sites</span><span>Rivals</span><span class="main">Change what we study</span></div>
+  </div>` + nav('Hall'),
+  tavern: () => sb + topBar('‹ Hall', 'Tavern') + roomhead('Tavern', up(5), '<b style="width:60px;height:16px"></b><b style="width:18px;height:24px; border-radius:3px"></b>') + staff('No one runs the tavern; it runs itself', '', 'its mood follows the guild') + `<div class="paper" style="gap:6px">
+    <div style="display:grid; gap:3px"><div style="display:flex; justify-content:space-between"><span style="font-family:var(--title); font-size:15px">The guild's mood: merry</span><span class="muted" style="font-size:13px">after Reedmere</span></div><div class="meter"><i style="width:72%"></i></div></div>
+    <div class="grp">Tonight's tables</div>
+    <span style="font-size:14px">Fenn Lanterns together, loud. Odric Hale drinking alone, again.</span>
+    <div class="grp">Friends and feuds<span>4 · 1</span></div>
+    <table class="led" style="font-size:14px"><tbody><tr><td>Wenna Cray</td><td class="muted">friends</td><td>Kit Ware</td></tr><tr><td>Maud Lockley</td><td class="muted">friends</td><td>Teal Gosling</td></tr><tr><td>Rook Ferriby</td><td style="color:var(--seal)">feud</td><td>Kit Ambry</td></tr></tbody></table>
+    <div class="grp">Rumours<span>heard this week</span></div>
+    <div class="ask-card"><span style="font-family:var(--letter)">A shepherd at the bar swears the old barrow on Fenn heath has a new door, and that it was not there in spring.</span><div class="acts"><span class="main">Make it a lead</span><span>Ignore</span></div></div>
+    <div class="acts" style="margin-top:auto"><span>Stand a round · 20 g</span></div>
+  </div>` + nav('Hall'),
+  gate: () => sb + topBar('‹ Hall', 'Gate') + roomhead('Gate', up(2), '<b style="width:50px;height:70px; border-radius:25px 25px 0 0; background:var(--ink)"></b>') + staff('Scouting run by Piers Sallow, scout', 'them') + `<div class="paper" style="gap:6px">
+    <div class="ask-card"><b>A ranger from Fenn wants to sign</b><span>Hal Rook · Agility 12–16 · Nerve 8–14 · asks 9 g a week. Ranges narrow as the scout learns more.</span><div class="acts"><span class="main">Talk terms</span><span>Scout longer</span><span>Send away</span></div><span class="lockn">Signing talks are always yours (D-038)</span></div>
+    <div class="grp">Scouts' reports<span>3 prospects</span></div>
+    <table class="led" style="font-size:14px"><tbody><tr><td>Mab Thorne</td><td class="muted">Cleric · Varrowmere</td><td class="r">Nrv 13–17</td></tr><tr><td>Osric Dunn</td><td class="muted">Warrior · Wendle</td><td class="r">Str 11–18</td></tr><tr><td>Lise Garrow</td><td class="muted">Rogue · Ashford</td><td class="r">Agi 9–13</td></tr></tbody></table>
+    <div class="grp">Rivals' people<span>poaching</span></div>
+    <span style="font-size:14px">Bertil Crane of Ravenscar Lodge is unhappy there. Release fee about 300 g.</span>
+    <div class="grp">On the road</div>
+    <span style="font-size:14px">Reed Wardens left day 2 for Cray's Mill · back about day 16.</span>
+  </div>` + nav('Hall'),
+  heroes: () => sb + topBar('‹ Hall', 'Hall of Heroes') + roomhead('Hall of Heroes', '', '<b style="width:40px;height:56px; border-radius:20px 20px 2px 2px; background:var(--paper); border:2px solid var(--ink)"></b><b style="width:40px;height:56px; border-radius:20px 20px 2px 2px; background:var(--paper); border:2px solid var(--ink)"></b><b style="width:10px;height:30px; background:var(--brass)"></b>') + staff('Kept by the guild', '', 'no one runs it') + `<div class="paper" style="gap:8px">
+    ${[['Bram Oakes','Warrior 3 · aged 31 · week 9','Held the door in the Hollow Barrow while the others got out.'],['Edda Moor','Rogue 2 · aged 24 · week 17','Went first up the Gallows Spire. Did not come down.']].map(([n,m,d]) => `<div style="display:flex; gap:10px; align-items:flex-start; border-bottom:1px solid var(--rule); padding-bottom:8px"><div style="width:46px;height:56px;flex:none;border:3px double var(--ink);border-radius:23px/28px;background:linear-gradient(225deg, var(--ink) 14px, var(--paper2) 14px)"></div><div style="display:grid; gap:1px"><b style="font-family:var(--title); font-weight:400; font-size:16px">${n}</b><span class="muted" style="font-size:13px">${m}</span><span style="font-family:var(--letter); font-size:14px">${d}</span></div></div>`).join('')}
+    <div class="grp">Records</div>
+    <table class="led" style="font-size:14px"><tbody><tr><td>Most quests</td><td>Odric Hale</td><td class="r">12</td></tr><tr><td>Largest fee</td><td>the Gallows Spire</td><td class="r">1,100 g</td></tr><tr><td>Storied items</td><td>the Reed Lantern</td><td class="r">1</td></tr></tbody></table>
+    <div class="grp">From the Chronicle</div>
+    <span style="font-family:var(--letter); font-size:14px">Year 1, week 9. The guild buried its first. The bell at Ashford rang once, and the tavern was quiet for a night.</span>
+    <div class="acts" style="margin-top:auto"><span>Name a memorial</span><span class="main">Read the Chronicle</span></div>
+  </div>` + nav('Hall'),
+  works: () => sb + topBar('‹ Hall', 'Works') + roomhead('Works', up(2), '<b style="width:10px;height:64px"></b><b style="width:60px;height:8px"></b><b style="width:30px;height:24px; background:var(--brass)"></b>') + staff('Run by Mara Fell, deputy', 'me') + `<div class="paper" style="gap:6px">
+    <div class="grp">Building now<span>none</span></div>
+    <div class="grp">Could build</div>
+    ${[['Infirmary: a second ward','+2 beds, injuries heal 10% faster','300 g','3 weeks'],['Training yard: archery butts','Bow training for rangers','450 g','4 weeks'],['Library: reading room','Research 25% faster','380 g','4 weeks'],['Barracks: more bunks','Room for 36 instead of 30','520 g','6 weeks'],['Strongroom: iron door','Theft can’t touch the chest','200 g','2 weeks']].map(([n,e,c,t]) => `<div class="crow" style="grid-template-columns:1fr auto"><div><span class="t">${n}</span><br><span class="m">${e}</span></div><span class="fee">${c}<br><span class="muted" style="font-size:12px">${t}</span></span></div>`).join('')}
+    <span class="muted" style="font-size:13px; margin-top:auto">Upgrades add visible rooms and changes to the hall. A fuller compound comes later (D-075).</span>
   </div>` + nav('Hall'),
 };
 document.querySelectorAll('[data-screen]').forEach(d => d.innerHTML = S[d.dataset.screen]());
