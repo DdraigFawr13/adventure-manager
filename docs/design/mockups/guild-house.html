@@ -125,7 +125,7 @@ figcaption { color: var(--chrome2); font-size: 1rem; font-style: italic; }
 .head b { font-weight: 400; font-family: var(--title); font-size: 15px; }
 .head span { font-size: 15px; color: var(--ink2); }
 .chips { display: flex; gap: 6px; flex-wrap: wrap; }
-.chip { border: 1px solid var(--ink2); border-radius: 14px; padding: 4px 11px; font-size: 15px; white-space: nowrap; color: var(--ink2); }
+.chip { border: 1px solid var(--ink2); border-radius: 22px; padding: 0 12px; min-height: 44px; display: inline-flex; align-items: center; font-size: 15px; white-space: nowrap; color: var(--ink2); }
 .chip.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .k { font-family: var(--title); font-size: 15px; letter-spacing: .06em; color: var(--ink2); border-bottom: 1px solid var(--ink2); padding-bottom: 2px; }
 table.led { border-collapse: collapse; width: 100%; font-variant-numeric: lining-nums tabular-nums; font-size: 15px; }
@@ -153,9 +153,9 @@ table.led tr.wait td { color: var(--seal); }
 .letter .who { font-family: var(--title); font-size: 15px; color: var(--seal); letter-spacing: .05em; display: block; }
 
 /* Compound and swipe hints */
-.dots { position: absolute; top: 8px; left: 0; right: 0; display: flex; justify-content: center; gap: 10px; font-family: var(--title); font-size: 15px; color: var(--ink2); }
+.dots { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: center; gap: 10px; line-height: 44px; font-family: var(--title); font-size: 15px; color: var(--ink2); }
 .dots span.on { color: var(--ink); border-bottom: 2px solid var(--seal); }
-.edge { position: absolute; top: 50%; font-family: var(--title); font-size: 15px; color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink2); padding: 4px 6px; z-index: 2; }
+.edge { position: absolute; top: 50%; font-family: var(--title); font-size: 15px; color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink2); padding: 0 8px; min-height: 44px; display: flex; align-items: center; z-index: 2; }
 .edge.l { left: 0; border-left: 0; border-radius: 0 10px 10px 0; } .edge.r { right: 0; border-right: 0; border-radius: 10px 0 0 10px; }
 .yard { flex: 1; min-height: 0; background: linear-gradient(var(--sky), #e3dcc8 55%); display: flex; flex-direction: column; justify-content: flex-end; position: relative; overflow: hidden; }
 .yard svg.scene { display: block; width: 100%; height: auto; flex: none; }
@@ -340,7 +340,7 @@ table.led tr.wait td { color: var(--seal); }
   <section class="band">
     <figure><div class="fit"><div class="device">
       <div class="sb"><span>9:41</span><span>●●●</span></div>
-      <div class="topbar"><span class="g">The Lantern Guild</span><span class="mode on">Build</span><span class="d">Winter, yr 2 · wk 49</span></div>
+      <div class="topbar"><span class="g">The Lantern Guild</span><span class="mode on">Build</span><span class="d">Winter, yr 2 · wk 41</span></div>
       <div class="hall">
         <div class="roof"><svg viewBox="0 0 340 46" preserveAspectRatio="none" aria-hidden="true"><path d="M4 46 L170 6 L336 46 Z" fill="var(--seal)" stroke="var(--ink)" stroke-width="3"/></svg></div>
         <div class="fl">
@@ -362,14 +362,14 @@ table.led tr.wait td { color: var(--seal); }
           <div class="opt"><b>Barracks</b><span class="c">150 g · 3 wk</span><span class="w">6 more beds, so 6 more can be signed. Upkeep +4 g a week.</span></div>
           <div class="opt"><b>Library</b><span class="c">200 g · 4 wk</span><span class="w">2 places to study. Upkeep +5 g a week.</span></div>
           <div class="opt off"><b>Strongroom</b><span class="c">below ground</span><span class="w">Can only be dug in a cellar.</span></div>
-          <div class="btnrow"><span class="btn">More kinds (3)</span><span class="btn main">Build infirmary<small>done winter wk 52</small></span></div>
+          <div class="btnrow"><span class="btn">More kinds (3)</span><span class="btn main">Build infirmary<small>done winter wk 44</small></span></div>
         </div>
       </div>
       <div class="nav5"><div class="on"><i>H</i>Hall</div><div><i>M</i>March</div><div><i>D</i>Desk</div><div><i>?</i>Ask</div></div>
     </div></div><figcaption>Building in winter: the sheet says what joins what, and the upkeep, before you pay.</figcaption></figure>
     <div class="text">
       <h2>4 · Building a room</h2>
-      <p class="sub">Tap a dashed cell and a sheet rises with the kinds that can go there, their cost, weeks and weekly upkeep (D-177). The top line is what suits this cell best: here the infirmary next door, which the new cell would join. Kinds that can't go here are greyed out with the reason (D-176). Compound kinds only appear when you build in the yard.</p>
+      <p class="sub">Tap a dashed cell and a sheet rises with the kinds that can go there, their cost, weeks and weekly upkeep (D-177). The top line is what suits this cell best: here the infirmary next door, which the new cell would join. Kinds that can't go here are greyed out with the reason (D-176). Compound kinds are listed only when you build in the yard (D-176).</p>
       <div class="notes">
         <div><h3>Decided, shown</h3><ul><li>Builds take weeks, best in winter (D-067, D-169).</li><li>Merging with a same-kind neighbour (D-169).</li><li>Upkeep on every room (D-177); floor locks with reasons (D-176).</li></ul></div>
         <div><h3>Placeholders</h3><ul class="m"><li>All costs, weeks and upkeep; whether a winter build is cheaper, faster or only safer.</li></ul></div>
@@ -389,7 +389,7 @@ table.led tr.wait td { color: var(--seal); }
         </div>
         <div class="head"><span class="face"></span><div class="w"><b>Wenna Cray, head healer</b><span>Retired cleric · healing 16 · heals 1.4× as fast</span></div></div>
         <div class="k">WHO GETS A BED</div>
-        <div class="chips"><span class="chip on">Worst wounds first</span><span class="chip">Veterans first</span><span class="chip">I choose</span></div>
+        <div class="chips"><span class="chip on">Worst first</span><span class="chip">Veterans</span><span class="chip">I choose</span></div>
         <table class="led">
           <tr><td>Bryn Ketch</td><td>broken arm</td><td class="r">3 wk</td></tr>
           <tr><td>Ned Pollard</td><td>deep cut</td><td class="r">2 wk</td></tr>
