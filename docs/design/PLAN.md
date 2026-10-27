@@ -544,7 +544,7 @@ Decisions: D-084..D-086, D-110, D-113. A prototype answers one question cheaply.
 
 ### 9a. Riskiest assumptions (Accepted 2026-10-26, D-086)
 
-**Amended (2026-10-27, D-154):** R4 is now a phone test. Find 5 facts in under 10 seconds each, using the hub, the work desk and Ask the clerk. The 25-row rule is dropped. How it runs: D-159; round 2 changes: D-162.
+**Amended (2026-10-27, D-154):** R4 is now a phone test. Find 5 facts in under 10 seconds each, using the hub, the work desk and Ask the clerk. The 25-row rule is dropped. How it runs: D-159; round 2 changes: D-162. **Passed** in round 2 (D-165).
 
 Ranked by how much of the game fails if the assumption is wrong. "Cheapest test" is the smallest thing that answers it.
 

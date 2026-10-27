@@ -541,6 +541,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Nine risks, each with its cheapest test and pass line: R1 watching quests is fun; R2 the simulation hits the §4 targets (±25%); R3 a year fits the friction budget (≤ 100 stops, ≤ 3 h); R4 the desk holds FM density (25+ rows at 1366 px); R5 ledgers readable (D-084); R6 the player's focus beats delegation by 10–25%; R7 attachment despite deaths; R8 template writing stays fresh; R9 guildmaster careers of 20–30 years. Fun and feel pass only on the owner's recorded playtest notes (GAME-06). Detail: `docs/design/PLAN.md` §9a.
 - **Why:** Owner accepted the draft (Plan Q9c).
 - **Amended (2026-10-27, D-154):** R4 is a phone test: 5 set facts in under 10 s each, using the hub, the work desk and Ask the clerk; the 25-row rule is dropped.
+- **Amended (2026-10-27, D-165):** R4 passes (round 2 on the owner's phone).
 
 ## D-087 Kingdom map at launch
 
@@ -1063,3 +1064,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27) as the direction for the March tab (D-149) and the kingdom map (D-087, D-097). The images' scope and cost are to be set in the map workshop (D-144).
 - **Decision:** The March is one canvas the player moves and zooms freely, with pinch and drag on phones, rather than fixed zoom steps. Towns, places, parties, events and the other marks of the launch layers (places, guilds, action; D-097) show on it, and tapping any of them opens a pop-up with its details and an image. The phone engine test (D-154) builds this first: free pan and zoom at 60 fps, tappable marks and a pop-up with a placeholder image. The R4 fact test keeps its still map, so round 2 stays comparable with round 1 (the session's choice, told to the owner).
 - **Why:** Owner (2026-10-27): "for the march by the way I want it to be like a free move zoom canvas map and I want towns and places and events and whatnot to show on the map and be clickable to show a pop-up screen with details and images". It replaces the stepped March, Shire and town zoom of the D-149 mock-up.
+
+## D-165 R4 passes on the phone
+
+- **Status:** Accepted (2026-10-27)
+- **Decision:** The find-the-fact test (R4, PLAN §9a, as a phone test under D-154) passes. In round 2 (seed phone-2, the owner's phone at 443 × 790 px), the owner found all 5 facts, each right, in under 10 seconds: 8.9, 8.0, 9.8, 5.8 and 6.1 s. They used the Find field for the three facts about people and the work desk for the money and the contracts. Round 1 (seed phone-1) failed at 0 of 5 under 10 s; D-162's changes (names A to Z with a filter, a Money page on the desk, a Find field) made the difference. The phone layout keeps these: Find on the hall and the desk, A to Z people lists with a filter, and the week-by-week ledger on the desk.
+- **Why:** The owner's timed run, saved by the test page (`r4runs`, round 2, attempt 1, no answer flagged as a guess). R4's pass line is met.
