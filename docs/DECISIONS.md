@@ -463,6 +463,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Attributes grow toward hidden potential and decline with age (ancestry sets the ages, as data); traits change through events. Retirement is a conversation; retirees can become staff, limited by attributes and wages; revival leaves a changed veteran. Facilities (5 at launch) have 3 levels each and are building entries in data; more levels or a compound of separate buildings (city-building style) come later. At most 5 earned guild traits are active at once. The guildmaster has about 8 stats (1–20) that grow only when the player does that work personally, and decline in the last 3–5 years. At succession the guild, charter, traits, roster, debts, rivalries, standing, Chronicle and the old guildmaster's promises pass on; the old guildmaster's stats and contacts do not. Detail: `docs/design/PLAN.md` §5.
 - **Why:** Owner accepted the draft (Plan Q5b) and asked for bigger facility progression or a guild compound later.
+- **Amended (2026-10-27, D-168–D-170):** the 5 fixed facilities × 3 levels at launch become a buildable guild house of stacked floors and merging rooms with capacity and staff heads.
 
 ## D-076 First season: prologue, staff-opened ledgers, clerk's notes
 
@@ -497,6 +498,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** 36 monster kinds in 7 families, 20 site templates, 20 quest templates, 60 key-moment templates with text variants, about 6,000 written template lines; plus 6 factions, 17 authored rival guilds, 8 settlements, 5 biomes, 3 tournament kinds, 5 facilities, 4 gear tiers, about 30 magic-item templates and 10 legendary items, about 25 guild traits. All data; can grow after launch. Detail: `docs/design/PLAN.md` §7b–§7e.
 - **Amended (2026-10-26, D-144):** 8 settlements is a floor: at least one more major city, and outposts in the wild counted apart (D-030).
 - **Amended (2026-10-26, D-109):** lean launch cut: about 24 monster kinds, about 40 key moments, about 4,500 template lines, 1 tournament, about 6 authored rival guilds with the rest generated; region crises added (D-112).
+- **Amended (2026-10-27, D-168):** the 5 facilities become the guild house's 11 room kinds and 5 home-town sites × 3 levels.
 - **Why:** Owner's choice (Plan Q7b): repeats stay rare within a guildmaster's career at about half the writing and art cost of the rich option.
 
 ## D-081 Launch people content
@@ -703,6 +705,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Launch has 6 classes (warrior, rogue, ranger, cleric, wizard, bard-like support), 4 ancestries, about 24 monster kinds, about 16 attributes, about 30 traits, about 40 key moments, about 4,500 template lines, 1 tournament, about 6 authored rival guilds (the rest generated), no multiclassing or prestige, and 3 kingdom-map layers (places, guilds, action). Everything stays data; the cut content returns in free updates (PLAN §13c). Detail: `docs/design/PLAN.md` §7, §12.
 - **Why:** Owner's choice (plan review Q2): at 10–20 h a week the full scope was an estimated 4–6 years; this keeps the core (watched quests, key moments, permadeath, Chronicle, succession, delegation, the map) and cuts the items with the most cost for their fun.
+- **Amended (2026-10-27, D-168):** the buildable guild house and about 5 home-town sites join the launch cut.
 
 ## D-110 Engine test is web-first
 
@@ -956,6 +959,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Why:** Owner (2026-10-27), after four rounds of mock-ups: liked the recommended phone mix with the guildhall and living map added, then "I want satchel to be changed to something like work desk where you can go through notifications and deeper into rosters some of the overall stats that the individual rooms don't provide… the guild house is the hub and the work desk is for overall stuff and notifications and contracts."
 - **Amended (2026-10-27):** the room-by-room split (barracks, infirmary, training yard, armoury, smith, library, tavern, gate, strongroom, Hall of Heroes, works) and the staff display in each room are Accepted. The owner said "Do what you recommend", and the session had recommended the split as proposed. The tablet layout stays not settled.
 - **Superseded in part (2026-10-27, D-150, D-151, D-155):** mobile first. The phone is now the launch platform, and the hub is home on every platform, so the "no mobile work is scheduled", "Windows-only launch stands" and "Phone only" lines above no longer apply.
+- **Amended (2026-10-27, D-169):** the 11 rooms are no longer fixed in place; the player builds them on stacked floors.
 
 ## D-150 Mobile first: the phone becomes the lead platform
 
@@ -1084,3 +1088,27 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Completes D-161's tools review (`docs/design/TOOLS-REVIEW.md` §6).
 - **Decision:** (1) `tools/mockup-shot.mjs` gains phone checks at D-159's widths, 375, 412, 430 and 443 px (443 is the owner's phone, measured in D-165), with touch emulation; it flags tap targets under 44 × 44 px (Apple's figure; Android's Material asks 48 dp), text under 15 px, unlabelled controls and sideways scroll, and saves the accessibility snapshot. (2) This repo is linked to a new Vercel Hobby project, so every PR gets a preview link and `main` a stable link for the owner's phone, built by Vercel rather than Actions. (3) The phone engine test is first a web page on that link, with an on-page frame-rate panel; the owner's phone gives the verdict. (4) The store wrapper is Capacitor, adopted at the vertical slice with its own SAFE-03 approval then. (5) A real iPhone check is needed before release. (6) No new agents; new screens get the `design:accessibility-review` skill.
 - **Why:** Owner's choice (2026-10-27), the recommended option "All 1–6". The container measurements behind it are in TOOLS-REVIEW §6.
+
+## D-168 A buildable guild house and a small home town at launch
+
+- **Status:** Accepted (2026-10-27). Amends D-075, D-080 and D-109 (the 5 fixed facilities × 3 levels at launch) and D-149 (fixed rooms). Detail: D-169–D-171, `docs/design/PLAN.md` §5c.
+- **Decision:** At launch the guild house is built up room by room (D-169, D-170) in place of the 5 fixed facilities × 3 levels, and the guild can fund places in its home town (D-171). The home town is the only one with sites at launch, with about 5 sites; more towns and sites come in free updates. Taken from Fallout Shelter: a hall that starts small and grows, rooms that merge, upgrades, people in rooms, and specialising because space and coin are short. Left out: tapping rooms to collect resources and a power, food and water loop, which are chores for a player in short sittings (D-153). Estimates, not measured: the hall builder adds about 150–300 h and $2,000–6,000 of room art; the town sites add about 80–160 h and $1,000–3,000 of art; together about 230–460 h and $3,000–9,000. These are not yet in PLAN §12–§14's totals and are added at the next re-plan.
+- **Why:** Owner (2026-10-27): "I want the ability to have the guild house be a little like fallout shelter in that you have to build up the house itself and I also want the ability to build up locations in the surrounding town for benefits and boosts." They chose the recommended option, "Hall at launch, small town", over a hall at launch with the town later and over both after launch. The hub is already a cutaway with one system per room (D-149), so building it up extends the planned hub and doesn't replace it.
+
+## D-169 The guild house grows as stacked floors
+
+- **Status:** Accepted (2026-10-27).
+- **Decision:** The hub (D-149, D-155) is a side-on cutaway of floors 3 cells wide, which fits an upright phone. A room takes 1–3 cells, and rooms of the same kind side by side merge into one bigger room. The house grows up (upper storeys, a tower) and down (cellars dug out at cost). A new guild starts with the common room (a small tavern), the gate and a small barracks, around the study, which holds the work desk (D-149) and is always there rather than built. Each room kind is a building entry in data with its sizes, levels and effects (GAME-04); the 11 room kinds of D-149 are the launch list. Builds take weeks and are best done in winter (D-067).
+- **Why:** Owner's choice (2026-10-27), the recommended option "Stacked floors", over rooms unlocking in fixed places and over a top-down compound. Layout becomes a real choice, and the cutaway hub stays.
+
+## D-170 Rooms have capacity and a staff head
+
+- **Status:** Accepted (2026-10-27).
+- **Decision:** A room's size and level set its capacity: barracks beds cap the roster, infirmary beds cap how many heal at the fast rate, and training-yard and library places cap how many train or study. Each room has one staff head whose skill sets its strength (shown in the room, D-149). Members go to rooms by state (the wounded to the infirmary); training and study places are filled by hand or by the head's policy (delegation, D-022; the option text cited D-012's quartermaster policy as the model). Hand-placing is never required.
+- **Why:** Owner's choice (2026-10-27), the recommended option "Capacity + staff", over flat guild-wide bonuses and over hand-placing every member. Capacity makes room size matter, and the heads' policies keep a roster of 15–30 from becoming a chore on the phone.
+
+## D-171 Town sites are patronage
+
+- **Status:** Accepted (2026-10-27).
+- **Decision:** The guild funds places in its home town that the townsfolk own: at launch the smith, temple, inn, market and stables, each with 3 levels. Their boosts: cheaper and rarer gear (the town smith supplies the guild's own smith room and shop, D-143, D-149, which still sells basic gear), cheaper healing and revival (the temple), a better recruit pool (the inn), better loot prices (the market) and faster travel (the stables). Funding raises the guild's standing with the town, and the boosts hold only while that standing holds: a scandal or a rival guild's bigger purse can cost the guild a site. Each site is a data entry (GAME-04), and the boosts show where they apply (a price line, a log line).
+- **Why:** Owner's choice (2026-10-27), the recommended option "Patronage", over guild-owned buildings and over a mix of the two. Tying the boosts to standing and rivals makes them part of the guild's politics, so they don't sit on top of the game as a separate city-builder, and they give late-game money a sink (PLAN §4).

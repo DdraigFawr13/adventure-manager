@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-10-27 (third session). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-10-27 (fourth session). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
@@ -11,11 +11,12 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 - 2026-10-27 PR #20 merged (7b29e15): planning round D-159–D-161, repo audit fixes, phone R4 test, D-162–D-164; four reviews, 41 findings, 34 fixed, 7 kept (https://claude.ai/artifact/UTo26LBwZBfbtNh17GjYjb). Detail: `docs/archive/handoff-2026-10.md` and the PR.
 - 2026-10-27 R4 passes (D-165): round 2 on the owner's phone, 5 of 5 under 10 s (8.9, 8.0, 9.8, 5.8, 6.1 s), via Find and the desk's Money page. Round 1 had failed (0 of 5). Test page: https://claude.ai/artifact/PkKz6nGhVqJ4Fr8Fz89MMX. Merged as PR #22.
 - 2026-10-27 R5 passes (D-166): the owner read the 15 px text with lining figures comfortably on their phone. Merged as PR #23.
-- 2026-10-27 Mobile-first tools review approved (D-167; detail in `docs/design/TOOLS-REVIEW.md` §6): phone checks in `tools/mockup-shot.mjs`, Vercel project `adventure-manager`. This branch waits on the owner's approval (D-133).
+- 2026-10-27 Mobile-first tools review approved (D-167; detail in `docs/design/TOOLS-REVIEW.md` §6): phone checks in `tools/mockup-shot.mjs`, Vercel project `adventure-manager`. Merged as PR #24; Vercel production now builds from `main` (checked: production deployment of 5f6c5a6 is READY).
+- 2026-10-27 Guild house and home town, the owner's wish, four questions answered (D-168–D-171): the house is built up like Fallout Shelter on stacked floors 3 cells wide, with merging rooms that have capacity and a staff head; the guild funds 5 home-town sites (smith, temple, inn, market, stables), with boosts that hold while standing holds; both at launch, replacing 5 facilities × 3 levels. PLAN §5c and §7d, CONCEPT §9 and the roadmap updated. This branch (`ccr-04610adb-kt7bnt`) waits on review and the owner's approval (D-133).
 
 ## Next
 
-1. After the merge, check through the connector (`list_deployments`, project `prj_5tNjxVkMC2K1lrD9SUM9nCFVHmiR`) that `main`'s build becomes the production link; the branch build took it first.
+1. Guild house follow-ups (D-168–D-171): a phone mock-up of the stacked floors and the town, then the starting layout's costs, room sizes and levels per kind, whether to add incidents (a fire, a rival's break-in), what happens when the barracks is full (signing blocked or members sleep rough), and whether town standing is a new meter or the town's faction standing. Add D-168's hours and art cost into PLAN §12–§14. The year simulator can model capacity and site boosts once those numbers exist.
 2. Step 4, the two-year text prototype (R7) as a phone-first web page (D-160), with histories and memorial letters; standing parties (D-014, D-142) join here.
 3. Engine test verdict (D-110, D-154, D-167): rebuild the engine test as a phone web page on the Vercel link, with an on-page frame-rate panel; the owner judges it on their phone (60 fps map with smooth pinch, 15 px text, screen reader). The map is free pan and zoom with tappable towns, places, parties and events opening a pop-up with details and a placeholder image (D-164).
 4. Gear (D-143): workshop with the owner before the year simulator uses gear.
@@ -28,7 +29,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 - Mobile first (D-150): the phone sources for the §1d measures, and the phone versions of the Steam store page, wishlists, playtest recruiting and Early Access (D-099, D-100, D-113). Open too: the tablet layout. The test laptop in the budget (PLAN §14) may no longer be needed before launch.
 - Engine findings from R4, for the owner: two people can get the same full name (`packages/engine/src/guild/people.ts:68` draws given and family names independently; seed phone-2 has two Ash Thornes); at week 23 of seed phone-1, 23 of 30 members rest from wounds (maybe balance).
 - Kingdom map art direction (D-097, D-144): Story-Generator layout as the base; geography review in the workshop.
-- Later, tier not set: 20 class levels (D-074); facility compound (D-075); intrigue (D-069); exploring the wilds (D-136); quest board flair (STYLE §4); bardic songs (D-056).
+- Later, tier not set: 20 class levels (D-074); intrigue (D-069); exploring the wilds (D-136); quest board flair (STYLE §4); bardic songs (D-056).
 
 ## Working style with the owner
 
