@@ -1,0 +1,581 @@
+<title>Hall and Road Desk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+DW+Pica:ital@0;1&family=Sorts+Mill+Goudy:ital@0;1&display=swap">
+<style>
+/* Layout: round four of the mobile exploration (base styles shared with rounds two and three). Each option is a band: one or two real-size phones (scaled to fit) beside a ledger of what changes, what it costs and which settled decisions it touches. Candlelit-oak tokens and old-press type (STYLE §2–§5); one deliberate theme, the desk is always lamp-lit. */
+:root {
+  --desk: #3b2a1e; --desk2: #2c1f16; --desk3: #4a3626;
+  --paper: #efe4cc; --paper2: #e5d7b9; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5;
+  --seal: #8e2a22; --brass: #b8923e; --brass2: #d7b66a;
+  --good: #3f6f8f; --warn: #c08a1e; --bad: #8e2a22;
+  --chrome: #f1e6cf; --chrome2: #c8b48f; --sea: #b9c4b8; --land: #e9dcbf; --night: #1b2230;
+  --title: "IM Fell English SC", "IM Fell English", Georgia, serif;
+  --letter: "IM Fell DW Pica", Georgia, serif;
+  --ledger: "Sorts Mill Goudy", "Goudy Old Style", Georgia, serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--desk2); color: var(--chrome); font-family: var(--ledger); font-size: 16px; line-height: 1.5; font-variant-numeric: lining-nums;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px 48px; }
+.page { max-width: 1240px; margin: 0 auto; display: grid; gap: 40px; }
+h1, h2, h3 { font-family: var(--title); font-weight: 400; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); color: var(--brass2); line-height: 1.1; }
+h2 { font-size: 1.7rem; color: var(--brass2); }
+h3 { font-size: 1.1rem; color: var(--brass2); letter-spacing: .03em; }
+p { margin: 0; }
+.lede { display: grid; gap: 12px; max-width: 72ch; }
+.lede p { color: var(--chrome2); }
+.lede .answer { color: var(--paper); font-size: 1.2rem; font-family: var(--letter); }
+.lede a { color: var(--brass2); }
+.tag { display: inline-block; font-family: var(--title); font-size: .8rem; letter-spacing: .1em; color: var(--desk2); background: var(--brass); padding: 1px 8px; border-radius: 2px; }
+.tag.seal { background: var(--seal); color: var(--paper); }
+.tag.ghost { background: transparent; color: var(--brass2); border: 1px solid var(--brass); }
+
+.sheet { background: var(--paper); color: var(--ink); border-radius: 3px; padding: 18px 20px; box-shadow: 0 8px 24px rgba(0,0,0,.35); display: grid; gap: 12px; min-width: 0; }
+.sheet h2 { color: var(--seal); }
+.sheet .note { color: var(--ink2); font-size: .95rem; max-width: 80ch; }
+.scroll { overflow-x: auto; }
+table.sum { border-collapse: collapse; width: 100%; min-width: 860px; font-variant-numeric: lining-nums tabular-nums; }
+table.sum th { text-align: left; font-family: var(--title); font-weight: 400; color: var(--ink2); font-size: .9rem; letter-spacing: .05em; border-bottom: 2px solid var(--ink); padding: 6px 10px 6px 0; }
+table.sum td { border-bottom: 1px solid var(--rule); padding: 8px 10px 8px 0; vertical-align: top; }
+table.sum td.n { white-space: nowrap; }
+table.sum tr.pick td { background: #e6d6ad; }
+.fitpill { display: inline-block; font-size: .8rem; padding: 0 8px; border-radius: 9px; color: var(--paper); white-space: nowrap; }
+.fitpill.a { background: var(--good); } .fitpill.b { background: var(--warn); color: var(--ink); } .fitpill.c { background: var(--bad); }
+
+.idea { display: grid; grid-template-columns: minmax(230px, 340px) 1fr; gap: 24px; border-top: 2px solid var(--brass); padding-top: 20px; align-items: start; }
+.idea.wide { grid-template-columns: minmax(230px, 340px) minmax(230px, 340px) 1fr; }
+@media (max-width: 860px) { .idea, .idea.wide { grid-template-columns: 1fr; } .idea .phones { max-width: 340px; } }
+.idea .text { display: grid; gap: 14px; min-width: 0; align-content: start; }
+.idea .sub { color: var(--chrome2); }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.notes > div { background: var(--desk3); border: 1px solid #5c4532; border-radius: 3px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.notes ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.notes .big { font-size: 1.3rem; color: var(--paper); font-family: var(--title); }
+.notes .m { color: var(--chrome2); }
+.steal { border-left: 3px solid var(--brass); padding-left: 12px; color: var(--paper); font-family: var(--letter); }
+figure { margin: 0; display: grid; gap: 6px; min-width: 0; }
+figcaption { color: var(--chrome2); font-size: .9rem; font-style: italic; }
+.fit { position: relative; width: 100%; overflow: hidden; }
+.fit > .device { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+
+/* In-device */
+.device { border: 10px solid #15100b; border-radius: 34px; background: var(--paper); color: var(--ink); overflow: hidden; box-shadow: 0 10px 28px rgba(0,0,0,.5); display: flex; flex-direction: column; font-size: 15px; line-height: 1.35; position: relative; }
+.sb { height: 30px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; font-size: 12px; background: var(--desk2); color: var(--chrome2); font-family: system-ui, sans-serif; }
+.topbar { flex: none; display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--desk2); color: var(--chrome); border-bottom: 2px solid var(--brass); }
+.topbar .g { font-family: var(--title); color: var(--brass2); font-size: 16px; white-space: nowrap; }
+.topbar .d { white-space: nowrap; font-size: 14px; color: var(--chrome2); margin-left: auto; }
+.paper { flex: 1; min-height: 0; background: var(--paper); padding: 10px 12px; overflow: hidden; display: flex; flex-direction: column; gap: 8px; }
+.paper h4 { font-family: var(--title); font-weight: 400; font-size: 18px; margin: 0; }
+.muted { color: var(--ink2); }
+.pill { display: inline-block; font-size: 12px; padding: 0 7px; border-radius: 9px; color: var(--paper); white-space: nowrap; }
+.pill.good { background: var(--good); } .pill.warn { background: var(--warn); color: var(--ink); } .pill.bad { background: var(--bad); }
+table.led { border-collapse: collapse; width: 100%; font-variant-numeric: lining-nums tabular-nums; font-size: 15px; }
+table.led th { text-align: left; font-weight: 400; color: var(--ink2); font-size: 13px; border-bottom: 1.5px solid var(--ink); padding: 2px 6px 3px 0; white-space: nowrap; }
+table.led td { border-bottom: 1px solid var(--rule); padding: 4px 6px 4px 0; white-space: nowrap; }
+table.led .r { text-align: right; }
+.wax { width: 34px; height: 34px; border-radius: 50%; flex: none; display: grid; place-items: center; font-family: var(--title); color: var(--paper); font-size: 15px; background: radial-gradient(circle at 40% 35%, #a8392f, var(--seal) 60%, #6d1f19); }
+.wax.blue { background: radial-gradient(circle at 40% 35%, #5a87a6, var(--good) 60%, #2b4d63); }
+.wax.brass { background: radial-gradient(circle at 40% 35%, #d7b66a, var(--brass) 60%, #87692a); color: var(--ink); }
+.wax.ink { background: radial-gradient(circle at 40% 35%, #5a4a3a, var(--ink) 70%); }
+.mail { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.mail .w { flex: 1; min-width: 0; display: grid; gap: 1px; }
+.mail .f { display: flex; justify-content: space-between; gap: 8px; }
+.mail .f b { font-weight: 400; font-family: var(--title); font-size: 15px; }
+.mail .x { font-family: var(--letter); font-size: 14px; color: var(--ink2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mail.unread .f b::before { content: "● "; color: var(--seal); font-size: 10px; vertical-align: 2px; }
+.letter { font-family: var(--letter); font-size: 16px; line-height: 1.45; }
+.init { float: left; font-family: var(--title); font-size: 48px; line-height: .85; color: var(--seal); margin: 4px 6px 0 0; }
+.reply { margin-top: auto; border-top: 2px solid var(--ink); padding-top: 10px; display: grid; gap: 8px; }
+.reply .k { font-family: var(--title); font-size: 13px; letter-spacing: .06em; color: var(--ink2); }
+.sentence { font-family: var(--letter); font-size: 18px; line-height: 2; }
+.word { border-bottom: 2px solid var(--seal); color: var(--seal); padding: 0 2px; white-space: nowrap; }
+.word::after { content: " ▾"; font-size: 11px; }
+.btnrow { display: flex; gap: 8px; }
+.btn { flex: 1; text-align: center; border-radius: 4px; padding: 8px; font-family: var(--title); font-size: 15px; border: 1.5px solid var(--ink); }
+.btn.main { background: var(--seal); color: var(--paper); border-color: var(--seal); }
+.ask { border: 1.5px solid var(--ink); border-radius: 20px; padding: 7px 14px; font-family: var(--letter); font-size: 16px; display: flex; justify-content: space-between; align-items: center; background: #f6eedb; }
+.ask .q { color: var(--ink); } .ask .q i { color: var(--seal); font-style: normal; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--ink2); border-radius: 12px; padding: 1px 10px; font-size: 13px; white-space: nowrap; color: var(--ink2); }
+.clerk { background: var(--paper2); border-radius: 3px; padding: 8px 10px; font-family: var(--letter); font-size: 15px; display: grid; gap: 6px; }
+.clerk .who { font-family: var(--title); font-size: 13px; color: var(--ink2); letter-spacing: .05em; }
+.pull { flex: none; background: var(--desk); color: var(--brass2); text-align: center; padding: 10px 0 6px; font-family: var(--title); font-size: 14px; position: relative; }
+.pull .roll { height: 16px; margin: 6px 20px 0; border-radius: 8px; background: linear-gradient(180deg, #d9c9a6, #efe4cc 45%, #b9a57d); box-shadow: 0 3px 6px rgba(0,0,0,.4); }
+.pull small { display: block; color: var(--chrome2); font-family: var(--ledger); font-size: 12px; }
+.day { display: grid; gap: 4px; }
+.day .h { font-family: var(--title); font-size: 14px; color: var(--ink2); letter-spacing: .06em; border-bottom: 1px solid var(--ink2); padding-bottom: 2px; display: flex; justify-content: space-between; }
+.ev { font-family: var(--letter); font-size: 15px; padding-left: 16px; position: relative; }
+.ev::before { content: "·"; position: absolute; left: 4px; color: var(--ink2); }
+.ev.stop { background: #f5e3d6; border-left: 3px solid var(--seal); padding: 6px 8px 6px 12px; border-radius: 0 3px 3px 0; }
+.ev.stop::before { content: ""; }
+.ev.ghost { color: var(--ink2); font-style: italic; opacity: .7; }
+.hall { flex: 1; min-height: 0; background: linear-gradient(#c9d3d8, #e3dcc8 18%); display: flex; flex-direction: column; padding: 0 14px 0; position: relative; }
+.roof { height: 70px; flex: none; position: relative; }
+.roof svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.floor { flex: 1; border: 3px solid var(--ink); border-top-width: 2px; background: var(--paper); display: flex; gap: 0; position: relative; min-height: 0; }
+.floor + .floor { border-top: 0; }
+.room { flex: 1; border-right: 2px solid var(--ink); padding: 6px 8px; display: flex; flex-direction: column; justify-content: space-between; min-width: 0; position: relative; }
+.room:last-child { border-right: 0; }
+.room .n { font-family: var(--title); font-size: 13px; letter-spacing: .04em; }
+.room .s { font-size: 12px; color: var(--ink2); }
+.room.alert { background: #f5e3d6; } .room.alert .n { color: var(--seal); }
+.room.cellar { background: #d8cbad; }
+.stand { display: flex; gap: 3px; align-items: flex-end; }
+.stand i { width: 16px; height: 24px; border-radius: 8px 8px 2px 2px; background: var(--ink); display: block; position: relative; }
+.stand i::after { content: ""; position: absolute; bottom: -3px; left: -2px; right: -2px; height: 4px; background: var(--ink2); border-radius: 2px; }
+.stand i.lie { width: 24px; height: 10px; border-radius: 5px; background: var(--ink2); }
+.stand i.lie::after { display: none; }
+.ground { height: 22px; flex: none; background: repeating-linear-gradient(90deg, #8d7a5a 0 12px, #7c6a4c 12px 14px); margin: 0 -14px; }
+.mapwrap { position: relative; flex: 1; min-height: 0; background: var(--sea); overflow: hidden; }
+.mapwrap svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.zoom { position: absolute; right: 10px; top: 10px; display: grid; gap: 2px; background: var(--paper); border: 1.5px solid var(--ink); border-radius: 4px; padding: 4px 6px; font-size: 12px; }
+.zoom span { padding: 1px 4px; border-radius: 2px; } .zoom span.on { background: var(--ink); color: var(--paper); }
+.sheetup { flex: none; background: var(--paper); border-top: 3px solid var(--seal); border-radius: 14px 14px 0 0; padding: 10px 14px 18px; display: grid; gap: 6px; box-shadow: 0 -8px 20px rgba(0,0,0,.25); }
+.table { flex: 1; min-height: 0; background: radial-gradient(ellipse at 50% 30%, #4a3626, var(--desk2) 80%); display: flex; flex-direction: column; align-items: center; padding: 12px 10px 0; gap: 10px; position: relative; overflow: hidden; }
+.ccard { width: 300px; background: var(--paper); border-radius: 6px; padding: 10px 12px; border: 2px solid var(--brass); display: grid; gap: 6px; box-shadow: 0 6px 14px rgba(0,0,0,.4); }
+.ccard .t { font-family: var(--title); font-size: 18px; display: flex; justify-content: space-between; align-items: center; }
+.slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.slotc { height: 66px; border: 1.5px dashed var(--ink2); border-radius: 4px; display: grid; place-items: center; font-size: 11px; color: var(--ink2); text-align: center; }
+.slotc.f { border: 1.5px solid var(--ink); background: var(--paper2); color: var(--ink); font-size: 12px; line-height: 1.1; }
+.odds { font-size: 14px; display: flex; justify-content: space-between; border-top: 1px solid var(--rule); padding-top: 4px; font-variant-numeric: lining-nums tabular-nums; }
+.hand { position: absolute; bottom: 0; left: 0; right: 0; height: 360px; }
+.acard { position: absolute; bottom: 0; width: 110px; height: 160px; background: var(--paper); border-radius: 6px; border: 1.5px solid var(--ink); padding: 6px; display: grid; grid-template-rows: auto 1fr auto; gap: 3px; box-shadow: 0 4px 10px rgba(0,0,0,.4); transform-origin: 50% 120%; font-size: 12px; }
+.acard b { font-family: var(--title); font-weight: 400; font-size: 13px; line-height: 1.1; }
+.acard .face { min-height: 0; background: var(--paper2); border-radius: 50% / 45%; border: 2px double var(--ink); }
+.acard .st { display: flex; justify-content: space-between; font-variant-numeric: lining-nums tabular-nums; }
+.acard.lift { box-shadow: 0 14px 24px rgba(0,0,0,.55); border-color: var(--seal); }
+.lock { flex: 1; background: linear-gradient(180deg, #232c3c, var(--night) 60%, #12161f); color: #e8e4dc; display: flex; flex-direction: column; align-items: center; padding: 26px 12px 0; gap: 8px; font-family: system-ui, sans-serif; }
+.lock .clock { font-size: 72px; font-weight: 200; line-height: 1; } .lock .date { font-size: 16px; opacity: .8; margin-bottom: 18px; }
+.notif { width: 100%; background: rgba(239,228,204,.92); color: var(--ink); border-radius: 16px; padding: 10px 12px; display: flex; gap: 10px; align-items: flex-start; }
+.notif .w { flex: 1; min-width: 0; display: grid; gap: 1px; }
+.notif .a { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink2); font-family: system-ui, sans-serif; }
+.notif b { font-family: var(--title); font-weight: 400; font-size: 15px; }
+.notif span.t { font-family: var(--letter); font-size: 14px; }
+.notif.stack { transform: scale(.95); opacity: .75; margin-top: -4px; }
+.rec ol { margin: 0; padding-left: 22px; display: grid; gap: 8px; max-width: 82ch; }
+.rec { display: grid; gap: 12px; border-top: 2px solid var(--brass); padding-top: 20px; }
+.foot { color: var(--chrome2); font-size: .9rem; max-width: 90ch; }
+</style>
+<style>
+/* Round three additions: the Hall and the Road. Pieces strip, floating controls, split and book layouts, briefing bubbles. */
+.pieces { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+.piece { background: var(--desk3); border: 1px solid #5c4532; border-radius: 3px; padding: 10px 12px; display: grid; gap: 4px; align-content: start; }
+.piece b { font-family: var(--title); font-weight: 400; color: var(--brass2); font-size: 1.05rem; }
+.piece span { color: var(--chrome2); font-size: .92rem; }
+.piece small { color: var(--paper); font-size: .85rem; }
+.concept { display: grid; gap: 16px; border-top: 2px solid var(--brass); padding-top: 20px; }
+.concept > header { display: grid; gap: 6px; max-width: 80ch; }
+.concept .sub { color: var(--chrome2); }
+.nav { font-family: var(--letter); color: var(--paper); border-left: 3px solid var(--brass); padding-left: 12px; max-width: 80ch; }
+.devices { display: grid; gap: 18px; align-items: start; grid-template-columns: repeat(auto-fill, minmax(220px, 280px)); }
+.devices.land { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.devices.mix { grid-template-columns: minmax(220px, 1fr) minmax(320px, 2.2fr); }
+@media (max-width: 760px) { .devices.mix { grid-template-columns: 1fr; } }
+.device.land { border-radius: 30px; } .device.tablet { border-radius: 24px; border-width: 14px; }
+.nav5 { flex: none; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--desk2); border-top: 2px solid var(--brass); padding: 6px 4px 18px; }
+.nav5 div { text-align: center; font-size: 12px; color: var(--chrome2); display: grid; gap: 1px; justify-items: center; position: relative; }
+.nav5 div i { font-style: normal; font-family: var(--title); font-size: 18px; color: var(--chrome); width: 32px; height: 26px; border-radius: 4px; display: grid; place-items: center; }
+.nav5 div.on { color: var(--brass2); } .nav5 div.on i { background: var(--brass); color: var(--desk2); }
+.nav5 div[data-n]::after { content: attr(data-n); position: absolute; top: -4px; left: 58%; background: var(--seal); color: var(--paper); font-size: 11px; border-radius: 8px; padding: 0 5px; }
+.hallbox { flex: 1; min-height: 0; display: flex; flex-direction: column; background: linear-gradient(#c9d3d8, #e3dcc8 30%); padding: 0 12px; position: relative; }
+.hallbox .roof { height: 56px; }
+.party-walk { position: absolute; display: flex; gap: 3px; }
+.party-walk i { width: 12px; height: 18px; border-radius: 6px 6px 2px 2px; background: var(--seal); display: block; }
+.float-ask { position: absolute; left: 12px; right: 12px; top: 10px; background: var(--paper); border: 1.5px solid var(--ink); border-radius: 18px; padding: 5px 12px; font-family: var(--letter); color: var(--ink2); font-size: 14px; box-shadow: 0 3px 8px rgba(0,0,0,.25); }
+.float-seal { position: absolute; right: 14px; bottom: 16px; width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; font-family: var(--title); color: var(--paper); font-size: 12px; text-align: center; line-height: 1.05; background: radial-gradient(circle at 40% 35%, #a8392f, var(--seal) 60%, #6d1f19); box-shadow: 0 4px 12px rgba(0,0,0,.4); }
+.float-seal::after { content: "3"; position: absolute; top: -2px; right: -2px; background: var(--brass); color: var(--ink); font-family: var(--ledger); font-size: 12px; border-radius: 9px; padding: 0 6px; }
+.ladder { position: absolute; right: 10px; top: 56px; display: grid; gap: 4px; background: rgba(239,228,204,.92); border: 1.5px solid var(--ink); border-radius: 4px; padding: 5px 6px; font-size: 12px; }
+.ladder span { padding: 1px 6px; border-radius: 2px; } .ladder span.on { background: var(--ink); color: var(--paper); }
+.pinch { position: absolute; left: 50%; top: 46%; transform: translate(-50%,-50%); color: var(--seal); font-size: 13px; font-style: italic; background: rgba(239,228,204,.85); padding: 2px 10px; border-radius: 10px; white-space: nowrap; }
+.seam { flex: none; background: var(--desk); color: var(--brass2); text-align: center; padding: 6px 0; font-family: var(--title); font-size: 13px; border-block: 2px solid var(--brass); }
+.seam small { color: var(--chrome2); font-family: var(--ledger); font-size: 11px; display: block; }
+.book { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; background: var(--desk); padding: 8px 10px 10px; gap: 0; position: relative; }
+.book .pg { background: var(--paper); position: relative; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+.book .pg.l { border-radius: 4px 0 0 4px; box-shadow: inset -14px 0 18px -12px rgba(0,0,0,.45); }
+.book .pg.r { border-radius: 0 4px 4px 0; box-shadow: inset 14px 0 18px -12px rgba(0,0,0,.45); }
+.book .corner { position: absolute; right: 0; bottom: 0; width: 46px; height: 46px; background: linear-gradient(135deg, transparent 50%, var(--paper2) 50%); box-shadow: -3px -3px 6px rgba(0,0,0,.25); }
+.book .corner-l { position: absolute; right: 50px; bottom: 6px; font-size: 11px; color: var(--seal); font-style: italic; }
+.tucked { position: absolute; top: 0; display: flex; gap: 6px; left: 50%; transform: translateX(-50%); z-index: 3; }
+.tucked span { background: #f6eedb; border: 1px solid var(--ink2); border-top: 0; padding: 1px 8px 3px; font-size: 11px; border-radius: 0 0 3px 3px; box-shadow: 0 2px 4px rgba(0,0,0,.25); font-family: var(--letter); }
+.ribbon { flex: none; background: var(--seal); color: var(--paper); font-family: var(--letter); font-size: 12px; padding: 3px 10px; }
+.chat { flex: 1; min-height: 0; overflow: hidden; background: var(--paper); padding: 10px 12px; display: flex; flex-direction: column; gap: 9px; }
+.bub { max-width: 88%; background: var(--paper2); border-radius: 4px 12px 12px 12px; padding: 7px 10px; font-family: var(--letter); font-size: 15px; display: grid; gap: 6px; }
+.bub .who { font-family: var(--title); font-size: 12px; color: var(--ink2); letter-spacing: .05em; }
+.bub.me { align-self: flex-end; background: var(--ink); color: var(--paper); border-radius: 12px 4px 12px 12px; font-family: var(--ledger); }
+.bub .pic { height: 110px; border: 1.5px solid var(--ink); border-radius: 3px; overflow: hidden; position: relative; background: var(--sea); }
+.bub .pic svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.quick { display: flex; gap: 6px; flex-wrap: wrap; }
+.quick span { border: 1.5px solid var(--seal); color: var(--seal); border-radius: 14px; padding: 2px 10px; font-size: 13px; background: var(--paper); }
+table.cmp { border-collapse: collapse; width: 100%; min-width: 900px; font-variant-numeric: lining-nums tabular-nums; }
+table.cmp th { text-align: left; font-family: var(--title); font-weight: 400; color: var(--ink2); font-size: .9rem; border-bottom: 2px solid var(--ink); padding: 6px 10px 6px 0; }
+table.cmp td { border-bottom: 1px solid var(--rule); padding: 8px 10px 8px 0; vertical-align: top; }
+table.cmp td.n { white-space: nowrap; }
+table.cmp tr.pick td { background: #e6d6ad; }
+</style>
+<style>
+/* Round four additions: the hall as a hub of rooms, the work desk, room screens. */
+.hub .floor .room { cursor: default; }
+.room .badge-n { position: absolute; top: 4px; right: 5px; background: var(--seal); color: var(--paper); font-size: 11px; border-radius: 8px; padding: 0 6px; font-family: var(--ledger); }
+.room.desk { background: #f3e2b8; } .room.desk .n { color: var(--seal); }
+.roomhead { flex: none; height: 104px; position: relative; background: var(--paper2); border-bottom: 3px solid var(--ink); overflow: hidden; display: flex; align-items: flex-end; padding: 0 14px 10px; gap: 4px; }
+.roomhead .stand { gap: 5px; } .roomhead .stand i { width: 20px; height: 30px; } .roomhead .stand i.lie { width: 32px; height: 13px; }
+.roomhead .nm { position: absolute; left: 14px; top: 10px; font-family: var(--title); font-size: 22px; }
+.roomhead .props { position: absolute; right: 12px; bottom: 10px; display: flex; gap: 6px; align-items: flex-end; }
+.roomhead .props b { display: block; background: var(--ink2); border-radius: 2px; }
+.staff { flex: none; display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 12px; background: var(--paper); border-bottom: 1px solid var(--rule); font-size: 13px; }
+.staff .who { font-family: var(--title); font-size: 13px; color: var(--ink2); }
+.toggle { display: inline-flex; border: 1px solid var(--ink2); border-radius: 12px; overflow: hidden; font-size: 12px; }
+.toggle span { padding: 1px 8px; color: var(--ink2); } .toggle span.on { background: var(--ink); color: var(--paper); }
+.lockn { font-size: 12px; color: var(--seal); font-style: italic; }
+.subtabs { flex: none; display: flex; gap: 0; background: var(--desk); padding: 6px 8px 0; }
+.subtabs span { flex: 1; text-align: center; font-family: var(--title); font-size: 13px; color: var(--chrome2); padding: 5px 0 6px; border-radius: 4px 4px 0 0; position: relative; }
+.subtabs span.on { background: var(--paper); color: var(--ink); }
+.subtabs span[data-n]::after { content: attr(data-n); position: absolute; top: 0; right: 6px; background: var(--seal); color: var(--paper); font-family: var(--ledger); font-size: 10px; border-radius: 7px; padding: 0 5px; }
+.notice { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--rule); align-items: flex-start; }
+.notice .w { flex: 1; min-width: 0; display: grid; gap: 1px; }
+.notice .f { display: flex; justify-content: space-between; gap: 6px; font-size: 13px; color: var(--ink2); }
+.notice b { font-weight: 400; font-family: var(--title); font-size: 15px; color: var(--ink); }
+.notice .x { font-size: 14px; font-family: var(--letter); }
+.notice.stop { background: #f5e3d6; margin: 0 -12px; padding: 7px 12px; border-left: 4px solid var(--seal); }
+.notice .go { font-size: 12px; color: var(--seal); white-space: nowrap; }
+.wax.sm { width: 28px; height: 28px; font-size: 12px; }
+.stat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.stat div { background: var(--paper2); border-radius: 3px; padding: 6px 8px; display: grid; gap: 0; }
+.stat b { font-family: var(--ledger); font-weight: 400; font-size: 22px; font-variant-numeric: lining-nums tabular-nums; line-height: 1.1; }
+.stat span { font-size: 12px; color: var(--ink2); }
+.meter { height: 10px; border: 1px solid var(--ink2); border-radius: 5px; overflow: hidden; background: var(--paper2); }
+.meter i { display: block; height: 100%; background: var(--good); }
+.bars { width: 100%; height: 110px; display: block; }
+.crow { display: grid; grid-template-columns: 28px 1fr auto; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--rule); }
+.crow .t { font-family: var(--title); font-size: 15px; }
+.crow .m { font-size: 13px; color: var(--ink2); }
+.crow .fee { font-variant-numeric: lining-nums tabular-nums; text-align: right; font-size: 14px; }
+.danger { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 3px; }
+.grp { font-family: var(--title); font-size: 14px; display: flex; justify-content: space-between; border-bottom: 1.5px solid var(--ink); padding-top: 4px; }
+.grp span { font-family: var(--ledger); font-size: 12px; color: var(--ink2); }
+.ask-card { border: 1.5px solid var(--seal); background: #f6eedb; border-radius: 4px; padding: 7px 10px; display: grid; gap: 4px; font-size: 14px; }
+.ask-card b { font-family: var(--title); font-weight: 400; font-size: 15px; }
+.acts { display: flex; gap: 6px; flex-wrap: wrap; }
+.acts span { border: 1.5px solid var(--ink); border-radius: 4px; padding: 3px 10px; font-family: var(--title); font-size: 13px; }
+.acts span.main { background: var(--seal); border-color: var(--seal); color: var(--paper); }
+.bed { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; padding: 7px 0; border-bottom: 1px solid var(--rule); }
+.bed b { font-family: var(--title); font-weight: 400; font-size: 15px; }
+.bed .m { font-size: 13px; color: var(--ink2); grid-column: 1 / -1; }
+.heal { height: 8px; border-radius: 4px; background: var(--paper2); border: 1px solid var(--rule); overflow: hidden; grid-column: 1 / -1; }
+.heal i { display: block; height: 100%; background: var(--warn); }
+.policy { border: 1.5px solid var(--ink); border-radius: 4px; padding: 8px 10px; display: grid; gap: 4px; background: var(--paper2); }
+.policy .k { font-family: var(--title); font-size: 13px; color: var(--ink2); }
+.check { font-size: 14px; } .check::before { content: "☑ "; color: var(--good); } .check.off::before { content: "☐ "; color: var(--ink2); }
+.storied { border: 2px solid var(--brass); border-radius: 4px; padding: 7px 10px; background: #f6eedb; display: grid; gap: 2px; }
+.storied b { font-family: var(--title); font-weight: 400; font-size: 16px; color: var(--seal); }
+table.rooms { border-collapse: collapse; width: 100%; min-width: 920px; }
+table.rooms th { text-align: left; font-family: var(--title); font-weight: 400; color: var(--ink2); font-size: .9rem; border-bottom: 2px solid var(--ink); padding: 6px 10px 6px 0; }
+table.rooms td { border-bottom: 1px solid var(--rule); padding: 7px 10px 7px 0; vertical-align: top; }
+table.rooms td:first-child { font-family: var(--title); white-space: nowrap; }
+table.rooms tr.deskrow td { background: #e6d6ad; }
+.split2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 760px) { .split2 { grid-template-columns: 1fr; } }
+</style>
+
+<div class="page">
+
+<section class="lede">
+  <span><span class="tag seal">Owner's pick · D-149 · room split proposed</span></span>
+  <h1>Hall and Road: the work desk</h1>
+  <p class="answer">Your version: the guildhall is the hub, every room does its own job, and the satchel becomes a work desk for everything that spans the whole guild: notices, contracts, the full roster and the year's numbers.</p>
+  <p>Built on the <a href="https://claude.ai/artifact/YRv2tQgoAtvK2vz1aZ8fU6">Hall and Road concept</a>. The four tabs are now Hall, March (the world map), Desk and Ask. The desk also sits in the hall as your study, so you can reach it either way. Each room shows its staff member and whether you or they run it (CONCEPT §19); the few things never delegated (D-038) say so. Hours are estimates (REP-01).</p>
+</section>
+
+<section class="concept" aria-labelledby="hh">
+  <header>
+    <h2 id="hh">The hub and the desk</h2>
+    <p class="sub">The hall tells you where to look: a red number on a room means something there needs you. The desk is where you go to see the guild as a whole.</p>
+  </header>
+  <div class="devices">
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="hub"></div></div><figcaption>The hall as hub: the work desk and eleven rooms, each with its own job. Red numbers show where you're needed.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="deskNotices"></div></div><figcaption>Desk · Notices: every stop and letter in one list, each one linked to the room or place it concerns.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="deskOverview"></div></div><figcaption>Desk · Overview: the year so far, the patron's target, the chest over six weeks.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="deskContracts"></div></div><figcaption>Desk · Contracts: the board, sorted and filtered. Choosing contracts is always yours (D-038).</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="deskRoster"></div></div><figcaption>Desk · Roster: all 30 people, every column a chip away; the deep ledger the rooms don't give you.</figcaption></figure>
+  </div>
+</section>
+
+<section class="concept" aria-labelledby="mrh">
+  <header>
+    <h2 id="mrh">The March: the world map</h2>
+    <p class="sub">The hall is inside; the March is outside. The second tab (or the gate) opens the kingdom map from D-134. Pinch to zoom from the whole March down to a town; the three launch layers (places, guilds, action; D-097) switch what the map shows. Tap a contract seal, a party or a rival's crest for its sheet. A party on a quest opens the quest board (STYLE §4), drawn in ink as they explore.</p>
+  </header>
+  <div class="devices">
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="marchWhole"></div></div><figcaption>The whole March: settlements, roads, contracts as wax seals, your parties, rival lodges. Uncharted ground stays blank vellum.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="marchContract"></div></div><figcaption>Tap a seal: the contract's sheet, with the way out from the hall and the days on foot.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="marchParty"></div></div><figcaption>Tap a party: the Reed Wardens two days out to Cray's Mill, who is with them, when the next stop is likely.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="marchTown"></div></div><figcaption>Zoomed into Ashford: the guildhall (tap to go in), temple, smith, market and a rival lodge.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="questBoard"></div></div><figcaption>Watching a quest, a few days later: the Reed Wardens at Cray's Mill. The site map draws itself; a key moment rises as a sealed sheet.</figcaption></figure>
+  </div>
+</section>
+
+<section class="concept" aria-labelledby="rh">
+  <header>
+    <h2 id="rh">Inside the rooms</h2>
+    <p class="sub">Each room opens on a drawn view of the room with its people in it, the staff member who runs it, then what it shows and what you can do there. The first four:</p>
+  </header>
+  <div class="devices">
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="barracks"></div></div><figcaption>Barracks: your people by party, their mood, the promises you've made, and who wants a word.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="infirmary"></div></div><figcaption>Infirmary: who is in bed, for how long, what may scar, and what the healer can do.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="armoury"></div></div><figcaption>Armoury: the quartermaster's policy (D-143), what needs mending, and the storied items.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="strongroom"></div></div><figcaption>Strongroom: the chest, bills, wages and the six-week money line.</figcaption></figure>
+  </div>
+</section>
+
+<section class="concept" aria-labelledby="oh">
+  <header>
+    <h2 id="oh">The other rooms</h2>
+    <p class="sub">The remaining seven, in the same pattern: the room and its people, who runs it, what it shows, what you can do.</p>
+  </header>
+  <div class="devices">
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="yard"></div></div><figcaption>Training yard: each member's focus and growth, talents at level-up, or run training yourself.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="smith"></div></div><figcaption>Smith: basic kit to buy, old kit to sell (D-143).</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="library"></div></div><figcaption>Library: what the guild knows about monsters, sites and rivals (CONCEPT §30).</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="tavern"></div></div><figcaption>Tavern: the guild's mood, who drinks with whom, and rumours that can become leads.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="gate"></div></div><figcaption>Gate: scouts' reports seen through the fog (ranges until known), recruits, rivals' people, parties coming and going.</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="heroes"></div></div><figcaption>Hall of Heroes: memorials, records and the Chronicle (CONCEPT §31).</figcaption></figure>
+    <figure><div class="fit"><div class="device" data-w="390" data-h="844" data-screen="works"></div></div><figcaption>Works: what can be built or improved, what it costs, how long it takes.</figcaption></figure>
+  </div>
+</section>
+
+<section class="sheet" aria-labelledby="mh">
+  <h2 id="mh">Every room and what it's for</h2>
+  <p class="note">A first proposal for which system lives where, from the launch systems (CONCEPT §5–§33). The desk holds what spans rooms; each room holds one system. Staff names are invented examples.</p>
+  <div class="scroll">
+    <table class="rooms">
+      <thead><tr><th>Room</th><th>You see</th><th>You can</th><th>Run by</th><th>Concept</th></tr></thead>
+      <tbody>
+        <tr class="deskrow"><td>Work desk (your study)</td><td>All notices and letters; the contract board; the year's numbers, ranking and patron target; the full roster with every column; staff list</td><td>Answer letters, choose and brief contracts, compare anyone with anyone, set who runs each room</td><td>You; the clerk sorts it</td><td>§7, §9, §19, §32</td></tr>
+        <tr><td>Barracks</td><td>Members by standing party, morale, ambitions, promises, friendships and feuds</td><td>Talk (praise, warn, promise, reassure), form and rename parties, renew or end contracts</td><td>Deputy; big talks stay yours</td><td>§11, §18, D-014</td></tr>
+        <tr><td>Infirmary</td><td>Who is hurt, for how long, scars and trauma, revival at the temple</td><td>Pay for faster care, rest someone, arrange a revival</td><td>Healer</td><td>§6</td></tr>
+        <tr><td>Training yard</td><td>Each member's training focus, attribute growth, level-ups</td><td>Set focus, choose talents at level-up, run training yourself (raises your Coaching)</td><td>Trainer</td><td>§5, §25</td></tr>
+        <tr><td>Armoury</td><td>Kit per person in slots, stock, what needs mending, storied items</td><td>Equip by hand, set the quartermaster's policy, assign storied items</td><td>Quartermaster</td><td>§9, D-143</td></tr>
+        <tr><td>Smith</td><td>Basic gear for sale, prices</td><td>Buy and sell; later discounts from upgrades</td><td>Quartermaster</td><td>D-143</td></tr>
+        <tr><td>Library</td><td>What the guild knows about monsters, sites and rivals</td><td>Set research, read survivors' reports</td><td>Librarian</td><td>§30</td></tr>
+        <tr><td>Tavern</td><td>Who drinks with whom, the guild's mood, rumours</td><td>Turn a rumour into a contract lead, stand a round</td><td>—</td><td>§18, §32</td></tr>
+        <tr><td>Gate</td><td>Scouts' reports on prospects, recruits waiting, parties leaving and returning</td><td>Send scouts, sign recruits, approach rivals' people</td><td>Scout</td><td>§10</td></tr>
+        <tr><td>Strongroom</td><td>The chest, wages, upkeep, fees, loans, the money line</td><td>Take or repay a loan, set wage budgets</td><td>Deputy</td><td>§9</td></tr>
+        <tr><td>Hall of Heroes</td><td>The Chronicle, memorials, records, storied items' histories</td><td>Read, name a memorial</td><td>—</td><td>§31</td></tr>
+        <tr><td>Guildhall works</td><td>Upgrades built and possible</td><td>Build or improve rooms</td><td>Deputy</td><td>§9, D-075</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="concept" aria-labelledby="wh">
+  <h2 id="wh">What this changes, and the work</h2>
+  <div class="notes">
+    <div><h3>Better than the satchel</h3><ul><li>One clear rule: the room for one system, the desk for the whole guild.</li><li>Deep numbers and comparisons live on the desk, so Pillar 5's depth is never far away.</li><li>Delegation becomes visible: each room shows who runs it.</li></ul></div>
+    <div><h3>Watch out for</h3><ul><li>Two ways to the same person (barracks and desk roster); both must open the same person card.</li><li>Twelve rooms is a lot to draw; the hall can start with the launch rooms and grow with upgrades.</li><li>The sentence-style brief from the satchel can live on in the contract briefing (+60–120 h), or go.</li></ul></div>
+    <div><h3>Work (estimate)</h3><p class="big">1,200–2,420 h</p><ul><li>Shared base: 190–400 h · desk (4 views): 120–240 h</li><li>11 room screens: 300–600 h · the hall hub: 150–300 h</li><li>Map: 250–500 h · clerk: 150–300 h · pull: 40–80 h</li><li>Art: about $9,000–30,000 more</li></ul><p class="m">About 14–56 months at 10–20 h/wk; a little cheaper than the satchel version (1,380–2,780 h), because the letter forms go: satchel and ledgers (400–800 h) and the hall (350–700 h) become the desk (120–240 h), room screens (300–600 h) and the hub (150–300 h).</p></div>
+  </div>
+  <p class="steal">This layout could also be the Windows home: the hall as hub, the desk as the ledgers. It would change the settled desk layout (STYLE §3), so it needs your decision before it goes near the PC plan.</p>
+</section>
+
+</div>
+
+<script>
+const T = 'IM Fell English SC, Georgia, serif', L = 'IM Fell DW Pica, Georgia, serif';
+const up = n => '<i></i>'.repeat(n), lie = n => '<i class="lie"></i>'.repeat(n);
+const sb = `<div class="sb"><span>9:41</span><span>●●●</span></div>`;
+const topBar = (g, d) => `<div class="topbar"><span class="g">${g}</span><span class="d">${d}</span></div>`;
+const pull = (txt = 'Pull down to unroll the next day', small = 'Next likely stop: day 8, the Reed Wardens reach Cray\u2019s Mill') => `<div class="pull">${txt}<small>${small}</small><div class="roll"></div></div>`;
+const nav = on => `<div class="nav5">${[['H','Hall','2'],['M','March'],['D','Desk','8'],['?','Ask']].map(([i,n,c]) => `<div class="${n===on?'on':''}"${c&&n!==on?` data-n="${c}"`:''}><i>${i}</i>${n}</div>`).join('')}</div>`;
+const R = (n, s, cls = '', people = '', badge = '') => `<div class="room ${cls}"><span class="n">${n}</span>${badge ? `<span class="badge-n">${badge}</span>` : ''}${people ? `<div class="stand">${people}</div>` : ''}<span class="s">${s}</span></div>`;
+const roofSVG = `<div class="roof"><svg viewBox="0 0 340 56" preserveAspectRatio="none" aria-hidden="true"><path d="M4 56 L170 6 L336 56 Z" fill="var(--seal)" stroke="var(--ink)" stroke-width="3"/><path d="M250 32 V2 h30 l-7 7 7 7 h-30" fill="var(--brass)" stroke="var(--ink)" stroke-width="2"/></svg></div>`;
+const hub = `<div class="hallbox hub">${roofSVG}
+  <div class="floor">${R('Work desk','Your study','desk',up(1),'8')}${R('Library','2 of 5 notes')}${R('Hall of Heroes','2 remembered')}</div>
+  <div class="floor">${R('Barracks','30 · 1 wants a word','',up(3),'1')}${R('Tavern','Mood: merry','',up(4))}</div>
+  <div class="floor">${R('Infirmary','Bryn 3 wk · Ned 1 wk','alert',lie(2),'1')}${R('Training yard','Sabine, Teal','',up(2))}</div>
+  <div class="floor">${R('Armoury','3 to mend','')}${R('Smith','New coats')}${R('Gate','Recruit waits','',up(1))}</div>
+  <div class="floor">${R('Strongroom','4,180 g · 312 due','cellar')}${R('Works','Infirmary +2 beds?','cellar')}</div>
+  <div class="ground"></div></div>`;
+const subtabs = on => `<div class="subtabs">${[['Notices','8'],['Contracts','4'],['Overview'],['Roster']].map(([n,c]) => `<span class="${n===on?'on':''}"${c&&n!==on?` data-n="${c}"`:''}>${n}</span>`).join('')}</div>`;
+const notice = (w, k, who, x, go, stop) => `<div class="notice${stop?' stop':''}"><span class="wax sm ${w}">${k}</span><div class="w"><div class="f"><b>${who}</b><span class="go">${go} ›</span></div><span class="x">${x}</span></div></div>`;
+const roomhead = (nm, people, props = '') => `<div class="roomhead"><span class="nm">${nm}</span><div class="stand">${people}</div><div class="props">${props}</div></div>`;
+const staff = (who, mode, lock = '') => `<div class="staff"><span class="who">${who}</span>${lock ? `<span class="lockn">${lock}</span>` : `<span class="toggle"><span class="${mode==='me'?'on':''}">I run it</span><span class="${mode==='them'?'on':''}">Delegate</span></span>`}</div>`;
+const pill = s => `<span class="pill ${s==='fit'||s==='content'?'good':s==='tired'||s==='restless'?'warn':'bad'}">${s}</span>`;
+const ROSTER = [['Odric Hale','Warrior',3,'Front','GH',16,14,15,'fit','restless','10 g 6 s'],['Wenna Cray','Cleric',3,'Back','GH',9,16,12,'fit','content','11 g'],['Kit Ware','Rogue',2,'Front','GH',11,12,13,'fit','content','8 g 4 s'],['Bryn Ketch','Warrior',2,'Front','GH',15,11,14,'hurt','content','8 g'],['Maud Lockley','Rogue',3,'Front','FL',10,13,15,'fit','content','9 g 2 s'],['Rook Ferriby','Warrior',4,'Front','FL',17,12,13,'tired','restless','12 g 8 s'],['Sabine Oakes','Cleric',2,'Back','FL',8,15,11,'fit','content','8 g 6 s'],['Teal Gosling','Rogue',1,'Front','FL',9,10,14,'fit','content','6 g'],['Jory Rushmere','Warrior',2,'Front','RW',14,13,12,'fit','content','8 g 2 s'],['Kit Ambry','Cleric',1,'Back','RW',7,13,10,'fit','unhappy','6 g 4 s'],['Ralf Fenwick','Rogue',2,'Front','RW',11,9,16,'tired','content','7 g 8 s'],['Sabine Cray','Warrior',1,'Front','RW',13,10,11,'fit','content','6 g 2 s'],['Hob Marram','Warrior',3,'Front','AR',16,13,12,'fit','content','10 g'],['Elin Tarrow','Cleric',2,'Back','AR',8,14,12,'fit','content','8 g 8 s'],['Ned Pollard','Rogue',3,'Front','AR',10,12,17,'hurt','restless','9 g 6 s'],['Ada Sedge','Rogue',1,'Front','AR',9,11,13,'fit','content','5 g 8 s']];
+const net = [28,-370,236,-275,366,-167];
+function bars() {
+  const W = 340, H = 110, mid = 52, k = 34 / 370;
+  return `<svg class="bars" viewBox="0 0 ${W} ${H}" aria-label="Net gold per week, weeks 18 to 23"><line x1="0" x2="${W}" y1="${mid}" y2="${mid}" stroke="var(--ink2)" stroke-width="1"/>${net.map((v,i) => { const x = 14 + i * 54, h = Math.abs(v) * k; return `<rect x="${x}" y="${v>=0?mid-h:mid}" width="34" height="${h}" fill="${v>=0?'var(--good)':'var(--bad)'}"/><text x="${x+17}" y="${v>=0?mid-h-3:mid+h+10}" text-anchor="middle" font-size="10" fill="var(--ink)" font-family="Sorts Mill Goudy, Georgia, serif">${v>0?'+':v<0?'−':''}${Math.abs(v)}</text><text x="${x+17}" y="${H-1}" text-anchor="middle" font-size="9" fill="var(--ink2)" font-family="Sorts Mill Goudy, Georgia, serif">wk ${18+i}</text>`; }).join('')}</svg>`;
+}
+const towns = [[150,104,'Ashford',1],[210,80,'Varrowmere'],[262,60,'Wendle'],[196,150,'Reedmere'],[240,176,'Cray’s Mill'],[120,46,'Blackthorn'],[96,120,'Fenn']];
+function march({ seals = true, party = true, labels = 9, extra = '' } = {}) {
+  return `<rect x="-200" y="-200" width="700" height="600" fill="var(--sea)"/>
+  <path d="M58 -20 C40 30 66 52 44 78 C26 104 52 128 38 152 C30 172 48 188 40 220 L340 220 L340 -20 Z" fill="var(--land)" stroke="var(--ink2)"/>
+  <path d="M150 -10 C140 60 168 84 150 120 C138 148 120 168 70 190" fill="none" stroke="#7d95a3" stroke-width="2"/>
+  <path d="M150 104 L210 80 L262 60 M150 104 L196 150 L240 176 M150 104 L96 120 M150 104 L120 46" fill="none" stroke="var(--ink2)" stroke-dasharray="3 2"/>
+  ${party ? `<path d="M150 104 L182 130" fill="none" stroke="var(--seal)" stroke-width="2" stroke-dasharray="4 3"/>` : ''}
+  ${towns.map(([x,y,n,h]) => `<circle cx="${x}" cy="${y}" r="${h?4.5:2.6}" fill="${h?'var(--seal)':'var(--ink)'}"/><text x="${x>230?x-5:x+5}" y="${y-4}" text-anchor="${x>230?'end':'start'}" font-family="${T}" font-size="${labels}" fill="var(--ink)">${n}</text>`).join('')}
+  ${seals ? [[82,150,'P'],[262,72,'H'],[226,186,'R'],[118,30,'R']].map(([x,y,t]) => `<g transform="translate(${x} ${y})"><circle r="6" fill="var(--seal)" stroke="#6d1f19"/><text y="3" text-anchor="middle" font-size="7" font-family="${T}" fill="var(--paper)">${t}</text></g>`).join('') : ''}
+  ${party ? `<g transform="translate(182 130)"><circle r="5.5" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/><text y="2.5" text-anchor="middle" font-size="5.5" font-family="${T}" fill="var(--ink)">RW</text></g>` : ''}
+  <g transform="translate(163 94)"><path d="M-5 -6h10v6c0 4-2.5 6-5 7-2.5-1-5-3-5-7z" fill="var(--good)" stroke="var(--ink)" stroke-width=".8"/></g>
+  <path d="M200 -20 C230 40 290 30 340 70 L340 -20 Z" fill="var(--paper2)" opacity=".85"/><text x="296" y="20" text-anchor="end" font-family="${L}" font-style="italic" font-size="8" fill="var(--ink2)">uncharted</text>${extra}`;
+}
+function town() {
+  const b = (x,y,w,h,n,c='var(--paper2)',sz=9) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}" stroke="var(--ink)" stroke-width="1.4"/><text x="${x+w/2}" y="${y+h/2+3}" text-anchor="middle" font-family="${T}" font-size="${sz}" fill="var(--ink)">${n}</text>`;
+  return `<rect width="200" height="320" fill="var(--land)"/>
+  <path d="M150 0 C138 80 170 140 140 210 C126 250 120 290 110 320" fill="none" stroke="#7d95a3" stroke-width="14" opacity=".8"/>
+  <path d="M0 150 H200 M70 0 V320 M70 230 H200" stroke="#cdbb95" stroke-width="10"/>
+  ${b(80,110,58,32,'Guildhall','#e6cf93',10)}${b(10,40,50,34,'Temple')}${b(84,30,44,26,'Smith')}${b(10,170,50,40,'Market')}${b(84,180,44,36,'Lodge','#c9d5dc',8)}${b(10,250,50,30,'Inn')}
+  <text x="106" y="226" text-anchor="middle" font-family="${L}" font-style="italic" font-size="8" fill="var(--ink2)">Ravenscar</text>
+  <path d="M186 150 l10 -6 v12z" fill="var(--seal)"/><text x="182" y="140" text-anchor="end" font-family="${L}" font-style="italic" font-size="9" fill="var(--seal)">to the March</text>
+  <rect x="78" y="108" width="62" height="36" fill="none" stroke="var(--seal)" stroke-width="2" stroke-dasharray="4 3"/>`;
+}
+const site = `<rect width="200" height="230" fill="var(--paper2)"/>
+<path d="M30 20 H170 V90 H130 V150 H70 V90 H30 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M70 150 V200 H130 V170" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="5 4"/>
+<path d="M75 180 h50" stroke="#7d95a3" stroke-width="6" opacity=".6"/>
+<text x="112" y="122" font-family="${L}" font-style="italic" font-size="10" fill="var(--ink2)">the mill-race</text>
+${[[60,60,'JR'],[90,70,'KA'],[110,50,'RF']].map(([x,y,n]) => `<g transform="translate(${x} ${y})"><circle r="11" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.6"/><text y="4" text-anchor="middle" font-size="10" font-family="${T}" fill="var(--ink)">${n}</text></g>`).join('')}
+<g transform="translate(100 186)"><circle r="11" fill="var(--paper)" stroke="var(--seal)" stroke-width="2"/><text y="4" text-anchor="middle" font-size="10" font-family="${T}" fill="var(--seal)">SC</text></g>`;
+const mapBox = (vb, par, inner, extra = '') => `<div class="mapwrap"><svg viewBox="${vb}" preserveAspectRatio="${par}" aria-label="The March">${inner}</svg>${extra}</div>`;
+const layers = on => `<div class="chips" style="position:absolute; left:10px; top:10px; right:90px">${['Places','Guilds','Action'].map(n => `<span class="chip" style="background:${n===on||on==='all'?'var(--ink)':'var(--paper)'}; color:${n===on||on==='all'?'var(--paper)':'var(--ink2)'}">${n}</span>`).join('')}</div>`;
+const ladder = on => `<div class="ladder" style="top:10px"><span${on==='March'?' class="on"':''}>March</span><span${on==='Shire'?' class="on"':''}>Shire</span><span${on==='Ashford'?' class="on"':''}>Ashford</span></div>`;
+const dangerC = { routine: 'var(--good)', hazardous: 'var(--warn)', perilous: 'var(--bad)', deadly: 'var(--ink)' };
+
+const S = {
+  marchWhole: () => sb + topBar('The March', 'Week 23, day 4') + pull('Pull down to unroll the next day', 'Reed Wardens: 4 days to Cray\u2019s Mill') + mapBox('38 4 252 206', 'xMidYMid meet', march({ labels: 9 }), layers('all') + ladder('March')) + `<div class="strip" style="flex:none; display:flex; gap:6px; padding:6px 10px; background:var(--paper2); border-top:1px solid var(--rule); font-size:13px; overflow:hidden"><span>1 party out</span><span>·</span><span>7 contracts</span><span>·</span><span>17 rivals, 1 in Ashford</span></div>` + nav('March'),
+  marchContract: () => sb + topBar('The March', 'Week 23, day 4') + mapBox('30 40 220 180', 'xMidYMid slice', march({ labels: 7, extra: `<path d="M150 104 C130 116 100 128 82 150" fill="none" stroke="var(--brass)" stroke-width="3" opacity=".6"/><g transform="translate(82 150)"><circle r="11" fill="none" stroke="var(--seal)" stroke-width="2"/></g>` }), layers('Action') + ladder('Shire')) +
+    `<div class="sheetup"><div style="display:flex; gap:10px; align-items:center"><span class="wax">P</span><div><b style="font-family:var(--title); font-weight:400; font-size:17px">The Drowned Chapel</b><br><span class="muted" style="font-size:14px">Perilous · drowned dead · 520 g</span></div></div><table class="led" style="font-size:14px"><tbody><tr><td>From the hall</td><td class="r">9 days on foot, by the Fenn road</td></tr><tr><td>Known</td><td class="r">2 of 5 library notes</td></tr><tr><td>Rivals interested</td><td class="r">Ravenscar Lodge</td></tr></tbody></table><div class="btnrow"><span class="btn">Who's free?</span><span class="btn main">Brief a party</span></div></div>` + nav('March'),
+  marchParty: () => sb + topBar('The March', 'Week 23, day 4') + mapBox('100 70 170 150', 'xMidYMid slice', march({ labels: 7, extra: `<g transform="translate(182 130)"><circle r="10" fill="none" stroke="var(--seal)" stroke-width="2"/></g>` }), layers('Action') + ladder('Shire')) +
+    `<div class="sheetup"><div style="display:flex; justify-content:space-between; align-items:baseline"><b style="font-family:var(--title); font-weight:400; font-size:17px">Reed Wardens</b><span class="pill good">on the road</span></div><span class="muted" style="font-size:14px">To Cray\u2019s Mill · day 2 of 6 on the road · 4 days to go</span><table class="led" style="font-size:14px"><tbody><tr><td>Jory Rushmere</td><td class="muted">Warrior 2 · leads</td><td>${pill('fit')}</td></tr><tr><td>Kit Ambry</td><td class="muted">Cleric 1</td><td>${pill('fit')}</td></tr><tr><td>Ralf Fenwick</td><td class="muted">Rogue 2</td><td>${pill('tired')}</td></tr><tr><td>Sabine Cray</td><td class="muted">Warrior 1</td><td>${pill('fit')}</td></tr></tbody></table><span class="muted" style="font-size:13px">Plan: careful, back if two are hurt. Next stop likely on arrival, day 8.</span><div class="btnrow"><span class="btn">Change orders</span><span class="btn main">Watch them</span></div></div>` + nav('March'),
+  marchTown: () => sb + topBar('Ashford', 'Week 23, day 4') + mapBox('0 0 200 320', 'xMidYMid slice', town(), ladder('Ashford') + `<span class="pinch" style="top:52%">tap the guildhall to go in</span>`) + nav('March'),
+  questBoard: () => sb + topBar('Reed Wardens', 'Cray\u2019s Mill · day 8, later') + mapBox('0 0 200 230', 'xMidYMid meet', site).replace('class="mapwrap"','class="mapwrap" style="background:var(--paper2)"') + `<div style="padding:8px 12px; background:var(--paper); font-family:var(--letter); font-size:14px; display:grid; gap:3px; flex:none"><span>Ralf Fenwick finds the bandits' lookout asleep. Briefly.</span><span>Jory Rushmere takes the lookout's horn before anyone can blow it.</span></div>` +
+    `<div class="sheetup"><div style="display:flex; gap:10px; align-items:center"><span class="wax">K</span><div><b style="font-family:var(--title); font-weight:400; font-size:17px">Key moment: the mill-race</b><br><span class="muted" style="font-size:14px">Sabine Cray is cut off on the far bank.</span></div></div><div class="btnrow"><span class="btn main">Push on</span><span class="btn">Retreat</span><span class="btn">Smoke-pot</span></div></div>` + nav('March'),
+  hub: () => sb + topBar('Ashford Company', 'Week 23, day 4 · 4,180 g') + pull() + hub + nav('Hall'),
+  deskNotices: () => sb + topBar('Work desk', 'Week 23, day 4') + subtabs('Notices') + `<div class="paper" style="gap:0; padding-top:4px">
+    ${notice('', 'K', 'Stopped: week report', 'Grey Hounds home from Reedmere Farm: 140 gold. Bryn Ketch hurt, 3 weeks.', 'Infirmary', 1)}
+    ${notice('', 'C', '4 new contracts', 'One perilous, at the Drowned Chapel, 9 days out.', 'Contracts', 1)}
+    ${notice('blue', 'A', 'Odric Hale wants a word', 'About the wage. Restless for two weeks.', 'Barracks')}
+    ${notice('', 'P', 'Letter: the Lady Wardell', 'The Wendle mine has gone quiet again…', 'Read')}
+    ${notice('ink', '!', 'Crier, Ashford square', 'Ravenscar Lodge lost two at the Wendle mine.', 'March')}
+    ${notice('brass', 'Q', 'Quartermaster', 'Three mail coats need mending before Thursday.', 'Armoury')}
+    ${notice('brass', 'G', 'Scout, at the gate', 'A ranger from Fenn wants to sign. Ranges shown until known.', 'Gate')}
+    ${notice('brass', '£', 'Bills due Thursday', 'Wages 259 g, upkeep 53 g.', 'Strongroom')}
+  </div>` + nav('Desk'),
+  deskOverview: () => sb + topBar('Work desk', 'Year 1 to week 23') + subtabs('Overview') + `<div class="paper" style="gap:10px">
+    <div class="stat"><div><b>4th</b><span>of 6 in tier 3</span></div><div><b>212</b><span>renown this year</span></div><div><b>4,180</b><span>gold in the chest</span></div><div><b>38</b><span>quests</span></div><div><b>2</b><span>deaths</span></div><div><b>6</b><span>injuries</span></div></div>
+    <div style="display:grid; gap:4px"><div class="row2" style="display:flex; justify-content:space-between"><span class="k" style="font-family:var(--title); font-size:14px">Patron's target: finish in the top half</span><span class="muted" style="font-size:13px">3rd needed</span></div><div class="meter"><i style="width:62%"></i></div><span class="muted" style="font-size:13px">Lady Wardell's confidence: steady (D-141)</span></div>
+    <div style="display:grid; gap:2px"><span style="font-family:var(--title); font-size:14px">Net gold, last six weeks</span>${bars()}</div>
+    <table class="led"><thead><tr><th>Party</th><th class="r">Quests</th><th class="r">Renown</th><th class="r">Hurt</th><th>Now</th></tr></thead><tbody>
+      <tr><td>Grey Hounds</td><td class="r">12</td><td class="r">84</td><td class="r">1</td><td>home</td></tr><tr><td>Fenn Lanterns</td><td class="r">10</td><td class="r">61</td><td class="r">0</td><td>home</td></tr><tr><td>Reed Wardens</td><td class="r">9</td><td class="r">40</td><td class="r">0</td><td>away</td></tr><tr><td>Ash Ravens</td><td class="r">7</td><td class="r">27</td><td class="r">1</td><td>home</td></tr></tbody></table>
+  </div>` + nav('Desk'),
+  deskContracts: () => sb + topBar('Work desk', 'Week 23, day 4') + subtabs('Contracts') + `<div class="paper" style="gap:6px">
+    <div class="chips"><span class="chip" style="background:var(--ink); color:var(--paper)">All 7</span><span class="chip">New</span><span class="chip">Near</span><span class="chip">Fits a free party</span></div>
+    ${[['the Drowned Chapel','perilous','drowned dead · 9 days','520 g','new'],['Reedmere Farm','routine','vermin · 2 days','90 g','new'],['Blackthorn Wood','hazardous','wolves · 4 days','210 g','new'],['the Hollow Barrow','hazardous','barrow dead · 5 days','240 g','new'],['the Wendle mine','perilous','unknown · 8 days','450 g','letter'],['Ashford Bridge','routine','trolls (one) · 1 day','120 g',''],['the Gallows Spire','deadly','the hanged · 10 days','1,100 g','']].map(([s,d,m,f,n]) => `<div class="crow"><span class="wax sm" style="background:${dangerC[d]}">${s.replace('the ','')[0]}</span><div><span class="t">${s[0].toUpperCase()+s.slice(1)}</span>${n?` <span class="pill ${n==='new'?'good':'warn'}">${n}</span>`:''}<br><span class="m"><span class="danger" style="background:${dangerC[d]}"></span>${d} · ${m}</span></div><span class="fee">${f}</span></div>`).join('')}
+    <div class="row2" style="display:flex; justify-content:space-between; align-items:center; margin-top:auto"><span class="lockn">Always yours to choose (D-038)</span><span class="acts"><span>View on map</span><span class="main">Brief a party</span></span></div>
+  </div>` + nav('Desk'),
+  deskRoster: () => sb + topBar('Work desk', '30 adventurers') + subtabs('Roster') + `<div class="paper" style="gap:6px">
+    <div class="ask" style="padding:4px 12px; font-size:14px"><span class="q">Find or ask: <i>restless</i> and <i>front line</i></span><span>⏎</span></div>
+    <div class="chips"><span class="chip" style="background:var(--ink); color:var(--paper)">Attributes</span><span class="chip">Condition</span><span class="chip">Mood</span><span class="chip">Contract</span><span class="chip">Record</span></div>
+    <table class="led" style="font-size:14px"><thead><tr><th>Name</th><th>Pty</th><th class="r">Str</th><th class="r">Nrv</th><th class="r">Agi</th><th>Mood</th></tr></thead><tbody>${ROSTER.map(r => `<tr><td>${r[0]}<br><span class="muted" style="font-size:12px">${r[1]} ${r[2]} · ${r[3].toLowerCase()}</span></td><td>${r[4]}</td><td class="r">${r[5]}</td><td class="r">${r[6]}</td><td class="r">${r[7]}</td><td>${pill(r[9])}</td></tr>`).slice(0,11).join('')}</tbody></table>
+  </div>` + nav('Desk'),
+  barracks: () => sb + topBar('‹ Hall', 'Barracks') + roomhead('Barracks', up(5), '<b style="width:40px;height:18px"></b><b style="width:40px;height:18px"></b><b style="width:40px;height:18px"></b>') + staff('Run by Mara Fell, deputy', 'them') + `<div class="paper" style="gap:6px">
+    <div class="ask-card"><b>Odric Hale wants a word</b><span>About his wage; restless two weeks. Big talks are always yours (D-038).</span><div class="acts"><span class="main">Talk now</span><span>Later</span></div></div>
+    <div class="chips"><span class="chip" style="background:var(--ink); color:var(--paper)">By party</span><span class="chip">Moods</span><span class="chip">Promises · 2</span><span class="chip">Feuds · 1</span></div>
+    ${[['Grey Hounds','chemistry steady · home',[0,1,2,3]],['Fenn Lanterns','chemistry warm · home',[4,5,6,7]]].map(([p,c,ix]) => `<div class="grp">${p}<span>${c}</span></div><table class="led" style="font-size:14px"><tbody>${ix.map(i => { const r = ROSTER[i]; return `<tr><td>${r[0]}</td><td class="muted">${r[1]} ${r[2]}</td><td>${pill(r[9])}</td><td class="r muted">${i===1?'promise kept':i===5?'feud: Kit A.':''}</td></tr>`; }).join('')}</tbody></table>`).join('')}
+    <div class="acts" style="margin-top:auto"><span>Form a party</span><span>Contracts due</span><span>Praise, warn, promise…</span></div>
+  </div>` + nav('Hall'),
+  infirmary: () => sb + topBar('‹ Hall', 'Infirmary') + roomhead('Infirmary', lie(2), '<b style="width:30px;height:30px; border-radius:50%"></b>') + staff('Run by Sister Elwy, healer · skill 14', 'them') + `<div class="paper" style="gap:4px">
+    <div class="bed"><b>Bryn Ketch</b><span>3 weeks</span><span class="m">Smashed knee, Reedmere Farm · may leave a limp (−1 Agility)</span><div class="heal"><i style="width:20%"></i></div></div>
+    <div class="bed"><b>Ned Pollard</b><span>1 week</span><span class="m">Marsh fever · no lasting harm expected</span><div class="heal"><i style="width:70%"></i></div></div>
+    <div class="bed"><b>Rook Ferriby</b><span>resting</span><span class="m">Worn out after three quests running · tired until day 7</span><div class="heal"><i style="width:55%"></i></div></div>
+    <div class="grp" style="margin-top:6px">Remembered scars<span>this year</span></div>
+    <span class="muted" style="font-size:14px">Sabine Oakes: burn scar, left hand · nerves after the Gallows Spire</span>
+    <div class="ask-card" style="margin-top:6px"><b>The temple can help</b><span>Pay 60 g for Bryn's knee to heal in 2 weeks, without the limp at 1 in 3.</span><div class="acts"><span class="main">Pay 60 g</span><span>No</span></div></div>
+    <span class="muted" style="font-size:13px; margin-top:auto">Revival is possible at the temple: rare, costly, and it always takes something.</span>
+  </div>` + nav('Hall'),
+  armoury: () => sb + topBar('‹ Hall', 'Armoury') + roomhead('Armoury', '', '<b style="width:14px;height:60px"></b><b style="width:14px;height:52px"></b><b style="width:36px;height:44px; border-radius:18px 18px 4px 4px"></b><b style="width:30px;height:40px"></b>') + staff('Run by Hew Tanner, quartermaster', 'them') + `<div class="paper" style="gap:8px">
+    <div class="policy"><span class="k">Quartermaster's policy</span><span class="check">Fill empty slots with the best in stock</span><span class="check">Save the best for parties bound for perilous or deadly work</span><span class="check">Never touch items I hand-picked</span><span class="check off">Sell kit nobody has used for a year</span></div>
+    <div class="grp">Needs you<span>3</span></div>
+    <span style="font-size:14px">Three mail coats to mend by Thursday (12 g each). Odric Hale has outgrown his shield.</span>
+    <div class="storied"><b>The Reed Lantern</b><span style="font-size:14px">Storied · carried by Wenna Cray · lit the way out of the Hollow Barrow</span><span class="muted" style="font-size:13px">Storied items are always hand-assigned (D-012)</span></div>
+    <table class="led" style="font-size:14px"><thead><tr><th>Stock</th><th class="r">Tier</th><th class="r">Free</th></tr></thead><tbody><tr><td>Arming sword</td><td class="r">1</td><td class="r">3</td></tr><tr><td>Mail coat</td><td class="r">2</td><td class="r">1</td></tr><tr><td>Kite shield</td><td class="r">1</td><td class="r">2</td></tr><tr><td>Ward-salt</td><td class="r">—</td><td class="r">1</td></tr></tbody></table>
+    <div class="acts" style="margin-top:auto"><span>Kit by person</span><span class="main">Go to the smith</span></div>
+  </div>` + nav('Hall'),
+  strongroom: () => sb + topBar('‹ Hall', 'Strongroom') + roomhead('Strongroom', '', '<b style="width:70px;height:42px; background:var(--brass)"></b><b style="width:26px;height:20px; background:var(--brass)"></b>') + staff('You run it · deputy: Mara Fell', 'me') + `<div class="paper" style="gap:8px">
+    <div class="stat"><div><b>4,180</b><span>gold in the chest</span></div><div><b>312</b><span>due Thursday</span></div><div><b>None</b><span>loans</span></div></div>
+    <div style="display:grid; gap:2px"><span style="font-family:var(--title); font-size:14px">Net gold, last six weeks</span>${bars()}</div>
+    <table class="led" style="font-size:14px"><thead><tr><th>Six weeks</th><th class="r">Gold</th></tr></thead><tbody><tr><td>Contract fees</td><td class="r">1,665</td></tr><tr><td>Loot sold</td><td class="r">316</td></tr><tr><td>Wages</td><td class="r">−1,569</td></tr><tr><td>Upkeep</td><td class="r">−322</td></tr><tr><td>Healing and smith</td><td class="r">−272</td></tr><tr><td><b>Net</b></td><td class="r"><b>−182</b></td></tr></tbody></table>
+    <div class="acts" style="margin-top:auto"><span>Wage budget</span><span>Ask for a loan</span><span class="main">Full ledger on the desk</span></div>
+  </div>` + nav('Hall'),
+  yard: () => sb + topBar('‹ Hall', 'Training yard') + roomhead('Training yard', up(4), '<b style="width:8px;height:56px"></b><b style="width:34px;height:34px; border-radius:50%; background:var(--paper); border:3px solid var(--seal)"></b>') + staff('Run by Garth Brennock, trainer · skill 12', 'them') + `<div class="paper" style="gap:6px">
+    <div class="ask-card"><b>Teal Gosling reached level 2</b><span>Choose a talent:</span><div class="acts"><span class="main">Shadow step · strike first from hiding</span><span>Quick hands · disarm traps faster</span></div></div>
+    <table class="led" style="font-size:14px"><thead><tr><th>Name</th><th>Focus</th><th>To next level</th><th class="r">Lately</th></tr></thead><tbody>
+    ${[['Sabine Cray','Strength',70,'+1 Str'],['Teal Gosling','Agility',5,'level 2'],['Kit Ambry','Healing',40,''],['Jory Rushmere','Weapon skill',55,'+1 Wpn'],['Ada Sedge','Awareness',25,''],['Wat Comber','Endurance',60,'']].map(([n,f,pc,l]) => `<tr><td>${n}</td><td>${f} ▾</td><td><div class="meter" style="width:70px"><i style="width:${pc}%; background:var(--brass)"></i></div></td><td class="r muted">${l}</td></tr>`).join('')}</tbody></table>
+    <span class="muted" style="font-size:13px">Hurt and tired members rest instead of training. Older members grow more slowly.</span>
+    <div class="acts" style="margin-top:auto"><span>Focus for everyone</span><span class="main">Run it myself · raises your Coaching</span></div>
+  </div>` + nav('Hall'),
+  smith: () => sb + topBar('‹ Hall', 'Smith') + roomhead('Smith', up(1), '<b style="width:44px;height:22px"></b><b style="width:26px;height:44px; background:var(--seal); border-radius:13px 13px 2px 2px"></b>') + staff('Run by Hew Tanner, quartermaster', 'them') + `<div class="paper" style="gap:6px">
+    <div class="row2" style="display:flex; justify-content:space-between"><span style="font-family:var(--title); font-size:15px">For sale this week</span><span class="muted" style="font-size:13px">chest 4,180 g</span></div>
+    <table class="led" style="font-size:14px"><thead><tr><th>Item</th><th class="r">Tier</th><th class="r">Price</th><th></th></tr></thead><tbody>
+    ${[['Arming sword',1,'24 g'],['Mail coat (new)',2,'36 g'],['Kite shield',1,'18 g'],['Hunting bow',1,'22 g'],['Padded jack',1,'12 g'],['Field kit',1,'8 g'],['Ward-salt',0,'15 g']].map(([n,t,pr]) => `<tr><td>${n}</td><td class="r">${t||'—'}</td><td class="r">${pr}</td><td class="r"><span class="chip" style="color:var(--seal); border-color:var(--seal)">Buy</span></td></tr>`).join('')}</tbody></table>
+    <div class="grp">Sell<span>unused a year or more</span></div>
+    <table class="led" style="font-size:14px"><tbody><tr><td>Old boar spear</td><td class="r">6 g</td></tr><tr><td>Dented helm</td><td class="r">4 g</td></tr></tbody></table>
+    <span class="muted" style="font-size:13px; margin-top:auto">Upgrades to the hall may bring discounts or rarer stock later (D-143).</span>
+  </div>` + nav('Hall'),
+  library: () => sb + topBar('‹ Hall', 'Library') + roomhead('Library', up(1), '<b style="width:16px;height:60px"></b><b style="width:16px;height:52px"></b><b style="width:16px;height:60px"></b><b style="width:16px;height:46px"></b>') + staff('Run by Agnes Wick, librarian', 'them') + `<div class="paper" style="gap:6px">
+    <div class="grp">Monsters<span>notes of 5</span></div>
+    ${[['Drowned dead',2],['Wolves',4],['Bandits',3],['Vermin',5],['Trolls',1],['The hanged',0]].map(([n,k]) => `<div style="display:grid; grid-template-columns: 1fr 90px 30px; gap:8px; align-items:center; font-size:14px"><span>${n}</span><div class="meter"><i style="width:${k*20}%; background:var(--ink2)"></i></div><span class="muted r" style="text-align:right">${k}/5</span></div>`).join('')}
+    <span class="muted" style="font-size:13px">More notes reveal more choices at key moments and better odds in the briefing.</span>
+    <div class="grp">Studying now<span>2 weeks left</span></div>
+    <span style="font-size:14px">Drowned dead, for the chapel contract.</span>
+    <div class="grp">New from survivors</div>
+    <span style="font-size:14px; font-family:var(--letter)">Kit Ware's account of Reedmere Farm: "Large rats. Larger than you'd think." +1 note on vermin.</span>
+    <div class="acts" style="margin-top:auto"><span>Sites</span><span>Rivals</span><span class="main">Change what we study</span></div>
+  </div>` + nav('Hall'),
+  tavern: () => sb + topBar('‹ Hall', 'Tavern') + roomhead('Tavern', up(5), '<b style="width:60px;height:16px"></b><b style="width:18px;height:24px; border-radius:3px"></b>') + staff('No one runs the tavern; it runs itself', '', 'its mood follows the guild') + `<div class="paper" style="gap:6px">
+    <div style="display:grid; gap:3px"><div style="display:flex; justify-content:space-between"><span style="font-family:var(--title); font-size:15px">The guild's mood: merry</span><span class="muted" style="font-size:13px">after Reedmere</span></div><div class="meter"><i style="width:72%"></i></div></div>
+    <div class="grp">Tonight's tables</div>
+    <span style="font-size:14px">Fenn Lanterns together, loud. Odric Hale drinking alone, again.</span>
+    <div class="grp">Friends and feuds<span>2 · 1</span></div>
+    <table class="led" style="font-size:14px"><tbody><tr><td>Wenna Cray</td><td class="muted">friends</td><td>Kit Ware</td></tr><tr><td>Maud Lockley</td><td class="muted">friends</td><td>Teal Gosling</td></tr><tr><td>Rook Ferriby</td><td style="color:var(--seal)">feud</td><td>Kit Ambry</td></tr></tbody></table>
+    <div class="grp">Rumours<span>heard this week</span></div>
+    <div class="ask-card"><span style="font-family:var(--letter)">A shepherd at the bar swears the old barrow on Fenn heath has a new door, and that it was not there in spring.</span><div class="acts"><span class="main">Make it a lead</span><span>Ignore</span></div></div>
+    <div class="acts" style="margin-top:auto"><span>Stand a round · 20 g</span></div>
+  </div>` + nav('Hall'),
+  gate: () => sb + topBar('‹ Hall', 'Gate') + roomhead('Gate', up(2), '<b style="width:50px;height:70px; border-radius:25px 25px 0 0; background:var(--ink)"></b>') + staff('Scouting run by Piers Sallow, scout', 'them') + `<div class="paper" style="gap:6px">
+    <div class="ask-card"><b>A ranger from Fenn wants to sign</b><span>Hal Rook · Agility 12–16 · Nerve 8–14 · asks 9 g a week. Ranges narrow as the scout learns more.</span><div class="acts"><span class="main">Talk terms</span><span>Scout longer</span><span>Send away</span></div><span class="lockn">Signing talks are always yours (D-038)</span></div>
+    <div class="grp">Scouts' reports<span>3 prospects</span></div>
+    <table class="led" style="font-size:14px"><tbody><tr><td>Mab Thorne</td><td class="muted">Cleric · Varrowmere</td><td class="r">Nrv 13–17</td></tr><tr><td>Osric Dunn</td><td class="muted">Warrior · Wendle</td><td class="r">Str 11–18</td></tr><tr><td>Lise Garrow</td><td class="muted">Rogue · Ashford</td><td class="r">Agi 9–13</td></tr></tbody></table>
+    <div class="grp">Rivals' people<span>poaching</span></div>
+    <span style="font-size:14px">Bertil Crane of Ravenscar Lodge is unhappy there. Release fee about 300 g.</span>
+    <div class="grp">On the road</div>
+    <span style="font-size:14px">Reed Wardens left day 2 for Cray's Mill · back about day 16.</span>
+  </div>` + nav('Hall'),
+  heroes: () => sb + topBar('‹ Hall', 'Hall of Heroes') + roomhead('Hall of Heroes', '', '<b style="width:40px;height:56px; border-radius:20px 20px 2px 2px; background:var(--paper); border:2px solid var(--ink)"></b><b style="width:40px;height:56px; border-radius:20px 20px 2px 2px; background:var(--paper); border:2px solid var(--ink)"></b><b style="width:10px;height:30px; background:var(--brass)"></b>') + staff('Kept by the guild', '', 'no one runs it') + `<div class="paper" style="gap:8px">
+    ${[['Bram Oakes','Warrior 3 · aged 31 · week 9','Held the door in the Hollow Barrow while the others got out.'],['Edda Moor','Rogue 2 · aged 24 · week 17','Went first up the Gallows Spire. Did not come down.']].map(([n,m,d]) => `<div style="display:flex; gap:10px; align-items:flex-start; border-bottom:1px solid var(--rule); padding-bottom:8px"><div style="width:46px;height:56px;flex:none;border:3px double var(--ink);border-radius:23px/28px;background:linear-gradient(225deg, var(--ink) 14px, var(--paper2) 14px)"></div><div style="display:grid; gap:1px"><b style="font-family:var(--title); font-weight:400; font-size:16px">${n}</b><span class="muted" style="font-size:13px">${m}</span><span style="font-family:var(--letter); font-size:14px">${d}</span></div></div>`).join('')}
+    <div class="grp">Records</div>
+    <table class="led" style="font-size:14px"><tbody><tr><td>Most quests</td><td>Odric Hale</td><td class="r">12</td></tr><tr><td>Largest fee</td><td>the Gallows Spire</td><td class="r">1,100 g</td></tr><tr><td>Storied items</td><td>the Reed Lantern</td><td class="r">1</td></tr></tbody></table>
+    <div class="grp">From the Chronicle</div>
+    <span style="font-family:var(--letter); font-size:14px">Year 1, week 9. The guild buried its first. The bell at Ashford rang once, and the tavern was quiet for a night.</span>
+    <div class="acts" style="margin-top:auto"><span>Name a memorial</span><span class="main">Read the Chronicle</span></div>
+  </div>` + nav('Hall'),
+  works: () => sb + topBar('‹ Hall', 'Works') + roomhead('Works', up(2), '<b style="width:10px;height:64px"></b><b style="width:60px;height:8px"></b><b style="width:30px;height:24px; background:var(--brass)"></b>') + staff('You run it · deputy: Mara Fell', 'me') + `<div class="paper" style="gap:6px">
+    <div class="grp">Building now<span>none</span></div>
+    <div class="grp">Could build</div>
+    ${[['Infirmary: a second ward','+2 beds, injuries heal 10% faster','300 g','3 weeks'],['Training yard: archery butts','Bow training for rangers','450 g','4 weeks'],['Library: reading room','Research 25% faster','380 g','4 weeks'],['Barracks: more bunks','Room for 36 instead of 30','520 g','6 weeks'],['Strongroom: iron door','Theft can’t touch the chest','200 g','2 weeks']].map(([n,e,c,t]) => `<div class="crow" style="grid-template-columns:1fr auto"><div><span class="t">${n}</span><br><span class="m">${e}</span></div><span class="fee">${c}<br><span class="muted" style="font-size:12px">${t}</span></span></div>`).join('')}
+    <span class="muted" style="font-size:13px; margin-top:auto">Upgrades add visible rooms and changes to the hall. A fuller compound comes later (D-075).</span>
+  </div>` + nav('Hall'),
+};
+document.querySelectorAll('[data-screen]').forEach(d => d.innerHTML = S[d.dataset.screen]());
+function fitAll() {
+  document.querySelectorAll('.fit').forEach(f => {
+    const d = f.firstElementChild, b = parseFloat(getComputedStyle(d).borderLeftWidth);
+    const w = +d.dataset.w + 2 * b, h = +d.dataset.h + 2 * b;
+    d.style.width = w + 'px'; d.style.height = h + 'px';
+    const s = Math.min(1, f.clientWidth / w);
+    d.style.transform = `scale(${s})`; f.style.height = (h * s) + 'px';
+  });
+}
+fitAll(); addEventListener('resize', fitAll); document.fonts && document.fonts.ready.then(fitAll);
+</script>
