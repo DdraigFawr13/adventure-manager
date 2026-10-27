@@ -37,12 +37,12 @@ export function ageOf(turn: GuildTurn, who: Adventurer): number | null {
 }
 
 /** Replaces a roster entry's attribute and records why (attributes are part of the person). */
-function setAttribute(
+export function setAttribute(
   turn: GuildTurn,
   id: string,
   attribute: Attribute,
   to: number,
-  reason: 'growth' | 'age' | 'injury',
+  reason: 'growth' | 'age' | 'injury' | 'training',
   causeId: string,
 ): void {
   const at = turn.state.roster.findIndex((a) => a.id === id);

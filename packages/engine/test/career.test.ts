@@ -117,6 +117,66 @@ describe('careers (career SPEC.md)', () => {
     );
   });
 
+  const grace = { years: 2, roster: 3, renown: 30, goalMet: 5, goalMissed: 5 };
+
+  it('gives a new guild growth goals in its grace years instead of a ladder target (D-189)', () => {
+    const run = begun({ grace });
+    expect(ofType(run.events, 'patron.target')[0]?.target).toBe('growth');
+    // Year 1: 3 members (met), 40 renown (met), no house so no room goal; last place doesn't count.
+    const one = settle(run, (s) => (s.guild!.career!.renownThisYear = 40)); // non-null: careers are on.
+    expect(ofType(one.events, 'patron.reviewed').at(-1)).toMatchObject({
+      target: 'growth',
+      met: true,
+      goals: { roster: true, renown: true, room: null },
+      change: 10,
+      confidence: 70,
+    });
+    expect(ofType(one.events, 'patron.target').at(-1)?.target).toBe('growth');
+    // Year 2: renown missed (-5), roster met (+5); after the last grace year the ladder target returns.
+    const two = settle(one, (s) => (s.guild!.career!.renownThisYear = 10)); // non-null: careers are on.
+    expect(ofType(two.events, 'patron.reviewed').at(-1)).toMatchObject({ met: false, change: 0 });
+    expect(ofType(two.events, 'patron.target').at(-1)?.target).not.toBe('growth');
+  });
+
+  it('counts a room built in the year as a grace goal when the guild has a house, then resets it', () => {
+    const house = {
+      kinds: [],
+      studyPlace: { area: 'hall' as const, floor: 0, cell: 1 },
+      cellsPerFloor: 3,
+      start: { lowestFloor: 0, highestFloor: 0, plotsPerSide: 0, cells: [] },
+      storey: { baseCopper: 1, stepCopper: 1, weeks: 1 },
+      cellar: { baseCopper: 1, stepCopper: 1, weeks: 1 },
+      wall: { baseCopper: 1, stepCopper: 1, weeks: 1 },
+      maxPlotsPerSide: 1,
+      winterWeeksBp: 10_000,
+      noSickbedBp: 10_000,
+      homeTraining: { youngBp: 0, primeBp: 0, placedBp: 0, unplacedBp: 0 },
+    };
+    const run = foundedGuild(0, { career: { ...career, grace }, house });
+    const missed = settle(run);
+    expect(ofType(missed.events, 'patron.reviewed').at(-1)?.goals).toEqual({
+      roster: false,
+      renown: false,
+      room: false,
+    });
+    const built = settle(run, (s) => (s.guild!.career!.roomsThisYear = 1)); // non-null: careers are on.
+    expect(ofType(built.events, 'patron.reviewed').at(-1)?.goals?.room).toBe(true);
+    expect(built.state.guild!.career!.roomsThisYear).toBe(0); // non-null: careers are on.
+  });
+
+  it('cannot dismiss in the grace years, but can at the third Assembly', () => {
+    const hopeless = (s: GameState) => {
+      s.guild!.career!.confidence = 1; // non-null: careers are on.
+      s.guild!.career!.renownThisYear = -1000; // non-null: careers are on.
+      s.guild!.chestCopper = -1; // non-null: founded.
+    };
+    const one = settle(begun({ grace }), hopeless);
+    expect(ofType(one.events, 'career.ended')).toEqual([]);
+    expect(one.state.guild!.career!.confidence).toBe(1); // non-null: careers are on.
+    const two = settle(one, hopeless);
+    expect(ofType(two.events, 'career.ended')[0]).toMatchObject({ reason: 'dismissed', years: 2 });
+  });
+
   it('retires the guildmaster on health once past the age', () => {
     const run = settle(
       begun({ guildmaster: { age: { min: 70, max: 70 }, healthFromAge: 60, certainAge: 70 } }),

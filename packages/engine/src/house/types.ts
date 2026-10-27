@@ -25,6 +25,10 @@ export interface RoomKind {
   readonly upkeepCopper: readonly number[];
   /** Beds per cell at each level; only the barracks has beds (D-170). */
   readonly beds?: readonly number[];
+  /** Sickbeds per cell at each level; the infirmary (D-186). */
+  readonly sickbeds?: readonly number[];
+  /** Training places per cell at each level; the training yard (D-186). */
+  readonly trainingPlaces?: readonly number[];
 }
 
 /** A rising price: the first costs `baseCopper`, each later one `stepCopper` more (D-172, D-183). */
@@ -58,6 +62,15 @@ export interface HouseRules {
   readonly maxPlotsPerSide: number;
   /** Work started in a winter week takes this share of its weeks, rounded up. */
   readonly winterWeeksBp: number;
+  /** Lasting-injury days for a member with no free sickbed, as a share (20,000 is twice, D-186). */
+  readonly noSickbedBp: number;
+  /** Training at home (D-187): weekly growth chance by age band, and the share for members with and without a yard place. */
+  readonly homeTraining: {
+    readonly youngBp: number;
+    readonly primeBp: number;
+    readonly placedBp: number;
+    readonly unplacedBp: number;
+  };
 }
 
 export interface BuiltCell {
@@ -96,5 +109,7 @@ export interface HouseState {
   readonly work: HouseWork[];
   /** How many storeys, cellars and wall pushes were added since the founding (each costs more). */
   readonly added: Record<ExtendDirection, number>;
+  /** Who holds a sickbed, and the day they are fit again (D-186). */
+  readonly sickbeds: { readonly memberId: string; readonly untilDay: number }[];
   nextWorkNo: number;
 }

@@ -61,6 +61,19 @@ export interface CareerRules {
     readonly debt: number;
     readonly max: number;
   };
+  /**
+   * The patron's grace years for a new guild (D-189): growth goals instead of a ladder target, and
+   * no dismissal until the Assembly after the last grace year. Absent: ladder targets from year 1.
+   */
+  readonly grace?: {
+    readonly years: number;
+    /** Goals for each grace year: members at year's end, renown earned in the year. */
+    readonly roster: number;
+    readonly renown: number;
+    /** Confidence for each goal met, and lost for each missed. */
+    readonly goalMet: number;
+    readonly goalMissed: number;
+  };
   /** The patron's emergency grant (D-146); absent: no grant. */
   readonly emergency?: {
     /** The grant is this many weeks of the guild's wages at the time of the offer. */
@@ -76,7 +89,7 @@ export interface CareerRules {
   };
 }
 
-export type TargetKind = 'top-two' | 'top-half' | 'avoid-bottom';
+export type TargetKind = 'top-two' | 'top-half' | 'avoid-bottom' | 'growth';
 export type CareerEnd = 'dismissed' | 'retired';
 
 export interface Rival {
@@ -98,6 +111,8 @@ export interface CareerState {
   /** The patron's standing emergency offer (this week only) and the year of the last grant taken (D-146). */
   emergencyOffer: { readonly grantCopper: number; readonly week: number } | null;
   lastGrantYear: number | null;
+  /** Rooms the house finished building since the last Assembly (a grace-year goal, D-189). */
+  roomsThisYear: number;
   /** The year the career began (1) and, once over, how it ended. */
   ended: { readonly reason: CareerEnd; readonly year: number } | null;
 }

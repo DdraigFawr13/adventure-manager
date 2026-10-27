@@ -266,8 +266,8 @@ export type GuildEventBody =
   | { readonly type: 'party.returned'; readonly outcome: QuestOutcome }
   | { readonly type: 'renown.changed'; readonly amount: number; readonly renown: number }
   | { readonly type: 'member.recovered' }
-  /** The days a lasting injury adds to someone's time out, after recovery's scaling (staff/SPEC.md). */
-  | { readonly type: 'member.laid-up'; readonly days: number }
+  /** The days a lasting injury adds to someone's time out, after recovery's scaling (staff/SPEC.md); `sickbed` says whether they had one (house on only). */
+  | { readonly type: 'member.laid-up'; readonly days: number; readonly sickbed?: boolean }
   | { readonly type: 'prospect.listed'; readonly classId: string; readonly wageCopper: number }
   | { readonly type: 'recruit.signed'; readonly wageCopper: number }
   | {
@@ -275,7 +275,7 @@ export type GuildEventBody =
       readonly attribute: Attribute;
       readonly from: number;
       readonly to: number;
-      readonly reason: 'growth' | 'age' | 'injury';
+      readonly reason: 'growth' | 'age' | 'injury' | 'training';
     }
   | { readonly type: 'adventurer.retired'; readonly age: number }
   | {
@@ -293,6 +293,12 @@ export type GuildEventBody =
       readonly target: TargetKind;
       readonly place: number;
       readonly met: boolean;
+      /** In a grace year (D-189): which growth goals were met; `room` is null without house rules. */
+      readonly goals?: {
+        readonly roster: boolean;
+        readonly renown: boolean;
+        readonly room: boolean | null;
+      };
       readonly inDebt: boolean;
       /** A crisis still stood at the review (crisis/SPEC.md). */
       readonly crisis: boolean;

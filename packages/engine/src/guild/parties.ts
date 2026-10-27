@@ -5,6 +5,7 @@ import { BP_CERTAIN, streamFor } from '../core/rng.ts';
 import { startQuest, stepQuest } from '../resolution/quest.ts';
 import { WOUND } from '../resolution/types.ts';
 import { growAfterQuest, injuryLoss } from '../career/people.ts';
+import { layUp } from '../house/house.ts';
 import { injuryDays, runsArea } from '../staff/areas.ts';
 import { crisisHome } from '../crisis/chain.ts';
 import { addRenown, memberOf, pay, type GuildTurn } from './turn.ts';
@@ -59,9 +60,18 @@ export function arrive(turn: GuildTurn, party: Party, causeId: string, stops: Se
     if (injury !== undefined) {
       injuryLoss(turn, id, injury);
       const weeks = recovery.between(rules.injuryWeeks.min, rules.injuryWeeks.max);
-      const days = injuryDays(turn, rules.daysPerWeek * weeks);
+      let days = injuryDays(turn, rules.daysPerWeek * weeks);
+      // A free sickbed keeps the days; without one they grow (house/SPEC.md, D-186).
+      const bed = layUp(turn, id, party.homeDay, restDays, days);
+      if (bed) days = bed.days;
       restDays += days;
-      turn.sink.emit({ type: 'member.laid-up', causeId: injury, subjectIds: [id], days });
+      turn.sink.emit({
+        type: 'member.laid-up',
+        causeId: injury,
+        subjectIds: [id],
+        days,
+        ...(bed && { sickbed: bed.sickbed }),
+      });
       // The guildmaster running recovery sees each injured member in (staff/SPEC.md).
       if (runsArea(turn, 'recovery')) stops.add('infirmary');
     }

@@ -1,8 +1,11 @@
 // House v0 (SPEC.md): the guild house's space, what building costs and takes, upkeep, and beds.
 import type { EventSink } from '../core/events.ts';
 import { divRoundDown } from '../core/math.ts';
-import { guildTurn, pay, weekInYear, weekOf, type GuildTurn } from '../guild/turn.ts';
-import type { Command, GameEvent, GameState } from '../resolution/types.ts';
+import { BP_CERTAIN, streamFor } from '../core/rng.ts';
+import { ageOf, setAttribute } from '../career/people.ts';
+import { trainingBp } from '../staff/areas.ts';
+import { guildTurn, isFree, pay, weekInYear, weekOf, type GuildTurn } from '../guild/turn.ts';
+import { ATTRIBUTES, type Command, type GameEvent, type GameState } from '../resolution/types.ts';
 import type {
   BuiltCell,
   CompoundSide,
@@ -97,6 +100,54 @@ export function bedsOf(house: HouseState, rules: HouseRules): number {
   return beds;
 }
 
+/** Sickbeds the infirmary gives: each infirmary cell's sickbeds at its level (D-186). */
+export function sickbedsOf(house: HouseState, rules: HouseRules): number {
+  let n = 0;
+  for (const cell of cellsOf(house))
+    n += rules.kinds.find((k) => k.id === cell.kindId)?.sickbeds?.[cell.level - 1] ?? 0;
+  return n;
+}
+
+/** Training places the yard gives: each training-yard cell's places at its level (D-186). */
+export function trainingPlacesOf(house: HouseState, rules: HouseRules): number {
+  let n = 0;
+  for (const cell of cellsOf(house))
+    n += rules.kinds.find((k) => k.id === cell.kindId)?.trainingPlaces?.[cell.level - 1] ?? 0;
+  return n;
+}
+
+/**
+ * Lasting-injury days for a member whose party comes home on `homeDay`, and the sickbed they take,
+ * held from the day the quest is settled (today) until they are fit. Holders fit by today or gone
+ * are dropped first; parties settle on arrival, so today, not a party's home day, is the clock.
+ * The caller passes the days before the sickbed rule and the member's rest before the injury days;
+ * `days` is then scaled when no sickbed is free. Returns null without house rules.
+ */
+export function layUp(
+  turn: GuildTurn,
+  memberId: string,
+  homeDay: number,
+  restDays: number,
+  days: number,
+): { days: number; sickbed: boolean } | null {
+  const rules = turn.rules.house;
+  const house = turn.guild.house;
+  if (!rules || !house) return null;
+  const today = turn.state.calendar;
+  const held = house.sickbeds.filter(
+    (b) => b.untilDay > today && turn.guild.members.some((m) => m.id === b.memberId),
+  );
+  house.sickbeds.splice(0, house.sickbeds.length, ...held);
+  if (held.length < sickbedsOf(house, rules)) {
+    house.sickbeds.push({ memberId, untilDay: homeDay + restDays + days });
+    return { days, sickbed: true };
+  }
+  return {
+    days: Math.max(1, divRoundDown(days * rules.noSickbedBp, BP_CERTAIN)),
+    sickbed: false,
+  };
+}
+
 /** Copper a week the finished cells cost to keep, by kind and level (the study costs nothing). */
 export function upkeepOf(house: HouseState, rules: HouseRules): number {
   let upkeep = 0;
@@ -116,6 +167,7 @@ export function startHouse(turn: GuildTurn, size: number): void {
     floors: {},
     compound: { west: emptyCells(start.plotsPerSide), east: emptyCells(start.plotsPerSide) },
     work: [],
+    sickbeds: [],
     added: { up: 0, down: 0, west: 0, east: 0 },
     nextWorkNo: 0,
   };
@@ -340,6 +392,7 @@ export function houseWeek(turn: GuildTurn, causeId: string): void {
     if (work.doneWeek > week) continue;
     house.work.splice(house.work.indexOf(work), 1);
     finish(house, rules, work.job);
+    if (work.job.kind === 'build' && turn.guild.career) turn.guild.career.roomsThisYear += 1;
     turn.sink.emit({
       type: 'house.finished',
       causeId,
@@ -350,6 +403,46 @@ export function houseWeek(turn: GuildTurn, causeId: string): void {
   }
   const upkeep = upkeepOf(house, rules);
   if (upkeep > 0) pay(turn, -upkeep, 'rooms', causeId);
+  trainAtHome(turn, house, rules, causeId);
+}
+
+/** Training at home (SPEC.md, D-187): members at home and fit, youngest first; the yard's places go first. */
+function trainAtHome(turn: GuildTurn, house: HouseState, rules: HouseRules, causeId: string): void {
+  const career = turn.rules.career;
+  if (!career) return;
+  const today = turn.state.calendar;
+  const home: { id: string; age: number }[] = [];
+  for (const m of turn.guild.members) {
+    if (!isFree(m, today)) continue;
+    const who = turn.state.roster.find((a) => a.id === m.id);
+    const age = who ? ageOf(turn, who) : null;
+    if (age !== null) home.push({ id: m.id, age });
+  }
+  home.sort((a, b) => a.age - b.age || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  const places = trainingPlacesOf(house, rules);
+  const rng = streamFor(turn.state, 'house.training');
+  const { homeTraining } = rules;
+  home.forEach(({ id, age }, rank) => {
+    const who = turn.state.roster.find((a) => a.id === id);
+    // Without a potential nobody can grow: no draws, as in growAfterQuest.
+    if (!who?.potential) return;
+    const base =
+      age <= career.growth.youngAge
+        ? homeTraining.youngBp
+        : age <= career.primeAge
+          ? homeTraining.primeBp
+          : 0;
+    const share = rank < places ? homeTraining.placedBp : homeTraining.unplacedBp;
+    const scaled = divRoundDown(base * trainingBp(turn), BP_CERTAIN);
+    const chance = divRoundDown(scaled * share, BP_CERTAIN);
+    const potential = who.potential;
+    const options = ATTRIBUTES.filter((a) => who.attributes[a] < potential[a]);
+    // Always draw twice, so a member's outcome never shifts the stream for the next one.
+    const grows = rng.chance(chance);
+    const attribute = options[rng.int(Math.max(1, options.length))];
+    if (grows && attribute)
+      setAttribute(turn, id, attribute, who.attributes[attribute] + 1, 'training', causeId);
+  });
 }
 
 function finish(house: HouseState, rules: HouseRules, job: HouseJob): void {
