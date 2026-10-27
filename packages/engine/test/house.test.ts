@@ -558,6 +558,29 @@ describe('house (house SPEC.md)', () => {
       expect(laidUp(held)[0]).toEqual([42, false]);
     });
 
+    it('frees a sickbed by today, not by the home day of the party being settled', () => {
+      // Parties are settled on arrival, days before they are home: a holder fit tomorrow still holds.
+      const [first] = ofType(playDays(infirmaryRun(), 60).events, 'member.laid-up');
+      const injured = first!.subjectIds[0]; // non-null: one is laid up within 60 days.
+      const other = infirmaryRun().state.guild!.members.find((m) => m.id !== injured)!.id; // non-null: three members.
+      const held = playDays(
+        withBeds(infirmaryRun(), [{ memberId: other, untilDay: first!.day + 1 }]),
+        60,
+      );
+      expect(laidUp(held)[0]).toEqual([42, false]);
+      // Fit by today, the bed is free.
+      const freed = playDays(
+        withBeds(infirmaryRun(), [{ memberId: other, untilDay: first!.day }]),
+        60,
+      );
+      expect(laidUp(freed)[0]).toEqual([21, true]);
+    });
+
+    it('keeps at least one day for an injury scaled down to nothing', () => {
+      const tiny = playDays(withRooms([], testCareer, { noSickbedBp: 1 }), 60);
+      expect(laidUp(tiny)[0]).toEqual([1, false]);
+    });
+
     it('a bed frees when its holder is fit again or has left the guild', () => {
       const members = infirmaryRun().state.guild!.members.map((m) => m.id);
       for (const holder of [

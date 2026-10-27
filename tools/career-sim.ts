@@ -2,7 +2,7 @@
 // their founding until the guildmaster's career ends (or a cap), with careers on, rivals abstract,
 // and the one-year simulator's player policy. The invariants run over every career.
 // Usage: node tools/career-sim.ts [careers=100] [maxYears=40] [policy=default|cautious|bold|compare]
-//   [staff=off|compare] [size=15] [grants=take|refuse] [house=off|on]
+//   [staff=off|compare] [size=15, or 7 with house=on] [grants=take|refuse] [house=off|on]
 // With policy=compare, each seed is also played cautious and bold, for §9d's no-dominant-safe-play check.
 // With staff=compare, each seed is played hands-on (the guildmaster runs training and recovery)
 // and delegated (the best affordable hire runs both), and R6 compares the two (staff/SPEC.md).
@@ -13,7 +13,7 @@
 import { availableParallelism } from 'node:os';
 import { Worker } from 'node:worker_threads';
 import { PLAYER_ID } from '@adventure-manager/engine';
-import { careerGuildRules, fullHousePlan } from '@adventure-manager/content';
+import { careerGuildRules, fullHousePlan, houseGuildRules } from '@adventure-manager/content';
 import { pct, type Career, type CareerJob, type CareerSetup } from './career-play.ts';
 import { GUILD_SIZE, POLICIES } from './year-sim-play.ts';
 
@@ -26,7 +26,9 @@ if (!Object.hasOwn(POLICIES, policyName)) throw new Error(`Unknown policy ${poli
 const staffMode = process.argv[5] ?? 'off';
 if (staffMode !== 'off' && staffMode !== 'compare')
   throw new Error(`Unknown staff mode ${staffMode}.`);
-const size = Number(process.argv[6] ?? GUILD_SIZE);
+// With the house on, the founded roster defaults to the house's start (D-187: one party and backups).
+const HOUSE_START_SIZE = 7;
+const size = Number(process.argv[6] ?? (process.argv[8] === 'on' ? HOUSE_START_SIZE : GUILD_SIZE));
 const grantsArg = process.argv[7] ?? 'take';
 if (grantsArg !== 'take' && grantsArg !== 'refuse')
   throw new Error(`Unknown grants mode ${grantsArg}.`);
@@ -176,7 +178,7 @@ const badStart = results.filter(
   (r) =>
     (r.firstOfferYear !== null && r.firstOfferYear <= 2) ||
     (r.chestByYear[1] ?? r.chestByYear[0] ?? 0) - r.earlyGrantCopper <
-      careerGuildRules.startingChestCopper / 2,
+      (houseMode === 'on' ? houseGuildRules : careerGuildRules).startingChestCopper / 2,
 );
 console.log(
   `§9d bad starts (in debt at a week start in years 1-2, or the chest less grants below half the start after 2 years): ${badStart.length}; of those, careers lasting 10+ years: ${badStart.filter((r) => r.years >= 10).length} [most recover, §4g]`,

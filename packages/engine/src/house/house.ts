@@ -117,27 +117,29 @@ export function trainingPlacesOf(house: HouseState, rules: HouseRules): number {
 }
 
 /**
- * Lasting-injury days for a member coming home on `today`, and the sickbed they take. Holders who
- * are fit again or gone are dropped first. The caller passes the days before the sickbed rule and
- * the member's rest before the injury days; `days` is then scaled when no sickbed is free.
- * Returns null without house rules.
+ * Lasting-injury days for a member whose party comes home on `homeDay`, and the sickbed they take,
+ * held from the day the quest is settled (today) until they are fit. Holders fit by today or gone
+ * are dropped first; parties settle on arrival, so today, not a party's home day, is the clock.
+ * The caller passes the days before the sickbed rule and the member's rest before the injury days;
+ * `days` is then scaled when no sickbed is free. Returns null without house rules.
  */
 export function layUp(
   turn: GuildTurn,
   memberId: string,
-  today: number,
+  homeDay: number,
   restDays: number,
   days: number,
 ): { days: number; sickbed: boolean } | null {
   const rules = turn.rules.house;
   const house = turn.guild.house;
   if (!rules || !house) return null;
+  const today = turn.state.calendar;
   const held = house.sickbeds.filter(
     (b) => b.untilDay > today && turn.guild.members.some((m) => m.id === b.memberId),
   );
   house.sickbeds.splice(0, house.sickbeds.length, ...held);
   if (held.length < sickbedsOf(house, rules)) {
-    house.sickbeds.push({ memberId, untilDay: today + restDays + days });
+    house.sickbeds.push({ memberId, untilDay: homeDay + restDays + days });
     return { days, sickbed: true };
   }
   return {
@@ -422,6 +424,7 @@ function trainAtHome(turn: GuildTurn, house: HouseState, rules: HouseRules, caus
   const { homeTraining } = rules;
   home.forEach(({ id, age }, rank) => {
     const who = turn.state.roster.find((a) => a.id === id);
+    // Without a potential nobody can grow: no draws, as in growAfterQuest.
     if (!who?.potential) return;
     const base =
       age <= career.growth.youngAge

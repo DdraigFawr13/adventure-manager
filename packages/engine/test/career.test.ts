@@ -138,6 +138,32 @@ describe('careers (career SPEC.md)', () => {
     expect(ofType(two.events, 'patron.target').at(-1)?.target).not.toBe('growth');
   });
 
+  it('counts a room built in the year as a grace goal when the guild has a house, then resets it', () => {
+    const house = {
+      kinds: [],
+      studyPlace: { area: 'hall' as const, floor: 0, cell: 1 },
+      cellsPerFloor: 3,
+      start: { lowestFloor: 0, highestFloor: 0, plotsPerSide: 0, cells: [] },
+      storey: { baseCopper: 1, stepCopper: 1, weeks: 1 },
+      cellar: { baseCopper: 1, stepCopper: 1, weeks: 1 },
+      wall: { baseCopper: 1, stepCopper: 1, weeks: 1 },
+      maxPlotsPerSide: 1,
+      winterWeeksBp: 10_000,
+      noSickbedBp: 10_000,
+      homeTraining: { youngBp: 0, primeBp: 0, placedBp: 0, unplacedBp: 0 },
+    };
+    const run = foundedGuild(0, { career: { ...career, grace }, house });
+    const missed = settle(run);
+    expect(ofType(missed.events, 'patron.reviewed').at(-1)?.goals).toEqual({
+      roster: false,
+      renown: false,
+      room: false,
+    });
+    const built = settle(run, (s) => (s.guild!.career!.roomsThisYear = 1)); // non-null: careers are on.
+    expect(ofType(built.events, 'patron.reviewed').at(-1)?.goals?.room).toBe(true);
+    expect(built.state.guild!.career!.roomsThisYear).toBe(0); // non-null: careers are on.
+  });
+
   it('cannot dismiss in the grace years, but can at the third Assembly', () => {
     const hopeless = (s: GameState) => {
       s.guild!.career!.confidence = 1; // non-null: careers are on.
