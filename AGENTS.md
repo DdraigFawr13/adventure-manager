@@ -1,6 +1,6 @@
 # Agent instructions
 
-Adventure Manager: a management game where the player runs an adventurers' guild (Football Manager's depth of squad, staff, finances and scouting, applied to Pathfinder-style parties, classes and quests). Single-player; phones first, iPhone and Android held upright, Windows after launch (D-151); TypeScript, web-first engine test (D-110).
+Adventure Manager: a management game where the player runs an adventurers' guild (Football Manager's depth of squad, staff, finances and scouting, applied to Pathfinder-style parties, classes and quests). Single-player; phones first, iPhone and Android held upright, Windows after launch (D-151); TypeScript web tech, no Godot fallback (D-163).
 
 Shared rules come from AI-Master-Instructions and load through CLAUDE.md (`.claude/master/RULES.md`). This file holds only what is specific to this project. Keep it under 80 lines.
 

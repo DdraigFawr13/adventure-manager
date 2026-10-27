@@ -566,7 +566,7 @@ Not risks for prototypes (handled elsewhere): engine choice and determinism (§1
 
 The riskiest question first. All prototypes come after the plan is approved (D-001).
 
-0. **Engine test, web-first** (D-110, amends D-090): the ledger and kingdom-map view built in web tech; Godot is tried only if web misses its bar (§11a).
+0. **Engine test, web-first** (D-110, amends D-090): the ledger and kingdom-map view built in web tech; Godot is tried only if web misses its bar (§11a; no Godot fallback since D-163).
 0b. **Resolution v0** (D-113): half a page plus code for how a party, its plan, stats, gear and the site become odds and events; every number in data, tuned later. R1 needs it.
 1. **One quest, watched** (R1): a minimal simulation core drives a text log and a plain board with standees; the owner watches 10 quests. If watching isn't tense, Pillar 2 and the core loop need rethinking before anything else is built.
 2. **Headless year simulator** (R2, R3, R6, R9): the same simulation core with no graphics; 1,000 seeded guild-years reporting deaths, money, ladder movement, stops by class, delegated vs careful play, and guildmaster careers against the §2 and §4 targets.
@@ -648,6 +648,8 @@ Decisions: D-090, D-091, D-110, D-114. Constraints from earlier decisions (the P
 ### 11a. Engine and platform (Accepted 2026-10-26, D-090, D-110)
 
 **Amended (2026-10-27, D-150, D-151, D-154):** mobile first. Launch is on iPhone and Android phones from one web-tech codebase, and the engine test is rebuilt as a phone app judged on the owner's phone. Windows follows after launch.
+
+**Amended (2026-10-27, D-163):** web tech is the engine; the Godot fallback below no longer stands. The comparison stays as the record.
 
 **Web-first** (owner's choice after the plan review, D-110, amends D-090): build the two test pieces in web tech (Electron, TypeScript), reusing Story-Generator's map code (§12d). Godot 4 (C#) is built only if the web ledger or map misses its bar: 60 fps on the map at 1366×768, the 15 px ledger readable, the find-the-fact task (R4) passed. Unity is out. Earlier plan (D-090): build both, then choose; the comparison below still stands as the record.
 

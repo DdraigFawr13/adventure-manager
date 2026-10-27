@@ -567,6 +567,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The engine is chosen between web tech in Electron (TypeScript) and Godot 4 (C#) after prototype step 0: the same roster ledger and kingdom-map view built in both, judged on the owner's look-and-feel notes plus measured build time, frame rate and memory at 1366×768, download size and the find-the-fact task. Unity is out. The architecture in PLAN §11b–§11g is engine-neutral. Detail: `docs/design/PLAN.md` §11a; adds step 0 to D-085.
 - **Amended (2026-10-26, D-110):** web-first: build the test pieces in web tech; Godot only if web misses its bar.
+- **Superseded (2026-10-27, D-163):** web tech is the engine; there is no Godot fallback.
 - **Why:** Owner's choice (Plan Q11a) after the trade-off: web tech favours dense ledgers and speed of building; Godot favours the animated map and board.
 
 ## D-091 Engine-neutral architecture
@@ -706,6 +707,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** The engine-test pieces (ledger and kingdom map) are built in web tech (Electron, TypeScript), reusing the Story-Generator map code. Godot 4 (C#) is built only if web misses its bar: 60 fps map at 1366×768, readable 15 px ledger, the find-the-fact task. A screen-reader check joins the judging list. Amends D-090. Detail: `docs/design/PLAN.md` §11a.
 - **Why:** Owner's choice (plan review Q3) on new evidence: Story-Generator is TypeScript and canvas, and building both engines costs weeks a solo builder does not have.
 - **Amended (2026-10-27, D-154):** the engine test is rebuilt as a phone app and judged on the owner's phone.
+- **Amended (2026-10-27, D-163):** no Godot fallback; the engine test's bars stay, and a miss goes to the owner.
 
 ## D-111 Stop and slip rules
 
@@ -1048,3 +1050,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Changes the phone R4 page (D-154, D-159) after round 1.
 - **Decision:** (1) Lists of people (Barracks, Infirmary, the desk roster) run A–Z by name with a filter box at the top. (2) The work desk gets a Money page with the week-by-week ledger and the year's figures, in place of Overview; the Strongroom keeps its ledger. (3) A Find field on the hall and the work desk answers as the owner types a name, a week, a site or a topic, with the clerk's answer shown in place. Round 2 runs on a new seed.
 - **Why:** Round 1 (2026-10-27, seed phone-1): 5 of 5 right, 0 under 10 s (12.5, 21.1, 46.1, 11.6, 10.6 s). The paths showed names hunted in party-grouped or date-sorted lists, the weekly wages sought on 7 desk screens before the Strongroom, and Ask the clerk never used. Owner's choice: "All three fixes", the recommended option.
+
+## D-163 Web tech is the engine; no Godot fallback
+
+- **Status:** Accepted (2026-10-27). Supersedes D-090's two-engine choice and D-110's Godot fallback.
+- **Decision:** The game is built in web tech (TypeScript), one codebase wrapped for both phone stores (D-151). Godot is not built as a fallback. The phone engine test (D-154) keeps its bars; if the web build misses one, the owner decides what follows.
+- **Why:** Owner (2026-10-27), asked whether the fallback still stands after D-151: "Godot fallback does not stand".

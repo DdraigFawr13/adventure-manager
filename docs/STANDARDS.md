@@ -4,7 +4,7 @@ Written at the start of M1, before the first line of game code (D-114, PLAN §11
 
 ## Language and layout
 
-- TypeScript, ES modules, one repository with npm workspaces under `packages/` (`engine`, `content`, `ui`, `shell`) and scripts in `tools/` at the root (D-091). If the engine test moves the client to Godot (D-110), only `ui` and `shell` change language; the engine stays as specified here unless the owner decides otherwise.
+- TypeScript, ES modules, one repository with npm workspaces under `packages/` (`engine`, `content`, `ui`, `shell`) and scripts in `tools/` at the root (D-091). The engine and the client are both TypeScript (D-163).
 - Compiler settings: `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`, `noImplicitOverride`, `verbatimModuleSyntax` (same set as Story-Generator's `tsconfig.json`), plus `erasableSyntaxOnly` so tools run the TypeScript directly in Node (no enums, namespaces or constructor parameter properties).
 - No `any`, no `@ts-ignore`, no `as` casts except `as const` and at a validated boundary (loaded JSON after schema checking, saves after migration), where the line above says `// cast-ok: <why>`. A non-null `!` needs a one-line comment saying why it holds (not checked automatically; reviewers check it).
 - Formatting by Prettier, never by hand.

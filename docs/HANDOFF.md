@@ -23,8 +23,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Open questions
 
-- Godot fallback (D-090, D-110): D-151 says one web-tech codebase for both stores. Does the Godot fallback still stand? Owner to confirm.
-- Permissions (PR #3 review, D-096): tighten the allow list (`cat`/`grep`/`find` can read `.env`; `git branch:*` allows `-D`; `find:*` allows `-delete`), widen the force-push ask rules, and swap the dead `npm run lint` entry for `npm run format:check` and `npm run boundaries`? Owner to decide.
+- Permissions (PR #3 review, D-096): tighten the allow list (`cat`/`grep`/`find` can read `.env`; `git branch:*` allows `-D`; `find:*` allows `-delete`) and widen the force-push ask rules? Owner to decide. (The dead `npm run lint` entry was swapped for `npm run format:check` and `npm run boundaries`, owner's approval 2026-10-27.)
 - Mobile first (D-150): the phone sources for the §1d measures, and the phone versions of the Steam store page, wishlists, playtest recruiting and Early Access (D-099, D-100, D-113). Open too: the tablet layout. The test laptop in the budget (PLAN §14) may no longer be needed before launch.
 - Kingdom map art direction (D-097, D-144): Story-Generator layout as the base; geography review in the workshop.
 - Old-press ledger readability: confirm 15 px with lining figures on the owner's phone in the phone R4 (D-084, D-154); fallbacks D-052, D-077.
