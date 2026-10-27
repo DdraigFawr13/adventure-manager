@@ -28,6 +28,13 @@ All building is by command, paid in full when it starts (`money.changed`, reason
 - **Beds** (D-170, D-174): the barracks' cells give beds by level. `recruit.sign` is refused while the guild has as many members as beds. Lost beds and inn lodging (D-182) wait for incidents.
 - Without house rules in content nothing changes: no house state, no upkeep, no bed cap (the existing simulators are unchanged).
 
+## Room effects (v1, D-170, D-186)
+
+- **Infirmary beds:** each infirmary cell gives sickbeds by level. A member who comes home with a lasting injury takes a free sickbed if there is one and keeps it until fit again (`outUntilDay`), or until they die or leave. Their injury days are scaled as now by whoever runs recovery (staff/SPEC.md). With no free sickbed the injury days are multiplied by `noSickbedBp` (20,000: twice as long, D-186). Sickbeds go first come, first served as members come home; the head's other policies (worst wounds first, veterans first) come with the room page. Events: `member.laid-up` gains whether the member had a sickbed.
+- **Training places:** each training-yard cell gives places by level. After a quest, the members with a place grow at the current chance (scaled by whoever runs training); the others at `noPlaceGrowthBp` of it (5,000: half, D-186). Places go to the youngest members first (they have most to grow), ties by id, counted afresh at each growth roll; this is the head's default policy, worked out from the roster, so it needs no state.
+- The heads: the existing staff areas stand for the two rooms' heads, recovery for the infirmary and training for the yard (D-170). The library's study places and the other rooms' effects wait for the systems they feed.
+- Without house rules none of this applies: injuries and growth run as before.
+
 ## What the simulator measures (D-172)
 
 With the house on, the career simulator follows the content's `fullHousePlan`, step by step toward a reference **full house** (every kind at level 3), one job at a time, starting the next step at a week start when the chest after paying stays above a reserve of 12 weeks of spending (wages, running cost and upkeep). It reports the year the first extra room is started and finished, the year the full house is finished, the full house's total cost in years of the middle tier's median surplus, and room upkeep as a share of spending. Targets: the first extra room within the first season; the full house costing about 8–12 years of a mid guild's surplus.

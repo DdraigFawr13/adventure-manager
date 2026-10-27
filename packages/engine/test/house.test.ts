@@ -1,13 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import {
   bedsOf,
+  sickbedsOf,
+  trainingPlacesOf,
   type GameState,
   type HouseRules,
   type Place,
   type RoomKind,
 } from '../src/index.ts';
 import { ofType } from './fixture.ts';
-import { advanceTo, foundedGuild, play, type Run } from './guild-fixture.ts';
+import { advanceTo, foundedGuild, play, playDays, testCareer, type Run } from './guild-fixture.ts';
 
 const hall = (floor: number, cell: number): Place => ({ area: 'hall', floor, cell });
 const plot = (side: 'west' | 'east', n: number): Place => ({
@@ -60,6 +62,8 @@ const house: HouseRules = {
   wall: { baseCopper: 400, stepCopper: 100, weeks: 4 },
   maxPlotsPerSide: 3,
   winterWeeksBp: 7500,
+  noSickbedBp: 20_000,
+  noPlaceGrowthBp: 5000,
 };
 const WEEK = 7;
 /** The first day of a week counted from the guild's first day. */
@@ -464,5 +468,132 @@ describe('house (house SPEC.md)', () => {
     const b = go();
     expect(a.state).toEqual(b.state);
     expect(a.events).toEqual(b.events);
+  });
+  describe('room effects (v1)', () => {
+    const infirmary: RoomKind = {
+      id: 'room.infirmary',
+      where: 'hall',
+      maxCells: 3,
+      cellCostCopper: [100, 200, 400],
+      weeks: [2, 3, 4],
+      upkeepCopper: [1, 2, 4],
+      sickbeds: [1, 2, 3],
+    };
+    const trainingYard: RoomKind = {
+      id: 'room.training-yard',
+      where: 'compound',
+      maxCells: 3,
+      cellCostCopper: [100, 200, 400],
+      weeks: [2, 3, 4],
+      upkeepCopper: [1, 2, 4],
+      trainingPlaces: [1, 2, 3],
+    };
+    const withRooms = (
+      cells: { place: Place; kindId: string }[],
+      career = testCareer,
+      extra: Partial<HouseRules> = {},
+    ): Run =>
+      foundedGuild(3, {
+        career,
+        house: {
+          ...house,
+          ...extra,
+          kinds: [...house.kinds, infirmary, trainingYard],
+          start: {
+            ...house.start,
+            cells: [...house.start.cells, ...cells.map((c) => ({ ...c, level: 1 }))],
+          },
+        },
+      });
+    const infirmaryRun = () => withRooms([{ place: hall(1, 2), kindId: 'room.infirmary' }]);
+    const laidUp = (run: Run) =>
+      ofType(run.events, 'member.laid-up').map((e) => [e.days, e.sickbed]);
+    const withBeds = (run: Run, beds: { memberId: string; untilDay: number }[]): Run => {
+      const state = structuredClone(run.state);
+      state.guild!.house!.sickbeds.push(...beds); // non-null: founded with a house.
+      return { ...run, state };
+    };
+
+    it('counts sickbeds and places by level', () => {
+      const run = withRooms([
+        { place: hall(1, 2), kindId: 'room.infirmary' },
+        { place: plot('west', 0), kindId: 'room.training-yard' },
+      ]);
+      expect(sickbedsOf(houseOf(run), run.state.content.guild!.house!)).toBe(1);
+      expect(trainingPlacesOf(houseOf(run), run.state.content.guild!.house!)).toBe(1);
+      expect(sickbedsOf(houseOf(foundedGuild(3, { house })), house)).toBe(0);
+    });
+
+    it('a free sickbed keeps the injury days and is held until the member is fit', () => {
+      const run = playDays(infirmaryRun(), 60);
+      const [first] = ofType(run.events, 'member.laid-up');
+      expect(first).toBeDefined();
+      expect([first!.days, first!.sickbed]).toEqual([21, true]); // non-null: checked above.
+      // Stopped on the day it was reported, the bed runs to the day the member is fit.
+      const then = playDays(infirmaryRun(), first!.day);
+      const bed = houseOf(then).sickbeds.find((b) => b.memberId === first!.subjectIds[0]);
+      const member = then.state.guild!.members.find((m) => m.id === first!.subjectIds[0]);
+      expect(bed?.untilDay).toBe(member?.outUntilDay);
+    });
+
+    it('without a free sickbed the injury days are doubled', () => {
+      const none = playDays(withRooms([]), 60);
+      const [first] = laidUp(none);
+      expect(first).toEqual([42, false]);
+      const members = infirmaryRun().state.guild!.members.map((m) => m.id);
+      // The one bed is held by another fit member.
+      const held = playDays(
+        withBeds(infirmaryRun(), [{ memberId: members[2]!, untilDay: 1000 }]),
+        60,
+      );
+      expect(laidUp(held)[0]).toEqual([42, false]);
+    });
+
+    it('a bed frees when its holder is fit again or has left the guild', () => {
+      const members = infirmaryRun().state.guild!.members.map((m) => m.id);
+      for (const holder of [
+        { memberId: members[2]!, untilDay: 1 },
+        { memberId: 'gone', untilDay: 1000 },
+      ]) {
+        const run = playDays(withBeds(infirmaryRun(), [holder]), 60);
+        expect(laidUp(run)[0]).toEqual([21, true]);
+        if (holder.memberId === 'gone')
+          expect(houseOf(run).sickbeds.some((b) => b.memberId === 'gone')).toBe(false);
+      }
+    });
+
+    it('training places go to the youngest members; the rest grow at their share of the chance', () => {
+      const growth = { youngAge: 24, youngBp: 10_000, primeBp: 10_000 };
+      const career = { ...testCareer, growth };
+      const grown = (run: Run) => {
+        const ids = ofType(run.events, 'attribute.changed')
+          .filter((e) => e.reason === 'growth')
+          .map((e) => e.subjectIds[0]);
+        return new Set(ids);
+      };
+      const yardCell = [{ place: plot('west', 0), kindId: 'room.training-yard' }];
+      // The third member is the youngest by a year; one place.
+      const younger = (run: Run): Run => {
+        const state = structuredClone(run.state);
+        const c = state.guild!.members[2]!.id;
+        const who = state.roster.find((r) => r.id === c)!;
+        state.roster[state.roster.indexOf(who)] = { ...who, birthYear: who.birthYear! + 1 };
+        return { ...run, state };
+      };
+      const c = withRooms(yardCell, career).state.guild!.members[2]!.id;
+      // With no share for those without a place, only the youngest grows.
+      const strict = younger(withRooms(yardCell, career, { noPlaceGrowthBp: 0 }));
+      expect([...grown(playDays(strict, 60))]).toEqual([c]);
+      // At full share for everyone the others grow too.
+      const all = younger(withRooms(yardCell, career, { noPlaceGrowthBp: 10_000 }));
+      expect(grown(playDays(all, 60)).size).toBeGreaterThan(1);
+    });
+
+    it('changes nothing without house rules', () => {
+      const run = foundedGuild(3, { career: testCareer });
+      expect(
+        ofType(playDays(run, 60).events, 'member.laid-up').every((e) => e.sickbed === undefined),
+      ).toBe(true);
+    });
   });
 });

@@ -17,6 +17,8 @@
 //   wall 4. Work started in winter takes 75% of that (D-067, D-169).
 // - Upkeep per cell per week by level 8 / 17 / 34, set for about 20% of spending from year 10
 //   (owner, D-185; a lever to adjust).
+// - Infirmary sickbeds per cell by level 2 / 3 / 4; training-yard places 3 / 4 / 5. Without a free
+//   sickbed a lasting injury lasts twice as long; without a place growth runs at half (D-186).
 // - Barracks beds per cell by level 8 / 10 / 12. A new guild has 2 barracks cells, 16 beds, for a
 //   founded roster of 15 (D-170, D-174).
 // - Storeys: the first added 8,000, each later 8,000 more; cellars 10,000 then 10,000 more; a wall
@@ -51,13 +53,13 @@ const plot = (side: 'west' | 'east', n: number): Place => ({ area: 'compound', s
 export const baseHouseRules: HouseRules = {
   kinds: [
     kind('room.barracks', 'hall', 3, 3000, { beds: [8, 10, 12] }),
-    kind('room.infirmary', 'hall', 3, 4000),
+    kind('room.infirmary', 'hall', 3, 4000, { sickbeds: [2, 3, 4] }),
     kind('room.library', 'hall', 3, 4000),
     kind('room.armoury', 'hall', 3, 3500),
     kind('room.tavern', 'hall', 3, 3000),
     kind('room.strongroom', 'hall', 1, 5000, { belowGround: true }),
     kind('room.heroes', 'hall', 3, 3000),
-    kind('room.training-yard', 'compound', 3, 3500),
+    kind('room.training-yard', 'compound', 3, 3500, { trainingPlaces: [3, 4, 5] }),
     kind('room.forge', 'compound', 3, 4500),
     kind('room.works', 'compound', 3, 3000),
     kind('room.gate', 'compound', 1, 2500),
@@ -80,6 +82,8 @@ export const baseHouseRules: HouseRules = {
   wall: { baseCopper: 5000, stepCopper: 5000, weeks: 4 },
   maxPlotsPerSide: 6,
   winterWeeksBp: 7500,
+  noSickbedBp: 20000,
+  noPlaceGrowthBp: 5000,
 };
 
 /** One step of the simulator's build plan; places refer to the starting layout and the floors the plan adds. */
@@ -93,35 +97,36 @@ const upgrade = (place: Place): HousePlanStep => ({ type: 'upgrade', place });
 
 /** One cell of every room in the reference full house; the plan raises each room twice. */
 const ROOMS: readonly Place[] = [
-  hall(0, 0), // tavern
-  hall(0, 2), // armoury
+  hall(0, 2), // infirmary
+  plot('west', 1), // training yard
   hall(1, 0), // barracks
-  hall(2, 0), // infirmary
-  hall(2, 2), // Hall of Heroes
+  hall(0, 0), // tavern
+  hall(2, 0), // armoury
+  hall(2, 1), // Hall of Heroes
   hall(3, 0), // library
   hall(-1, 0), // strongroom
   plot('west', 0), // gate
-  plot('west', 1), // training yard
   plot('east', 0), // forge
   plot('east', 1), // works
 ];
 
 /**
  * The reference full house the simulator builds toward, in order (D-172): every kind at level 3.
- * Hall: ground floor tavern, study, armoury; floor 1 barracks (3 cells); floor 2 infirmary (2) and
- * the Hall of Heroes; floor 3 library (2) and a spare cell; cellar strongroom and 2 spare cells.
- * Compound: gate and training yard (2) west, forge and works east, 1 spare plot. That is 2 storeys
- * and 1 cellar added, no wall pushed. Tools only; the game has no "full" house.
+ * The infirmary and training yard come first, as a new guild has neither and heals and grows slower
+ * without them (D-186). Hall: ground floor tavern, study, infirmary; floor 1 barracks (3 cells);
+ * floor 2 armoury, the Hall of Heroes and a spare cell; floor 3 library (2) and a spare cell; cellar
+ * strongroom and 2 spare cells. Compound: gate and training yard (2) west, forge and works east,
+ * 1 spare plot. That is 2 storeys and 1 cellar added, no wall pushed. Tools only; the game has no
+ * "full" house.
  */
 export const fullHousePlan: readonly HousePlanStep[] = [
-  build(hall(0, 2), 'room.armoury'),
-  build(hall(1, 2), 'room.barracks'),
+  build(hall(0, 2), 'room.infirmary'),
   build(plot('west', 1), 'room.training-yard'),
   build(plot('west', 2), 'room.training-yard'),
+  build(hall(1, 2), 'room.barracks'),
   { type: 'extend', direction: 'up' },
-  build(hall(2, 0), 'room.infirmary'),
-  build(hall(2, 1), 'room.infirmary'),
-  build(hall(2, 2), 'room.heroes'),
+  build(hall(2, 0), 'room.armoury'),
+  build(hall(2, 1), 'room.heroes'),
   build(plot('east', 0), 'room.forge'),
   build(plot('east', 1), 'room.works'),
   { type: 'extend', direction: 'up' },

@@ -1,6 +1,7 @@
 // House v0 (SPEC.md): the guild house's space, what building costs and takes, upkeep, and beds.
 import type { EventSink } from '../core/events.ts';
 import { divRoundDown } from '../core/math.ts';
+import { BP_CERTAIN } from '../core/rng.ts';
 import { guildTurn, pay, weekInYear, weekOf, type GuildTurn } from '../guild/turn.ts';
 import type { Command, GameEvent, GameState } from '../resolution/types.ts';
 import type {
@@ -97,6 +98,52 @@ export function bedsOf(house: HouseState, rules: HouseRules): number {
   return beds;
 }
 
+/** Sickbeds the infirmary gives: each infirmary cell's sickbeds at its level (D-186). */
+export function sickbedsOf(house: HouseState, rules: HouseRules): number {
+  let n = 0;
+  for (const cell of cellsOf(house))
+    n += rules.kinds.find((k) => k.id === cell.kindId)?.sickbeds?.[cell.level - 1] ?? 0;
+  return n;
+}
+
+/** Training places the yard gives: each training-yard cell's places at its level (D-186). */
+export function trainingPlacesOf(house: HouseState, rules: HouseRules): number {
+  let n = 0;
+  for (const cell of cellsOf(house))
+    n += rules.kinds.find((k) => k.id === cell.kindId)?.trainingPlaces?.[cell.level - 1] ?? 0;
+  return n;
+}
+
+/**
+ * Lasting-injury days for a member coming home on `today`, and the sickbed they take. Holders who
+ * are fit again or gone are dropped first. The caller passes the days before the sickbed rule and
+ * the member's rest before the injury days; `days` is then scaled when no sickbed is free.
+ * Returns null without house rules.
+ */
+export function layUp(
+  turn: GuildTurn,
+  memberId: string,
+  today: number,
+  restDays: number,
+  days: number,
+): { days: number; sickbed: boolean } | null {
+  const rules = turn.rules.house;
+  const house = turn.guild.house;
+  if (!rules || !house) return null;
+  const held = house.sickbeds.filter(
+    (b) => b.untilDay > today && turn.guild.members.some((m) => m.id === b.memberId),
+  );
+  house.sickbeds.splice(0, house.sickbeds.length, ...held);
+  if (held.length < sickbedsOf(house, rules)) {
+    house.sickbeds.push({ memberId, untilDay: today + restDays + days });
+    return { days, sickbed: true };
+  }
+  return {
+    days: Math.max(1, divRoundDown(days * rules.noSickbedBp, BP_CERTAIN)),
+    sickbed: false,
+  };
+}
+
 /** Copper a week the finished cells cost to keep, by kind and level (the study costs nothing). */
 export function upkeepOf(house: HouseState, rules: HouseRules): number {
   let upkeep = 0;
@@ -116,6 +163,7 @@ export function startHouse(turn: GuildTurn, size: number): void {
     floors: {},
     compound: { west: emptyCells(start.plotsPerSide), east: emptyCells(start.plotsPerSide) },
     work: [],
+    sickbeds: [],
     added: { up: 0, down: 0, west: 0, east: 0 },
     nextWorkNo: 0,
   };
