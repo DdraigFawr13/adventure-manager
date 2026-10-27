@@ -1047,6 +1047,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27) for hosting. The tools and skills review is to be done; its choices are Proposed until the owner approves them.
 - **Decision:** Phone-playable builds (the step 4 prototype, the phone engine test) are hosted on Vercel's free Hobby plan while the game is a hobby project. Before any sale, the account moves to Pro (about $20 a month, to recheck), since Hobby is for non-commercial use. The R4 test stays a published artifact, because it saves the timings. Before step 4, the session reassesses the project's tools, skills and agents for mobile first (phone screenshots, touch checks, Vercel previews, a store wrapper later), as an update to `docs/design/TOOLS-REVIEW.md`.
 - **Why:** Owner (planning round, 2026-10-27): "right now this is a hobby game and if I choose to move on to actually put this into sale o would change to the pro plan", and "We will want to reassess tools and skills for this shift". D-152's price and D-157's break-even stay the plan for a commercial launch.
+- **Done (2026-10-27):** the tools review is D-167; the Vercel project `adventure-manager` was created on the owner's Hobby account, linked to this repo, every deployment behind Vercel's login.
 
 ## D-162 Phone R4 round 2: names A–Z with a filter, money on the desk, a Find field
 
@@ -1077,3 +1078,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27)
 - **Decision:** The readability check (R5, PLAN §9a) passes on the owner's phone, the one used for R4 (D-165): the 15 px minimum with lining figures (D-084) stays. The fallbacks, our own ledger cut (D-052) and clear print as the default (D-077), are not needed now; clear print stays a player option. The test was short sittings; reading over long sittings is checked again in the step 4 prototype.
 - **Why:** Owner (2026-10-27), asked whether the 15 px text read comfortably in the fact test: "Yes, readable". That the fallbacks are not needed, and the long-sitting recheck, are the session's reading of that answer.
+
+## D-167 Mobile-first tools: phone checks, Vercel previews, Capacitor later
+
+- **Status:** Accepted (2026-10-27). Completes D-161's tools review (`docs/design/TOOLS-REVIEW.md` §6).
+- **Decision:** (1) `tools/mockup-shot.mjs` gains phone checks at D-159's widths, 375, 412, 430 and 443 px (443 is the owner's phone, measured in D-165), with touch emulation; it flags tap targets under 44 × 44 px, text under 15 px, unlabelled controls and sideways scroll, and saves the accessibility snapshot. (2) This repo is linked to a new Vercel Hobby project, so every PR gets a preview link and `main` a stable link for the owner's phone, built by Vercel rather than Actions. (3) The phone engine test is first a web page on that link, with an on-page frame-rate panel; the owner's phone gives the verdict. (4) The store wrapper is Capacitor, adopted at the vertical slice with its own SAFE-03 approval then. (5) A real iPhone check is needed before release. (6) No new agents; new screens get the `design:accessibility-review` skill.
+- **Why:** Owner's choice (2026-10-27), the recommended option "All 1–6". The container measurements behind it are in TOOLS-REVIEW §6.

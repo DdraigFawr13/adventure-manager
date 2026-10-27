@@ -2,7 +2,7 @@
 
 Owner's request (2026-10-26, HANDOFF): look into tools, skills and connectors that improve the development process. Placed after PLAN §11 (D-090, D-091) and before §15. Rule: adopt a tool only when it is measured cheaper or equal at the same quality (DEL-07). Status: accepted 2026-10-26: items 1–3 adopted (D-092); the rest of the list accepted (D-094); audit findings applied (D-095, D-096). Owner's rule from this review: adversarial review before every PR (D-093).
 
-**Dated 2026-10-26, before mobile first (D-150):** its Electron, steamworks.js and Steam sales lines no longer describe the launch; the mobile-first reassessment (D-161) updates this review.
+**Dated 2026-10-26, before mobile first (D-150):** its Electron, steamworks.js and Steam sales lines no longer describe the launch; §6, the mobile-first reassessment (D-161, D-167), updates this review.
 
 What is measured below was run on this repo on 2026-10-26; everything else is labelled as judgement or estimate (REP-01).
 
@@ -87,3 +87,32 @@ Run with the `setup-audit` skill: scope this repo, quick depth (docs not fetched
 - **Finding 2 (security, low): no deny rules.** `.claude/settings.json` has 19 allow, 0 deny (measured). Fix: add deny rules for reading `.env` files and `secrets/`, and for force-push, via a reviewed PR (shared file).
 - Parked: 84 skills listed per session (29,871 characters, about 7,500 tokens, estimated), many unrelated (data, Canva, plugin management); optional to disable at account level. No toolchain pins, lockfile or tests yet; handled at build start (items 4–5).
 - First-turn context measured at 83,875 tokens.
+
+## 6. Mobile-first reassessment (D-161, 2026-10-27)
+
+Asked for in D-161, before step 4. Status: accepted 2026-10-27, items 1–6 (D-167); item 7 is the owner's setting, not needed now. Measured: run in this cloud container on 2026-10-27. Everything else is labelled as estimate or judgement (REP-01).
+
+### What the container can and cannot do (measured)
+
+- **Phone emulation works.** Playwright 1.63.0 (the container's global install; `tools/engine-test-measure.mjs:13` says 1.64.1, so the image has changed) has phone presets with touch, a mobile user agent and a device pixel ratio. A prototype check rendered the R4 page (`docs/design/mockups/phone-r4.html`) at 375, 412 and 443 px wide in 9.9 s: real `tap()` through the touch pipeline, `pointer: coarse` true, no sideways scroll, smallest text 15 px, every control labelled.
+- **Two-finger pinch can be simulated.** Through Chromium's touch input (CDP `Input.dispatchTouchEvent`), a scripted pinch delivered 2 touch points and 10 moves per finger to a test page. So pinch and pan code can be tested in the container; whether it feels smooth cannot.
+- **Screen-reader floor.** Playwright's accessibility snapshot lists what a screen reader would announce (27 lines for the R4 hub: banner, search, 12 room buttons, the four tabs). It checks names and roles, not TalkBack or VoiceOver themselves.
+- **A page's states must be scripted.** The R4 page has 0 room buttons before Start and 12 after, so a one-shot check sees only the first screen. A phone check needs a short list of taps per page.
+- **The owner's phone is 443 px wide, not 412.** D-159 estimated about 412 dp; the R4 page measured 443 × 790 (D-165). Playwright's Pixel 10 Pro XL preset says 448.
+- **Blocked by the network policy:** `api.vercel.com` (so the Vercel CLI cannot deploy from here) and `dl.google.com` (so the Android SDK cannot be installed, and no Android build runs here). npm, Gradle and Java are reachable. iPhone builds need macOS in any case (D-151).
+- **The Vercel connector works.** It reads the owner's account: Hobby plan, 1 concurrent build, 6 other projects, no Adventure Manager project yet. It can read deployments, build logs and protected preview pages.
+
+### Proposals
+
+1. **Phone checks in the mock-up tool.** Extend `tools/mockup-shot.mjs` (one tool, not a second): phone renders at 375, 412, 430 and 443 px (D-159) with touch emulation; flag tap targets under 44 × 44 px, text under 15 px (D-084), unlabelled controls and sideways scroll; save the accessibility snapshot; optional scripted taps per page. Free, no new dependency. Estimate: half a session.
+2. **Vercel previews through its Git integration.** Connect this repo to a new Vercel Hobby project that builds `packages/ui` (Vite). Every PR then gets its own preview link, built on Vercel, not on Actions minutes (CI-01), and `main` gets a stable link for the owner's phone. Keep previews behind Vercel's login (the owner signs in once on the phone). The session reads build status and logs through the connector. Outward-facing (SAFE-01): the owner approves the project. Hobby limits to recheck on Vercel's pricing page at setup.
+3. **Phone engine test as a web page first, wrapper later.** Rebuild the engine test (D-154) as a phone web page on the Vercel link, with an on-page panel showing frames per second, width and load time, saved like the R4 timings. Container numbers (CPU slowed 4×) stay a floor; the verdict is the owner's phone (VER-07). Android's WebView is Chromium and iPhone's is Safari's engine, so a browser test is a fair proxy (judgement, not measured).
+4. **Store wrapper: Capacitor, decided at the vertical slice, not now.** Capacitor (MIT, from Ionic; 8.5 in July 2026, 9 forecast for late 2026, per secondary sources) wraps the same Vite build for both stores and keeps Electron for Windows (D-117). Alternatives: Tauri 2 (mobile support is newer and needs Rust), a Play Store web wrapper (Android only; Apple rejects thin web wrappers under guideline 4.2, so the game must work offline and feel native). Builds: Android on a Linux Actions runner; iPhone on a macOS runner (10× Linux minutes) or a rented Mac (D-151). Needs SAFE-03 approval when adopted.
+5. **iPhone checks.** The owner has a Pixel. The container has only Chromium (measured: `/opt/pw-browsers` holds no WebKit), so Safari's engine is untested here; the Vercel link lets anyone with an iPhone open a build. A real iPhone, the owner's or a cloud device service (paid, SAFE-04), is needed before release.
+6. **Skills.** Use `design:accessibility-review` on each new screen (touch target, contrast and screen-reader lens); the `run` skill launches the web build at phone size. No new agents: agent definitions are synced from AI-Master (SRC-06), and the phone lens belongs in the review brief.
+7. **Network access (owner's setting).** Not needed if proposal 2 is taken: Vercel builds from GitHub. Add `dl.google.com` only if Android builds are wanted in sessions later.
+
+### Done (2026-10-27)
+
+- Item 1: `tools/mockup-shot.mjs` checks phones at 375, 412, 430 and 443 px, with `--tap` steps. On the R4 page (first screen, then Look around first, then the barracks) it found no problems; on `mobile-hall-desk.html` it flagged one small link and the miniature phones' text (5.5 px), as expected. Phone screenshots show the visible screen, since a full-page shot draws the fixed tab bar mid-page.
+- Item 2: Vercel project `adventure-manager` on the owner's Hobby account, linked to this repo, Node 22, build settings in `vercel.json`. Every deployment, `main` included, sits behind Vercel's login (stricter than proposed: an unreleased game stays private). Created without a first deploy, because `main` had no build settings yet. The built page was checked in the container at 443 px: it loads with no console errors.
