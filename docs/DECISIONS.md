@@ -1280,7 +1280,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 ## D-197 Step 4 quests are told in letters home
 
 - **Status:** Accepted (2026-10-27). For the step 4 prototype (D-195).
-- **Decision:** Contract quests resolve while the party is away, as in the year simulator, with the leader's call answering every moment (D-125). The player reads the party's letter home (quest report v0) when they return, and its deeds go into each person's history (D-196). Watching a contract beat by beat is not in step 4.
+- **Decision:** Contract quests resolve while the party is away, as in the year simulator, with the leader's call answering every moment (D-125). The player reads the party's letter home (quest report v0) when they return, and its deeds go into each person's history (D-196). Watching a contract beat by beat is not in step 4. This is a prototype-only exception to D-032 and D-038 (major moments stop the calendar and are never delegated): in step 4 the leader also takes the major retreat calls, as in the year simulator. The full game keeps those stops.
 - **Why:** Owner's choice (2026-10-27), the recommended "Letters home", over watching any quest and over letters with a stop on danger; both of those need the contract path made steppable in the engine and a phone version of the R1 view. Letters fit short phone sittings (D-153).
 
 ## D-198 Step 4 records the R7 check on the page, and the owner sends it

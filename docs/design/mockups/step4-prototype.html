@@ -1,3 +1,5 @@
+<!doctype html>
+<html lang="en">
 <title>Step 4 Prototype</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+DW+Pica:ital@0;1&family=Sorts+Mill+Goudy:ital@0;1&display=swap">
@@ -50,11 +52,11 @@ figcaption b { color: var(--brass2); font-family: var(--title); font-weight: 400
 .btn.main { background: var(--seal); color: var(--paper); border-color: var(--seal); }
 .btns { display: flex; gap: 8px; } .btns .btn { flex: 1; }
 .seg { display: flex; border: 1.5px solid var(--ink); border-radius: 4px; overflow: hidden; }
-.seg span { flex: 1; text-align: center; min-height: 40px; display: grid; place-items: center; font-size:15px; border-right: 1px solid var(--ink); }
+.seg span { flex: 1; text-align: center; min-height: 44px; display: grid; place-items: center; font-size:15px; border-right: 1px solid var(--ink); }
 .seg span:last-child { border-right: 0; }
 .seg span.on { background: var(--ink); color: var(--paper); }
 .hist { display: grid; gap: 4px; font-size: 15px; }
-.hist div { display: grid; grid-template-columns: 62px 1fr; gap: 6px; }
+.hist div { display: grid; grid-template-columns: 74px 1fr; gap: 6px; }
 .hist .when { color: var(--ink2); font-variant-numeric: lining-nums tabular-nums; font-size:15px; }
 .field { border: 1.5px solid var(--ink2); border-radius: 4px; min-height: 44px; padding: 8px 10px; background: #f6eedb; font-family: var(--letter); font-size: 16px; }
 .field.blank { color: var(--ink2); font-style: italic; }
@@ -82,7 +84,7 @@ figcaption b { color: var(--brass2); font-family: var(--title); font-weight: 400
 
     <figure>
       <div class="device">
-        <div class="top"><span class="g">The Lantern Guild</span><span class="d">Wk 9 · Yr 1 · 412 s</span></div>
+        <div class="top"><span class="g">The Lantern Guild</span><span class="d">Wk 30 · Yr 1 · 312 g 6 s</span></div>
         <div class="body">
           <h4>The hall</h4>
           <div class="k">Ground floor</div>
@@ -93,7 +95,7 @@ figcaption b { color: var(--brass2); font-family: var(--title); font-weight: 400
           <div class="row"><span>Infirmary · <span class="name">Odric Hale</span>, 6 days</span><span class="muted">level 1</span></div>
           <div class="k">Compound</div>
           <div class="row"><span>Training yard · 4 at drill</span><span class="muted">level 1</span></div>
-          <p class="muted">The steward runs building and staff this year (D-195). Tap a room to see who is in it.</p>
+          <p class="muted">Building and staff run on defaults (D-195). Tap a room to see who is in it.</p>
         </div>
         <div class="pull">▼ Pull to continue<small>to Thursday: a party is due home</small></div>
         <div class="tabs"><span class="on">Hall</span><span>March</span><span>Desk</span><span>Ask</span></div>
@@ -103,14 +105,13 @@ figcaption b { color: var(--brass2); font-family: var(--title); font-weight: 400
 
     <figure>
       <div class="device">
-        <div class="top"><span class="g">The Lantern Guild</span><span class="d">Wk 9 · Yr 1 · 412 s</span></div>
+        <div class="top"><span class="g">The Lantern Guild</span><span class="d">Wk 30 · Yr 1 · 312 g 6 s</span></div>
         <div class="body">
           <h4>Desk</h4>
-          <div class="seg"><span class="on">Letters 3</span><span>Contracts 4</span><span>Roster</span><span>Year</span></div>
+          <div class="seg"><span class="on">Letters 2</span><span>Contracts 4</span><span>Roster</span><span>Year</span></div>
           <div class="row"><span><b style="font-weight:400;font-family:var(--title)">● From Wenna Reed</b><br><span class="muted">We are home from the Hollow Barrow…</span></span><span class="n muted">today</span></div>
-          <div class="row"><span><b style="font-weight:400;font-family:var(--title)">● The Brothers of Saint Aldo</b><br><span class="muted">It is with sorrow…</span></span><span class="n muted">today</span></div>
-          <div class="row"><span><b style="font-weight:400;font-family:var(--title)">● The patron's clerk</b><br><span class="muted">Your target for the year stands…</span></span><span class="n muted">wk 8</span></div>
-          <div class="row"><span>Week 8 report<br><span class="muted">1 quest won, wages 96 s, chest 412 s</span></span><span class="n muted">wk 8</span></div>
+          <div class="row"><span><b style="font-weight:400;font-family:var(--title)">● The patron's clerk</b><br><span class="muted">Your target for the year stands…</span></span><span class="n muted">wk 29</span></div>
+          <div class="row"><span>Week 29 report<br><span class="muted">1 quest won, wages 8 g 4 s, chest 312 g 6 s</span></span><span class="n muted">wk 29</span></div>
           <p class="muted">Letters that need an answer (a death, a fire, a signing window) stop the calendar until read.</p>
         </div>
         <div class="tabs"><span>Hall</span><span>March</span><span class="on">Desk</span><span>Ask</span></div>
@@ -120,7 +121,7 @@ figcaption b { color: var(--brass2); font-family: var(--title); font-weight: 400
 
     <figure>
       <div class="device">
-        <div class="top"><span class="g">Contract</span><span class="d">expires wk 11</span></div>
+        <div class="top"><span class="g">Contract</span><span class="d">Wk 29 · expires wk 30</span></div>
         <div class="body">
           <h4>Clear the Hollow Barrow</h4>
           <p class="muted">Restless dead · perilous · twist: foul weather · 3 days out, 3 back · fee 180 s</p>
@@ -128,22 +129,22 @@ figcaption b { color: var(--brass2); font-family: var(--title); font-weight: 400
           <div class="row"><span>The Fen Lanterns</span><span class="pill good">all fit</span></div>
           <div class="hist" style="font-size:15px">
             <div><span class="when">front</span><span><span class="name">Wenna Reed</span>, warrior · <span class="name">Bram Ketch</span>, warrior</span></div>
-            <div><span class="when">back</span><span><span class="name">Ash Thorne</span>, cleric · <span class="name">Kit Mallow</span>, rogue</span></div>
+            <div><span class="when">back</span><span><span class="name">Ash Thorne</span>, cleric · <span class="name">Kit Mallow</span>, rogue · <span class="name">Linnet Withy</span>, rogue</span></div>
           </div>
           <p class="muted">Swap a member for this contract only: tap a name.</p>
           <div class="k">Plan</div>
-          <div class="seg"><span>Stealth</span><span class="on">Assault</span><span>Talk</span></div>
+          <div class="seg"><span>Stealth</span><span class="on">Assault</span><span>Diplomacy</span></div>
           <div class="seg"><span>Cautious</span><span class="on">Steady</span><span>Bold</span></div>
-          <div class="seg"><span>Badly hurt</span><span class="on">Down</span><span>Dying</span><span>Never</span></div>
+          <div class="seg"><span class="on">Leader's call</span><span>Badly hurt</span><span>Down</span><span>Dying</span><span>Never</span></div>
           <div class="btns" style="margin-top:auto"><span class="btn">Back</span><span class="btn main">Send them</span></div>
         </div>
       </div>
-      <figcaption><b>3 · Send a party.</b> A contract from the Desk: the standing party, swaps for this contract only, and the plan's three levers (D-014, D-121).</figcaption>
+      <figcaption><b>3 · Send a party.</b> A week earlier, a contract from the Desk: the standing party, swaps for this contract only, and the plan's three levers (D-014, D-121).</figcaption>
     </figure>
 
     <figure>
       <div class="device">
-        <div class="top"><span class="g">A letter home</span><span class="d">Wk 9 · Yr 1</span></div>
+        <div class="top"><span class="g">A letter home</span><span class="d">Wk 30 · Yr 1</span></div>
         <div class="body">
           <div class="letter">
             <p>Guildmaster,</p>
@@ -166,16 +167,16 @@ figcaption b { color: var(--brass2); font-family: var(--title); font-weight: 400
         <div class="body">
           <p class="letter" style="font-size:15px">Born in Withy Cross, a ferryman's son; poled barges on the Stour until the flood year.</p>
           <div class="hist">
-            <div><span class="when">Might</span><span class="n">14 · Agility 11 · Grit 13 · Wits 9</span></div>
-            <div><span class="when">Record</span><span>7 quests · 6 won · 1 injury · 61 s a week</span></div>
+            <div><span class="when">Might</span><span class="n">14 · Agility 11 · Toughness 13 · Wits 9</span></div>
+            <div><span class="when">Record</span><span>7 quests · 6 won · no injuries · 6 s 1 c a week</span></div>
           </div>
           <div class="k">Friends</div>
           <p><span class="name">Kit Mallow</span> (6 quests together) · <span class="name">Wenna Reed</span> (5)</p>
           <div class="k">History</div>
           <div class="hist">
-            <div><span class="when">Wk 9 Y1</span><span>Held the passage at the Hollow Barrow while Kit was carried out.</span></div>
-            <div><span class="when">Wk 7 Y1</span><span>Became friends with Kit Mallow, after their sixth road together.</span></div>
-            <div><span class="when">Wk 6 Y1</span><span>Broke an arm at Gallows Ford; out 5 weeks.</span></div>
+            <div><span class="when">Wk 30 Y1</span><span>Held the passage at the Hollow Barrow while Kit was carried out.</span></div>
+            <div><span class="when">Wk 24 Y1</span><span>Became friends with Kit Mallow, after their fifth road together.</span></div>
+            <div><span class="when">Wk 14 Y1</span><span>Badly hurt at Gallows Ford; rested 9 days.</span></div>
             <div><span class="when">Wk 3 Y1</span><span>Grew stronger at drill (Might 13 → 14).</span></div>
             <div><span class="when">Wk 1 Y1</span><span>Joined with the Fen Lanterns at the founding.</span></div>
           </div>
@@ -186,16 +187,16 @@ figcaption b { color: var(--brass2); font-family: var(--title); font-weight: 400
 
     <figure>
       <div class="device">
-        <div class="top"><span class="g">In memory</span><span class="d">Wk 23 · Yr 1</span></div>
+        <div class="top"><span class="g">In memory</span><span class="d">Wk 12 · Yr 2</span></div>
         <div class="body">
           <p class="bell">· the bell tolls ·</p>
           <div class="letter">
             <p>Guildmaster,</p>
-            <p>It is with sorrow that we write. <span class="name">Kit Mallow</span> died at Coldharbour Mill on the twenty-third week, struck down by the miller's hounds as the party fell back.</p>
+            <p>It is with sorrow that we write. <span class="name">Kit Mallow</span> died at Coldharbour Mill in the twelfth week of the second year, struck down by the miller's hounds as the party fell back.</p>
             <p>Kit came to you from the Ferriby tanneries and served eleven quests. They are remembered for slipping the bolt at Gallows Ford, and for the night at the Hollow Barrow.</p>
             <p><span class="name">Bram Ketch</span> carried Kit home and has not spoken since. <span class="name">Wenna Reed</span> asks that Kit's share go to the family.</p>
             <p>We will lay Kit in the guild's ground on Thursday.</p>
-            <p class="sign">Brother Anselm, of Saint Aldo's</p>
+            <p class="sign">Brother Anselm, the guild's chaplain</p>
           </div>
           <div class="btns" style="margin-top:auto"><span class="btn">Kit's card</span><span class="btn main">Close</span></div>
         </div>
@@ -205,7 +206,7 @@ figcaption b { color: var(--brass2); font-family: var(--title); font-weight: 400
 
     <figure>
       <div class="device">
-        <div class="top"><span class="g">The March</span><span class="d">Wk 9 · Yr 1 · 412 s</span></div>
+        <div class="top"><span class="g">The March</span><span class="d">Wk 30 · Yr 1 · 312 g 6 s</span></div>
         <div class="body">
           <h4>On the road</h4>
           <div class="row"><span>The Reed Wardens → Gallows Ford<br><span class="muted">arrive Tue, home Sat</span></span><span class="pill warn">hazardous</span></div>
@@ -213,8 +214,8 @@ figcaption b { color: var(--brass2); font-family: var(--title); font-weight: 400
           <div class="row"><span>The Fen Lanterns</span><span class="muted">resting, 1 hurt</span></div>
           <div class="row"><span>Unassigned · 2</span><span class="muted">Hob Pike, Essa Carr</span></div>
           <div class="k">Places</div>
-          <div class="row"><span>Hollow Barrow</span><span class="muted">3 days · won wk 9</span></div>
-          <div class="row"><span>Gallows Ford</span><span class="muted">2 days · lost wk 6</span></div>
+          <div class="row"><span>Hollow Barrow</span><span class="muted">3 days · won wk 30</span></div>
+          <div class="row"><span>Gallows Ford</span><span class="muted">2 days · lost wk 14</span></div>
           <div class="row"><span>Coldharbour Mill</span><span class="muted">4 days</span></div>
           <p class="muted">A text list for now; the map comes with the engine test (D-164).</p>
         </div>
@@ -263,12 +264,12 @@ figcaption b { color: var(--brass2); font-family: var(--title); font-weight: 400
       </ul>
     </div>
     <div>
-      <h3>Still open</h3>
+      <h3>Settled since</h3>
       <ul>
-        <li>How many quests together make friends (assumption: 5).</li>
-        <li>Who writes the memorial: the guild's chaplain or the party's leader.</li>
-        <li>Whether the founding draft (D-188) opens the game, or a fixed start.</li>
+        <li>Settled in D-199: friends after 5 quests together, the guild's chaplain writes memorials, the founding draft opens each game.</li>
+        <li>Prototype only (D-197): leaders take every retreat call while the party is away; the full game keeps major moments as stops (D-032, D-038).</li>
       </ul>
     </div>
   </section>
 </div>
+</html>
