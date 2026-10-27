@@ -1,7 +1,8 @@
 // Data for the desk-density mock-up (R4, PLAN §9a): plays a 30-strong guild (six parties, the
 // top-guild load of §9d) to the start of week 23 and writes its roster, weekly ledger, board,
-// parties and latest letter into docs/design/mockups/desk-density.html between the DATA markers.
-// Usage: node tools/make-desk-data.ts [seed=desk-1]
+// parties and latest letter into a mock-up page between the DATA markers: the desk page, or the
+// phone R4 page (D-154, D-159).
+// Usage: node tools/make-desk-data.ts [seed=desk-1] [page=docs/design/mockups/desk-density.html]
 import { readFileSync, writeFileSync } from 'node:fs';
 import {
   shapeOf,
@@ -24,7 +25,7 @@ import { rules, runYear } from './year-sim-play.ts';
 const seed = process.argv[2] ?? 'desk-1';
 const WEEK = 23;
 const SIZE = 30;
-const PAGE = 'docs/design/mockups/desk-density.html';
+const PAGE = process.argv[3] ?? 'docs/design/mockups/desk-density.html';
 const today = (WEEK - 1) * rules.daysPerWeek + 1;
 const { state, events } = runYear(
   seed,
