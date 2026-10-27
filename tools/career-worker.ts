@@ -1,11 +1,10 @@
-// Worker thread for tools/career-sim.ts (D-148): plays the careers it is sent and posts them back.
-import { parentPort, workerData } from 'node:worker_threads';
+// Worker thread for tools/balance/pool.ts (D-148): asks for a career, plays it, posts it back and
+// asks again, so a thread that drew short careers takes more of them.
+import { parentPort } from 'node:worker_threads';
 import { playCareer, type CareerJob, type CareerSetup } from './career-play.ts';
 
-// cast-ok: career-sim.ts sends exactly this shape.
-const { setup, jobs } = workerData as {
-  setup: CareerSetup;
-  jobs: { index: number; job: CareerJob }[];
-};
-for (const { index, job } of jobs)
-  parentPort?.postMessage({ index, career: playCareer(setup, job) });
+parentPort?.on('message', (m: { index: number; setup: CareerSetup; job: CareerJob } | null) => {
+  if (m === null) return parentPort?.close();
+  parentPort?.postMessage({ index: m.index, career: playCareer(m.setup, m.job) });
+});
+parentPort?.postMessage('ready');

@@ -20,6 +20,7 @@ import {
   staffGuildRules,
 } from '@adventure-manager/content';
 import { POLICIES, rules, runYear } from './year-sim-play.ts';
+import { applyOverrides, type Override } from './balance/overrides.ts';
 
 export interface CareerSetup {
   readonly maxYears: number;
@@ -29,6 +30,8 @@ export interface CareerSetup {
   readonly houseMode: 'off' | 'on';
   /** With house=on: incidents and inn lodgers (house/SPEC.md). */
   readonly incidentsMode?: 'off' | 'on';
+  /** Changes to a copy of the content (tools/balance/overrides.ts); none plays the content as written. */
+  readonly overrides?: readonly Override[];
 }
 
 /** One career to play: its seed, the player policy's name, and whether staff run both areas. */
@@ -96,6 +99,39 @@ export interface Career {
   seconds: number;
 }
 
+// One content copy per setup and thread: overrides copy the content, and a thread plays many careers.
+const contents = new Map<string, ReturnType<typeof buildContent>>();
+
+function buildContent(setup: CareerSetup) {
+  return {
+    ...baseResolution,
+    guild:
+      setup.houseMode === 'on'
+        ? setup.incidentsMode === 'on'
+          ? houseIncidentGuildRules
+          : houseGuildRules
+        : setup.staffMode === 'compare'
+          ? staffGuildRules
+          : careerGuildRules,
+  };
+}
+
+/** The content a career with this setup plays, overrides applied. */
+export function contentFor(setup: CareerSetup) {
+  const key = JSON.stringify([
+    setup.houseMode,
+    setup.incidentsMode,
+    setup.staffMode,
+    setup.overrides,
+  ]);
+  let content = contents.get(key);
+  if (!content) {
+    content = applyOverrides(buildContent(setup), setup.overrides ?? []);
+    contents.set(key, content);
+  }
+  return content;
+}
+
 /** Where the barracks cells are, as keys, so a burnt-out cell shows as one gone from the day before. */
 function barracksKeys(house: HouseState): Set<string> {
   const keys = new Set<string>();
@@ -114,17 +150,7 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
   const { seed, delegate } = job;
   const planToUse = POLICIES[job.policy];
   if (!planToUse) throw new Error(`Unknown policy ${job.policy}.`);
-  const content = {
-    ...baseResolution,
-    guild:
-      setup.houseMode === 'on'
-        ? setup.incidentsMode === 'on'
-          ? houseIncidentGuildRules
-          : houseGuildRules
-        : setup.staffMode === 'compare'
-          ? staffGuildRules
-          : careerGuildRules,
-  };
+  const content = contentFor(setup);
   const started = performance.now();
   const skillDays: Record<Area, number> = { training: 0, recovery: 0 };
   let days = 0;
