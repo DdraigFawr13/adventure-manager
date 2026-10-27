@@ -1135,7 +1135,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 ## D-175 The home town is a faction
 
 - **Status:** Accepted (2026-10-27).
-- **Decision:** The home town is a faction, and the standing that holds the town sites (D-171) is its faction standing (D-019), one value in the faction ledger. Patronage, contracts for the town, scandals and failing the town all move it. The town screen shows that value with the mark below which the boosts stop. Not settled: whether the home town is one of the 6 launch factions (PLAN §7, §12) or a seventh.
+- **Decision:** The home town is a faction, and the standing that holds the town sites (D-171) is its faction standing (D-019), one value in the faction ledger. Patronage, contracts for the town, scandals and failing the town all move it. The town screen shows that value with the mark below which the boosts stop. It is one of the two city factions (D-181).
 - **Why:** Owner's choice (2026-10-27), the recommended option "Town is a faction", over a separate town meter. One value per faction already exists, so a second meter would be bolted on (WS-05).
 
 ## D-176 Only the gate and strongroom are locked to a floor
@@ -1168,3 +1168,27 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Details D-178; amends D-176 (the gate) and D-169 (the starting gate).
 - **Decision:** The compound continues the hall's side-on cutaway at ground level: the player swipes left or right from the hall to the yard, where outdoor plots are drawn at the same scale. The hall stays the home screen (D-155). Four kinds are compound-only: the training yard, the works yard, the gate (now in the compound wall, not the hall's ground floor) and the smith's forge. The other room kinds (barracks, infirmary, armoury, library, tavern, strongroom, Hall of Heroes) stay in the hall, with the strongroom below ground (D-176). Assumed until the simulator sets them: the compound's width in plots, and that compound plots follow the hall's rules (1–3 plots per building, same kinds side by side merge, 3 levels, D-172).
 - **Why:** Owner's choice (2026-10-27): the recommended view "Side-on, swipe sideways", over a top-down compound with the hall as one building and over a separate Grounds plan; and for outdoor-only kinds, the recommended works yard and gate plus the smith's forge, leaving the Hall of Heroes in the hall. One picture in one projection keeps the hub as it is.
+
+## D-181 The home town is one of the two city factions
+
+- **Status:** Accepted (2026-10-27). Settles the open point in D-175.
+- **Decision:** The guild's home town is one of the 2 city factions among the 6 launch factions (PLAN §7: the crown, two cities, a temple, a merchant house, the outlaws). Funding its sites and doing its contracts move that one city's standing (D-175). The faction count stays 6. The other city is the natural rival town if more towns get sites in an update (D-168); that is a session note, not decided.
+- **Why:** Owner's choice (2026-10-27), the recommended option "One of the two cities", over a seventh faction for the town council and over the town following a bigger faction's standing. It adds no new crest, writing or balance work.
+
+## D-182 Members who lose their bed lodge at the inn, for a fee
+
+- **Status:** Accepted (2026-10-27). Settles the open point in D-174.
+- **Decision:** If an incident (D-173) or anything else destroys beds while members are signed, the members without a bed lodge at the home town's inn for a weekly fee per member, shown on the Money page, until beds are rebuilt. The fee is lower when the guild funds the inn (D-171). While anyone lodges there is no free bed, so signing stays blocked under D-174 and the inn can't grow the roster past the beds. The fee amounts, and what happens if the guild can't pay, are set with the year simulator.
+- **Why:** Owner's choice (2026-10-27), "Lodge at the inn, for a fee", over the recommended option (sleep rough with a morale cost until rebuilt) and over releasing members until the roster fits. It ties a house incident to the town.
+
+## D-183 The compound starts at 3 plots a side and its walls can be pushed out
+
+- **Status:** Accepted (2026-10-27). Settles the compound's width, left assumed in D-180.
+- **Decision:** A new guild owns 3 plots on each side of the hall (6 in all). Buying the neighbouring land pushes a wall out by 1 plot at a rising cost, up to about 6 plots a side. Compound plots follow the hall's rules: a building takes 1–3 plots, same kinds side by side merge, and each kind has 3 levels (D-169, D-172). Land prices are set with the year simulator.
+- **Why:** Owner's choice (2026-10-27), the recommended option "3 plots a side, walls expand", over a fixed 3 a side and over starting with 1 a side. It matches the mock-up and gives a long career room to grow.
+
+## D-184 One hand-made home town: 5 sites standing and 3 spare plots
+
+- **Status:** Accepted (2026-10-27). Settles the town's layout, left open in D-179.
+- **Decision:** The home town is one hand-drawn map, the same in every new game. It shows the 5 launch sites already standing (D-171), some unfunded at the start; the guild's compound; the council hall of its city faction (D-181); and 3 empty plots held for site kinds added in updates. At launch the guild's first payment to an unfunded site counts as founding it (D-179). Not settled: what the 3 spare plots show at launch before any update fills them.
+- **Why:** Owner's choice (2026-10-27), the recommended option "Hand-made, 5 sites + 3 plots", over a town generated per game and over a town of 5 empty plots. The map art is drawn once and reads the same in every game.
