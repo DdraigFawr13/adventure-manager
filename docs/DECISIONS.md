@@ -615,6 +615,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** The launch March has a hand-illustrated base map in layers; live marks and later generated regions use the procedural ink renderer built for the quest board. Launch layers: areas and places, factions, guilds (with tier), action (moving parties, key-moment seals) and threats (spreading stains, closed roads), each linked to its Trace. Deeds and rumours on the map come later (meanwhile Chronicle and inbox). The map is to look better over time; the owner's Story-Generator repository is a lead for its art direction. Detail: `docs/design/PLAN.md` §12d; mock-up `docs/design/mockups/kingdom-map.html`.
 - **Amended (2026-10-26, D-109, D-113):** launch layers are places, guilds and action; factions and threats layers follow in an update. The slice's corner is drawn at M2 and the full base after alpha balance.
 - **Why:** Owner's choice (Plan Q12a): the best-looking launch map with a path to generated regions; a smaller launch layer set.
+- **Amended (2026-10-27, D-164):** the map pans and zooms freely, and every mark opens a pop-up with details and an image.
 
 ## D-098 Art and audio production lists and rough costs
 
@@ -1056,3 +1057,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Supersedes D-090's two-engine choice and D-110's Godot fallback.
 - **Decision:** The game is built in web tech (TypeScript), one codebase wrapped for both phone stores (D-151). Godot is not built as a fallback. The phone engine test (D-154) keeps its bars; if the web build misses one, the owner decides what follows.
 - **Why:** Owner (2026-10-27), asked whether the fallback still stands after D-151: "Godot fallback does not stand".
+
+## D-164 The March is a free pan-and-zoom map where everything shown can be tapped
+
+- **Status:** Accepted (2026-10-27) as the direction for the March tab (D-149) and the kingdom map (D-087, D-097). The images' scope and cost are to be set in the map workshop (D-144).
+- **Decision:** The March is one canvas the player moves and zooms freely, with pinch and drag on phones, rather than fixed zoom steps. Towns, places, parties, events and the other marks of the launch layers (places, guilds, action; D-097) show on it, and tapping any of them opens a pop-up with its details and an image. The phone engine test (D-154) builds this first: free pan and zoom at 60 fps, tappable marks and a pop-up with a placeholder image. The R4 fact test keeps its still map, so round 2 stays comparable with round 1.
+- **Why:** Owner (2026-10-27): "for the march by the way I want it to be like a free move zoom canvas map and I want towns and places and events and whatnot to show on the map and be clickable to show a pop-up screen with details and images". It replaces the stepped March, Shire and town zoom of the D-149 mock-up.

@@ -18,6 +18,7 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { height: 100%; }
 body { margin: 0; background: var(--desk2); color: var(--chrome); font-family: var(--ledger); font-size: 16px; line-height: 1.4; font-variant-numeric: lining-nums; -webkit-tap-highlight-color: transparent; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--desk2); }
@@ -274,7 +275,7 @@ function hallScreen() {
 }
 const backBtn = `<button type="button" class="back" data-go="hall">‹ The hall</button>`;
 const head = (name, staff) => `${backBtn}<div class="roomhead"><h2>${name}</h2>${staff ? `<div class="staff"><span>${staff}</span><span>You run it</span></div>` : ''}</div>`;
-const filterBox = () => `<div class="filter"><label for="nameq" hidden>Filter by name</label><input id="nameq" type="search" autocomplete="off" placeholder="Filter by name" value="${esc(nameQ)}"></div>`;
+const filterBox = () => `<div class="filter"><input id="nameq" type="search" autocomplete="off" aria-label="Filter by name" placeholder="Filter by name" value="${esc(nameQ)}"><p class="note" id="nomatch" hidden>No one by that name here.</p></div>`;
 const personRow = (p, right) => `<button type="button" class="li" data-person="${p.id}" data-name="${esc(p.name.toLowerCase())}"><span class="l"><b>${esc(p.name)}</b><span>${esc(p.class)} · ${p.position} line</span></span><span class="rt">${right}</span></button>`;
 function roomScreen(k) {
   const L = living();
@@ -356,7 +357,7 @@ function roster() {
   for (const p of DATA.roster) counts[p.status.kind] += 1;
   return `<div class="chips">${[['all', 'Everyone'], ['fit', 'Fit'], ['away', 'Away'], ['out', 'Hurt'], ['dead', 'Dead']].map(([k, n]) => `<button type="button" class="chip ${rfilter === k ? 'on' : ''}" data-rfilter="${k}">${n} ${counts[k]}</button>`).join('')}</div>
   ${filterBox()}<div class="scroll"><table class="led sticky1"><thead><tr>${th('name', 'Name')}${th('class', 'Class')}${th('status', 'Status')}${th('wage', 'Wage', 'r')}${th('quests', 'Quests', 'r')}</tr></thead>
-  <tbody id="people">${rows.map((p) => `<tr data-name="${esc(p.name.toLowerCase())}"><td>${who(p)}</td><td>${esc(p.class)}</td><td>${pill(p)}</td><td class="r">${p.status.kind === 'dead' ? '—' : money(p.wageCopper)}</td><td class="r">${p.quests}</td></tr>`).join('')}</tbody></table></div>
+  <tbody id="people">${rows.map((p) => `<tr data-name="${esc(p.name.toLowerCase())}"${nameQ && !p.name.toLowerCase().includes(nameQ) ? ' hidden' : ''}><td>${who(p)}</td><td>${esc(p.class)}</td><td>${pill(p)}</td><td class="r">${p.status.kind === 'dead' ? '—' : money(p.wageCopper)}</td><td class="r">${p.quests}</td></tr>`).join('')}</tbody></table></div>
   <p class="note">Tap a column to sort; tap a name for the person's card.</p>`;
 }
 
@@ -480,7 +481,7 @@ function pickDistinct(right, pool, n = 3) {
   return out;
 }
 // Near misses for a money answer, used when the ledger has too few other values (every week's wages can be equal).
-const nearMoney = (copper) => [copper + 140, copper - 90, copper + 260, copper - 230, copper + 55].filter((c) => c > 0).map(money);
+const nearMoney = (copper) => [copper + 140, copper - 90, copper + 260, copper - 230, copper + 55].filter((c) => c !== 0 && Math.sign(c) === Math.sign(copper)).map(money);
 function shuffled(arr, seed) { const a = [...arr]; let s = seed; for (let i = a.length - 1; i > 0; i -= 1) { s = (s * 1103515245 + 12345) % 2147483648; const j = s % (i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function questions() {
   // A name two people share would make the question ambiguous, so only unique names are asked about.
@@ -509,7 +510,7 @@ function questions() {
     qs.push({ q: `Where is ${member} now?`, a: `Away at ${cap(party.site)}`, pool: ['At the hall, fit', 'In the infirmary', ...sites.map((s) => `Away at ${s}`)] });
   }
   const spares = [
-    () => { const x = DATA.weeks[9]; return { q: `How much was in the chest at the end of week ${x.week}?`, a: money(x.chest), pool: [...DATA.weeks.slice(5, 15).map((y) => money(y.chest)), ...nearMoney(Math.abs(x.chest))] }; },
+    () => { const x = DATA.weeks[9]; return { q: `How much was in the chest at the end of week ${x.week}?`, a: money(x.chest), pool: [...DATA.weeks.slice(5, 15).map((y) => money(y.chest)), ...nearMoney(x.chest)] }; },
     () => { const dead = DATA.roster.find((p) => p.status.kind === 'dead' && unique(p.name)); return dead ? { q: `Where did ${dead.name} die?`, a: cap(dead.status.where), pool: DATA.board.map((o) => cap(o.site)) } : null; },
   ];
   for (const s of spares) if (qs.length < 5) { const x = s(); if (x) qs.push(x); }
@@ -535,22 +536,23 @@ function quizRender() {
     box.innerHTML = `<div class="h"><span>${n}</span><span class="clock">${quiz.last.toFixed(1)} s</span></div><p class="q">${esc(cur.q)}</p><div class="opts">${cur.options.map((o, i) => `<button type="button" class="btn opt" data-opt="${i}">${esc(o)}</button>`).join('')}</div>`;
   }
 }
+function focusQuiz() { const b = $('quiz').querySelector('button'); if (b) b.focus({ preventScroll: true }); }
 function quizStart() {
   quiz = { qs: questions(), at: 0, phase: 'read', started: 0, last: 0, results: [], path: [], asks: [] };
   view = { tab: 'hall', room: null, desk: 'notices' };
   personId = null; chat.length = 0; findQ = ''; nameQ = '';
-  renderCard(); render(); quizRender();
+  renderCard(); render(); quizRender(); focusQuiz();
   window.scrollTo(0, 0);
 }
 function logView(name) { if (quiz && quiz.phase === 'ask' && quiz.path[quiz.path.length - 1] !== name) quiz.path.push(name); }
-function quizFound() { quiz.last = (performance.now() - quiz.started) / 1000; quiz.phase = 'pick'; quizRender(); }
+function quizFound() { quiz.last = (performance.now() - quiz.started) / 1000; quiz.phase = 'pick'; quizRender(); focusQuiz(); }
 function quizPick(i) {
   const cur = quiz.qs[quiz.at];
   const chosen = cur.options[i];
-  quiz.results.push({ q: cur.q, answer: cur.a, chosen, ok: chosen === cur.a, s: Math.round(quiz.last * 10) / 10, path: quiz.path, asks: quiz.asks });
+  quiz.results.push({ q: cur.q, answer: cur.a, chosen, ok: chosen === cur.a, s: Math.round(quiz.last * 10) / 10, fast: quiz.last < 1.5, path: quiz.path, asks: quiz.asks });
   quiz.at += 1; quiz.phase = 'read'; quiz.path = []; quiz.asks = [];
   if (quiz.at >= quiz.qs.length) { finish(); return; }
-  view = { tab: 'hall', room: null, desk: 'notices' }; personId = null; findQ = ''; nameQ = ''; renderCard(); render(); quizRender(); window.scrollTo(0, 0);
+  view = { tab: 'hall', room: null, desk: 'notices' }; personId = null; findQ = ''; nameQ = ''; renderCard(); render(); quizRender(); focusQuiz(); window.scrollTo(0, 0);
 }
 async function finish() {
   const results = quiz.results;
@@ -570,7 +572,7 @@ async function finish() {
 }
 function resultScreen(results, passed, summary, state) {
   return `<div class="intro"><h1>Fact test done</h1><p class="score">${passed} of ${results.length} found in under 10 seconds and right</p>
-  <div class="scroll"><table class="led res"><thead><tr><th>Fact</th><th class="r">Time</th><th>Result</th></tr></thead><tbody>${results.map((r, i) => `<tr><td class="wrap">${i + 1}. ${esc(r.q)}<br><span class="muted">${esc(r.answer)}${r.ok ? '' : `; you picked ${esc(r.chosen)}`}</span></td><td class="r">${r.s.toFixed(1)} s</td><td class="${r.ok && r.s < 10 ? 'pass' : 'fail'}">${r.ok ? (r.s < 10 ? 'pass' : 'right, slow') : 'wrong'}</td></tr>`).join('')}</tbody></table></div>
+  <div class="scroll"><table class="led res"><thead><tr><th>Fact</th><th class="r">Time</th><th>Result</th></tr></thead><tbody>${results.map((r, i) => `<tr><td class="wrap">${i + 1}. ${esc(r.q)}<br><span class="muted">${esc(r.answer)}${r.ok ? '' : `; you picked ${esc(r.chosen)}`}</span></td><td class="r">${r.s.toFixed(1)} s</td><td class="${r.ok && r.s < 10 ? 'pass' : 'fail'}">${r.ok ? (r.s < 10 ? 'pass' : 'right, slow') : 'wrong'}${r.fast ? '<br><span class="muted">under 1.5 s: a guess?</span>' : ''}</td></tr>`).join('')}</tbody></table></div>
   <p id="save-state" class="note">${esc(state)}</p>
   <div class="row" style="display:flex; gap:8px; flex-wrap:wrap"><button type="button" class="btn" id="copy">Copy results</button><button type="button" class="btn ghost" id="again">Back to the intro</button></div>
   <textarea id="summary" readonly rows="5" style="width:100%; font:inherit; font-size:15px; background:var(--paper3); color:var(--ink); border:1px solid var(--rule); padding:8px">${esc(summary)}</textarea></div>`;
@@ -614,15 +616,15 @@ document.addEventListener('click', (e) => {
   if (!t) return;
   const ds = t.dataset;
   if (t.id === 'start') quizStart();
-  else if (t.id === 'look') { lookedFirst = true; go({ tab: 'hall', room: null }); }
+  else if (t.id === 'look') { if (!runsHere) lookedFirst = true; go({ tab: 'hall', room: null }); }
   else if (t.id === 'again') go({ tab: 'intro', room: null, desk: 'notices' });
   else if (t.id === 'copy') { const ta = $('summary'); navigator.clipboard?.writeText(ta.value).then(() => { t.textContent = 'Copied'; }, () => { ta.select(); }); }
-  else if (t.id === 'quiz-go') { view = { tab: 'hall', room: null, desk: 'notices' }; personId = null; findQ = ''; nameQ = ''; renderCard(); quiz.phase = 'ask'; quiz.path = []; render(); window.scrollTo(0, 0); quiz.started = performance.now(); quizRender(); }
+  else if (t.id === 'quiz-go') { view = { tab: 'hall', room: null, desk: 'notices' }; personId = null; findQ = ''; nameQ = ''; renderCard(); quiz.phase = 'ask'; quiz.path = []; render(); window.scrollTo(0, 0); quiz.started = performance.now(); quizRender(); focusQuiz(); }
   else if (t.id === 'quiz-found') quizFound();
   else if (ds.opt !== undefined) quizPick(Number(ds.opt));
   else if (t.id === 'card-close') { personId = null; renderCard(); }
   else if (ds.person) { personId = ds.person; renderCard(); }
-  else if (ds.tab) { if (view.tab === 'intro' && !quiz) lookedFirst = true; go({ tab: ds.tab, room: null }); }
+  else if (ds.tab) { if (view.tab === 'intro' && !quiz && !runsHere) lookedFirst = true; go({ tab: ds.tab, room: null }); }
   else if (ds.room) { if (ds.room === 'desk') go({ tab: 'desk', desk: 'notices' }); else go({ room: ds.room }); }
   else if (ds.roomGo) go({ tab: 'hall', room: ds.roomGo });
   else if (ds.go) go({ tab: ds.go, room: null });
@@ -634,13 +636,18 @@ document.addEventListener('click', (e) => {
 });
 document.addEventListener('input', (e) => {
   if (e.target.id === 'findq') { findQ = e.target.value; const out = $('findout'); if (out) out.innerHTML = findQ.trim().length > 1 ? answer(findQ) : ''; }
-  else if (e.target.id === 'nameq') { nameQ = e.target.value.toLowerCase().trim(); for (const row of document.querySelectorAll('#people [data-name]')) row.hidden = Boolean(nameQ) && !row.dataset.name.includes(nameQ); }
+  else if (e.target.id === 'nameq') {
+    nameQ = e.target.value.toLowerCase().trim();
+    let shown = 0;
+    for (const row of document.querySelectorAll('#people [data-name]')) { row.hidden = Boolean(nameQ) && !row.dataset.name.includes(nameQ); if (!row.hidden) shown += 1; }
+    const none = $('nomatch'); if (none) none.hidden = shown > 0;
+  }
 });
 document.addEventListener('change', (e) => { if (quiz && quiz.phase === 'ask' && (e.target.id === 'findq' || e.target.id === 'nameq') && e.target.value.trim()) quiz.asks.push(`${e.target.id === 'findq' ? 'find' : 'filter'}: ${e.target.value.trim()}`); });
 document.addEventListener('submit', (e) => { if (e.target.id !== 'askform') return; e.preventDefault(); const q = $('askq').value; ask(q); const i = $('askq'); if (i) i.focus(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && personId) { personId = null; renderCard(); } });
 setInterval(() => { const c = $('quiz-clock'); if (c && quiz && quiz.phase === 'ask') c.textContent = `${((performance.now() - quiz.started) / 1000).toFixed(1)} s`; }, 100);
-window.addEventListener('resize', () => { const el = $('size'); if (el) el.textContent = screenSize(); });
+window.addEventListener('resize', () => { const el = $('size'); if (el) el.textContent = screenSize(); if (view.tab === 'march') drawMap(); });
 view = { tab: 'intro', room: null, desk: 'notices' };
 render();
 </script>
