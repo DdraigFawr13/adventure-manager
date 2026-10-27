@@ -127,14 +127,26 @@ describe('standing parties (guild SPEC.md, D-014)', () => {
     run = advanceTo(run, 48 * 7 + 1);
     expect(guildOf(run).standing).toEqual([]);
     const retired = ofType(run.events, 'adventurer.retired').map((e) => e.id);
+    const left = ofType(run.events, 'party.assigned').filter((e) => e.to === null);
+    expect(left.map((e) => e.causeId)).toEqual(retired);
     const [disbanded] = ofType(run.events, 'party.disbanded');
-    expect(retired).toContain(disbanded!.causeId);
+    expect(left.map((e) => e.id)).toContain(disbanded!.causeId);
     expect(invariants(run)).toEqual([]);
   });
 });
 
 describe('backgrounds (guild SPEC.md, D-196)', () => {
   const backgrounds = { homes: ['home.a', 'home.b'], trades: ['trade.x', 'trade.y', 'trade.z'] };
+
+  it('draws the founding draft’s backgrounds on its own stream, moving nothing else', () => {
+    const withBg = picked({ backgrounds });
+    const without = picked();
+    expect(withBg.state.roster.every((a) => a.background !== undefined)).toBe(true);
+    expect(withBg.state.roster.map(({ background: _, ...rest }) => rest)).toEqual(
+      without.state.roster,
+    );
+    expect(Object.keys(withBg.state.rng)).toContain('guild.founding-backgrounds');
+  });
 
   it('gives each drawn person a home and a trade without moving any other draw', () => {
     const plain = foundedGuild(4);

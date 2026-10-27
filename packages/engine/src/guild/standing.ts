@@ -81,12 +81,9 @@ function disbandIfEmpty(turn: GuildTurn, party: StandingParty, causeId: string):
   turn.sink.emit({ type: 'party.disbanded', causeId, subjectIds: [party.id] });
 }
 
-/** A member who died or retired leaves their standing party; no event of its own (SPEC.md). */
+/** A member who died or retired leaves their standing party (SPEC.md), caused by the death or retirement. */
 export function leaveStanding(turn: GuildTurn, memberId: string, causeId: string): void {
-  const party = standingWith(turn, memberId);
-  if (!party) return;
-  party.memberIds.splice(party.memberIds.indexOf(memberId), 1);
-  disbandIfEmpty(turn, party, causeId);
+  move(turn, memberId, null, causeId);
 }
 
 export function standingCommand(

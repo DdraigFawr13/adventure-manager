@@ -10,6 +10,8 @@ import {
   writeMemorial,
   type Chronicle,
   type Command,
+  type GameEvent,
+  checkGuildInvariants,
   type GameState,
   type PersonSlot,
   type Variant,
@@ -126,6 +128,8 @@ type Bare = Command extends infer C ? (C extends unknown ? Omit<C, 'id'> : never
 interface Played {
   readonly state: GameState;
   readonly chronicle: Chronicle;
+  readonly events: readonly GameEvent[];
+  readonly commandIds: readonly string[];
 }
 
 /**
@@ -144,11 +148,15 @@ function playTwoYears(seed: string): Played {
     guild: null,
   };
   const chronicle = newChronicle();
+  const events: GameEvent[] = [];
+  const commandIds: string[] = [];
   let n = 0;
   const run = (command: Bare) => {
     // cast-ok: the id added back makes the union member whole.
     const result = simulate(state, { ...command, id: `c${(n += 1)}` } as Command);
     state = result.state;
+    events.push(...result.events);
+    commandIds.push(`c${n}`);
     recordEvents(chronicle, result.events, state, baseHistoryRules);
   };
   run({ type: 'guild.found', day: 1, size: 0 });
@@ -183,7 +191,7 @@ function playTwoYears(seed: string): Played {
       standingId: party.id,
     });
   }
-  return { state, chronicle };
+  return { state, chronicle, events, commandIds };
 }
 
 describe('histories over two played years (history SPEC.md)', () => {
@@ -208,6 +216,57 @@ describe('histories over two played years (history SPEC.md)', () => {
         expect(line).not.toMatch(/[{}]/);
       });
     expect([...kinds]).toEqual(expect.arrayContaining(['joined', 'quest', 'friend', 'died']));
+  });
+
+  it('keeps the guild invariants, standing parties included, over the two years', () => {
+    expect(checkGuildInvariants(state, played.events, played.commandIds)).toEqual([]);
+    expect(state.roster.some((a) => a.dead)).toBe(true);
+  });
+
+  it('writes the memorial cleanly for she, he and they', () => {
+    const who = state.roster.find((a) => a.dead)!; // non-null: the run has a death.
+    const life = summariseLife(chronicle, who.id, state.roster, baseHistoryRules);
+    for (const pronouns of ['she', 'he', 'they'] as const) {
+      const lines = writeMemorial(life, peopleText, {
+        ...options,
+        personOf: (id) => ({ ...personOf(id), pronouns }),
+      });
+      for (const l of lines) expect(l.text).not.toMatch(/[{}]|  /);
+      expect(lines.some((l) => /\b(he|she|they) (is|are) remembered\b/i.test(l.text))).toBe(
+        life.deeds.length > 0,
+      );
+      const agree = lines.find((l) => / remembered /.test(l.text))?.text ?? '';
+      expect(agree).not.toMatch(pronouns === 'they' ? /They is/ : /(She|He) are/);
+    }
+  });
+
+  it('writes a short life with no background or deeds, and a fall with no foe', () => {
+    const who = state.roster.find((a) => a.dead)!; // non-null: the run has a death.
+    const lines = writeMemorial(
+      {
+        id: who.id,
+        background: null,
+        quests: 1,
+        deeds: [],
+        fall: {
+          day: 9,
+          kind: 'died',
+          questId: 'q',
+          siteId: 'site.hollow-barrow',
+          cause: 'foe',
+          foeId: null,
+          writerId: null,
+          partyNameId: null,
+        },
+        friends: [],
+        leaderId: null,
+      },
+      peopleText,
+      options,
+    ).map((l) => l.text);
+    expect(lines.join(' ')).toContain('on 1 quest.');
+    expect(lines.join(' ')).toContain('barely begun');
+    expect(lines.join(' ')).not.toMatch(/struck down by|[{}]/);
   });
 
   it('records the founding party, quests and friends after 5 quests together', () => {
@@ -253,5 +312,13 @@ describe('histories over two played years (history SPEC.md)', () => {
       return [...letter, '', ...card].join('\n');
     });
     await expect(`${out.join('\n\n---\n\n')}\n`).toMatchFileSnapshot('./golden/memorials.txt');
+  });
+});
+
+describe('step 4 content numbers', () => {
+  it('fits the founding party in one standing party', () => {
+    const founding = houseGuildRules.founding!; // non-null: the house rules found through the draft.
+    expect(founding.partySize).toBeLessThanOrEqual(houseGuildRules.partySize.max);
+    expect(baseStandingRules.defaultPlan).toBeDefined();
   });
 });

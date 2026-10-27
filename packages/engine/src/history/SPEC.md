@@ -7,10 +7,11 @@ People's histories for the step 4 prototype (R7, PLAN §9a; D-196, D-199). Like 
 A chronicle is folded from every command's events, in order, with the state after the command (for the roster, standing parties and templates). The page keeps it in its save beside the state, so a person card never needs the whole event log. The same events always give the same chronicle.
 
 - **Entries:** each person has dated entries, oldest first: `joined` (`recruit.signed`; at the founding, with the standing party they joined), `quest` (one per member at `quest.ended`: the site, outcome, standing party, their worst wound step, their deed and who saved them), `injured` (`member.laid-up`: days out), `attribute` (`attribute.changed`: from, to, reason), `friend` (below), `fell-ill`, `died` (the site, how they fell and the foe, and the quest's writer, who leads the reaction) and `retired`.
-- **Deeds** come from the quest report's summary (report/SPEC.md) with the content's deed ranking: the same pass that picks the letter's deeds (the writer left out), then the writer's own best remaining deed, so every line in the letter is also in a history. Each living member gets at most one deed per quest.
+- **Deeds** come from the quest report's summary (report/SPEC.md) with the content's deed ranking: the same pass that picks the letter's deeds (the writer left out), then the writer's own best deed of a kind nobody else was given, so every line in the letter is also in a history. The quest entry keeps the writer, fixed when the quest ended: a view that writes the letter later uses it, because the best Wits may have changed by then. Each living member gets at most one deed per quest.
 - **Records:** quests, wins and injuries per person.
 - **Bonds (D-196, D-199):** every quest counts once for each pair of members who set out together. When a pair reaches the content's `friendAfterQuests` (5) and both came back alive, they become friends: a `friend` entry for each. Friends have no rule effect until party chemistry is designed (D-014).
 - **Places:** each site's last outcome and day, for the March's list.
+- Standing parties are named from `party.formed` events, so a party disbanded in the same command still names its entries.
 
 ## Lines (`writeHistoryLine`, `writeBackground`)
 
@@ -22,7 +23,7 @@ A chronicle is folded from every command's events, in order, with the state afte
 
 The guild's chaplain writes when someone dies (D-199; PLAN §8b rule 6: deaths are never quiet). Written sincerely (D-059) from the dead person's chronicle:
 
-- **Summary:** where they came from (background), quests served, their best deeds (up to 2, by the content's deed order, the latest first within a kind), how they fell (site, cause, foe), their living friends (up to 2, most quests together first) and the leader: the quest's writer, unless dead, the same person or already a friend.
+- **Summary:** where they came from (background), quests served, their best deeds (up to 2, by the content's deed order, the latest first within a kind), how they fell (site, cause, foe), their friends still in the guild (neither dead nor retired; up to 2, most quests together first) and the leader: the quest's writer, unless gone from the guild, the same person or already a friend. The same deed at the same site counts once. A fall with no foe named reads as a scene's.
 - **Sections** are content, as in the quest report: fixed families, and lists `deeds` (`memorial.deed.<kind>` with slot `site`) and `friends` (slot `friend`, with `count`). Facts: `cause.*`, `background` or `no-background`, `first-quest`, `veteran` (10+ quests), `deeds`/`no-deeds`, `friends`/`no-friends`, `leader`/`no-leader`.
 - The chaplain's name is picked from content's list by the save's seed, so one guild keeps one chaplain.
 - A golden test fixes one letter's text for a fixed seed.

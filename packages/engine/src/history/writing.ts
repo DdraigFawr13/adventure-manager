@@ -45,6 +45,11 @@ function deedSuffix(kind: string): string {
   return kind.replace(/^action:(action\.)?/, '');
 }
 
+/** A fall with no foe to name reads as a scene's, whatever struck. */
+function causeFact(fall: Extract<HistoryEntry, { kind: 'died' }>): string {
+  return fall.foeId === null ? 'cause.scene' : `cause.${fall.cause}`;
+}
+
 function capitalise(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
@@ -119,7 +124,7 @@ export function writeHistoryLine(
     case 'died':
       vars.site = options.nameOf(entry.siteId);
       vars.killer = entry.foeId ? options.nameOf(entry.foeId) : '';
-      facts.push(`cause.${entry.cause}`);
+      facts.push(causeFact(entry));
       break;
     case 'retired':
       vars.age = entry.age;
@@ -166,9 +171,12 @@ export function summariseLife(
       e.kind === 'quest' && e.deed ? [{ kind: e.deed.kind, siteId: e.siteId, at }] : [],
     )
     .sort((a, b) => order.indexOf(a.kind) - order.indexOf(b.kind) || b.at - a.at)
+    .filter((d, n, all) => all.findIndex((x) => x.kind === d.kind && x.siteId === d.siteId) === n)
     .slice(0, 2)
     .map(({ kind, siteId }) => ({ kind, siteId }));
-  const living = (other: string) => roster.some((a) => a.id === other && !a.dead);
+  // Still in the guild: neither dead nor retired.
+  const living = (other: string) =>
+    roster.some((a) => a.id === other && !a.dead && a.retiredYear === undefined);
   const friends = person.friends
     .filter(living)
     .map((other) => ({ id: other, quests: chronicle.together[pairKey(id, other)] ?? 0 }))
@@ -198,7 +206,7 @@ export function writeMemorial(
   options: WriteOptions,
 ): ReportLine[] {
   const facts = new Set<string>([
-    `cause.${life.fall.cause}`,
+    causeFact(life.fall),
     life.background ? 'background' : 'no-background',
     life.deeds.length > 0 ? 'deeds' : 'no-deeds',
     life.friends.length > 0 ? 'friends' : 'no-friends',

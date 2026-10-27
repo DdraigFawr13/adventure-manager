@@ -73,6 +73,7 @@ describe('the chronicle (history SPEC.md)', () => {
           (e) => e.kind === 'quest' && e.questId === summary.questId,
         );
         expect(entry?.kind === 'quest' && entry.deed?.kind).toBe(note.kind);
+        expect(entry?.kind === 'quest' && entry.writerId).toBe(summary.writerId);
       }
     }
   });
@@ -184,6 +185,7 @@ describe('history lines and the memorial letter (history SPEC.md)', () => {
       partyNameId: null,
       worst: 0,
       deed: { kind: 'striker', count: 4 },
+      writerId: null,
       savedBy: null,
       died: false,
     } as const;
@@ -210,6 +212,7 @@ describe('history lines and the memorial letter (history SPEC.md)', () => {
           partyNameId: null,
           worst: 0,
           deed: { kind: 'striker', count: 3 },
+          writerId: null,
           savedBy: null,
           died: false,
         },
@@ -222,6 +225,7 @@ describe('history lines and the memorial letter (history SPEC.md)', () => {
           partyNameId: null,
           worst: 0,
           deed: { kind: 'striker', count: 1 },
+          writerId: null,
           savedBy: null,
           died: false,
         },
@@ -234,6 +238,7 @@ describe('history lines and the memorial letter (history SPEC.md)', () => {
           partyNameId: null,
           worst: 4,
           deed: null,
+          writerId: null,
           savedBy: null,
           died: true,
         },

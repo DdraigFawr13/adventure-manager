@@ -34,6 +34,8 @@ export type HistoryEntry = { readonly day: number } & (
       /** Worst wound step reached. */
       readonly worst: number;
       readonly deed: DeedEntry | null;
+      /** Who wrote the letter home (report/SPEC.md), fixed when the quest ended; views writing the letter later use this. */
+      readonly writerId: string | null;
       /** Who held them back from Dying, if anyone did. */
       readonly savedBy: string | null;
       /** They died on it (a `died` entry follows). */
@@ -78,10 +80,12 @@ export interface Chronicle {
   readonly places: Record<string, { readonly day: number; readonly outcome: QuestOutcome }>;
   /** Standing party name id of each quest out (`run.party.N`), until it ends. */
   readonly out: Record<string, string | null>;
+  /** Each standing party's name id, from `party.formed`, so a disbanded party keeps its name. */
+  readonly partyNames: Record<string, string>;
 }
 
 export function newChronicle(): Chronicle {
-  return { people: {}, together: {}, places: {}, out: {} };
+  return { people: {}, together: {}, places: {}, out: {}, partyNames: {} };
 }
 
 /** The pair key for two people, order-free. */
@@ -115,7 +119,7 @@ export function recordEvents(
 ): void {
   let questStart = -1;
   const nameOfStanding = (id: string | null) =>
-    id === null ? null : (state.guild?.standing.find((p) => p.id === id)?.nameId ?? null);
+    id === null ? null : (chronicle.partyNames[id] ?? null);
   events.forEach((e, at) => {
     const [subject = ''] = e.subjectIds;
     const add = (id: string, entry: HistoryEntry) => personOf(chronicle, id).entries.push(entry);
@@ -128,6 +132,9 @@ export function recordEvents(
           const entry = lastEntry(chronicle, id);
           if (entry?.kind === 'joined') entry.founding = true;
         }
+        break;
+      case 'party.formed':
+        chronicle.partyNames[subject] = e.nameId;
         break;
       case 'party.assigned': {
         const entry = lastEntry(chronicle, subject);
@@ -192,11 +199,13 @@ function recordQuest(
   const partyNameId = chronicle.out[summary.questId] ?? null;
   delete chronicle.out[summary.questId];
   const writer = summary.writerId;
-  // The letter's pass first, so every deed it praises is in a history; then the writer's own.
+  // The letter's pass first, so every deed it praises is in a history; then the writer's best
+  // deed of a kind nobody else was given.
   const notes = assignDeeds(summary, rules.deeds, writer ? [writer] : []);
   if (writer) {
     const others = summary.partyIds.filter((id) => id !== writer);
-    notes.push(...assignDeeds(summary, rules.deeds, others).filter((n) => n.id === writer));
+    const left = rules.deeds.filter((d) => !notes.some((n) => n.kind === d.kind));
+    notes.push(...assignDeeds(summary, left, others).filter((n) => n.id === writer));
   }
   const dead = new Map(summary.deaths.map((d) => [d.id, d]));
   for (const id of summary.partyIds) {
@@ -218,6 +227,7 @@ function recordQuest(
             ...(note.patientId !== undefined && { patientId: note.patientId }),
           }
         : null,
+      writerId: writer,
       savedBy: save ? save[0] : null,
       died: dead.has(id),
     });
