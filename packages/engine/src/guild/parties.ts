@@ -59,7 +59,9 @@ export function arrive(turn: GuildTurn, party: Party, causeId: string, stops: Se
     if (injury !== undefined) {
       injuryLoss(turn, id, injury);
       const weeks = recovery.between(rules.injuryWeeks.min, rules.injuryWeeks.max);
-      restDays += injuryDays(turn, rules.daysPerWeek * weeks);
+      const days = injuryDays(turn, rules.daysPerWeek * weeks);
+      restDays += days;
+      turn.sink.emit({ type: 'member.laid-up', causeId: injury, subjectIds: [id], days });
       // The guildmaster running recovery sees each injured member in (staff/SPEC.md).
       if (runsArea(turn, 'recovery')) stops.add('infirmary');
     }

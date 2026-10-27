@@ -28,7 +28,10 @@ const staffMode = process.argv[5] ?? 'off';
 if (staffMode !== 'off' && staffMode !== 'compare')
   throw new Error(`Unknown staff mode ${staffMode}.`);
 const size = Number(process.argv[6] ?? GUILD_SIZE);
-const refuseGrants = process.argv[7] === 'refuse';
+const grantsArg = process.argv[7] ?? 'take';
+if (grantsArg !== 'take' && grantsArg !== 'refuse')
+  throw new Error(`Unknown grants mode ${grantsArg}.`);
+const refuseGrants = grantsArg === 'refuse';
 const content = {
   ...baseResolution,
   guild: staffMode === 'compare' ? staffGuildRules : careerGuildRules,
@@ -50,11 +53,14 @@ interface Career {
   myRenown: number[];
   rivalRenown: number[];
   confidence: number[];
-  /** R6: attribute points grown each year; days from each lasting injury to fit again; the skill running each area, summed over days. */
+  /** R6: attribute points grown each year; days each lasting injury added to time out (`member.laid-up`); the skill running each area, summed over days. */
   growthByYear: number[];
   grants: number;
   /** The year of the first emergency grant, if any. */
   firstGrantYear: number | null;
+  /** §9d bad starts: the year of the patron's first emergency offer (the guild in debt at a week start), and grant money received in years 1-2. */
+  firstOfferYear: number | null;
+  earlyGrantCopper: number;
   /** The crisis: the year it woke and the year it ended, if it did. */
   crisisYear: number | null;
   crisisEnded: number | null;
@@ -98,6 +104,8 @@ function play(seed: string, delegate = false, planToUse = plan!): Career {
     growthByYear: [],
     grants: 0,
     firstGrantYear: null,
+    firstOfferYear: null,
+    earlyGrantCopper: 0,
     crisisYear: null,
     crisisEnded: null,
     injuryDays: [],
@@ -105,7 +113,6 @@ function play(seed: string, delegate = false, planToUse = plan!): Career {
     days,
     seconds: 0,
   };
-  const injuredOn = new Map<string, number>();
   const yearOfEvent = (e: GameEvent) => yearOf(e.day, rules);
   for (const e of events) {
     if (e.type === 'year.settled') {
@@ -137,11 +144,10 @@ function play(seed: string, delegate = false, planToUse = plan!): Career {
       const y = yearOfEvent(e) - 1;
       c.growthByYear[y] = (c.growthByYear[y] ?? 0) + 1;
     }
-    if (e.type === 'injury.gained' && e.subjectIds[0]) injuredOn.set(e.subjectIds[0], e.day);
-    if (e.type === 'member.recovered' && e.subjectIds[0] && injuredOn.has(e.subjectIds[0])) {
-      c.injuryDays.push(e.day - injuredOn.get(e.subjectIds[0])!); // non-null: just checked.
-      injuredOn.delete(e.subjectIds[0]);
-    }
+    if (e.type === 'member.laid-up') c.injuryDays.push(e.days);
+    if (e.type === 'patron.offered') c.firstOfferYear ??= yearOfEvent(e);
+    if (e.type === 'money.changed' && e.reason === 'emergency' && yearOfEvent(e) <= 2)
+      c.earlyGrantCopper += e.amountCopper;
     if (e.type === 'money.changed') c.chestByYear[yearOfEvent(e) - 1] = e.chestCopper;
   }
   if (c.end === 'cap') c.years = maxYears;
@@ -211,7 +217,8 @@ console.log(
 // Runaway rival (R2): in the first 30 years, one rival tops the top tier in more than 2/3 of them.
 let runaway = 0;
 for (const r of results) {
-  const span = r.topLeaders.slice(0, 30).filter(Boolean);
+  // Rivals only: the player topping the top tier is not a runaway rival.
+  const span = r.topLeaders.slice(0, 30).filter((id) => id && id !== PLAYER_ID);
   if (span.length < 10) continue;
   const counts = new Map<string, number>();
   for (const id of span) counts.set(id, (counts.get(id) ?? 0) + 1);
@@ -255,12 +262,15 @@ console.log(
   ),
 );
 const badStart = results.filter(
+  // The same test whether grants are taken or refused: in debt at a week start in years 1-2, or
+  // the chest after two years, less any grant money, below half the start.
   (r) =>
-    (r.chestByYear[1] ?? 0) < careerGuildRules.startingChestCopper / 2 ||
-    (r.firstGrantYear !== null && r.firstGrantYear <= 2),
+    (r.firstOfferYear !== null && r.firstOfferYear <= 2) ||
+    (r.chestByYear[1] ?? r.chestByYear[0] ?? 0) - r.earlyGrantCopper <
+      careerGuildRules.startingChestCopper / 2,
 );
 console.log(
-  `§9d bad starts (chest below half the start after 2 years, or a grant in them): ${badStart.length}; of those, careers lasting 10+ years: ${badStart.filter((r) => r.years >= 10).length} [most recover, §4g]`,
+  `§9d bad starts (in debt at a week start in years 1-2, or the chest less grants below half the start after 2 years): ${badStart.length}; of those, careers lasting 10+ years: ${badStart.filter((r) => r.years >= 10).length} [most recover, §4g]`,
 );
 {
   const ends = new Map<string, number>();
@@ -303,6 +313,10 @@ function ahead(aName: string, a: Career[], bName: string, b: Career[]): void {
   console.log(
     `  career renown: ${share(renown)}; final chest: ${share(chest)} [each side ahead in some seeds]`,
   );
+  // Over the first 10 years only, so a longer career does not win by lasting.
+  const early = (r: Career) => r.myRenown.slice(0, 10).reduce((x, y) => x + (y ?? 0), 0);
+  const chest10 = (r: Career) => r.chestByYear[Math.min(9, r.years - 1)] ?? 0;
+  console.log(`  first 10 years: renown ${share(early)}; chest ${share(chest10)}`);
 }
 
 function reportR6(): void {
@@ -334,13 +348,14 @@ function reportR6(): void {
   }));
   for (const r of rows)
     console.log(
-      `  ${r.name.padEnd(10)} skill running training ${r.trainingSkill.toFixed(1)}, recovery ${r.recoverySkill.toFixed(1)}; growth ${r.growth.toFixed(1)} points a year; injury to fit ${r.injury.toFixed(1)} days; stop days ${r.stops.toFixed(1)} a year; career median ${r.years} years; final chest median ${r.chest}`,
+      `  ${r.name.padEnd(10)} skill running training ${r.trainingSkill.toFixed(1)}, recovery ${r.recoverySkill.toFixed(1)}; growth ${r.growth.toFixed(1)} points a year; injury adds ${r.injury.toFixed(1)} days out; stop days ${r.stops.toFixed(1)} a year; career median ${r.years} years; final chest median ${r.chest}`,
     );
   const hands = rows[0]!; // non-null: two sides.
   const del = rows[1]!; // non-null: two sides.
+  // Training as a share of the delegated side's growth; recovery likewise, below.
   const gain = (a: number, b: number) => `${((100 * (a - b)) / Math.max(1e-9, b)).toFixed(1)}%`;
   console.log(
-    `  hands-on better by: training ${gain(hands.growth, del.growth)} (growth), recovery ${gain(del.injury, hands.injury)} (days to fit) [10-25% each]; running both yourself costs ${(hands.stops - del.stops).toFixed(1)} stop days a year`,
+    `  hands-on better by, as a share of delegated: training ${gain(hands.growth, del.growth)} (growth), recovery ${((100 * (del.injury - hands.injury)) / Math.max(1e-9, del.injury)).toFixed(1)}% (injury days saved) [10-25% each]; running both yourself costs ${(hands.stops - del.stops).toFixed(1)} stop days a year`,
   );
 }
 console.log(

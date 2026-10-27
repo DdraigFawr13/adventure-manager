@@ -74,6 +74,11 @@ describe('staff (staff SPEC.md)', () => {
     expect(ofType(run.events, 'skill.grew').map((e) => [e.area, e.from, e.to])).toEqual([
       ['training', 10, 11],
     ]);
+    // Released mid-year, the guildmaster has not run recovery all year: no growth there.
+    const back = settle(
+      play(hire(begun(), 'recovery'), { type: 'staff.release', day: 1, area: 'recovery' }),
+    );
+    expect(ofType(back.events, 'skill.grew').map((e) => e.area)).toEqual(['training']);
     const capped = settle(settle(settle(begun())));
     expect(capped.state.guild!.staff!.skills).toEqual({ training: 12, recovery: 12 }); // non-null: staff are on.
   });

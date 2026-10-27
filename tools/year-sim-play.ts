@@ -135,7 +135,8 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
     const day = state.calendar;
     if (options.delegate) delegate(day);
     // The simulated player takes the patron's emergency grant (D-146) unless told to refuse.
-    if (now().career?.emergencyOffer && !options.refuseGrants) run({ type: 'patron.grant', day });
+    if (now().career?.emergencyOffer && now().chestCopper < 0 && !options.refuseGrants)
+      run({ type: 'patron.grant', day });
     while (now().prospects.length > 0 && now().members.length < size) {
       const cheapest = [...now().prospects].sort(
         (a, b) => a.wageCopper - b.wageCopper || (a.adventurer.id < b.adventurer.id ? -1 : 1),
@@ -151,7 +152,7 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
     }
   };
 
-  /** For each area, the best listed candidate better than whoever runs it, if a year's wage is in the chest. */
+  /** A full delegator (R6): each area goes to the best listed candidate better than the staff member already hired, if a year's wage is in the chest; the guildmaster's own skill is never weighed. */
   const delegate = (day: number) => {
     for (const area of AREAS) {
       const staff = now().staff;

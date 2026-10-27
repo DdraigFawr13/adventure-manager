@@ -90,6 +90,21 @@ describe('careers (career SPEC.md)', () => {
     });
   });
 
+  it('caps a missed target at maxMiss, and the bottom of a tier above the lowest goes down', () => {
+    const run = settle(begun(), (s) => {
+      const c = s.guild!.career!; // non-null: careers are on.
+      c.tier = 1;
+      c.target = 'top-two';
+      c.renownThisYear = -1000;
+      // Move one bottom-tier rival up so the middle tier keeps six.
+      const swap = c.rivals.find((r) => r.tier === 1)!; // non-null: five rivals in the middle tier.
+      swap.tier = 0;
+    });
+    // Last of six against "top two": four places short, 60 capped at 40.
+    expect(ofType(run.events, 'patron.reviewed')[0]).toMatchObject({ place: 6, change: -40 });
+    expect(ofType(run.events, 'tier.changed')[0]).toMatchObject({ from: 1, to: 0 });
+  });
+
   it('dismisses the guildmaster when confidence runs out, and the guild stops', () => {
     const run = settle(begun(), (s) => {
       s.guild!.career!.confidence = 10; // non-null: careers are on.
@@ -185,9 +200,23 @@ describe('the patron emergency grant (D-146)', () => {
     expect(() => play(run, { type: 'patron.grant', day: run.state.calendar })).toThrow(/no grant/);
     run = inDebt(run);
     expect(ofType(run.events, 'patron.offered').length).toBe(1);
+    // Once the guild is out of debt the offer can no longer be taken.
+    const recovered = inDebt(begun({ emergency }));
+    recovered.state.guild!.chestCopper = 10; // non-null: founded.
+    expect(() => play(recovered, { type: 'patron.grant', day: recovered.state.calendar })).toThrow(
+      /no longer in debt/,
+    );
     // Untaken offers lapse at the next week start.
     const fresh = inDebt(inDebt(begun({ emergency })));
     expect(ofType(fresh.events, 'patron.offered').length).toBe(2);
     expect(fresh.state.guild!.career!.emergencyOffer?.week).toBe(3); // non-null: careers are on.
+  });
+
+  it('offers nothing to a guild with nobody on the roster', () => {
+    const empty = begun({ emergency });
+    const state = structuredClone(empty.state);
+    state.guild!.members.length = 0; // non-null: founded.
+    const run = inDebt({ ...empty, state });
+    expect(ofType(run.events, 'patron.offered').length).toBe(0);
   });
 });

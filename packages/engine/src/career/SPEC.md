@@ -13,7 +13,7 @@ The guild's years run on, one after another, until the guildmaster's career ends
 - **Growth by doing:** each survivor of a quest rolls once (stream `career.growth`) to gain 1 point in one attribute the quest tested (the approach's attribute, or the class's attack attribute), if it is below potential and they are not past their prime. Chance by age band in content, scaled by whoever runs training (staff/SPEC.md).
 - **Ageing** at the Assembly: past the prime age (content, about 32 for the March's people), each physical attribute (Might, Agility, Toughness) has a chance to drop 1 a year, rising with age.
 - **Lasting injury:** costs 1 point of one physical attribute at once (PLAN §5a). Picked on `career.growth`.
-- **Retirement** at the Assembly: past the prime, a chance by age (content) that the adventurer asks to retire. Retirement is a conversation (D-038, never delegated), so it is a stop; the simulator's policy accepts. A retiree leaves the roster and the wage bill (staff careers come later).
+- **Retirement** at the Assembly: past the prime, a chance by age (content) that the adventurer asks to retire. Retirement is a conversation (D-038, never delegated), so it is a must stop. In v0 the engine settles it at once (the member retires) and the stop reports it; the command to accept or talk them round comes with the text prototype. A retiree leaves the roster and the wage bill (staff careers come later).
 
 ## Rivals (D-140)
 
@@ -30,8 +30,8 @@ The guild's years run on, one after another, until the guildmaster's career ends
 ## The patron (D-141)
 
 - At each Assembly the patron sets one **target** from the guild's place: win promotion (top two of a lower tier), finish in the top half, or avoid relegation (bottom tier: avoid last place; top tier: stay up). Also every year: end it out of debt.
-- **Confidence** 0–100 starts at 60. At the next Assembly: target met +15; missed −15 per place short (at most −40); in debt at year's end −15. At 0 the guildmaster is dismissed and the career ends.
-- **Emergency grant (D-146, PLAN §4g):** at a week start, a guild in debt gets the patron's offer of a grant (weeks of its current wages, content), at most one taken every few years. The offer stands for that week (`patron.offered`, a must stop `patron-offer`); `patron.grant` takes it: the money (`money.changed`, reason `emergency`), lower confidence and next year's target one step harder (`patron.granted`). Abstract rivals have no chest, so they never need it.
+- **Confidence** 0–100 starts at 60. At the next Assembly: target met, a rise; missed, a fall per place short (capped); in debt at year's end, a fall (amounts in content: `packages/content/src/base/career.ts`). At 0 the guildmaster is dismissed and the career ends.
+- **Emergency grant (D-146, PLAN §4g):** at a week start, a guild in debt with someone on the roster gets the patron's offer of a grant (weeks of its current wages, content), at most one taken every few years; the guild must still be in debt when it takes it. The offer stands for that week (`patron.offered`, a must stop `patron-offer`); `patron.grant` takes it: the money (`money.changed`, reason `emergency`), lower confidence and next year's target one step harder (`patron.granted`). Abstract rivals have no chest, so they never need it.
 - **The guildmaster** starts aged 30–45 (stream `career.patron`). From 60, a yearly chance to retire on health, rising to certain by about 75; that also ends the career.
 - Events: `year.settled` (the standings), `tier.changed`, `patron.reviewed` (target, met, confidence), `patron.target`, `career.ended` (reason, years). Career ending is a must stop.
 

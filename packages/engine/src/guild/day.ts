@@ -148,10 +148,11 @@ function weekStart(turn: GuildTurn, causeId: string, stops: Set<StopReason>): vo
   pay(turn, -rules.runningCostCopper, 'upkeep', started);
   const campaigning = week > rules.assemblyWeeks && week < rules.winterFromWeek;
   staffWeek(turn, campaigning ? week - rules.assemblyWeeks : null, started, stops);
-  offerEmergency(turn, started, stops);
   expireOffers(turn, weekOf(state.calendar, rules), started);
   postOffers(turn, week, weekOf(state.calendar, rules), started);
   crisisWeek(turn, weekOf(state.calendar, rules), started);
+  // After every week-start cost, so the debt test sees this week's crisis pressure too.
+  offerEmergency(turn, started, stops);
   if (inWindow(week, rules)) {
     listProspects(turn, started);
     stops.add('signing-window');

@@ -17,7 +17,9 @@ export function offerEmergency(turn: GuildTurn, causeId: string, stops: Set<Stop
   const year = yearOf(turn.state.calendar, turn.rules);
   if (career.lastGrantYear !== null && year - career.lastGrantYear < rules.everyYears) return;
   const wages = turn.guild.members.reduce((sum, m) => sum + m.wageCopper, 0);
-  const grantCopper = Math.max(1, wages * rules.wageWeeks);
+  // An empty roster has no wages to tide over (D-146 counts wages).
+  if (wages === 0) return;
+  const grantCopper = wages * rules.wageWeeks;
   career.emergencyOffer = { grantCopper, week: weekOf(turn.state.calendar, turn.rules) };
   turn.sink.emit({ type: 'patron.offered', causeId, subjectIds: [PLAYER_ID], grantCopper });
   stops.add('patron-offer');
@@ -36,6 +38,7 @@ export function takeEmergency(
   const offer = career.emergencyOffer;
   if (!offer || offer.week !== weekOf(state.calendar, turn.rules))
     throw new Error('The patron has no grant on offer.');
+  if (turn.guild.chestCopper >= 0) throw new Error('The guild is no longer in debt.');
   career.emergencyOffer = null;
   career.lastGrantYear = yearOf(state.calendar, turn.rules);
   career.raiseTarget = true;

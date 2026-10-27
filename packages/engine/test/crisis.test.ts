@@ -92,7 +92,11 @@ describe('crises (crisis SPEC.md, D-147)', () => {
     expect(pressure.map((e) => e.amountCopper)).toEqual([-300, -300, -300, -300]);
     // The patron's next review counts the crisis still standing.
     run = settle(run);
+    // The fixture's patron: last place against "avoid the bottom" is one short (-15), plus the crisis (-10).
     expect(ofType(run.events, 'patron.reviewed').at(-1)).toMatchObject({ crisis: true });
+    const reviewed = ofType(run.events, 'patron.reviewed').at(-1)!; // non-null: just checked.
+    const without = reviewed.met ? 15 : -Math.min(40, 15 * (reviewed.place - 5));
+    expect(reviewed.change).toBe(without - (reviewed.inDebt ? 15 : 0) - 10);
   });
 
   it('a won step moves the chain on; winning the last ends it with its reward, once a career', () => {
@@ -110,6 +114,9 @@ describe('crises (crisis SPEC.md, D-147)', () => {
     expect(ended).toMatchObject({ chainId: 'crisis.mice', outcome: 'resolved' });
     const reward = ofType(run.events, 'renown.changed').find((e) => e.causeId === ended?.id);
     expect(reward?.amount).toBe(15);
+    // The patron's confidence rose by the reward since the review at the crisis's Assembly.
+    const reviewed = ofType(run.events, 'patron.reviewed').at(-1)?.confidence ?? 0;
+    expect(run.state.guild!.career!.confidence).toBe(Math.min(100, reviewed + 15)); // non-null: careers are on.
     expect(run.state.guild!.crisis).toEqual({ active: null, done: ['crisis.mice'] }); // non-null: founded.
     run = settle(run);
     expect(ofType(run.events, 'crisis.started').length).toBe(1);

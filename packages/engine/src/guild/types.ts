@@ -240,6 +240,8 @@ export type GuildEventBody =
   | { readonly type: 'party.returned'; readonly outcome: QuestOutcome }
   | { readonly type: 'renown.changed'; readonly amount: number; readonly renown: number }
   | { readonly type: 'member.recovered' }
+  /** The days a lasting injury adds to someone's time out, after recovery's scaling (staff/SPEC.md). */
+  | { readonly type: 'member.laid-up'; readonly days: number }
   | { readonly type: 'prospect.listed'; readonly classId: string; readonly wageCopper: number }
   | { readonly type: 'recruit.signed'; readonly wageCopper: number }
   | {
