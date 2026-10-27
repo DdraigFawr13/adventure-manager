@@ -1,0 +1,479 @@
+<title>Pocket Guild Concepts</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+DW+Pica:ital@0;1&family=Sorts+Mill+Goudy:ital@0;1&display=swap">
+<style>
+/* Layout: an exploration sheet on the walnut desk. Each concept is a band: real-size device frames (scaled to fit) beside a short ledger of what it keeps, what bends and the work. Candlelit-oak tokens and old-press type from STYLE §2–§5; one deliberate theme, the desk is always lamp-lit. */
+:root {
+  --desk: #3b2a1e; --desk2: #2c1f16; --desk3: #4a3626;
+  --paper: #efe4cc; --paper2: #e5d7b9; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5;
+  --seal: #8e2a22; --brass: #b8923e; --brass2: #d7b66a;
+  --good: #3f6f8f; --warn: #c08a1e; --bad: #8e2a22;
+  --chrome: #f1e6cf; --chrome2: #c8b48f;
+  --sea: #b9c4b8; --land: #e9dcbf;
+  --title: "IM Fell English SC", "IM Fell English", Georgia, serif;
+  --letter: "IM Fell DW Pica", Georgia, serif;
+  --ledger: "Sorts Mill Goudy", "Goudy Old Style", Georgia, serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--desk2); color: var(--chrome); font-family: var(--ledger); font-size: 16px; line-height: 1.5; font-variant-numeric: lining-nums;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px 48px; }
+button { font: inherit; color: inherit; }
+button:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--brass2); outline-offset: 2px; }
+.page { max-width: 1240px; margin: 0 auto; display: grid; gap: 40px; }
+h1, h2, h3 { font-family: var(--title); font-weight: 400; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); color: var(--brass2); line-height: 1.1; }
+h2 { font-size: 1.8rem; color: var(--brass2); }
+h3 { font-size: 1.15rem; color: var(--brass2); letter-spacing: .03em; }
+p { margin: 0; }
+.lede { display: grid; gap: 12px; max-width: 72ch; }
+.lede p { color: var(--chrome2); }
+.lede .answer { color: var(--paper); font-size: 1.2rem; font-family: var(--letter); }
+.tag { display: inline-block; font-family: var(--title); font-size: .8rem; letter-spacing: .1em; color: var(--desk2); background: var(--brass); padding: 1px 8px; border-radius: 2px; }
+.tag.seal { background: var(--seal); color: var(--paper); }
+
+/* Summary ledger */
+.sheet { background: var(--paper); color: var(--ink); border-radius: 3px; padding: 18px 20px; box-shadow: 0 8px 24px rgba(0,0,0,.35); display: grid; gap: 12px; min-width: 0; }
+.sheet h2 { color: var(--seal); }
+.sheet .note { color: var(--ink2); font-size: .95rem; max-width: 80ch; }
+.scroll { overflow-x: auto; }
+table.sum { border-collapse: collapse; width: 100%; min-width: 820px; font-variant-numeric: lining-nums tabular-nums; }
+table.sum th { text-align: left; font-family: var(--title); font-weight: 400; color: var(--ink2); font-size: .9rem; letter-spacing: .05em; border-bottom: 2px solid var(--ink); padding: 6px 10px 6px 0; }
+table.sum td { border-bottom: 1px solid var(--rule); padding: 8px 10px 8px 0; vertical-align: top; }
+table.sum td.n { white-space: nowrap; }
+table.sum tr.pick td { background: #e6d6ad; }
+.bar-cell { width: 170px; }
+.effbar { height: 10px; background: var(--paper2); border: 1px solid var(--rule); position: relative; margin-top: 6px; }
+.effbar span { position: absolute; top: 0; bottom: 0; background: var(--seal); opacity: .85; }
+
+/* Concept bands */
+.concept { display: grid; gap: 16px; border-top: 2px solid var(--brass); padding-top: 20px; }
+.concept header { display: grid; gap: 6px; max-width: 80ch; }
+.concept header .sub { color: var(--chrome2); }
+.devices { display: grid; gap: 20px; align-items: start; }
+.devices.three { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.devices.four { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.devices.two { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.devices.mixed { grid-template-columns: minmax(220px, 1fr) minmax(300px, 2.2fr); }
+@media (max-width: 720px) { .devices.mixed { grid-template-columns: 1fr; } }
+figure { margin: 0; display: grid; gap: 6px; min-width: 0; }
+figcaption { color: var(--chrome2); font-size: .9rem; font-style: italic; }
+.fit { position: relative; width: 100%; overflow: hidden; }
+.fit > .device { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+.device { border: 10px solid #15100b; border-radius: 34px; background: var(--paper); color: var(--ink); overflow: hidden; box-shadow: 0 10px 28px rgba(0,0,0,.5); display: flex; flex-direction: column; font-size: 15px; line-height: 1.35; }
+.device.tablet { border-radius: 24px; border-width: 14px; }
+.device.land { border-radius: 30px; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.notes > div { background: var(--desk3); border: 1px solid #5c4532; border-radius: 3px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.notes ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; color: var(--chrome); }
+.notes .work { font-variant-numeric: lining-nums tabular-nums; }
+.notes .big { font-size: 1.35rem; color: var(--paper); font-family: var(--title); }
+
+/* In-device chrome */
+.sb { height: 30px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; font-size: 12px; background: var(--desk2); color: var(--chrome2); font-family: system-ui, sans-serif; }
+.topbar { flex: none; display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--desk2); color: var(--chrome); border-bottom: 2px solid var(--brass); }
+.topbar .g { font-family: var(--title); color: var(--brass2); font-size: 16px; white-space: nowrap; }
+.topbar .d { white-space: nowrap; font-size: 14px; }
+.topbar .s { color: var(--chrome2); font-style: italic; font-size: 13px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.topbar .c { font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; font-size: 14px; }
+.cont { background: var(--seal); color: var(--paper); border: 0; border-radius: 3px; padding: 6px 14px; font-family: var(--title); font-size: 15px; white-space: nowrap; }
+.crest { width: 22px; height: 26px; flex: none; }
+.body { flex: 1; min-height: 0; display: flex; }
+.paper { flex: 1; min-width: 0; background: var(--paper); padding: 10px 12px; overflow: hidden; display: flex; flex-direction: column; gap: 8px; }
+.paper h4 { font-family: var(--title); font-weight: 400; font-size: 19px; margin: 0; color: var(--ink); }
+.chips { display: flex; gap: 6px; flex-wrap: nowrap; overflow: hidden; }
+.chip { border: 1px solid var(--ink2); border-radius: 12px; padding: 1px 10px; font-size: 13px; white-space: nowrap; color: var(--ink2); }
+.chip.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+table.led { border-collapse: collapse; width: 100%; font-variant-numeric: lining-nums tabular-nums; font-size: 15px; }
+table.led th { text-align: left; font-weight: 400; color: var(--ink2); font-size: 13px; border-bottom: 1.5px solid var(--ink); padding: 2px 6px 3px 0; white-space: nowrap; }
+table.led td { border-bottom: 1px solid var(--rule); padding: 4px 6px 4px 0; white-space: nowrap; }
+table.led td.r, table.led th.r { text-align: right; }
+table.led .sub { color: var(--ink2); font-size: 13px; }
+.pill { display: inline-block; font-size: 12px; padding: 0 7px; border-radius: 9px; color: var(--paper); }
+.pill.good { background: var(--good); } .pill.warn { background: var(--warn); color: var(--ink); } .pill.bad { background: var(--bad); }
+.tabs { flex: none; width: 150px; background: var(--desk); color: var(--chrome); padding: 8px 0 8px 8px; display: grid; align-content: start; gap: 1px; font-size: 14px; }
+.tabs .h { font-family: var(--title); color: var(--brass); font-size: 12px; letter-spacing: .08em; margin: 8px 0 1px 6px; }
+.tabs .t { padding: 3px 8px; border-radius: 3px 0 0 3px; }
+.tabs .t.on { background: var(--paper); color: var(--ink); }
+.rail { flex: none; width: 56px; background: var(--desk); display: grid; align-content: start; gap: 4px; padding: 6px 0; }
+.rail .i { width: 44px; height: 38px; margin: 0 auto; border-radius: 4px; display: grid; place-items: center; font-family: var(--title); font-size: 11px; color: var(--chrome2); text-align: center; line-height: 1.05; }
+.rail .i b { display: block; font-size: 17px; font-weight: 400; color: var(--chrome); }
+.rail .i.on { background: var(--paper); color: var(--ink2); } .rail .i.on b { color: var(--ink); }
+.tray { flex: none; width: 26px; background: var(--desk3); writing-mode: vertical-rl; display: grid; place-items: center; font-family: var(--title); color: var(--brass2); font-size: 13px; letter-spacing: .1em; }
+.pop { position: absolute; background: var(--paper); border: 1.5px solid var(--ink); box-shadow: 0 6px 16px rgba(0,0,0,.3); padding: 8px 10px; font-size: 13px; width: 220px; display: grid; gap: 2px; font-variant-numeric: lining-nums tabular-nums; }
+.pop .row { display: flex; justify-content: space-between; }
+.pop .tot { border-top: 1px solid var(--ink); font-weight: 700; margin-top: 2px; padding-top: 2px; }
+.finger { position: absolute; width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--seal); background: rgba(142,42,34,.18); }
+.tabbar { flex: none; display: grid; grid-template-columns: repeat(5, 1fr); background: var(--desk2); border-top: 2px solid var(--brass); padding: 6px 4px 18px; }
+.tabbar div { text-align: center; font-size: 12px; color: var(--chrome2); display: grid; gap: 1px; justify-items: center; }
+.tabbar div i { font-style: normal; font-family: var(--title); font-size: 18px; color: var(--chrome); width: 30px; height: 26px; border-radius: 4px; display: grid; place-items: center; }
+.tabbar div.on { color: var(--brass2); } .tabbar div.on i { background: var(--brass); color: var(--desk2); }
+.badge { position: relative; } .badge::after { content: "2"; position: absolute; top: -4px; right: -10px; background: var(--seal); color: var(--paper); font-size: 11px; font-family: var(--ledger); border-radius: 8px; padding: 0 5px; }
+.card { border: 1px solid var(--rule); background: var(--paper2); border-radius: 3px; padding: 8px 10px; display: grid; gap: 3px; }
+.card .k { font-family: var(--title); font-size: 13px; color: var(--ink2); letter-spacing: .05em; }
+.stop { border-left: 4px solid var(--seal); }
+.sealbtn { align-self: center; width: 150px; height: 64px; border-radius: 32px; background: radial-gradient(circle at 40% 35%, #a8392f, var(--seal) 60%, #6d1f19); color: var(--paper); display: grid; place-items: center; font-family: var(--title); font-size: 20px; box-shadow: 0 4px 10px rgba(0,0,0,.35); flex: none; }
+.mapwrap { position: relative; flex: 1; min-height: 0; background: var(--sea); overflow: hidden; }
+.mapwrap svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.strip { flex: none; display: flex; gap: 8px; padding: 6px 10px; background: var(--paper2); border-top: 1px solid var(--rule); font-size: 13px; overflow: hidden; }
+.strip .card { padding: 4px 8px; white-space: nowrap; }
+.sheetup { flex: none; background: var(--paper); border-top: 3px solid var(--seal); border-radius: 14px 14px 0 0; padding: 12px 14px 20px; display: grid; gap: 8px; box-shadow: 0 -8px 20px rgba(0,0,0,.25); }
+.sheetup .wax { width: 46px; height: 46px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #a8392f, var(--seal) 60%, #6d1f19); color: var(--paper); display: grid; place-items: center; font-family: var(--title); font-size: 22px; float: left; margin-right: 10px; }
+.choice { border: 1.5px solid var(--ink); border-radius: 4px; padding: 7px 10px; display: flex; justify-content: space-between; gap: 8px; font-size: 15px; }
+.choice .odds { color: var(--ink2); font-size: 13px; white-space: nowrap; }
+.choice.main { background: var(--ink); color: var(--paper); } .choice.main .odds { color: var(--chrome2); }
+.log { font-family: var(--letter); font-size: 14px; display: grid; gap: 3px; color: var(--ink); }
+.log b { font-family: var(--ledger); font-weight: 400; color: var(--ink2); font-variant-numeric: lining-nums tabular-nums; margin-right: 4px; }
+.letter { font-family: var(--letter); font-size: 16px; line-height: 1.45; gap: 10px; }
+.letter .init { float: left; font-family: var(--title); font-size: 50px; line-height: .85; color: var(--seal); margin: 4px 6px 0 0; }
+.fleuron { text-align: center; color: var(--brass); font-size: 18px; }
+.hint { position: absolute; background: var(--desk2); color: var(--brass2); border: 1px solid var(--brass); border-radius: 14px; padding: 3px 12px; font-size: 13px; white-space: nowrap; }
+.portrait { width: 92px; height: 110px; border-radius: 46px / 55px; border: 3px double var(--ink); background: var(--paper2); flex: none; }
+.attr { display: grid; grid-template-columns: 1fr auto 1fr auto; gap: 1px 10px; font-size: 14px; font-variant-numeric: lining-nums tabular-nums; }
+.attr span:nth-child(even) { text-align: right; font-weight: 700; }
+.slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.slot { border: 1px dashed var(--ink2); border-radius: 3px; height: 54px; font-size: 11px; color: var(--ink2); display: grid; place-items: end center; padding-bottom: 3px; text-align: center; line-height: 1.1; }
+.slot.f { border-style: solid; background: var(--paper2); color: var(--ink); }
+.search { border: 1px solid var(--ink2); border-radius: 16px; padding: 4px 12px; color: var(--ink2); font-size: 14px; }
+.row2 { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.muted { color: var(--ink2); }
+
+.rec { display: grid; gap: 12px; }
+.rec ol { margin: 0; padding-left: 22px; display: grid; gap: 8px; max-width: 80ch; }
+.foot { color: var(--chrome2); font-size: .9rem; max-width: 90ch; display: grid; gap: 6px; }
+@media (prefers-reduced-motion: no-preference) { .finger { animation: tap 1.8s ease-in-out infinite; } @keyframes tap { 50% { transform: scale(.82); } } }
+</style>
+
+<div class="page">
+
+<section class="lede">
+  <span><span class="tag seal">Exploration · not a decision</span></span>
+  <h1>Pocket Guild: mobile concepts</h1>
+  <p class="answer">Yes, it can be done with every feature kept. The engine, content, saves and writing carry over unchanged; the work is in the screens.</p>
+  <p>The game is TypeScript and web tech (D-110), so a phone or tablet build wraps the same code in a mobile app shell instead of Electron. Nothing in the simulation needs a mouse. What does not fit a phone is the desk's density: the roster is built to show 25+ rows at 1366 px (R4), and a phone shows 7 to 12. Each concept below answers that differently.</p>
+  <p>Launch stays Windows only (D-106) unless you decide otherwise. Every hour figure on this page is an estimate (REP-01), for one developer working with AI help, on top of the Windows game.</p>
+</section>
+
+<section class="sheet" aria-labelledby="sumh">
+  <h2 id="sumh">The four concepts at a glance</h2>
+  <p class="note">Extra work is on top of the Windows launch (31–46 months, D-108). Months are at your 10–20 hours a week: the low figure is low hours at 20 h a week, the high figure high hours at 10 h a week. "Tax" is how much extra every later screen costs, because it has to be designed again for the mobile layout.</p>
+  <div class="scroll">
+    <table class="sum">
+      <thead><tr><th>Concept</th><th>Devices</th><th>Feels like</th><th>Extra hours</th><th class="bar-cell">Months at 10–20 h/wk</th><th>Tax on later screens</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td><b>A. Tablet desk</b></td><td>iPad, Android tablets, landscape</td><td>The PC game with touch</td><td class="n">250–550</td><td class="bar-cell n">3–13<div class="effbar"><span style="left:9%;width:30%"></span></div></td><td class="n">+10–15%</td></tr>
+        <tr><td><b>B. Pocket desk</b></td><td>Phones and tablets, landscape only</td><td>The desk, squeezed</td><td class="n">440–900</td><td class="bar-cell n">5–21<div class="effbar"><span style="left:15%;width:49%"></span></div></td><td class="n">+25–35%</td></tr>
+        <tr><td><b>C. Ledger book</b></td><td>Phones portrait; tablets use A</td><td>A phone-first game</td><td class="n">690–1,400</td><td class="bar-cell n">8–33<div class="effbar"><span style="left:24%;width:76%"></span></div></td><td class="n">+40–60%</td></tr>
+        <tr><td><b>D. Turn the book</b></td><td>Phones, both orientations</td><td>Letters upright, ledgers sideways</td><td class="n">600–1,210</td><td class="bar-cell n">7–28<div class="effbar"><span style="left:21%;width:64%"></span></div></td><td class="n">+45–65%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Every concept includes the same shared base of 190–400 hours (app shell, touch input, saves, stores, device testing; listed at the end). The bar runs from 0 to 33 months.</p>
+</section>
+
+<!-- A -->
+<section class="concept" aria-labelledby="ah">
+  <header>
+    <span><span class="tag">Landscape · tablet</span></span>
+    <h2 id="ah">A. Tablet desk</h2>
+    <p class="sub">The Windows desk as it stands, on a tablet held sideways. The largest iPad is 1366 × 1024 points, the same width as the PC minimum (D-091), so the roster keeps its 25+ rows. Smaller tablets (1180 × 820) fold the letter tray into a tab, which STYLE §3 already does below 1366 px.</p>
+  </header>
+  <figure>
+    <div class="fit"><div class="device tablet" data-w="1180" data-h="820">
+      <div class="sb"><span>9:41</span><span>Tablet · 1180 × 820</span></div>
+      <div class="topbar"><svg class="crest" viewBox="0 0 22 26" aria-hidden="true"><path d="M1 1h20v11c0 7-5 11-10 13C6 23 1 19 1 12z" fill="#8e2a22" stroke="#d7b66a"/><path d="M6 8h10M11 4v16" stroke="#d7b66a" stroke-width="2"/></svg><span class="g">Ashford Company</span><span class="d">Week 23, day 4 · Year 1</span><span class="s">Stopped: the week report, and new contracts on the board</span><span class="c">4,180 gold</span><button class="cont" tabindex="-1">Continue</button></div>
+      <div class="body" style="position:relative">
+        <div class="tabs"><div class="h">Desk</div><div class="t">Desk</div><div class="t on">Roster</div><div class="t">Parties</div><div class="t">Contracts</div><div class="h">Guild</div><div class="t">Staff</div><div class="t">Guildhall</div><div class="t">Finances</div><div class="t">Armoury</div><div class="h">World</div><div class="t">Ranking</div><div class="t">Chronicle</div></div>
+        <div class="paper">
+          <div class="row2"><h4>Roster · 30 adventurers</h4><div class="chips"><span class="chip on">All</span><span class="chip">By party</span><span class="chip">Fit</span><span class="chip">Hurt</span><span class="search">Find…</span></div></div>
+          <table class="led" id="tabRoster"></table>
+        </div>
+        <div class="tray">Letters · 3</div>
+        <div class="pop" style="left:770px; top:58px"><b>Wage, Odric Hale</b><div class="row"><span>Base for level 3 warrior</span><span>9 g</span></div><div class="row"><span>Renown 14</span><span>+3 g</span></div><div class="row"><span>Signed in a lean year</span><span>−1 g 4 s</span></div><div class="row tot"><span>Each week</span><span>10 g 6 s</span></div><span class="muted">Long-press any number for its sum</span></div>
+        <div class="finger" style="left:1000px; top:28px"></div>
+      </div>
+    </div></div>
+    <figcaption>The roster ledger on a 1180 × 820 tablet. Hover breakdowns become a long-press; everything else is the PC screen.</figcaption>
+  </figure>
+  <div class="notes">
+    <div><h3>Keeps</h3><ul><li>Every screen and the R4 density, nearly unchanged.</li><li>The kingdom map and quest board at full size; pinch to zoom.</li><li>Long sessions on a sofa: a tablet suits a 2-hour season.</li></ul></div>
+    <div><h3>Bends</h3><ul><li>Hover has no touch equivalent: every breakdown needs a tap or long-press.</li><li>Keys R, F and C need on-screen buttons.</li><li>Smaller tablets are below 1366 px: tighter columns, tray as a tab.</li><li>No phone support at all.</li></ul></div>
+    <div><h3>Work (estimate)</h3><p class="big">250–550 h</p><ul class="work"><li>Shared base: 190–400 h</li><li>Touch pass over ~25 screens, 1180 px layout: 60–150 h</li></ul><p class="muted" style="color:var(--chrome2)">About 3–13 months at 10–20 h/wk.</p></div>
+  </div>
+</section>
+
+<!-- B -->
+<section class="concept" aria-labelledby="bh">
+  <header>
+    <span><span class="tag">Landscape · phone</span></span>
+    <h2 id="bh">B. Pocket desk</h2>
+    <p class="sub">The desk layout kept, squeezed onto a phone held sideways (844 × 390). Ledger tabs shrink to an icon rail, the top bar to one line, and the letter tray slides in from the right. Ledgers show 7 rows and page through column sets.</p>
+  </header>
+  <div class="devices two">
+    <figure>
+      <div class="fit"><div class="device land" data-w="844" data-h="390">
+        <div class="topbar" style="padding:5px 10px"><span class="g" style="font-size:15px">Ashford Co.</span><span class="d" style="font-size:13px">Wk 23, day 4</span><span class="s">Stopped: party back from Reedmere Farm</span><span class="c" style="font-size:13px">4,180 g</span><button class="cont" tabindex="-1" style="padding:5px 12px">Continue</button></div>
+        <div class="body">
+          <div class="rail"><div class="i on"><b>D</b>Desk</div><div class="i"><b>R</b>Roster</div><div class="i"><b>P</b>Parties</div><div class="i"><b>C</b>Contr.</div><div class="i"><b>G</b>Guild</div><div class="i"><b>W</b>World</div></div>
+          <div style="flex:1; display:flex; flex-direction:column; min-width:0">
+            <div class="mapwrap"><svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet" aria-label="The March, a sketch" data-map></svg></div>
+            <div class="strip"><span class="card"><b>Grey Hounds</b> · at the Drowned Chapel, day 6</span><span class="card"><b>Fenn Lanterns</b> · home, 2 hurt</span><span class="card">Infirmary 3 · Bills due Thursday</span></div>
+          </div>
+          <div class="tray">Letters · 3</div>
+        </div>
+      </div></div>
+      <figcaption>Home: the March fills the screen, the parties sit in a strip below, Continue stays top right under the thumb.</figcaption>
+    </figure>
+    <figure>
+      <div class="fit"><div class="device land" data-w="844" data-h="390">
+        <div class="topbar" style="padding:5px 10px"><span class="g" style="font-size:15px">Ashford Co.</span><span class="d" style="font-size:13px">Wk 23, day 4</span><span class="s">Stopped: party back from Reedmere Farm</span><span class="c" style="font-size:13px">4,180 g</span><button class="cont" tabindex="-1" style="padding:5px 12px">Continue</button></div>
+        <div class="body">
+          <div class="rail"><div class="i"><b>D</b>Desk</div><div class="i on"><b>R</b>Roster</div><div class="i"><b>P</b>Parties</div><div class="i"><b>C</b>Contr.</div><div class="i"><b>G</b>Guild</div><div class="i"><b>W</b>World</div></div>
+          <div class="paper" style="padding:6px 10px; gap:5px">
+            <div class="row2"><div class="chips"><span class="chip">Overview</span><span class="chip on">Attributes</span><span class="chip">Condition</span><span class="chip">Contract</span><span class="chip">Record</span></div><span class="muted" style="font-size:13px">1–7 of 30 ▾</span></div>
+            <table class="led" id="landRoster"></table>
+          </div>
+        </div>
+      </div></div>
+      <figcaption>Roster: the name column stays put; the rest pages through column sets. 7 of 30 rows show at once.</figcaption>
+    </figure>
+  </div>
+  <div class="notes">
+    <div><h3>Keeps</h3><ul><li>One mental model with the PC game: same tabs, same top bar, same map home.</li><li>The map and quest board suit a wide screen.</li><li>The same layout works on tablets.</li></ul></div>
+    <div><h3>Bends</h3><ul><li>7 rows, not 25: the R4 fact test fails by design. Finding facts relies on Find, sort and filters.</li><li>390 points of height is cramped for letters and conversations.</li><li>Two-handed play only; no one-handed commute play.</li><li>Text at 150% (D-077) breaks most ledgers.</li></ul></div>
+    <div><h3>Work (estimate)</h3><p class="big">440–900 h</p><ul class="work"><li>Shared base: 190–400 h</li><li>Re-lay every dense screen for 390 px height, column sets, slide-over tray: 250–500 h</li></ul><p style="color:var(--chrome2)">About 5–21 months at 10–20 h/wk.</p></div>
+  </div>
+</section>
+
+<!-- C -->
+<section class="concept" aria-labelledby="ch">
+  <header>
+    <span><span class="tag">Portrait · phone</span></span>
+    <h2 id="ch">C. Ledger book</h2>
+    <p class="sub">A phone-first redesign, held upright and played with one thumb. Five tabs along the bottom, Continue as a large wax seal in thumb reach, every list a stack you tap into. Tablets keep concept A, so this is a second interface beside the desk, not a replacement.</p>
+  </header>
+  <div class="devices four">
+    <figure>
+      <div class="fit"><div class="device" data-w="390" data-h="844">
+        <div class="sb"><span>9:41</span><span>●●●</span></div>
+        <div class="topbar" style="flex-wrap:wrap; row-gap:2px"><span class="g">Ashford Company</span><span class="c" style="margin-left:auto">4,180 gold</span><span class="d" style="width:100%; color:var(--chrome2)">Week 23, day 4 · Year 1</span></div>
+        <div class="paper" style="gap:10px">
+          <h4>The calendar stopped</h4>
+          <div class="card stop"><span class="k">Week report</span><span>Grey Hounds cleared Reedmere Farm. 140 gold, Bryn Ketch hurt (3 weeks).</span></div>
+          <div class="card stop"><span class="k">New contracts · 4</span><span>A perilous one at the Drowned Chapel, 9 days out.</span></div>
+          <h4 style="font-size:16px; margin-top:4px">This week</h4>
+          <div class="card"><div class="row2"><b>Grey Hounds</b><span class="pill good">on the road</span></div><span class="muted">Drowned Chapel · day 6 of ~14</span></div>
+          <div class="card"><div class="row2"><b>Fenn Lanterns</b><span class="pill warn">resting</span></div><span class="muted">Home · 2 in the infirmary</span></div>
+          <div class="card"><div class="row2"><b>Bills</b><span>312 g Thursday</span></div><span class="muted">Wages 259 g · upkeep 53 g</span></div>
+          <div style="flex:1"></div>
+          <div class="sealbtn">Continue</div>
+        </div>
+        <div class="tabbar"><div class="on"><i>D</i>Desk</div><div><i>R</i>Roster</div><div><i>C</i>Contracts</div><div class="badge"><i>L</i>Letters</div><div><i>≡</i>Guild</div></div>
+      </div></div>
+      <figcaption>Desk: why the calendar stopped comes first, then the week, then a Continue seal under the thumb.</figcaption>
+    </figure>
+    <figure>
+      <div class="fit"><div class="device" data-w="390" data-h="844">
+        <div class="sb"><span>9:41</span><span>●●●</span></div>
+        <div class="topbar"><span class="g">Roster</span><span class="d" style="margin-left:auto; color:var(--chrome2)">30 · 4 hurt</span></div>
+        <div class="paper">
+          <span class="search">Find a name, class or trait…</span>
+          <div class="chips"><span class="chip on">Overview</span><span class="chip">Attributes</span><span class="chip">Condition</span><span class="chip">Contract</span></div>
+          <table class="led" id="portRoster"></table>
+        </div>
+        <div class="tabbar"><div><i>D</i>Desk</div><div class="on"><i>R</i>Roster</div><div><i>C</i>Contracts</div><div class="badge"><i>L</i>Letters</div><div><i>≡</i>Guild</div></div>
+      </div></div>
+      <figcaption>Roster: two-line rows, 12 visible, column sets as chips. Sort by tapping a heading.</figcaption>
+    </figure>
+    <figure>
+      <div class="fit"><div class="device" data-w="390" data-h="844">
+        <div class="sb"><span>9:41</span><span>●●●</span></div>
+        <div class="topbar"><span class="g">Grey Hounds</span><span class="s" style="text-align:right">The Drowned Chapel · day 6</span></div>
+        <div class="mapwrap" style="background:var(--paper2)"><svg viewBox="0 0 200 230" preserveAspectRatio="xMidYMid meet" aria-label="The site map, half drawn" data-site></svg></div>
+        <div style="padding:8px 12px; background:var(--paper)" class="log"><span><b>d6</b>Kit Ware finds the stair. It goes down, and it is wet.</span><span><b>d6</b>Odric tests the water with his boot. The water wins.</span></div>
+        <div class="sheetup">
+          <div><span class="wax">K</span><b style="font-family:var(--title); font-size:18px; font-weight:400">Key moment: the stair floods</b><br><span class="muted" style="font-size:14px">Water is rising in the lower crypt. Wenna Cray is below with the reliquary.</span></div>
+          <div class="choice main"><span>Push on: get Wenna out</span><span class="odds">risky</span></div>
+          <div class="choice"><span>Retreat and come back drier</span><span class="odds">safe</span></div>
+          <div class="choice"><span>Spend the ward-salt (1 left)</span><span class="odds">costly</span></div>
+        </div>
+      </div></div>
+      <figcaption>Quest board: the site map draws itself in the top half; a key moment rises as a sealed sheet with its choices.</figcaption>
+    </figure>
+    <figure>
+      <div class="fit"><div class="device" data-w="390" data-h="844">
+        <div class="sb"><span>9:41</span><span>●●●</span></div>
+        <div class="topbar"><span class="d">‹ Roster</span><span class="g" style="margin-left:auto">Odric Hale</span></div>
+        <div class="paper" style="gap:10px">
+          <div style="display:flex; gap:12px; align-items:center"><svg class="portrait" viewBox="0 0 92 110" aria-hidden="true"><ellipse cx="46" cy="55" rx="43" ry="52" fill="#e5d7b9"/><circle cx="46" cy="44" r="18" fill="none" stroke="#2a2017" stroke-width="2"/><path d="M14 104c4-24 18-32 32-32s28 8 32 32" fill="none" stroke="#2a2017" stroke-width="2"/><path d="M34 40h7M51 40h7M40 54q6 4 12 0" stroke="#2a2017" stroke-width="1.6" fill="none"/></svg>
+            <div style="display:grid; gap:2px"><b style="font-family:var(--title); font-size:20px; font-weight:400">Odric Hale</b><span>Warrior 3 · front line</span><span class="muted">Age 27 · Grey Hounds</span><span><span class="pill good">fit</span> <span class="pill warn">wants a raise</span></span></div></div>
+          <div class="chips"><span class="chip on">Attributes</span><span class="chip">Kit</span><span class="chip">Record</span><span class="chip">Talk</span></div>
+          <div class="attr"><span>Strength</span><span>16</span><span>Nerve</span><span>14</span><span>Endurance</span><span>15</span><span>Judgement</span><span>9</span><span>Agility</span><span>11</span><span>Leadership</span><span>12</span><span>Weapon skill</span><span>15</span><span>Teamwork</span><span>13</span><span>Awareness</span><span>10</span><span>Ambition</span><span>17</span></div>
+          <h4 style="font-size:16px">Kit</h4>
+          <div class="slots"><div class="slot f">Arming sword</div><div class="slot f">Mail coat</div><div class="slot f">Kite shield</div><div class="slot">Head</div><div class="slot">Cloak</div><div class="slot">Ring</div><div class="slot f">Field kit</div><div class="slot">Charm</div></div>
+          <h4 style="font-size:16px">Recent</h4>
+          <span class="muted">Reedmere Farm, routine · came home, 2 kills<br>Blackthorn Wood, hazardous · held the line</span>
+        </div>
+        <div class="tabbar"><div><i>D</i>Desk</div><div class="on"><i>R</i>Roster</div><div><i>C</i>Contracts</div><div class="badge"><i>L</i>Letters</div><div><i>≡</i>Guild</div></div>
+      </div></div>
+      <figcaption>Person card (D-142): portrait, attributes, kit slots (D-143) and talk in one scroll.</figcaption>
+    </figure>
+  </div>
+  <div class="notes">
+    <div><h3>Keeps</h3><ul><li>Every system, including the map, quest board, conversations and the Chronicle.</li><li>Letters, reports and the person card read better upright than on the PC.</li><li>One-handed play in short bursts; the daily autosave (D-033) makes stopping anywhere safe.</li></ul></div>
+    <div><h3>Bends</h3><ul><li>A different navigation model from the PC desk: two interfaces to keep in step.</li><li>Map and quest board reframed for a tall screen; the 3:2 March shows a third at a time.</li><li>Finance and ranking ledgers need new compact layouts.</li><li>The friction budget may need a phone setting: 100 stops a year (D-068) is a lot of taps.</li></ul></div>
+    <div><h3>Work (estimate)</h3><p class="big">690–1,400 h</p><ul class="work"><li>Shared base: 190–400 h</li><li>~25 screens redesigned at 20–40 h each: 500–1,000 h</li></ul><p style="color:var(--chrome2)">About 8–33 months at 10–20 h/wk. Tablets use A, which adds 60–150 h if both ship.</p></div>
+  </div>
+</section>
+
+<!-- D -->
+<section class="concept" aria-labelledby="dh">
+  <header>
+    <span><span class="tag">Both orientations · phone</span></span>
+    <h2 id="dh">D. Turn the book</h2>
+    <p class="sub">The phone is held upright for people and words (desk, letters, conversations, the person card, key moments) and turned sideways for ledgers, the kingdom map and the quest board. A hint invites the turn; nothing forces it.</p>
+  </header>
+  <div class="devices mixed">
+    <figure>
+      <div class="fit"><div class="device" data-w="390" data-h="844">
+        <div class="sb"><span>9:41</span><span>●●●</span></div>
+        <div class="topbar"><span class="d">‹ Letters</span><span class="g" style="margin-left:auto">From the Lady Wardell</span></div>
+        <div class="paper letter" style="padding:16px 18px">
+          <p><span class="init">G</span>uildmaster, the Wendle mine has gone quiet again, and the men who went down to see why have gone quiet with it. I am told your Grey Hounds are good with dark places.</p>
+          <p>I will pay four hundred gold for the mine reopened, and a further hundred if nobody I employ has to attend the funerals. Kindly do not bring the roof down. It is a very expensive roof.</p>
+          <div class="fleuron">❦</div>
+          <p class="muted" style="font-style:italic">Answer by week 25, or the Ravenscar Lodge will be asked.</p>
+          <div style="flex:1"></div>
+          <div class="choice main" style="font-family:var(--ledger)"><span>Take it to the contract board</span><span class="odds">perilous</span></div>
+          <div class="choice" style="font-family:var(--ledger)"><span>Decline politely</span><span class="odds">standing −1</span></div>
+        </div>
+        <div class="tabbar"><div><i>D</i>Desk</div><div><i>R</i>Roster</div><div><i>C</i>Contracts</div><div class="on"><i>L</i>Letters</div><div><i>≡</i>Guild</div></div>
+      </div></div>
+      <figcaption>Upright: a patron's letter, with its decorated initial and the choices it offers.</figcaption>
+    </figure>
+    <figure>
+      <div class="fit"><div class="device land" data-w="844" data-h="390">
+        <div class="topbar" style="padding:5px 10px"><span class="g" style="font-size:15px">Finances</span><span class="d" style="font-size:13px">Year 1 to week 23</span><span class="s"></span><span class="c" style="font-size:13px">4,180 g</span><button class="cont" tabindex="-1" style="padding:5px 12px">Continue</button></div>
+        <div class="body" style="position:relative">
+          <div class="paper" style="padding:8px 14px; gap:5px">
+            <table class="led" id="finTable"></table>
+          </div>
+          <div class="hint" style="right:14px; bottom:12px">Turn upright for the person card ↺</div>
+        </div>
+      </div></div>
+      <figcaption>Sideways: the finance ledger at full width with weekly columns. Turning back returns to the same place upright.</figcaption>
+    </figure>
+  </div>
+  <div class="notes">
+    <div><h3>Keeps</h3><ul><li>Each screen gets the shape it reads best in: letters tall, ledgers and maps wide.</li><li>Sideways screens share most of their layout with concept B and the tablet.</li></ul></div>
+    <div><h3>Bends</h3><ul><li>Two layouts for any screen a player may open both ways (roster, contracts): the most design and test work.</li><li>Rotation must keep scroll place, selection and open sheets: a common source of bugs.</li><li>Some players lock rotation; every sideways screen still needs an upright fallback.</li></ul></div>
+    <div><h3>Work (estimate)</h3><p class="big">600–1,210 h</p><ul class="work"><li>Shared base: 190–400 h</li><li>~15 wide screens: 170–330 h</li><li>~10 upright screens: 200–400 h</li><li>Rotation and state: 40–80 h</li></ul><p style="color:var(--chrome2)">About 7–28 months at 10–20 h/wk.</p></div>
+  </div>
+</section>
+
+<section class="sheet" aria-labelledby="sh">
+  <h2 id="sh">Shared base: what every concept costs</h2>
+  <div class="scroll">
+    <table class="sum" style="min-width:640px">
+      <thead><tr><th>Item</th><th>Hours (estimate)</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Mobile app shell</td><td class="n">40–80</td><td>Wrap the web game for iOS and Android (for example Capacitor) in place of Electron; app lifecycle, pause on calls, back button.</td></tr>
+        <tr><td>Touch input</td><td class="n">40–80</td><td>Tap or long-press for every hover breakdown, drag and pinch on the maps, larger targets (44 points), on-screen buttons for keyboard shortcuts.</td></tr>
+        <tr><td>Saves on the device</td><td class="n">30–60</td><td>Ironman saves (D-033) to device storage, safe on a killed app, backed up by iCloud or Google instead of Steam Cloud (D-091).</td></tr>
+        <tr><td>Stores</td><td class="n">40–80</td><td>Two store listings, review rules, privacy labels, and the free demo as one in-app unlock (the stores' way of selling a demo, D-040).</td></tr>
+        <tr><td>Device testing and speed</td><td class="n">40–100</td><td>Mid-range phones, battery and heat, map frame rate on a real GPU, small-screen text checks (D-084, D-077).</td></tr>
+        <tr><td><b>Total</b></td><td class="n"><b>190–400</b></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Money and machines, to recheck before any decision: an Apple developer account (about $99 a year), Google Play (about $25 once), both stores take about 15% under their small-developer programmes. iOS builds need a Mac (Apple's tools run only on macOS): buy one or rent one in the cloud. The engine needs no change: it is pure TypeScript with no clock or mouse in it (GAME-01, GAME-02).</p>
+</section>
+
+<section class="concept rec" aria-labelledby="rh">
+  <h2 id="rh">My recommendation</h2>
+  <ol>
+    <li><b>Keep Windows first (D-106).</b> Even the cheapest concept adds 3–13 months to a 31–46 month plan. A mobile build before launch would be a second product before the first one exists.</li>
+    <li><b>Plan for A after launch, then decide on C from sales.</b> The tablet desk is the PC game with touch, so it is the cheapest way to learn whether mobile players want this game. C is the best phone game, but it is a second interface that taxes every later screen by 40–60%.</li>
+    <li><b>Two cheap habits now that keep the door open</b> (about 10–20 hours over the build, estimate): every hover breakdown also opens on click or tap, which also helps keyboard and screen-reader players (D-110) and a later Steam Deck build; and screens use flexible layout parts rather than fixed 1366 px positions.</li>
+    <li><b>Skip B and D.</b> B gives up the desk's density without gaining one-handed play. D costs as much as C and adds rotation bugs.</li>
+  </ol>
+  <div class="foot">
+    <p>Left out: a phone companion that reads letters and answers stops for a PC save. It needs a server to sync saves (a backend, SAFE-03), breaks the offline promise (CONCEPT §14), and lets the phone and PC disagree about an Ironman save.</p>
+    <p>Basis for the estimates: about 25 launch screens (PLAN §6 ledgers plus map, quest board, letters, person card and set pieces), 20–40 hours to redesign and test one screen for a new layout, and 43–87 hours a month at 10–20 hours a week. They are judgements, not measurements; the mock-ups here took no position on art cost, which stays the same art (woodcut parts scale to any screen).</p>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Sample data in the style of the desk mock-up (D-142): names from the March, classes and lines from the resolution SPEC.
+const R = [
+  ['Odric Hale','Warrior',3,'Front','Grey Hounds',16,14,15,'fit','10 g 6 s'],
+  ['Wenna Cray','Cleric',3,'Back','Grey Hounds',9,16,12,'fit','11 g'],
+  ['Kit Ware','Rogue',2,'Front','Grey Hounds',11,12,13,'fit','8 g 4 s'],
+  ['Bryn Ketch','Warrior',2,'Front','Grey Hounds',15,11,14,'hurt','8 g'],
+  ['Maud Lockley','Rogue',3,'Front','Fenn Lanterns',10,13,15,'fit','9 g 2 s'],
+  ['Rook Ferriby','Warrior',4,'Front','Fenn Lanterns',17,12,13,'tired','12 g 8 s'],
+  ['Sabine Oakes','Cleric',2,'Back','Fenn Lanterns',8,15,11,'hurt','8 g 6 s'],
+  ['Teal Gosling','Rogue',1,'Front','Fenn Lanterns',9,10,14,'fit','6 g'],
+  ['Jory Rushmere','Warrior',2,'Front','Reed Wardens',14,13,12,'fit','8 g 2 s'],
+  ['Kit Ambry','Cleric',1,'Back','Reed Wardens',7,13,10,'fit','6 g 4 s'],
+  ['Ralf Fenwick','Rogue',2,'Front','Reed Wardens',11,9,16,'tired','7 g 8 s'],
+  ['Sabine Cray','Warrior',1,'Front','Reed Wardens',13,10,11,'fit','6 g 2 s'],
+  ['Hob Marram','Warrior',3,'Front','Ash Ravens',16,13,12,'fit','10 g'],
+  ['Elin Tarrow','Cleric',2,'Back','Ash Ravens',8,14,12,'fit','8 g 8 s'],
+  ['Ned Pollard','Rogue',3,'Front','Ash Ravens',10,12,17,'hurt','9 g 6 s'],
+  ['Ada Sedge','Rogue',1,'Front','Ash Ravens',9,11,13,'fit','5 g 8 s'],
+  ['Wat Comber','Warrior',2,'Front','Unassigned',14,12,11,'fit','7 g 6 s'],
+  ['Isolde Venn','Cleric',3,'Back','Unassigned',9,17,13,'fit','11 g 4 s'],
+  ['Piers Halloway','Warrior',1,'Front','Unassigned',12,9,10,'fit','5 g 6 s'],
+  ['Gwen Ashby','Rogue',2,'Front','Unassigned',10,11,15,'hurt','7 g 2 s'],
+  ['Cuth Brannock','Warrior',3,'Front','Unassigned',15,14,12,'fit','9 g 8 s'],
+];
+const pill = c => `<span class="pill ${c==='fit'?'good':c==='tired'?'warn':'bad'}">${c}</span>`;
+const fill = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+fill('tabRoster', '<thead><tr><th>Name</th><th>Class</th><th class="r">Lvl</th><th>Line</th><th>Party</th><th class="r">Str</th><th class="r">Nrv</th><th class="r">Agi</th><th>Condition</th><th class="r">Wage / week</th></tr></thead><tbody>' +
+  R.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="r">${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td class="r">${r[5]}</td><td class="r">${r[6]}</td><td class="r">${r[7]}</td><td>${pill(r[8])}</td><td class="r">${r[9]}</td></tr>`).join('') + '</tbody>');
+fill('landRoster', '<thead><tr><th>Name</th><th>Class</th><th class="r">Str</th><th class="r">End</th><th class="r">Agi</th><th class="r">Nrv</th><th class="r">Jdg</th><th class="r">Wpn</th><th class="r">Awr</th><th class="r">Ldr</th></tr></thead><tbody>' +
+  R.slice(0,7).map((r,i) => `<tr><td>${r[0]}</td><td>${r[1]} ${r[2]}</td><td class="r">${r[5]}</td><td class="r">${12+(i*3)%6}</td><td class="r">${r[7]}</td><td class="r">${r[6]}</td><td class="r">${8+(i*5)%9}</td><td class="r">${11+(i*7)%7}</td><td class="r">${9+(i*4)%8}</td><td class="r">${10+(i*2)%7}</td></tr>`).join('') + '</tbody>');
+fill('portRoster', '<thead><tr><th>Name</th><th class="r">Lvl</th><th>Condition</th><th class="r">Wage</th></tr></thead><tbody>' +
+  R.slice(0,12).map(r => `<tr><td>${r[0]}<br><span class="sub">${r[1]} · ${r[3].toLowerCase()} · ${r[4]}</span></td><td class="r">${r[2]}</td><td>${pill(r[8])}</td><td class="r">${r[9].replace(/ s$/,'s').split(' ')[0]} g</td></tr>`).join('') + '</tbody>');
+const W = ['Wk 18','Wk 19','Wk 20','Wk 21','Wk 22','Wk 23'];
+const F = [['Contract fees',[310,0,455,140,620,140]],['Loot sold',[42,18,96,0,133,27]],['Wages',[-259,-259,-262,-262,-268,-259]],['Upkeep',[-53,-53,-53,-55,-55,-53]],['Healing',[-12,-40,0,-18,-64,-22]],['Smith',[0,-36,0,-80,0,0]]];
+const tot = W.map((_,i) => F.reduce((s,f) => s + f[1][i], 0));
+const g = v => (v<0?'−':'') + Math.abs(v).toLocaleString('en-GB');
+fill('finTable', '<thead><tr><th>Gold</th>' + W.map(w => `<th class="r">${w}</th>`).join('') + '<th class="r">Six weeks</th></tr></thead><tbody>' +
+  F.map(f => `<tr><td>${f[0]}</td>${f[1].map(v => `<td class="r">${g(v)}</td>`).join('')}<td class="r">${g(f[1].reduce((a,b)=>a+b,0))}</td></tr>`).join('') +
+  `<tr><td><b>Net</b></td>${tot.map(v => `<td class="r"><b>${g(v)}</b></td>`).join('')}<td class="r"><b>${g(tot.reduce((a,b)=>a+b,0))}</b></td></tr></tbody>`);
+
+// A sketch of the March (300 × 200 km, sea on the west, D-134) and a half-drawn site map.
+const map = `<rect width="300" height="200" fill="var(--sea)"/>
+<path d="M58 0 C40 30 66 52 44 78 C26 104 52 128 38 152 C30 172 48 188 40 200 L300 200 L300 0 Z" fill="var(--land)" stroke="var(--ink2)" stroke-width="1"/>
+<path d="M150 20 C140 60 168 84 150 120 C138 148 120 168 70 182" fill="none" stroke="#7d95a3" stroke-width="2"/>
+<path d="M150 104 L210 80 L262 60 M150 104 L196 150 L240 176 M150 104 L96 120 M150 104 L120 46" fill="none" stroke="var(--ink2)" stroke-width="1" stroke-dasharray="3 2"/>
+<path d="M150 104 C130 116 100 128 82 150" fill="none" stroke="var(--seal)" stroke-width="2.2" stroke-dasharray="4 3"/>
+${[[150,104,'Ashford',1],[210,80,'Varrowmere'],[262,60,'Wendle'],[196,150,'Reedmere'],[240,176,'Cray’s Mill'],[120,46,'Blackthorn'],[96,120,'Fenn']].map(([x,y,n,h]) => `<circle cx="${x}" cy="${y}" r="${h?5:3}" fill="${h?'var(--seal)':'var(--ink)'}"/><text x="${x+6}" y="${y-5}" font-family="IM Fell English SC, Georgia, serif" font-size="9" fill="var(--ink)">${n}</text>`).join('')}
+<g transform="translate(82 150)"><circle r="7" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.5"/><text y="3" text-anchor="middle" font-size="8" font-family="IM Fell English SC, Georgia, serif" fill="var(--ink)">GH</text></g>
+<text x="92" y="160" font-family="IM Fell DW Pica, Georgia, serif" font-style="italic" font-size="8" fill="var(--seal)">the Drowned Chapel</text>
+<path d="M200 0 C230 40 290 30 300 70 L300 0 Z" fill="var(--paper2)" opacity=".85"/>`;
+document.querySelectorAll('[data-map]').forEach(s => s.innerHTML = map);
+const site = `<rect width="200" height="230" fill="var(--paper2)"/>
+<path d="M30 20 H170 V90 H130 V150 H70 V90 H30 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M70 150 V200 H130 V170" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="5 4"/>
+<path d="M75 180 h50" stroke="#7d95a3" stroke-width="6" opacity=".6"/>
+<text x="112" y="122" font-family="IM Fell DW Pica, Georgia, serif" font-style="italic" font-size="10" fill="var(--ink2)">damp. very damp.</text>
+${[[60,60,'OH'],[90,70,'KW'],[110,50,'BK']].map(([x,y,n]) => `<g transform="translate(${x} ${y})"><circle r="11" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.6"/><text y="4" text-anchor="middle" font-size="10" font-family="IM Fell English SC, Georgia, serif" fill="var(--ink)">${n}</text></g>`).join('')}
+<g transform="translate(100 186)"><circle r="11" fill="var(--paper)" stroke="var(--seal)" stroke-width="2"/><text y="4" text-anchor="middle" font-size="10" font-family="IM Fell English SC, Georgia, serif" fill="var(--seal)">WC</text></g>`;
+document.querySelectorAll('[data-site]').forEach(s => s.innerHTML = site);
+
+// Scale each real-size device frame to the width it is given.
+function fitAll() {
+  document.querySelectorAll('.fit').forEach(f => {
+    const d = f.firstElementChild, w = +d.dataset.w + 2 * parseFloat(getComputedStyle(d).borderLeftWidth), h = +d.dataset.h + 2 * parseFloat(getComputedStyle(d).borderTopWidth);
+    d.style.width = w + 'px'; d.style.height = h + 'px';
+    const s = Math.min(1, f.clientWidth / w);
+    d.style.transform = `scale(${s})`; f.style.height = (h * s) + 'px';
+  });
+}
+fitAll(); addEventListener('resize', fitAll); document.fonts && document.fonts.ready.then(fitAll);
+</script>
