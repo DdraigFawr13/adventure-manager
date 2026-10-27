@@ -1,0 +1,94 @@
+<title>Download and Plan Tidy Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Sorts+Mill+Goudy&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; what changed with measured sizes, then the review's findings as a ledger with outcomes, then what is still open. Paper-and-ink tokens from the roadmap page. */
+:root {
+  --bg: #f4efe4; --surface: #fbf8f1; --fg: #2a2017; --muted: #6b5a45; --line: #ddd0b6;
+  --accent: #8e2a22; --done: #3f6f8f; --warn: #9c7a2f;
+  --title: "IM Fell English SC", Georgia, serif;
+  --body: "Source Serif 4", Georgia, serif;
+  --ledger: "Sorts Mill Goudy", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1d1813; --surface: #261f18; --fg: #eee4d2; --muted: #b3a48c; --line: #3d3328; --accent: #d0675c; --done: #7fa9c9; --warn: #d0aa55; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1d1813; --surface: #261f18; --fg: #eee4d2; --muted: #b3a48c; --line: #3d3328; --accent: #d0675c; --done: #7fa9c9; --warn: #d0aa55; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 56px; }
+.wrap { max-width: 760px; margin: 0 auto; display: grid; gap: 32px; }
+h1 { font-family: var(--title); font-weight: 400; font-size: 2.1rem; line-height: 1.15; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--title); font-weight: 400; font-size: 1.45rem; margin: 0 0 10px; text-wrap: balance; }
+p { margin: 0 0 10px; max-width: 66ch; }
+.meta { font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.ask { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 4px; padding: 14px 16px; }
+.ask p:last-child { margin: 0; }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: lining-nums tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); vertical-align: baseline; }
+th { font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 400; }
+td.n { font-family: var(--ledger); font-size: 1.05rem; white-space: nowrap; }
+ul.f { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+ul.f li { display: grid; grid-template-columns: 5.2em 1fr; gap: 4px 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+ul.f li > div { min-width: 0; }
+.sev { font-family: var(--mono); font-size: .68rem; letter-spacing: .07em; text-transform: uppercase; padding: 1px 6px; border: 1px solid currentColor; border-radius: 10px; justify-self: start; align-self: start; }
+.major { color: var(--accent); } .minor { color: var(--warn); } .nit { color: var(--muted); }
+.out { color: var(--done); font-size: .92rem; display: block; }
+code { font-family: var(--mono); font-size: .85em; overflow-wrap: anywhere; }
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 5px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="meta">27 October 2026 · branch ccr-e3d3c7e2-5mb8qm · 4 commits</span>
+    <h1>Download size and plan tidy: review</h1>
+    <p>Your request after the fresh-eyes feedback: fix the documentation and the prototype's download size. One independent review of the whole branch, 7 findings, 6 fixed and 1 kept on purpose.</p>
+  </header>
+
+  <section class="ask">
+    <h2>Your call</h2>
+    <p>May I open the pull request? Once CI is green I merge it, as D-133 says. Nothing in the game's rules or any decision changes.</p>
+  </section>
+
+  <section>
+    <h2>The prototype page downloads less</h2>
+    <p>The three fonts were embedded in the stylesheet as text, so the phone had to load 703 kB before it could draw anything, and again after every deploy. They are now compressed font files of their own, the same fonts with no letters changed. Unused engine-test data also left the script. Measured from the production build:</p>
+    <div class="tbl"><table>
+      <thead><tr><th>File</th><th>Before</th><th>After</th></tr></thead>
+      <tbody>
+        <tr><td>Stylesheet</td><td class="n">703 kB (344 gzipped)</td><td class="n">6 kB (2 gzipped)</td></tr>
+        <tr><td>Fonts, three files</td><td class="n">inside the stylesheet</td><td class="n">222 kB, kept between visits</td></tr>
+        <tr><td>Script</td><td class="n">435 kB (129 gzipped)</td><td class="n">402 kB (126 gzipped)</td></tr>
+      </tbody>
+    </table></div>
+    <p>A first visit transfers about 475 kB before and about 350 kB after, so 26% less (gzipped totals, estimate). The bigger gain is that text draws at once in the fallback face, and later visits reuse the cached fonts. Most of the script that remains is React (about 190 kB); shrinking it means a different library, which would need your approval (SAFE-03). In a browser at iPhone size all three fonts loaded and the founding screen looked as before. All 261 tests pass.</p>
+  </section>
+
+  <section>
+    <h2>The plan says the phone plan directly</h2>
+    <p>Seventeen sections of <code>PLAN.md</code> had "Amended" or "Under review" notes stacked on text written for Windows and Steam. For example, the R4 row still asked for 25 rows on a 1366 px screen, and the budget table was the old one. Each section now says what D-150 to D-158, D-163 and D-167 decided and cites them. The questions you still have to decide on phones stay marked as yours: the store page, wishlists, where the success measures come from, Early Access and tester recruiting. The old figures remain in DECISIONS and git history. I re-added the budget table and it matches D-157: $54,725–182,725 before contingency, about $66,000–219,000 solo with it.</p>
+    <p>I also fixed a layout bug on the roadmap page: on phones, a link inside a "Done" entry broke out into a column of its own.</p>
+  </section>
+
+  <section>
+    <h2>Review findings</h2>
+    <ul class="f">
+      <li><span class="sev major">Major</span><div>The M4 row still said "Public (e.g. a Steam festival)" in a row that was otherwise about phones.<span class="out">Fixed: the venue is marked as yours to decide (D-150).</span></div></li>
+      <li><span class="sev minor">Minor</span><div>"§1d targets were revisited for this budget and stand unchanged" read as settled, but the phone sources for those targets are still open.<span class="out">Fixed: says they stood for the Windows budget and their phone sources are still open.</span></div></li>
+      <li><span class="sev minor">Minor</span><div>"Phone stores have no wishlists" was stated as a fact that no decision holds.<span class="out">Fixed: "no direct equivalent of wishlists (to check)".</span></div></li>
+      <li><span class="sev minor">Minor</span><div>Two places dropped the word "optional" from the Game Center and Google Play Games achievements (D-158).<span class="out">Fixed in both places.</span></div></li>
+      <li><span class="sev minor">Minor</span><div>The test laptop line said it "may not be needed", but D-157 still counts it.<span class="out">Fixed: "kept in D-157". The doubt stays as an open point in HANDOFF.</span></div></li>
+      <li><span class="sev nit">Nit</span><div>The §14 header didn't list D-150, D-152, D-156 and D-157, which the section now uses.<span class="out">Fixed.</span></div></li>
+      <li><span class="sev nit">Nit</span><div>The engine comparison table keeps its Windows and Steam wording.<span class="out">Kept: it is labelled as the record of the 2026-10-26 choice.</span></div></li>
+    </ul>
+    <p>Limits of the review: the reviewer couldn't run commands, so it read the files instead of the diff and didn't rebuild. I ran the checks myself after the fixes: docs check, drift check, format, types, boundaries and the 261 tests all pass. The reviewer found no build problems. It checked the Vite file-naming code against the installed version, and found no module in the content package that runs code on import, though it called that search "not proof".</p>
+  </section>
+
+  <section>
+    <h2>Not done</h2>
+    <ul class="plain">
+      <li>The engine test still loads the old uncompressed fonts, including the 1.2 MB Source Serif. It isn't on the main link, and it gets rebuilt for the phone later.</li>
+      <li>Duplicate full names (<code>packages/engine/src/guild/people.ts</code>) aren't fixed here. You didn't ask for it, but I'd fix it before the R7 playtest, since R7 asks you to name adventurers.</li>
+      <li>CONCEPT.md and STYLE.md keep their "Replaced" notes, because both documents are locked.</li>
+    </ul>
+  </section>
+</div>
