@@ -896,6 +896,25 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** The kingdom map workshop (PLAN §12d) gains a geography review before the March's base map is drawn: (1) rivers run believably from high ground to the sea or lakes, and roads follow sensible lines between places (valleys, fords, passes, bridges); (2) every town sits where it would grow for a reason (a crossroads, a ford or bridge, a harbour, a resource such as ore, timber, salt, fish, wool or peat) and has a specialty that the economy and contracts can use; (3) at least one more major city than the current set; (4) outposts in the wild and harsh areas (moor, mountains, deep fen, forest edges). The engine-test map stays a test until then.
 - **Why:** Owner (2026-10-26): "add a step in the review process ... where we handle roads on the map and rivers on the map and making sure towns are in sensible locations where they would maybe specialize in a resource or at a crossroads type thing. Also at least one more major city and outposts in the more wild or harsh areas"; chose the §12 map workshop over a new M1 step before the gate and over splitting the work.
 
+## D-145 R6 in M1: a guildmaster's skills and two delegable areas
+
+- **Status:** Accepted (2026-10-26); skills, staff quality, wages and every number are starting assumptions for tuning.
+- **Decision:** M1 builds just enough to test R6 honestly: a guildmaster with a few skills that grow when the player does that work personally (D-029, PLAN §5d), and two delegable areas, **training** (how fast adventurers grow) and **recovery** (how fast the injured heal). Each area is run either by the guildmaster or by a hired staff member whose quality and wage vary. The year simulator plays a hands-on policy and a delegated one on the same seeds and reports the difference against R6's pass line (player focus 10–25% better on the chosen area; delegation never ruinous). The other staff roles (deputy, scout, librarian, quartermaster) come with M2.
+- **Why:** Owner's choice (2026-10-26), "Two areas, minimal", over all six staff roles in M1 and over deferring R6 to M2.
+
+## D-146 Bad starts in M1: the patron's emergency grant
+
+- **Status:** Accepted (2026-10-27); the amount, interval and costs are starting assumptions for tuning.
+- **Decision:** The one recovery lever M1 builds (PLAN §4g) is the patron's emergency grant: when the guild is in debt at a week start, the patron offers a grant of about 8 weeks of the guild's wages, at most once every 3 years. Taking it is the player's confirmed decision; it costs patron confidence (15 offered; 5 after the amendment below) and nothing else. The simulator always takes it. Abstract rivals (D-140) have no chest, so the lever is theirs only once rivals keep accounts. Charity contracts and debt paid in service wait for factions and the finance system.
+- **Why:** Owner's choice (2026-10-27), "Emergency grant", over the grant plus debt in service and over all three levers: in 100 simulated careers, 34 guilds ended year 2 below half their starting chest and only 15 of those lasted 10+ years (§9d bad starts).
+- **Amended (2026-10-27):** The grant no longer makes next year's target harder; it costs patron confidence only. The owner's option named 10; at 10, 23 of 35 bad starts lasted 10+ years, fewer than with the grant refused, so the tuned cost is 5 (28 of 35). Same 100 simulated seeds, 35 bad starts, share lasting 10+ years: grant with the harder target 18 (51%), grant refused 27 (77%), grant without the harder target 28 (80%). A struggling guild could not meet the harder target, missed it by more places and was dismissed. Owner's choice, "Confidence only", over a loan repaid from fees and over keeping the harder target.
+
+## D-147 Late goals in M1: one minimal crisis
+
+- **Status:** Accepted (2026-10-27); the chain, chances, rewards and pressure are starting assumptions for tuning.
+- **Decision:** M1 builds the crisis engine with one data-driven chain (D-112): from year 5, a yearly chance at the Assembly starts it; it posts linked contracts of rising danger one after another; ending it brings renown and patron confidence; while it stands unanswered it raises the guild's weekly costs and lowers the patron's confidence at each review. Chains are content entries, so later crises add data, not engine code. The simulator reports when crises start and how they end (§9d late goals).
+- **Why:** Owner's choice (2026-10-27), "One crisis, minimal", over two crises and over deferring the late-goals check to M2.
+
 ## D-148 Faster headless simulation: shared content now; in-place apply for tools and careers across cores after step 2
 
 - **Status:** Accepted (2026-10-27). Part 1 built on branch `ccr-c510692c-px9h9x`. The three ids before this one are used on the unmerged step-2 branch (`ccr-7c31ebb2-c4nfh9`). Parts 2 and 3 go on a fresh branch from `main` after the step-2 merge (GIT-01), with the usual review and approval (D-133).

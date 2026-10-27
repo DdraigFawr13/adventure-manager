@@ -11,6 +11,9 @@ import {
   type GameState,
   type GuildRules,
   type Plan,
+  type ResolutionContent,
+  AREAS,
+  weekInYear,
 } from '@adventure-manager/engine';
 import { baseResolution } from '@adventure-manager/content';
 export const POLICIES: Readonly<Record<string, Plan>> = {
@@ -72,6 +75,14 @@ interface Tracked extends PlayedYear {
 export interface RunOptions {
   readonly size?: number;
   readonly lastDay?: number;
+  /** Content to play (the career tool turns careers on); default the base content. */
+  readonly content?: ResolutionContent;
+  /** With staff on: hire the best candidate the chest can carry a year of, for each area (R6). */
+  readonly delegate?: boolean;
+  /** Called after each day's play, to sample the state (the career tool's R6 readings). */
+  readonly onDay?: (state: GameState) => void;
+  /** Refuse the patron's emergency grant instead of taking it (a comparison run). */
+  readonly refuseGrants?: boolean;
 }
 
 export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tracked {
@@ -82,7 +93,7 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
     seed,
     rng: {},
     nextEventNo: 1,
-    content: baseResolution,
+    content: options.content ?? baseResolution,
     roster: [],
     quest: null,
     calendar: 1,
@@ -107,9 +118,10 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
   let winterLowestChest = Infinity;
   const afterDay = () => {
     play(plan);
+    options.onDay?.(state);
     const guild = now();
     lowestChest = Math.min(lowestChest, guild.chestCopper);
-    const week = Math.floor((state.calendar - 1) / rules.daysPerWeek) + 1;
+    const week = weekInYear(state.calendar, rules);
     if ((state.calendar - 1) % rules.daysPerWeek === 0) {
       if (guild.chestCopper < 0) weeksInDebt += 1;
       if (week === rules.winterFromWeek) winterStartChest = guild.chestCopper;
@@ -121,6 +133,10 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
   /** The player's side: sign the cheapest prospects, then send out parties on board order. */
   const play = (planToUse: Plan) => {
     const day = state.calendar;
+    if (options.delegate) delegate(day);
+    // The simulated player takes the patron's emergency grant (D-146) unless told to refuse.
+    if (now().career?.emergencyOffer && now().chestCopper < 0 && !options.refuseGrants)
+      run({ type: 'patron.grant', day });
     while (now().prospects.length > 0 && now().members.length < size) {
       const cheapest = [...now().prospects].sort(
         (a, b) => a.wageCopper - b.wageCopper || (a.adventurer.id < b.adventurer.id ? -1 : 1),
@@ -128,10 +144,25 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
       run({ type: 'recruit.sign', day, prospectId: cheapest.adventurer.id });
     }
     for (;;) {
-      const offer = now().board[0];
+      // A crisis step goes first (crisis/SPEC.md); then board order.
+      const offer = now().board.find((o) => o.crisis) ?? now().board[0];
       const party = offer ? formParty() : [];
       if (!offer || party.length < rules.partySize.min) break;
       run({ type: 'contract.take', day, offerId: offer.id, partyIds: party, plan: planToUse });
+    }
+  };
+
+  /** A full delegator (R6): each area goes to the best listed candidate better than the staff member already hired, if a year's wage is in the chest; the guildmaster's own skill is never weighed. */
+  const delegate = (day: number) => {
+    for (const area of AREAS) {
+      const staff = now().staff;
+      if (!staff) return;
+      const current = staff.staff[area]?.quality ?? 0;
+      const best = staff.candidates
+        .filter((c) => c.area === area && c.quality > current)
+        .filter((c) => c.wageCopper * rules.weeksPerYear <= now().chestCopper)
+        .sort((a, b) => b.quality - a.quality || (a.id < b.id ? -1 : 1))[0];
+      if (best) run({ type: 'staff.hire', day, candidateId: best.id });
     }
   };
 
@@ -159,7 +190,8 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
 
   run({ type: 'guild.found', day: 1, size });
   afterDay();
-  for (let day = 2; day <= lastDay; day += 1) {
+  // A career run stops when the guildmaster's career ends (career/SPEC.md).
+  for (let day = 2; day <= lastDay && !state.guild?.career?.ended; day += 1) {
     run({ type: 'day.advance', day });
     afterDay();
   }

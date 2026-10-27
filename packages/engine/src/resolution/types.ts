@@ -37,6 +37,10 @@ export interface Adventurer {
   /** Drawn people carry their name and pronouns; fixed test and sample people take theirs from text data. */
   readonly name?: PersonName;
   readonly pronouns?: PronounKey;
+  /** Careers (career/SPEC.md): the year they were born in, their hidden ceiling per attribute, and when they retired. */
+  readonly birthYear?: number;
+  readonly potential?: Readonly<Record<Attribute, number>>;
+  readonly retiredYear?: number;
   readonly classId: string;
   readonly position: Position;
   readonly attributes: Readonly<Record<Attribute, number>>;

@@ -18,8 +18,23 @@ export function guildTurn(state: GameState, sink: EventSink<GameEvent>): GuildTu
   return { state, guild: state.guild, rules, sink };
 }
 
+/** Weeks since the guild's first day, counting across years (offers expire by this). */
 export function weekOf(day: number, rules: GuildRules): number {
   return divRoundDown(day - 1, rules.daysPerWeek) + 1;
+}
+
+export function daysPerYear(rules: GuildRules): number {
+  return rules.weeksPerYear * rules.daysPerWeek;
+}
+
+/** The year a day falls in; year 1 starts on day 1. */
+export function yearOf(day: number, rules: GuildRules): number {
+  return divRoundDown(day - 1, daysPerYear(rules)) + 1;
+}
+
+/** The week within its year (1..weeksPerYear): parts of the year and windows count by this. */
+export function weekInYear(day: number, rules: GuildRules): number {
+  return ((weekOf(day, rules) - 1) % rules.weeksPerYear) + 1;
 }
 
 export function isWeekStart(day: number, rules: GuildRules): boolean {
@@ -33,6 +48,24 @@ export function partOf(week: number, rules: GuildRules): 'assembly' | 'campaign'
 
 export function inWindow(week: number, rules: GuildRules): boolean {
   return rules.signingWindows.some((w) => week >= w.from && week <= w.to);
+}
+
+/** Changes renown, counts it toward this year's ladder standing, and records why. */
+export function addRenown(
+  turn: GuildTurn,
+  amount: number,
+  causeId: string,
+  subjectIds: readonly string[],
+): string {
+  turn.guild.renown += amount;
+  if (turn.guild.career) turn.guild.career.renownThisYear += amount;
+  return turn.sink.emit({
+    type: 'renown.changed',
+    causeId,
+    subjectIds,
+    amount,
+    renown: turn.guild.renown,
+  });
 }
 
 /** Moves the chest and records why; returns the event id. */

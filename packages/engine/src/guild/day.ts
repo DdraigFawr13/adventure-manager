@@ -5,7 +5,20 @@ import type { Command, GameEvent, GameState } from '../resolution/types.ts';
 import { expireOffers, freeMemberIds, postOffers } from './board.ts';
 import { arrive, comeHome } from './parties.ts';
 import { drawPerson, engage, listProspects } from './people.ts';
-import { guildTurn, inWindow, isWeekStart, pay, weekOf, type GuildTurn } from './turn.ts';
+import { startCareer, settleYear } from '../career/year.ts';
+import { offerEmergency } from '../career/emergency.ts';
+import { crisisAssembly, crisisWeek } from '../crisis/chain.ts';
+import { staffAssembly, staffWeek, startStaff } from '../staff/areas.ts';
+import {
+  guildTurn,
+  inWindow,
+  isWeekStart,
+  pay,
+  weekInYear,
+  weekOf,
+  yearOf,
+  type GuildTurn,
+} from './turn.ts';
 import type { GuildState, StopClass, StopReason } from './types.ts';
 
 const STOP_CLASS: Readonly<Record<StopReason, StopClass>> = {
@@ -15,15 +28,27 @@ const STOP_CLASS: Readonly<Record<StopReason, StopClass>> = {
   death: 'must',
   'signing-window': 'must',
   'party-home': 'digest',
+  retirement: 'must',
+  'career-ended': 'must',
+  'training-plan': 'digest',
+  infirmary: 'digest',
+  'patron-offer': 'must',
+  crisis: 'must',
 };
 
 const STOP_ORDER: readonly StopReason[] = [
+  'career-ended',
   'assembly',
+  'retirement',
+  'patron-offer',
+  'crisis',
   'signing-window',
   'week-report',
   'new-contracts',
   'death',
   'party-home',
+  'infirmary',
+  'training-plan',
 ];
 
 export function foundGuild(
@@ -50,6 +75,8 @@ export function foundGuild(
   state.calendar = command.day;
   const turn = guildTurn(state, sink);
   pay(turn, rules.startingChestCopper, 'founding', command.id);
+  startCareer(turn, command.id);
+  startStaff(turn);
   for (let n = 0; n < command.size; n += 1) engage(turn, drawPerson(turn), command.id);
   runDay(turn, command.id);
 }
@@ -62,7 +89,9 @@ export function advanceDay(
   const turn = guildTurn(state, sink);
   if (command.day !== state.calendar + 1)
     throw new Error(`Day ${command.day} does not follow day ${state.calendar}.`);
-  if (weekOf(command.day, turn.rules) > turn.rules.weeksPerYear)
+  const career = turn.guild.career;
+  if (career?.ended) throw new Error("The guildmaster's career is over.");
+  if (!career && weekOf(command.day, turn.rules) > turn.rules.weeksPerYear)
     throw new Error('The year is over.');
   state.calendar = command.day;
   runDay(turn, command.id);
@@ -102,20 +131,31 @@ function runDay(turn: GuildTurn, causeId: string): void {
 
 function weekStart(turn: GuildTurn, causeId: string, stops: Set<StopReason>): void {
   const { rules, guild, sink, state } = turn;
-  const week = weekOf(state.calendar, rules);
-  const started = sink.emit({ type: 'week.started', causeId, subjectIds: [], week });
+  const week = weekInYear(state.calendar, rules);
+  const year = yearOf(state.calendar, rules);
+  const started = sink.emit({ type: 'week.started', causeId, subjectIds: [], week, year });
   if (week === 1) {
-    pay(turn, rules.patronGrantCopper, 'grant', started);
     stops.add('assembly');
+    // A later Assembly first settles the year just played; a career that ends there stops the guild.
+    if (year > 1 && settleYear(turn, started, stops)) return;
+    const tier = guild.career ? rules.career?.tiers[guild.career.tier] : undefined;
+    pay(turn, tier ? tier.grantCopper : rules.patronGrantCopper, 'grant', started);
+    staffAssembly(turn, year, started);
+    if (year > 1) crisisAssembly(turn, year, started, stops);
   }
   const wages = guild.members.reduce((sum, m) => sum + m.wageCopper, 0);
   if (wages > 0) pay(turn, -wages, 'wages', started);
   pay(turn, -rules.runningCostCopper, 'upkeep', started);
-  expireOffers(turn, week, started);
-  postOffers(turn, week, started);
+  const campaigning = week > rules.assemblyWeeks && week < rules.winterFromWeek;
+  staffWeek(turn, campaigning ? week - rules.assemblyWeeks : null, started, stops);
+  expireOffers(turn, weekOf(state.calendar, rules), started);
+  postOffers(turn, week, weekOf(state.calendar, rules), started);
+  crisisWeek(turn, weekOf(state.calendar, rules), started);
+  // After every week-start cost, so the debt test sees this week's crisis pressure too.
+  offerEmergency(turn, started, stops);
   if (inWindow(week, rules)) {
     listProspects(turn, started);
     stops.add('signing-window');
   } else guild.prospects.length = 0;
-  if (week > rules.assemblyWeeks && week < rules.winterFromWeek) stops.add('week-report');
+  if (campaigning) stops.add('week-report');
 }

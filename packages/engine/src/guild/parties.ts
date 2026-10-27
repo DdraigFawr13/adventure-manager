@@ -4,7 +4,10 @@ import { divRoundDown } from '../core/math.ts';
 import { BP_CERTAIN, streamFor } from '../core/rng.ts';
 import { startQuest, stepQuest } from '../resolution/quest.ts';
 import { WOUND } from '../resolution/types.ts';
-import { memberOf, pay, type GuildTurn } from './turn.ts';
+import { growAfterQuest, injuryLoss } from '../career/people.ts';
+import { injuryDays, runsArea } from '../staff/areas.ts';
+import { crisisHome } from '../crisis/chain.ts';
+import { addRenown, memberOf, pay, type GuildTurn } from './turn.ts';
 import type { Party, StopReason } from './types.ts';
 
 /** Runs the party's quest to its end; records the outcome, the dead and the recovery times. */
@@ -27,14 +30,18 @@ export function arrive(turn: GuildTurn, party: Party, causeId: string, stops: Se
   );
   while (state.quest) stepQuest(state, causeId, sink);
   const steps = new Map<string, number>();
-  const injured = new Set<string>();
+  const injured = new Map<string, string>();
   const dead = new Map<string, string>();
+  let endedId = causeId;
   for (const e of sink.events.slice(first)) {
     const [subject = ''] = e.subjectIds;
     if (e.type === 'wound.changed') steps.set(subject, e.to);
-    if (e.type === 'injury.gained') injured.add(subject);
+    if (e.type === 'injury.gained') injured.set(subject, e.id);
     if (e.type === 'adventurer.died') dead.set(subject, e.id);
-    if (e.type === 'quest.ended') party.outcome = e.outcome;
+    if (e.type === 'quest.ended') {
+      party.outcome = e.outcome;
+      endedId = e.id;
+    }
   }
   const recovery = streamFor(state, 'guild.recovery');
   for (const id of [...party.memberIds]) {
@@ -48,11 +55,26 @@ export function arrive(turn: GuildTurn, party: Party, causeId: string, stops: Se
       continue;
     }
     let restDays = rules.refitDays + (steps.get(id) ?? WOUND.fit) * rules.restDaysPerWoundStep;
-    if (injured.has(id))
-      restDays +=
-        rules.daysPerWeek * recovery.between(rules.injuryWeeks.min, rules.injuryWeeks.max);
+    const injury = injured.get(id);
+    if (injury !== undefined) {
+      injuryLoss(turn, id, injury);
+      const weeks = recovery.between(rules.injuryWeeks.min, rules.injuryWeeks.max);
+      const days = injuryDays(turn, rules.daysPerWeek * weeks);
+      restDays += days;
+      turn.sink.emit({ type: 'member.laid-up', causeId: injury, subjectIds: [id], days });
+      // The guildmaster running recovery sees each injured member in (staff/SPEC.md).
+      if (runsArea(turn, 'recovery')) stops.add('infirmary');
+    }
     who.outUntilDay = restDays > 0 ? party.homeDay + restDays : 0;
   }
+  // Growth by doing (career/SPEC.md): the quest tested the approach and each member's attack.
+  const approach = state.content.rules.approachAttribute[party.plan.approach];
+  growAfterQuest(
+    turn,
+    party.memberIds,
+    (who) => [approach, state.content.rules.classes[who.classId]?.attackAttribute ?? approach],
+    endedId,
+  );
 }
 
 /** A death costs the guild (D-138): the funeral, the family's share, and renown if the plan was reckless. */
@@ -63,19 +85,12 @@ function buryMember(
   party: Party,
   diedId: string,
 ): void {
-  const { rules, guild, sink } = turn;
+  const { rules } = turn;
   const cost = rules.death.funeralCopper + rules.death.familyShareWeeks * wageCopper;
   if (cost !== 0) pay(turn, -cost, 'funeral', diedId, [id]);
   const reckless = party.plan.risk === 'bold' || party.plan.retreat === 'never';
   if (!reckless || rules.death.recklessRenownLoss === 0) return;
-  guild.renown -= rules.death.recklessRenownLoss;
-  sink.emit({
-    type: 'renown.changed',
-    causeId: diedId,
-    subjectIds: [id, party.id],
-    amount: -rules.death.recklessRenownLoss,
-    renown: guild.renown,
-  });
+  addRenown(turn, -rules.death.recklessRenownLoss, diedId, [id, party.id]);
 }
 
 /** Brings the party home: members are free to rest, and the fee, loot and renown arrive. */
@@ -104,14 +119,6 @@ export function comeHome(turn: GuildTurn, party: Party, causeId: string): void {
       : outcome === 'routed'
         ? -(danger?.renownWin ?? 0)
         : 0;
-  if (amount !== 0) {
-    guild.renown += amount;
-    sink.emit({
-      type: 'renown.changed',
-      causeId: returned,
-      subjectIds: [party.id],
-      amount,
-      renown: guild.renown,
-    });
-  }
+  if (amount !== 0) addRenown(turn, amount, returned, [party.id]);
+  crisisHome(turn, party, returned);
 }
