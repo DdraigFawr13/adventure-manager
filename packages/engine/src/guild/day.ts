@@ -4,6 +4,7 @@ import type { EventSink } from '../core/events.ts';
 import type { Command, GameEvent, GameState } from '../resolution/types.ts';
 import { expireOffers, freeMemberIds, postOffers } from './board.ts';
 import { arrive, comeHome } from './parties.ts';
+import { listDraft } from './founding.ts';
 import { drawPerson, engage, listProspects } from './people.ts';
 import { startCareer, settleYear } from '../career/year.ts';
 import { offerEmergency } from '../career/emergency.ts';
@@ -75,11 +76,15 @@ export function foundGuild(
   state.guild = guild;
   state.calendar = command.day;
   const turn = guildTurn(state, sink);
-  pay(turn, rules.startingChestCopper, 'founding', command.id);
+  const { founding } = rules;
+  // With the draft (D-188) the purse replaces the starting chest and nobody is drawn here; the
+  // house's bed check moves to `guild.pick`, which knows the roster.
+  pay(turn, founding ? founding.purseCopper : rules.startingChestCopper, 'founding', command.id);
   startCareer(turn, command.id);
   startStaff(turn);
-  startHouse(turn, command.size);
-  for (let n = 0; n < command.size; n += 1) engage(turn, drawPerson(turn), command.id);
+  startHouse(turn, founding ? 0 : command.size);
+  if (founding) listDraft(turn, founding, command.id);
+  else for (let n = 0; n < command.size; n += 1) engage(turn, drawPerson(turn), command.id);
   runDay(turn, command.id);
 }
 
@@ -91,6 +96,7 @@ export function advanceDay(
   const turn = guildTurn(state, sink);
   if (command.day !== state.calendar + 1)
     throw new Error(`Day ${command.day} does not follow day ${state.calendar}.`);
+  if (turn.guild.draft) throw new Error('Pick the founding party before the first day passes.');
   const career = turn.guild.career;
   if (career?.ended) throw new Error("The guildmaster's career is over.");
   if (!career && weekOf(command.day, turn.rules) > turn.rules.weeksPerYear)

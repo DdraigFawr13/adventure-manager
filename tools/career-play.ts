@@ -30,6 +30,8 @@ export interface CareerJob {
   readonly seed: string;
   readonly policy: string;
   readonly delegate: boolean;
+  /** With founding rules: the character of the starter party to pick (D-188). */
+  readonly party?: string;
 }
 
 const yearDays = rules.weeksPerYear * rules.daysPerWeek;
@@ -104,6 +106,7 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     lastDay: maxYears * yearDays,
     delegate,
     refuseGrants,
+    ...(job.party ? { party: job.party } : {}),
     ...(setup.houseMode === 'on' ? { housePlan: fullHousePlan } : {}),
     onDay: (state) => {
       if (state.calendar % yearDays === 0)

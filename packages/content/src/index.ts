@@ -9,4 +9,5 @@ export * from './base/contracts.ts';
 export * from './base/career.ts';
 export * from './base/crises.ts';
 export * from './base/staff.ts';
+export * from './base/founding.ts';
 export * from './base/house.ts';

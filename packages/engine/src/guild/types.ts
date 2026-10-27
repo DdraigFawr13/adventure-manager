@@ -1,5 +1,5 @@
 // Shapes for guild year v0 (SPEC.md). Content supplies GuildRules; the engine only reads them.
-import type { CareerEnd, CareerRules, CareerState, TargetKind } from '../career/types.ts';
+import type { Band, CareerEnd, CareerRules, CareerState, TargetKind } from '../career/types.ts';
 import type { PronounKey } from '../core/text.ts';
 import type { CrisisLink, CrisisRules, CrisisState } from '../crisis/types.ts';
 import type { ExtendDirection, HouseJob, HouseRules, HouseState, Place } from '../house/types.ts';
@@ -43,6 +43,47 @@ export interface NamingRules {
   readonly family: readonly string[];
 }
 
+/** One starter party's character (D-188): how its people differ from a normal draw. */
+export interface FoundingCharacter {
+  readonly id: string;
+  /** Added to every drawn attribute, kept within 1-20. */
+  readonly attributeShift: number;
+  /** Age drawn from this band instead of the career's. */
+  readonly age: Band;
+  /** Added to each attribute's potential above its drawn value. */
+  readonly potentialBonus: number;
+  /** The party's signing fee as a share of the plain fee (10,000 is the plain fee, D-188). */
+  readonly feeBp: number;
+}
+
+/** The founding draft (D-188, SPEC.md): one purse, three starter parties and a shortlist of extras. */
+export interface FoundingRules {
+  /** Paid into the chest at the founding, instead of `startingChestCopper`. */
+  readonly purseCopper: number;
+  /** People in each starter party. */
+  readonly partySize: number;
+  /** One listed party per character, in this order. */
+  readonly characters: readonly FoundingCharacter[];
+  readonly extras: { readonly offered: number; readonly min: number; readonly max: number };
+  /** Each picked person costs this many weeks of their wage at the pick (like D-138's sign-on). */
+  readonly feeWeeks: number;
+}
+
+/** How a person is drawn when it is not the plain recruit draw (people.ts). */
+export interface PersonMods {
+  /** Stream name; default `guild.recruit`. */
+  readonly stream?: string;
+  readonly attributeShift?: number;
+  readonly age?: Band;
+  readonly potentialBonus?: number;
+}
+
+/** The listed starter parties and extras, until `guild.pick` settles them. */
+export interface Draft {
+  readonly parties: Prospect[][];
+  readonly extras: Prospect[];
+}
+
 export interface GuildRules {
   /** Absent: drawn people have no names (tests that don't read text). */
   readonly naming?: NamingRules;
@@ -54,6 +95,8 @@ export interface GuildRules {
   readonly house?: HouseRules;
   /** Absent: no crises (crisis/SPEC.md). */
   readonly crises?: CrisisRules;
+  /** Absent: `guild.found` draws `size` people and pays `startingChestCopper` (SPEC.md, Founding draft). */
+  readonly founding?: FoundingRules;
   readonly weeksPerYear: number;
   readonly daysPerWeek: number;
   /** Weeks 1..assemblyWeeks are the Assembly; winter starts at winterFromWeek. */
@@ -143,6 +186,8 @@ export interface GuildState {
   readonly board: Offer[];
   readonly parties: Party[];
   readonly prospects: Prospect[];
+  /** The founding draft awaiting `guild.pick`; absent without founding rules and once picked. */
+  draft?: Draft;
   /** Many years, rivals, the ladder and the patron; absent when the rules have no career. */
   career?: CareerState;
   /** Who runs training and recovery; absent when the rules have no staff. */
@@ -195,6 +240,13 @@ export type GuildCommand =
       readonly id: string;
       readonly day: number;
       readonly size: number;
+    }
+  | {
+      readonly type: 'guild.pick';
+      readonly id: string;
+      readonly day: number;
+      readonly partyIndex: number;
+      readonly extraIds: readonly string[];
     }
   | { readonly type: 'day.advance'; readonly id: string; readonly day: number }
   | {
@@ -270,6 +322,20 @@ export type GuildEventBody =
   | { readonly type: 'member.laid-up'; readonly days: number; readonly sickbed?: boolean }
   | { readonly type: 'prospect.listed'; readonly classId: string; readonly wageCopper: number }
   | { readonly type: 'recruit.signed'; readonly wageCopper: number }
+  /** A person on the founding draft: `party` is the starter party's index, null for an extra. */
+  | {
+      readonly type: 'founding.listed';
+      readonly party: number | null;
+      readonly classId: string;
+      readonly wageCopper: number;
+      readonly feeCopper: number;
+    }
+  | {
+      readonly type: 'founding.picked';
+      readonly party: number;
+      readonly extraIds: readonly string[];
+      readonly feeCopper: number;
+    }
   | {
       readonly type: 'attribute.changed';
       readonly attribute: Attribute;
