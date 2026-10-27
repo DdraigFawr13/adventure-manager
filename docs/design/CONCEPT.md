@@ -74,7 +74,7 @@ Phase 1 concept. Each section records what the owner decided, with their own not
 ## 9. Guild systems
 
 - **Decided (2026-10-25):** Four management systems beyond the roster, all real systems:
-  1. **Staff and facilities:** trainers, scouts, healers, quartermaster, deputy; guildhall upgrades (training yard, infirmary, library, armoury, tavern).
+  1. **Staff and facilities:** trainers, scouts, healers, quartermaster, deputy; guildhall upgrades (training yard, infirmary, library, armoury, tavern). **Amended (2026-10-27, D-168–D-171):** the guild house is built up floor by floor, like Fallout Shelter, and the guild funds places in its home town for boosts.
   2. **Finances and patrons:** wages, contract fees, upkeep, loans; a patron with expectations that can dismiss the guildmaster (which ties into succession, §1). **Decided (review):** the patron is one of the region's factions (§16), a sponsor with its own agenda; changing patron is possible but costly. The ranking stays the public scoreboard and the charter the guild's own values (§17).
   3. **Contracts and negotiation:** quest contracts (fee, loot share, deadlines, clauses) and adventurer contracts (wages, loot cut, release clauses, poaching).
   4. **Gear, crafting and loot:** equipment, magic items, appraisal and sale, armoury.

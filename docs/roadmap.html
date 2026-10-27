@@ -59,7 +59,7 @@ code { font-family: var(--mono); font-size: .85em; }
 
 <div class="wrap">
   <header>
-    <span class="meta">Updated 27 October 2026, third session · build · milestone M1</span>
+    <span class="meta">Updated 27 October 2026, fourth session · build · milestone M1</span>
     <h1>Adventure Manager roadmap</h1>
     <p class="sub">Where the design stands, what comes next, and what is parked for later. This page is a view of <code>docs/HANDOFF.md</code> and <code>docs/design/PLAN.md</code>; if they ever disagree, the handoff wins.</p>
   </header>
@@ -85,7 +85,8 @@ code { font-family: var(--mono); font-size: .85em; }
       <li><span class="pill p-done">Done</span> Mobile first, your choice (D-150): launch on iPhone and Android (D-151), a free download with a $14.99 unlock (D-152), the same veteran player in short sittings (D-153), phones 375 points and up with phone tests (D-154), the hall hub as home everywhere (D-155), launch in about 39–68 months (D-156, estimate), budget and break-even (D-157), releases through both stores (D-158). Merged (PR #19)</li>
       <li><span class="pill p-done">Done</span> Planning round with you: R4 on your Pixel with hidden, page-timed facts (D-159); the text prototype as a phone web page (D-160); Vercel Hobby while it is a hobby, and a tools review for mobile first (D-161). Repo audit: stale and contradicting lines fixed, CI filter narrowed, the code checks now cover the tools folder</li>
       <li><span class="pill p-done">Done</span> R4 passed on your phone (D-165): round 2 of the <a href="https://claude.ai/artifact/PkKz6nGhVqJ4Fr8Fz89MMX">Guildhall Fact Test</a>, all 5 facts under 10 seconds (8.9, 8.0, 9.8, 5.8, 6.1 s) after your round 2 changes: names A to Z with a filter, a Money page on the desk, a Find box (D-162). Also decided: no Godot fallback (D-163) and a free pan-and-zoom March with tappable places and events (D-164). Readability passed too: 15 px with lining figures reads well on your phone (D-166). Merged (PR #20, #22) after four reviews (<a href="https://claude.ai/artifact/UTo26LBwZBfbtNh17GjYjb">findings</a>)</li>
-      <li><span class="pill p-done">Done</span> Tools for mobile first, your approval (D-167): the mock-up check now tests phones at 375, 412, 430 and 443 px with touch, flagging small tap targets, text under 15 px and unlabelled controls; a Vercel project gives every change a link for your phone, behind your Vercel login; the store wrapper (Capacitor) waits for the slice. Waiting on review and your approval (D-133)</li>
+      <li><span class="pill p-done">Done</span> Tools for mobile first, your approval (D-167): the mock-up check now tests phones at 375, 412, 430 and 443 px with touch, flagging small tap targets, text under 15 px and unlabelled controls; a Vercel project gives every change a link for your phone, behind your Vercel login; the store wrapper (Capacitor) waits for the slice. Merged (PR #24); the Vercel production link now builds from <code>main</code></li>
+      <li><span class="pill p-done">Done</span> Your wish, decided with you: the guild house is built up like Fallout Shelter, on stacked floors 3 cells wide that grow up into storeys and down into cellars, with same-kind rooms merging (D-169). Room size and level set capacity, and a staff head sets strength (D-170). The guild funds 5 home-town sites (smith, temple, inn, market, stables) for boosts that hold while your standing with the town holds (D-171). Both at launch, in place of 5 fixed facilities (D-168; about 230–460 h and $3k–9k more, estimate). Waiting on review and your approval (D-133)</li>
       <li><span class="pill p-now">Now</span> The two-year text prototype on your phone (D-160)</li>
       <li><span class="pill p-wait">Then</span> The two-year attachment playtest (R7), then the M1 gate</li>
     </ul>
@@ -110,7 +111,7 @@ code { font-family: var(--mono); font-size: .85em; }
       <li><span class="no">2</span><span class="name">Core loop and pacing</span><span class="pill p-done">Done</span><span class="what">A season is one year of 48 weeks; about 80 stops a year. <span class="ids">D-066–068</span></span></li>
       <li><span class="no">3</span><span class="name">Systems map</span><span class="pill p-done">Done</span><span class="what">14 launch systems; ranking by renown earned this year. <span class="ids">D-069–070</span></span></li>
       <li><span class="no">4</span><span class="name">Economy and balance</span><span class="pill p-done">Done</span><span class="what">About 2 deaths a year in a mid guild; money tight early; 3 tiers of 6 guilds. <span class="ids">D-071–073</span></span></li>
-      <li><span class="no">5</span><span class="name">Progression</span><span class="pill p-done">Done</span><span class="what">10 class levels (20 later); retirees become staff; succession. <span class="ids">D-074–075</span></span></li>
+      <li><span class="no">5</span><span class="name">Progression</span><span class="pill p-done">Done</span><span class="what">10 class levels (20 later); retirees become staff; succession; a guild house built floor by floor and funded home-town sites. <span class="ids">D-074–075, D-168–171</span></span></li>
       <li><span class="no">6</span><span class="name">Onboarding, UX and accessibility</span><span class="pill p-done">Done</span><span class="what">Prologue, staff-opened ledgers, clerk's notes; clear print; screen rules. <span class="ids">D-076–078</span></span></li>
       <li><span class="no">7</span><span class="name">Launch content list</span><span class="pill p-done">Done</span><span class="what">Lean launch cut: 6 classes, 4 ancestries, about 24 monster kinds, 40 key moments, 4,500 lines; 3–4 small crises. <span class="ids">D-079–081, D-109, D-112</span></span></li>
       <li><span class="no">8</span><span class="name">Making consequences visible</span><span class="pill p-done">Done</span><span class="what">In-world letters with a Trace; numbered inspector histories. <span class="ids">D-082–083</span></span></li>
@@ -178,7 +179,7 @@ code { font-family: var(--mono); font-size: .85em; }
       <li>Bigger ranking ladders<span>Later (D-073)</span></li>
       <li>Deeds and rumours on the kingdom map<span>Second update after launch (D-097, D-101)</span></li>
       <li>20 class levels<span>Later (D-074)</span></li>
-      <li>Guild compound, city-building style<span>Later (D-075)</span></li>
+      <li>Guild compound, city-building style<span>Now at launch as the buildable guild house and home-town sites (D-168); more towns and sites in updates</span></li>
       <li>Content from the launch cut: guardian and druid, Reedfolk, prestige paths and multiclassing, more monsters, two tournaments, factions and threats map layers<span>Updates after launch (D-109)</span></li>
       <li>Larger crises and guild legacy projects<span>After launch (D-112)</span></li>
       <li>Painted portraits<span>Later (D-054)</span></li>
@@ -198,6 +199,7 @@ code { font-family: var(--mono); font-size: .85em; }
       <li>Kingdom map art direction: make it look better over time; Story-Generator map code as the starting point (D-097, D-116). The map workshop now includes your geography review: sensible rivers and roads, towns placed for a reason with specialties, another major city, outposts in the wild (D-144).</li>
       <li>Gear: RPG-style slots per adventurer with a quartermaster and a smith's shop (D-143). Slot list, item tiers and prices to design with you.</li>
             <li>From the fact test: the engine can give two people the same full name, and in one guild 23 of 30 members were resting from wounds at once. Fix now or later?</li>
+      <li>The guild house: a phone mock-up of the stacked floors and the town; the starting layout's costs, how big each room grows, and whether the house has incidents like Fallout Shelter's (a fire, a break-in by a rival). Is anything locked to a floor, such as cellars for the strongroom?</li>
       <li>Phones: where the success measures come from, and what replaces the Steam page, wishlists, playtest recruiting and Early Access (D-150).</li>
       <li>"More fantasy flair" for the quest board art: defined when art direction starts.</li>
       <li>Bardic songs: sung or instrumental.</li>
@@ -207,7 +209,7 @@ code { font-family: var(--mono); font-size: .85em; }
       <li>Your R1 notes: what makes a quest log feel meaningful rather than hollow; traps now come as a contract twist (D-139), hidden items and multiple pathways still wait for quest design (D-132).</li>
       <li>Writing test reading: salutations and sign-offs ("Guildmaster,", "Yours, Wenna") are left out of the repeat count as letter formulas. Is that the right reading of R8?</li>
       <li>Bold play ends a single year richest in 87% of years, but over whole careers cautious play earns more renown in 53% of seeds (bold is richer in 72%), so §9d's "no dominant safe play" holds.</li>
-      <li>Money piles up: over a long career the chest reaches millions of copper because nothing costs more as the guild grows. Gear, the smith and buildings (D-143) are the planned sinks; until then late-game money means little.</li>
+      <li>Money piles up: over a long career the chest reaches millions of copper because nothing costs more as the guild grows. Gear, the smith, the guild house's rooms and the town sites (D-143, D-168) are the planned sinks; until then late-game money means little.</li>
     </ul>
   </section>
 
