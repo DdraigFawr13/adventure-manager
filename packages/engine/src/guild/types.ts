@@ -293,6 +293,12 @@ export type GuildEventBody =
       readonly target: TargetKind;
       readonly place: number;
       readonly met: boolean;
+      /** In a grace year (D-189): which growth goals were met; `room` is null without house rules. */
+      readonly goals?: {
+        readonly roster: boolean;
+        readonly renown: boolean;
+        readonly room: boolean | null;
+      };
       readonly inDebt: boolean;
       /** A crisis still stood at the review (crisis/SPEC.md). */
       readonly crisis: boolean;

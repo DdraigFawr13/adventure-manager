@@ -410,6 +410,15 @@ describe('house (house SPEC.md)', () => {
     expect(() => extend(run, 'west')).not.toThrow();
   });
 
+  it("counts rooms finished this year for the patron's grace goals (D-189)", () => {
+    let run = foundedGuild(3, { house, career: testCareer, startingChestCopper: 1_000_000 });
+    run = build(run, hall(0, 0), 'room.barracks');
+    run = extend(run, 'up'); // an extension is not a room
+    expect(run.state.guild!.career!.roomsThisYear).toBe(0); // non-null: careers are on.
+    run = finishAll(run);
+    expect(run.state.guild!.career!.roomsThisYear).toBe(1); // non-null: careers are on.
+  });
+
   it('charges upkeep for finished cells by level at each week start, not before they finish', () => {
     let run = begun(3, {}, 1_000_000);
     expect(paid(run, 'rooms')).toEqual([-2]); // week 1: two barracks cells at level 1

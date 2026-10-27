@@ -19,16 +19,22 @@
 //   (owner, D-185; a lever to adjust).
 // - Infirmary sickbeds per cell by level 2 / 3 / 4; without a free sickbed a lasting injury lasts
 //   twice as long (D-186). Training-yard places 4 / 6 / 8 a plot. Training at home (D-187): each week
-//   a member at home and fit grows a point with chance 1% (young) / 0.5% (prime), times 1.5 with a
-//   yard place or 0.75 without; the base rate is a first guess to measure.
+//   a member at home and fit grows a point with chance 3% (young) / 1.5% (prime), times 1.5 with a
+//   yard place or 0.75 without (1% / 0.5% measured at 1 point a year against 7 from quests).
 // - A new guild starts small (D-187): a 1-cell barracks (8 beds) for a founded roster of 7 (one party
 //   and backups), a 1-plot training yard (4 places), and no infirmary (the rudimentary-infirmary
 //   start is measured against it). The simulator then signs up to the beds.
 // - Barracks beds per cell by level 8 / 10 / 12 (D-170, D-174).
 // - Storeys: the first added 8,000, each later 8,000 more; cellars 10,000 then 10,000 more; a wall
 //   push 5,000 then 5,000 more, up to 6 plots a side (D-172, D-183).
-import type { GuildRules, HouseRules, Place, RoomKind } from '@adventure-manager/engine';
-import { careerGuildRules } from './career.ts';
+import type {
+  CareerRules,
+  GuildRules,
+  HouseRules,
+  Place,
+  RoomKind,
+} from '@adventure-manager/engine';
+import { baseCareerRules, careerGuildRules } from './career.ts';
 
 export const HOUSE_COST_PERCENT = 175;
 
@@ -87,7 +93,7 @@ export const baseHouseRules: HouseRules = {
   maxPlotsPerSide: 6,
   winterWeeksBp: 7500,
   noSickbedBp: 20000,
-  homeTraining: { youngBp: 100, primeBp: 50, placedBp: 15000, unplacedBp: 7500 },
+  homeTraining: { youngBp: 300, primeBp: 150, placedBp: 15000, unplacedBp: 7500 },
 };
 
 /** One step of the simulator's build plan; places refer to the starting layout and the floors the plan adds. */
@@ -142,5 +148,23 @@ export const fullHousePlan: readonly HousePlanStep[] = [
   ...ROOMS.map(upgrade),
 ];
 
+/**
+ * The patron's grace years for a new, small guild (D-189), assumptions for the simulator: for the
+ * first 2 seasons, goals of 9 members by year's end (a second party forming), 30 renown in the year
+ * and a room built; 5 confidence for each goal met, 5 lost for each missed; no dismissal until the
+ * third Assembly.
+ */
+export const baseGraceRules: NonNullable<CareerRules['grace']> = {
+  years: 2,
+  roster: 9,
+  renown: 30,
+  goalMet: 5,
+  goalMissed: 5,
+};
+
 /** The career rules with the house on: what `tools/career-sim.ts` plays with house=on. */
-export const houseGuildRules: GuildRules = { ...careerGuildRules, house: baseHouseRules };
+export const houseGuildRules: GuildRules = {
+  ...careerGuildRules,
+  career: { ...baseCareerRules, grace: baseGraceRules },
+  house: baseHouseRules,
+};

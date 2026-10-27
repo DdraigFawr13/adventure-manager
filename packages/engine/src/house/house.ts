@@ -390,6 +390,7 @@ export function houseWeek(turn: GuildTurn, causeId: string): void {
     if (work.doneWeek > week) continue;
     house.work.splice(house.work.indexOf(work), 1);
     finish(house, rules, work.job);
+    if (work.job.kind === 'build' && turn.guild.career) turn.guild.career.roomsThisYear += 1;
     turn.sink.emit({
       type: 'house.finished',
       causeId,

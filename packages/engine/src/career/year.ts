@@ -44,7 +44,8 @@ export function startCareer(turn: GuildTurn, causeId: string): void {
     renownThisYear: 0,
     rivals,
     confidence: rules.patron.start,
-    target: 'avoid-bottom',
+    target: rules.grace ? 'growth' : 'avoid-bottom',
+    roomsThisYear: 0,
     guildmasterBirthYear: yearOf(turn.state.calendar, turn.rules) - age,
     emergencyOffer: null,
     lastGrantYear: null,
@@ -88,6 +89,21 @@ function placesShort(target: TargetKind, place: number, perTier: number): number
   const limit =
     target === 'top-two' ? 2 : target === 'top-half' ? divRoundDown(perTier, 2) : perTier - 1;
   return Math.max(0, place - limit);
+}
+
+/** A grace year's growth goals (D-189): each met adds to confidence, each missed takes away. A room goal counts only with house rules. */
+function growthGoals(
+  turn: GuildTurn,
+  rules: CareerRules,
+): { roster: boolean; renown: boolean; room: boolean | null; met: boolean; score: number } {
+  const grace = rules.grace!; // non-null: only a grace target asks.
+  const career = turn.guild.career!; // non-null: the caller holds it.
+  const roster = turn.guild.members.length >= grace.roster;
+  const renown = career.renownThisYear >= grace.renown;
+  const room = turn.rules.house ? career.roomsThisYear > 0 : null;
+  const results = [roster, renown, ...(room === null ? [] : [room])];
+  const score = results.reduce((sum, ok) => sum + (ok ? grace.goalMet : -grace.goalMissed), 0);
+  return { roster, renown, room, met: results.every((ok) => ok), score };
 }
 
 /** The next target from where the guild now stands (SPEC.md, The patron). */
@@ -159,22 +175,26 @@ export function settleYear(turn: GuildTurn, causeId: string, stops: Set<StopReas
     });
 
   // The patron's review of the year's target, then the guildmaster's health.
-  const short = placesShort(career.target, place, rules.guildsPerTier);
   const inDebt = turn.guild.chestCopper < 0;
-  const change =
-    (short === 0
+  const goals = career.target === 'growth' ? growthGoals(turn, rules) : null;
+  const short = goals ? 0 : placesShort(career.target, place, rules.guildsPerTier);
+  const reviewScore = goals
+    ? goals.score
+    : short === 0
       ? rules.patron.met
-      : -Math.min(rules.patron.maxMiss, short * rules.patron.perPlaceShort)) -
-    (inDebt ? rules.patron.debt : 0) -
-    crisisPressure(turn);
-  career.confidence = clamp(career.confidence + change, 0, rules.patron.max);
+      : -Math.min(rules.patron.maxMiss, short * rules.patron.perPlaceShort);
+  const change = reviewScore - (inDebt ? rules.patron.debt : 0) - crisisPressure(turn);
+  // In the grace years the patron can't dismiss (D-189): confidence stays above 0.
+  const graceYear = rules.grace !== undefined && played < rules.grace.years;
+  career.confidence = clamp(career.confidence + change, graceYear ? 1 : 0, rules.patron.max);
   const reviewed = turn.sink.emit({
     type: 'patron.reviewed',
     causeId: settled,
     subjectIds: [PLAYER_ID],
     target: career.target,
     place,
-    met: short === 0,
+    met: goals ? goals.met : short === 0,
+    ...(goals && { goals: { roster: goals.roster, renown: goals.renown, room: goals.room } }),
     inDebt,
     crisis: crisisPressure(turn) > 0,
     change,
@@ -214,7 +234,8 @@ export function settleYear(turn: GuildTurn, causeId: string, stops: Set<StopReas
     rival.strength = clamp(rival.strength + pull + push + noise, 0, 100);
   }
   career.renownThisYear = 0;
-  career.target = nextTarget(career.tier, place, moved, rules);
+  career.roomsThisYear = 0;
+  career.target = graceYear ? 'growth' : nextTarget(career.tier, place, moved, rules);
   turn.sink.emit({
     type: 'patron.target',
     causeId: reviewed,

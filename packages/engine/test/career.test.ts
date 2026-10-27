@@ -117,6 +117,40 @@ describe('careers (career SPEC.md)', () => {
     );
   });
 
+  const grace = { years: 2, roster: 3, renown: 30, goalMet: 5, goalMissed: 5 };
+
+  it('gives a new guild growth goals in its grace years instead of a ladder target (D-189)', () => {
+    const run = begun({ grace });
+    expect(ofType(run.events, 'patron.target')[0]?.target).toBe('growth');
+    // Year 1: 3 members (met), 40 renown (met), no house so no room goal; last place doesn't count.
+    const one = settle(run, (s) => (s.guild!.career!.renownThisYear = 40)); // non-null: careers are on.
+    expect(ofType(one.events, 'patron.reviewed').at(-1)).toMatchObject({
+      target: 'growth',
+      met: true,
+      goals: { roster: true, renown: true, room: null },
+      change: 10,
+      confidence: 70,
+    });
+    expect(ofType(one.events, 'patron.target').at(-1)?.target).toBe('growth');
+    // Year 2: renown missed (-5), roster met (+5); after the last grace year the ladder target returns.
+    const two = settle(one, (s) => (s.guild!.career!.renownThisYear = 10)); // non-null: careers are on.
+    expect(ofType(two.events, 'patron.reviewed').at(-1)).toMatchObject({ met: false, change: 0 });
+    expect(ofType(two.events, 'patron.target').at(-1)?.target).not.toBe('growth');
+  });
+
+  it('cannot dismiss in the grace years, but can at the third Assembly', () => {
+    const hopeless = (s: GameState) => {
+      s.guild!.career!.confidence = 1; // non-null: careers are on.
+      s.guild!.career!.renownThisYear = -1000; // non-null: careers are on.
+      s.guild!.chestCopper = -1; // non-null: founded.
+    };
+    const one = settle(begun({ grace }), hopeless);
+    expect(ofType(one.events, 'career.ended')).toEqual([]);
+    expect(one.state.guild!.career!.confidence).toBe(1); // non-null: careers are on.
+    const two = settle(one, hopeless);
+    expect(ofType(two.events, 'career.ended')[0]).toMatchObject({ reason: 'dismissed', years: 2 });
+  });
+
   it('retires the guildmaster on health once past the age', () => {
     const run = settle(
       begun({ guildmaster: { age: { min: 70, max: 70 }, healthFromAge: 60, certainAge: 70 } }),
