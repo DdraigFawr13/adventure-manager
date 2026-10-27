@@ -35,3 +35,17 @@ Money adds up (every `money.changed` carries the running chest; the last equals 
 ## Derived state
 
 Some fields are bookkeeping read back from events, not changes of their own: who is away (set by `party.departed`, cleared by `party.returned`), the day a member is fit again (shown by `member.recovered`), today's date (the command's day), and the shortlist being emptied outside a window (it only ever holds the last `prospect.listed`). They need no events of their own.
+## Founding draft (D-188)
+
+With `founding` rules in content, `guild.found` doesn't draw a roster. It pays the founding purse into the chest (`money.changed`, reason `founding`) and lists the draft: 3 starter parties of 5 and a shortlist of extras, all drawn from the seed (stream `guild.founding`). Until `guild.pick` settles the draft, `day.advance` is refused.
+
+- **Party characters** are content: each has a name id, an attribute shift (added to every drawn attribute, kept within 1-20), an age band and a potential bonus. Launch assumption: seasoned (+2, older), balanced (0), green (-2, younger, +2 potential). Each listed party has one character, in content order.
+- **Extras:** `extras.offered` people drawn as normal prospects (no shift).
+- **Fees:** each picked person costs `feeWeeks` of their wage (like the sign-on fee, D-138), paid at the pick (reason `sign-on`). A party's fee is the sum of its members'. The chest after the pick is the purse less the fees.
+- **`guild.pick`** (party index, extra ids): exactly one party and `extras.min`-`extras.max` extras from the shortlist, no repeats; refused if the fees exceed the purse or the beds (house rules) can't hold everyone. Picked people join (`recruit.signed`), the draft is cleared, and the house's bed check runs against the picked roster.
+- Events: `founding.listed` per listed person (party index or extra, class, wage, fee), `founding.picked`.
+- Without `founding` rules, `guild.found` draws `size` people as before.
+
+### Simulator
+
+The career simulator's house mode founds through the draft. Its player picks a party by a policy (default balanced; `seasoned` and `green` to compare) and the 2 cheapest extras. Target: the purse leaves about 30,000 after a balanced pick (the measured stand-in, 15% dismissed); compare the three characters' dismissals, year-1 chest and early renown.
