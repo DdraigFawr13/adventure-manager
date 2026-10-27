@@ -16,7 +16,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Next
 
-1. Guild house follow-ups (D-168–D-171): a phone mock-up of the stacked floors and the town, then the starting layout's costs, room sizes and levels per kind, and whether to add incidents (a fire, a rival's break-in). The year simulator can model capacity and site boosts once those numbers exist.
+1. Guild house follow-ups (D-168–D-171): a phone mock-up of the stacked floors and the town, then the starting layout's costs, room sizes and levels per kind, whether to add incidents (a fire, a rival's break-in), what happens when the barracks is full (signing blocked or members sleep rough), and whether town standing is a new meter or the town's faction standing. Add D-168's hours and art cost into PLAN §12–§14. The year simulator can model capacity and site boosts once those numbers exist.
 2. Step 4, the two-year text prototype (R7) as a phone-first web page (D-160), with histories and memorial letters; standing parties (D-014, D-142) join here.
 3. Engine test verdict (D-110, D-154, D-167): rebuild the engine test as a phone web page on the Vercel link, with an on-page frame-rate panel; the owner judges it on their phone (60 fps map with smooth pinch, 15 px text, screen reader). The map is free pan and zoom with tappable towns, places, parties and events opening a pop-up with details and a placeholder image (D-164).
 4. Gear (D-143): workshop with the owner before the year simulator uses gear.
@@ -29,7 +29,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 - Mobile first (D-150): the phone sources for the §1d measures, and the phone versions of the Steam store page, wishlists, playtest recruiting and Early Access (D-099, D-100, D-113). Open too: the tablet layout. The test laptop in the budget (PLAN §14) may no longer be needed before launch.
 - Engine findings from R4, for the owner: two people can get the same full name (`packages/engine/src/guild/people.ts:68` draws given and family names independently; seed phone-2 has two Ash Thornes); at week 23 of seed phone-1, 23 of 30 members rest from wounds (maybe balance).
 - Kingdom map art direction (D-097, D-144): Story-Generator layout as the base; geography review in the workshop.
-- Later, tier not set: 20 class levels (D-074); facility compound (D-075); intrigue (D-069); exploring the wilds (D-136); quest board flair (STYLE §4); bardic songs (D-056).
+- Later, tier not set: 20 class levels (D-074); intrigue (D-069); exploring the wilds (D-136); quest board flair (STYLE §4); bardic songs (D-056).
 
 ## Working style with the owner
 
