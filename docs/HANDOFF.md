@@ -11,7 +11,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 - 2026-10-27 Re-plan for mobile first merged as PR #19 (D-150–D-158). Earlier entries, PRs #14–#18: `docs/archive/handoff-2026-10.md`.
 - 2026-10-27 This branch `ccr-d8e1d3d0-i0dgfz` (from `main` 963838d): planning round D-159 (phone R4 on the owner's Pixel 10 Pro XL, blind facts, page-timed), D-160 (step 4 is a phone-first web page), D-161 (Vercel Hobby while a hobby; tools and skills reassessed for mobile first).
 - 2026-10-27 Repo audit (two independent agents, docs and tooling), findings verified before fixing: amendment pointers for mobile first (D-016, D-064, D-078, D-084–D-086, D-098, CONCEPT §20, PLAN §1c, §6b–c, §9b–c, §11), stale lines in AGENTS.md, README, STANDARDS, engine and shell AGENTS, two SPECs; CI path filter narrowed (Markdown in `.claude/` and stray Markdown in `packages/*/src` now run CI); `.nvmrc` pins Node 22.22.0; the boundary check now scans `tools/*.ts` (3 casts fixed); Vite deduplicated at 8.3.5; `.gitignore` covers `.env*`. Rejected: "Prettier `--cache` does nothing" (measured 3.0 s, then 0.8 s).
-- 2026-10-27 Owner decisions D-162 (R4 round 2), D-163 (no Godot fallback), D-164 (free pan-and-zoom March with tappable marks). Branch reviewed three times (D-093): 15, 10 and 9 findings, 27 fixed, 7 kept with reasons: https://claude.ai/artifact/UTo26LBwZBfbtNh17GjYjb. Waits on the owner's approval for the PR (D-133).
+- 2026-10-27 Owner decisions D-162 (R4 round 2), D-163 (no Godot fallback), D-164 (free pan-and-zoom March with tappable marks). Branch reviewed four times (D-093): 15, 10, 9 and 7 findings, 34 fixed, 7 kept with reasons: https://claude.ai/artifact/UTo26LBwZBfbtNh17GjYjb. Waits on the owner's approval for the PR (D-133).
 
 ## Next
 

@@ -276,7 +276,7 @@ function hallScreen() {
 const backBtn = `<button type="button" class="back" data-go="hall">‹ The hall</button>`;
 const head = (name, staff) => `${backBtn}<div class="roomhead"><h2>${name}</h2>${staff ? `<div class="staff"><span>${staff}</span><span>You run it</span></div>` : ''}</div>`;
 const filterBox = () => `<div class="filter"><input id="nameq" type="search" autocomplete="off" aria-label="Filter by name" placeholder="Filter by name" value="${esc(nameQ)}"><p class="note" id="nomatch" hidden>No one by that name here.</p></div>`;
-const personRow = (p, right) => `<button type="button" class="li" data-person="${p.id}" data-name="${esc(p.name.toLowerCase())}"><span class="l"><b>${esc(p.name)}</b><span>${esc(p.class)} · ${p.position} line</span></span><span class="rt">${right}</span></button>`;
+const personRow = (p, right) => `<button type="button" class="li" data-person="${p.id}" data-name="${esc(p.name.toLowerCase())}"${nameQ && !p.name.toLowerCase().includes(nameQ) ? ' hidden' : ''}><span class="l"><b>${esc(p.name)}</b><span>${esc(p.class)} · ${p.position} line</span></span><span class="rt">${right}</span></button>`;
 function roomScreen(k) {
   const L = living();
   if (k === 'barracks') {
@@ -481,7 +481,7 @@ function pickDistinct(right, pool, n = 3) {
   return out;
 }
 // Near misses for a money answer, used when the ledger has too few other values (every week's wages can be equal).
-const nearMoney = (copper) => [copper + 140, copper - 90, copper + 260, copper - 230, copper + 55, copper - 170, copper + 330].filter((c) => c !== 0 && Math.sign(c) === Math.sign(copper)).map(money);
+const nearMoney = (copper) => [copper + 140, copper - 90, copper + 260, copper - 230, copper + 55, copper - 170, copper + 330].filter((c) => c !== 0 && (copper === 0 ? c > 0 : Math.sign(c) === Math.sign(copper))).map(money);
 function shuffled(arr, seed) { const a = [...arr]; let s = seed; for (let i = a.length - 1; i > 0; i -= 1) { s = (s * 1103515245 + 12345) % 2147483648; const j = s % (i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function questions() {
   // A name two people share would make the question ambiguous, so only unique names are asked about.
@@ -490,7 +490,7 @@ function questions() {
   const qs = [];
   const p1 = L[Math.floor(L.length * 0.6)];
   const wages = [...new Set(L.map((p) => money(p.wageCopper)))];
-  qs.push({ q: `What is ${p1.name}'s weekly wage?`, a: money(p1.wageCopper), pool: [...wages, ...nearMoney(p1.wageCopper)] });
+  if (p1) qs.push({ q: `What is ${p1.name}'s weekly wage?`, a: money(p1.wageCopper), pool: [...wages, ...nearMoney(p1.wageCopper)] });
   const hurt = L.filter((p) => p.status.kind === 'out');
   if (hurt.length) {
     const h = hurt[Math.floor(hurt.length / 2)];
@@ -511,12 +511,14 @@ function questions() {
   }
   const spares = [
     () => { const x = DATA.weeks[9]; return { q: `How much was in the chest at the end of week ${x.week}?`, a: money(x.chest), pool: [...DATA.weeks.slice(5, 15).map((y) => money(y.chest)), ...nearMoney(x.chest)] }; },
+    () => { const p = L[Math.floor(L.length * 0.3)]; return p ? { q: `How many quests has ${p.name} been on?`, a: String(p.quests), pool: [p.quests + 1, p.quests - 1, p.quests + 2, p.quests - 2, p.quests + 3].filter((n) => n >= 0).map(String) } : null; },
     () => { const dead = DATA.roster.find((p) => p.status.kind === 'dead' && unique(p.name)); return dead ? { q: `Where did ${dead.name} die?`, a: cap(dead.status.where), pool: DATA.board.map((o) => cap(o.site)) } : null; },
   ];
   // Keep only questions with three distinct wrong options, then top up from the spares to five.
   const usable = (x) => x && pickDistinct(x.a, x.pool).length === 3;
   const kept = qs.filter(usable);
   for (const s of spares) if (kept.length < 5) { const x = s(); if (usable(x)) kept.push(x); }
+  if (kept.length < 5) console.warn(`R4: only ${kept.length} usable facts in this guild`);
   return kept.slice(0, 5).map((x, i) => {
     const wrong = pickDistinct(x.a, x.pool);
     return { q: x.q, a: x.a, options: shuffled([x.a, ...wrong], 7 + i * 31) };

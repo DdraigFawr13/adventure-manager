@@ -566,7 +566,7 @@ Not risks for prototypes (handled elsewhere): engine choice and determinism (§1
 
 The riskiest question first. All prototypes come after the plan is approved (D-001).
 
-0. **Engine test, web-first** (D-110, amends D-090): the ledger and kingdom-map view built in web tech; If web misses a bar, the owner decides what follows; there is no Godot fallback (D-163).
+0. **Engine test, web-first** (D-110, amends D-090): the ledger and kingdom-map view built in web tech; if web misses a bar, the owner decides what follows; there is no Godot fallback (D-163).
 0b. **Resolution v0** (D-113): half a page plus code for how a party, its plan, stats, gear and the site become odds and events; every number in data, tuned later. R1 needs it.
 1. **One quest, watched** (R1): a minimal simulation core drives a text log and a plain board with standees; the owner watches 10 quests. If watching isn't tense, Pillar 2 and the core loop need rethinking before anything else is built.
 2. **Headless year simulator** (R2, R3, R6, R9): the same simulation core with no graphics; 1,000 seeded guild-years reporting deaths, money, ladder movement, stops by class, delegated vs careful play, and guildmaster careers against the §2 and §4 targets.
@@ -651,13 +651,13 @@ Decisions: D-090, D-091, D-110, D-114. Constraints from earlier decisions (the P
 
 **Amended (2026-10-27, D-163):** web tech is the engine; the Godot fallback below no longer stands. The comparison stays as the record.
 
-**Web-first** (owner's choice after the plan review, D-110, amends D-090): build the two test pieces in web tech (Electron, TypeScript), reusing Story-Generator's map code (§12d). (Superseded by D-163, no Godot fallback; the bars stay:) Godot 4 (C#) is built only if the web ledger or map misses its bar: 60 fps on the map at 1366×768, the 15 px ledger readable, the find-the-fact task (R4) passed. Unity is out. Earlier plan (D-090): build both, then choose; the comparison below still stands as the record.
+**Web-first** (owner's choice after the plan review, D-110, amends D-090): build the two test pieces in web tech (Electron, TypeScript), reusing Story-Generator's map code (§12d). Superseded by D-163: Godot is not built, and a missed bar goes to the owner. The bars stayed: 60 fps on the map at 1366×768, the 15 px ledger readable, the find-the-fact task (R4) passed (phone versions: D-154). Unity is out. Earlier plan (D-090): build both, then choose; the comparison below still stands as the record.
 
 **Engine test** (prototype step 0, before the watched quest, D-085):
 
 - **Build (web; the Godot fallback is superseded, D-163):** (1) one roster ledger: 30 rows, sorting, a hover breakdown on a number (D-078), 15 px old-press type with lining figures (D-084), clear print and the 100–150% size slider (D-077); (2) one kingdom-map view (D-087): layered illustration, zoom and pan, a party moving, faction and guild marks, a threat stain, one ink-reveal effect. The map piece tests the technique; faction marks and threat stains are not at launch (D-109).
 - **Judged on:** the owner's look-and-feel notes (GAME-06), plus measured build time, frames per second and memory at 1366×768, download size, the find-the-fact task (R4), and whether the ledger works with a screen reader (labelled controls, §6c).
-- The rest of §11 holds for either engine; only the language changes (TypeScript or C#).
+- The rest of §11 holds for the web engine (D-163).
 
 Comparison at the time of the choice (2026-10-26):
 
