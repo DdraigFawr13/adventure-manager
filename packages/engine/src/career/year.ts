@@ -7,6 +7,7 @@ import type { GuildTurn } from '../guild/turn.ts';
 import { yearOf } from '../guild/turn.ts';
 import type { StopReason } from '../guild/types.ts';
 import type { Danger } from '../resolution/types.ts';
+import { crisisPressure } from '../crisis/chain.ts';
 import { ageAndRetire } from './people.ts';
 import type { CareerRules, CareerState, Rival, TargetKind } from './types.ts';
 
@@ -165,7 +166,8 @@ export function settleYear(turn: GuildTurn, causeId: string, stops: Set<StopReas
     (short === 0
       ? rules.patron.met
       : -Math.min(rules.patron.maxMiss, short * rules.patron.perPlaceShort)) -
-    (inDebt ? rules.patron.debt : 0);
+    (inDebt ? rules.patron.debt : 0) -
+    crisisPressure(turn);
   career.confidence = clamp(career.confidence + change, 0, rules.patron.max);
   const reviewed = turn.sink.emit({
     type: 'patron.reviewed',
@@ -175,6 +177,7 @@ export function settleYear(turn: GuildTurn, causeId: string, stops: Set<StopReas
     place,
     met: short === 0,
     inDebt,
+    crisis: crisisPressure(turn) > 0,
     change,
     confidence: career.confidence,
   });

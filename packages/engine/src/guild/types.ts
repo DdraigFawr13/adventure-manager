@@ -1,6 +1,7 @@
 // Shapes for guild year v0 (SPEC.md). Content supplies GuildRules; the engine only reads them.
 import type { CareerEnd, CareerRules, CareerState, TargetKind } from '../career/types.ts';
 import type { PronounKey } from '../core/text.ts';
+import type { CrisisLink, CrisisRules, CrisisState } from '../crisis/types.ts';
 import type { Area, StaffRules, StaffState } from '../staff/types.ts';
 import type { Adventurer, Attribute, Danger, Plan, QuestOutcome } from '../resolution/types.ts';
 
@@ -48,6 +49,8 @@ export interface GuildRules {
   readonly career?: CareerRules;
   /** Absent: no staff; training and recovery run at their neutral rate (staff/SPEC.md). */
   readonly staff?: StaffRules;
+  /** Absent: no crises (crisis/SPEC.md). */
+  readonly crises?: CrisisRules;
   readonly weeksPerYear: number;
   readonly daysPerWeek: number;
   /** Weeks 1..assemblyWeeks are the Assembly; winter starts at winterFromWeek. */
@@ -111,6 +114,8 @@ export interface Offer {
   readonly feeCopper: number;
   readonly travelDays: number;
   readonly expiresWeek: number;
+  /** Set when the offer is a crisis step (crisis/SPEC.md). */
+  readonly crisis?: CrisisLink;
 }
 
 export interface Party {
@@ -139,6 +144,8 @@ export interface GuildState {
   career?: CareerState;
   /** Who runs training and recovery; absent when the rules have no staff. */
   staff?: StaffState;
+  /** The standing crisis and those already had; absent until the first Assembly that checks. */
+  crisis?: CrisisState;
   /** Real shape ids the board drew recently, oldest first, per danger (contract/SPEC.md). Engine-only: it can name a hidden twist, so views never read it. */
   readonly recentShapes: string[];
   /** Counters for ids, so ids stay unique and replayable. */
@@ -158,7 +165,8 @@ export type MoneyReason =
   | 'funeral'
   | 'sign-on'
   | 'staff'
-  | 'emergency';
+  | 'emergency'
+  | 'crisis';
 export type StopClass = 'must' | 'digest';
 export type StopReason =
   | 'week-report'
@@ -171,7 +179,8 @@ export type StopReason =
   | 'career-ended'
   | 'training-plan'
   | 'infirmary'
-  | 'patron-offer';
+  | 'patron-offer'
+  | 'crisis';
 
 export type GuildCommand =
   | {
@@ -257,12 +266,17 @@ export type GuildEventBody =
       readonly place: number;
       readonly met: boolean;
       readonly inDebt: boolean;
+      /** A crisis still stood at the review (crisis/SPEC.md). */
+      readonly crisis: boolean;
       readonly change: number;
       readonly confidence: number;
     }
   | { readonly type: 'patron.target'; readonly target: TargetKind; readonly tier: number }
   | { readonly type: 'career.ended'; readonly reason: CareerEnd; readonly years: number }
   | { readonly type: 'patron.offered'; readonly grantCopper: number }
+  | { readonly type: 'crisis.started'; readonly chainId: string }
+  | { readonly type: 'crisis.advanced'; readonly chainId: string; readonly step: number }
+  | { readonly type: 'crisis.ended'; readonly chainId: string; readonly outcome: 'resolved' }
   | { readonly type: 'patron.granted'; readonly grantCopper: number; readonly confidence: number }
   | { readonly type: 'skill.grew'; readonly area: Area; readonly from: number; readonly to: number }
   | {

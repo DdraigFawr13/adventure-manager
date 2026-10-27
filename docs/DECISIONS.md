@@ -907,3 +907,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27); the amount, interval and costs are starting assumptions for tuning.
 - **Decision:** The one recovery lever M1 builds (PLAN §4g) is the patron's emergency grant: when the guild is in debt at a week start, the patron offers a grant of about 8 weeks of the guild's wages, at most once every 3 years. Taking it is the player's confirmed decision; it costs 15 patron confidence and raises next year's target one step. The simulator always takes it. Abstract rivals (D-140) have no chest, so the lever is theirs only once rivals keep accounts. Charity contracts and debt paid in service wait for factions and the finance system.
 - **Why:** Owner's choice (2026-10-27), "Emergency grant", over the grant plus debt in service and over all three levers: in 100 simulated careers, 34 guilds ended year 2 below half their starting chest and only 15 of those lasted 10+ years (§9d bad starts).
+
+## D-147 Late goals in M1: one minimal crisis
+
+- **Status:** Accepted (2026-10-27); the chain, chances, rewards and pressure are starting assumptions for tuning.
+- **Decision:** M1 builds the crisis engine with one data-driven chain (D-112): from year 5, a yearly chance at the Assembly starts it; it posts linked contracts of rising danger one after another; ending it brings renown and patron confidence; while it stands unanswered it raises the guild's weekly costs and lowers the patron's confidence at each review. Chains are content entries, so later crises add data, not engine code. The simulator reports when crises start and how they end (§9d late goals).
+- **Why:** Owner's choice (2026-10-27), "One crisis, minimal", over two crises and over deferring the late-goals check to M2.

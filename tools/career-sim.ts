@@ -54,6 +54,9 @@ interface Career {
   grants: number;
   /** The year of the first emergency grant, if any. */
   firstGrantYear: number | null;
+  /** The crisis: the year it woke and the year it ended, if it did. */
+  crisisYear: number | null;
+  crisisEnded: number | null;
   injuryDays: number[];
   skillDays: Record<Area, number>;
   days: number;
@@ -93,6 +96,8 @@ function play(seed: string, delegate = false, planToUse = plan!): Career {
     growthByYear: [],
     grants: 0,
     firstGrantYear: null,
+    crisisYear: null,
+    crisisEnded: null,
     injuryDays: [],
     skillDays,
     days,
@@ -120,6 +125,8 @@ function play(seed: string, delegate = false, planToUse = plan!): Career {
       c.years = e.years;
       c.end = e.reason;
     }
+    if (e.type === 'crisis.started') c.crisisYear ??= yearOfEvent(e);
+    if (e.type === 'crisis.ended') c.crisisEnded ??= yearOfEvent(e);
     if (e.type === 'patron.granted') {
       c.grants += 1;
       c.firstGrantYear ??= yearOfEvent(e);
@@ -256,9 +263,15 @@ console.log(
 console.log(
   `  emergency grants taken (D-146): ${results.filter((r) => r.grants > 0).length} careers took one; ${results.reduce((n, r) => n + r.grants, 0)} in all`,
 );
-console.log(
-  '§9d late goals (a crisis between years 5 and 15): not measurable yet; crises are not built (D-112).',
-);
+{
+  const long = results.filter((r) => r.years >= 10);
+  const woke = long.filter((r) => r.crisisYear !== null && r.crisisYear >= 5 && r.crisisYear <= 15);
+  const ended = results.filter((r) => r.crisisEnded !== null);
+  const took = ended.map((r) => r.crisisEnded! - r.crisisYear!); // non-null: ended after it woke.
+  console.log(
+    `§9d late goals: of ${long.length} careers reaching year 10, a crisis woke in years 5-15 in ${woke.length} (${((100 * woke.length) / Math.max(1, long.length)).toFixed(0)}%) [at least one]; ended in ${ended.length} of ${results.filter((r) => r.crisisYear !== null).length} that woke, median ${pct(took, 50)} years after waking`,
+  );
+}
 if (comparePolicies) {
   console.log('§9d no dominant safe play: the share of seeds where each side ends ahead');
   ahead('cautious', cautious, 'bold', bold);

@@ -141,7 +141,8 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
       run({ type: 'recruit.sign', day, prospectId: cheapest.adventurer.id });
     }
     for (;;) {
-      const offer = now().board[0];
+      // A crisis step goes first (crisis/SPEC.md); then board order.
+      const offer = now().board.find((o) => o.crisis) ?? now().board[0];
       const party = offer ? formParty() : [];
       if (!offer || party.length < rules.partySize.min) break;
       run({ type: 'contract.take', day, offerId: offer.id, partyIds: party, plan: planToUse });

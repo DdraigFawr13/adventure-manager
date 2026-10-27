@@ -7,6 +7,7 @@ import { arrive, comeHome } from './parties.ts';
 import { drawPerson, engage, listProspects } from './people.ts';
 import { startCareer, settleYear } from '../career/year.ts';
 import { offerEmergency } from '../career/emergency.ts';
+import { crisisAssembly, crisisWeek } from '../crisis/chain.ts';
 import { staffAssembly, staffWeek, startStaff } from '../staff/areas.ts';
 import {
   guildTurn,
@@ -32,6 +33,7 @@ const STOP_CLASS: Readonly<Record<StopReason, StopClass>> = {
   'training-plan': 'digest',
   infirmary: 'digest',
   'patron-offer': 'must',
+  crisis: 'must',
 };
 
 const STOP_ORDER: readonly StopReason[] = [
@@ -39,6 +41,7 @@ const STOP_ORDER: readonly StopReason[] = [
   'assembly',
   'retirement',
   'patron-offer',
+  'crisis',
   'signing-window',
   'week-report',
   'new-contracts',
@@ -138,6 +141,7 @@ function weekStart(turn: GuildTurn, causeId: string, stops: Set<StopReason>): vo
     const tier = guild.career ? rules.career?.tiers[guild.career.tier] : undefined;
     pay(turn, tier ? tier.grantCopper : rules.patronGrantCopper, 'grant', started);
     staffAssembly(turn, year, started);
+    if (year > 1) crisisAssembly(turn, year, started, stops);
   }
   const wages = guild.members.reduce((sum, m) => sum + m.wageCopper, 0);
   if (wages > 0) pay(turn, -wages, 'wages', started);
@@ -147,6 +151,7 @@ function weekStart(turn: GuildTurn, causeId: string, stops: Set<StopReason>): vo
   offerEmergency(turn, started, stops);
   expireOffers(turn, weekOf(state.calendar, rules), started);
   postOffers(turn, week, weekOf(state.calendar, rules), started);
+  crisisWeek(turn, weekOf(state.calendar, rules), started);
   if (inWindow(week, rules)) {
     listProspects(turn, started);
     stops.add('signing-window');

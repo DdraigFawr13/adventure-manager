@@ -21,6 +21,7 @@
 //   8 weeks of its wages, at most one taken in 3 years, costing 15 confidence and a target one step
 //   harder next year. Guildmaster starts at 30-45; health retirement from 60, certain by 75.
 import type { CareerRules, GuildRules } from '@adventure-manager/engine';
+import { baseCrisisRules } from './crises.ts';
 import { baseGuildRules } from './guild.ts';
 
 export const baseCareerRules: CareerRules = {
@@ -68,5 +69,9 @@ export const baseCareerRules: CareerRules = {
   guildmaster: { age: { min: 30, max: 45 }, healthFromAge: 60, certainAge: 75 },
 };
 
-/** The guild rules with careers on: what the career simulator plays. */
-export const careerGuildRules: GuildRules = { ...baseGuildRules, career: baseCareerRules };
+/** The guild rules with careers (and crises) on: what the career simulator plays. */
+export const careerGuildRules: GuildRules = {
+  ...baseGuildRules,
+  career: baseCareerRules,
+  crises: baseCrisisRules,
+};

@@ -6,6 +6,7 @@ import { startQuest, stepQuest } from '../resolution/quest.ts';
 import { WOUND } from '../resolution/types.ts';
 import { growAfterQuest, injuryLoss } from '../career/people.ts';
 import { injuryDays, runsArea } from '../staff/areas.ts';
+import { crisisHome } from '../crisis/chain.ts';
 import { addRenown, memberOf, pay, type GuildTurn } from './turn.ts';
 import type { Party, StopReason } from './types.ts';
 
@@ -117,4 +118,5 @@ export function comeHome(turn: GuildTurn, party: Party, causeId: string): void {
         ? -(danger?.renownWin ?? 0)
         : 0;
   if (amount !== 0) addRenown(turn, amount, returned, [party.id]);
+  crisisHome(turn, party, returned);
 }
