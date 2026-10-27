@@ -1,0 +1,109 @@
+<title>Balance Runner Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Sorts+Mill+Goudy&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; what was built and measured against the old workflow, then the review's findings as a ledger with outcomes, then what is still open. Paper-and-ink tokens from the roadmap page. */
+:root {
+  --bg: #f4efe4; --surface: #fbf8f1; --fg: #2a2017; --muted: #6b5a45; --line: #ddd0b6;
+  --accent: #8e2a22; --done: #3f6f8f; --warn: #9c7a2f;
+  --title: "IM Fell English SC", Georgia, serif;
+  --body: "Source Serif 4", Georgia, serif;
+  --ledger: "Sorts Mill Goudy", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1d1813; --surface: #261f18; --fg: #eee4d2; --muted: #b3a48c; --line: #3d3328; --accent: #d0675c; --done: #7fa9c9; --warn: #d0aa55; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1d1813; --surface: #261f18; --fg: #eee4d2; --muted: #b3a48c; --line: #3d3328; --accent: #d0675c; --done: #7fa9c9; --warn: #d0aa55; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 56px; }
+.wrap { max-width: 760px; margin: 0 auto; display: grid; gap: 32px; }
+h1 { font-family: var(--title); font-weight: 400; font-size: 2.1rem; line-height: 1.15; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--title); font-weight: 400; font-size: 1.45rem; margin: 0 0 10px; text-wrap: balance; }
+p { margin: 0 0 10px; max-width: 66ch; }
+.meta { font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.ask { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 4px; padding: 14px 16px; }
+.ask p:last-child { margin: 0; }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: lining-nums tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); vertical-align: baseline; }
+th { font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 400; }
+td.n { font-family: var(--ledger); font-size: 1.05rem; white-space: nowrap; }
+ul.f { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+ul.f li { display: grid; grid-template-columns: 5.2em 1fr; gap: 4px 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+ul.f li > div { min-width: 0; }
+.sev { font-family: var(--mono); font-size: .68rem; letter-spacing: .07em; text-transform: uppercase; padding: 1px 6px; border: 1px solid currentColor; border-radius: 10px; justify-self: start; align-self: start; }
+.major { color: var(--accent); } .minor { color: var(--warn); } .nit { color: var(--muted); }
+.out { color: var(--done); font-size: .92rem; display: block; }
+code { font-family: var(--mono); font-size: .85em; overflow-wrap: anywhere; }
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 5px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="meta">27 October 2026 · branch ccr-d64ef022-hkas1n · D-202</span>
+    <h1>Balance runner review</h1>
+    <p>Your request: look at the testing and balancing pipelines, then build the recommended module (named scenarios, targets with intervals, content overrides, paired baselines) and measure it against the current workflow. An independent reviewer read the whole branch; this page lists what it found and what was done about each finding.</p>
+  </header>
+
+  <section class="ask">
+    <p><b>Your approval needed.</b> Open the pull request and merge it once CI is green? All checks pass locally (272 tests). Nothing from the review is left open except the two choices noted below as "kept".</p>
+  </section>
+
+  <section>
+    <h2>What it does</h2>
+    <p><code>node tools/balance/run.ts house-incidents</code> plays the scenario's 100 seeded careers and prints about 30 measures, each with a 95% interval and a verdict against its target and source decision. <code>--set</code> tries a number without editing files, <code>--sweep</code> tries several in one run, and <code>--compare</code> pairs every career with stored results from <code>main</code>, saying how many are identical. Usage and limits: <code>tools/balance/README.md</code>.</p>
+  </section>
+
+  <section>
+    <h2>Measured against the old workflow</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Task</th><th>Before</th><th>Now</th></tr></thead>
+      <tbody>
+        <tr><td>Did a change move the balance? 100 careers, house off</td><td class="n">72 s</td><td class="n">43 s</td></tr>
+        <tr><td>The same with house incidents</td><td class="n">88 s</td><td class="n">51 s</td></tr>
+        <tr><td>Steps for that check</td><td>build a copy of the project with its own package links, run both, compare text</td><td>one command</td></tr>
+        <tr><td>Try 3 values of one number, 20 careers</td><td class="n">≈46 s</td><td class="n">29 s</td></tr>
+        <tr><td>Edits for that</td><td>3 file edits and a revert</td><td>none</td></tr>
+        <tr><td>Interval on a change in dismissals, 100 careers</td><td>not shown; ±9 points if computed</td><td class="n">±6 points</td></tr>
+        <tr><td>Interval on a change in bad starts, 100 careers</td><td>not shown; ±11 points</td><td class="n">±7 points</td></tr>
+        <tr><td>A single plain run</td><td class="n">35–42 s</td><td class="n">36–45 s</td></tr>
+      </tbody>
+    </table></div>
+    <p>Before means two runs of <code>tools/career-sim.ts</code>, one in a copy of <code>main</code>, timed on this 4-core machine. A single run did not get faster: the old way of spreading careers over cores was already good, and the intervals add about 6 s per 100-career comparison. On the same seeds, <code>career-sim.ts</code> output is still identical to <code>main</code> in all four runs compared.</p>
+  </section>
+
+  <section>
+    <h2>What the runner found in existing numbers</h2>
+    <ul class="plain">
+      <li>Incidents' "12% dismissed against 14% without" is within the margin: the change is −2 points, interval −8 to +4.</li>
+      <li>Incidents do raise bad starts: +9 points, interval +2 to +16.</li>
+      <li>20 careers is too few for how careers end (±20 points on dismissals) but suits a first look at rates a year.</li>
+      <li>The other small recorded gaps (13% / 14% / 15% by starter party) are also within the margin. Re-measuring them is a question on the roadmap.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Review findings</h2>
+    <p>12 findings: 4 major, 8 minor, no blockers. Each was checked against the code before acting.</p>
+    <ul class="f">
+      <li><span class="sev major">Major</span><div>A sweep took its reference from the baseline even when this run's years, policy or party differed.<span class="out">Fixed: the baseline is used only when it is this exact run; otherwise the reference is played.</span></div></li>
+      <li><span class="sev major">Major</span><div><code>--save</code> could overwrite a 100-career baseline with a short run, or save from uncommitted code.<span class="out">Fixed: it refuses changed settings and uncommitted code (<code>--force</code> overrides). Checked by hand.</span></div></li>
+      <li><span class="sev major">Major</span><div>Nothing tied a baseline to the content it was played on; seeds weren't checked when pairing.<span class="out">Fixed: baselines keep a content hash and the run warns when content differs (checked by changing one number); seeds are checked; a baseline commit outside this branch is flagged. Baselines re-saved; still 100 of 100 identical.</span></div></li>
+      <li><span class="sev major">Major</span><div>Deaths and stop days are means here but medians in <code>career-sim.ts</code>, under a comment claiming to mirror it.<span class="out">Fixed in the wording: kept as means on purpose (a median of whole numbers hides small changes); the comment, README and D-202 now say so and call the ±25% band on a mean a new reading.</span></div></li>
+      <li><span class="sev minor">Minor</span><div>Renown counted unsettled years as 0.<span class="out">Fixed.</span></div></li>
+      <li><span class="sev minor">Minor</span><div>A target with no interval read "OFF" instead of blank.<span class="out">Fixed, with a test.</span></div></li>
+      <li><span class="sev minor">Minor</span><div>About 30 measures at 95% give one or two chance "MOVED" lines per comparison.<span class="out">Fixed in the README: how to read MOVED.</span></div></li>
+      <li><span class="sev minor">Minor</span><div>Tests hard-coded tuning numbers the tool exists to change.<span class="out">Fixed: they compare against the content's own values.</span></div></li>
+      <li><span class="sev minor">Minor</span><div>Gaps in tests: baseline round trip, pool order across threads, blank values.<span class="out">Fixed: tests added. A per-metric comparison with <code>career-sim.ts</code> was not added; the 20-career cross-check matched by hand.</span></div></li>
+      <li><span class="sev minor">Minor</span><div>Baselines are gzip, so a diff can't show what changed, and two PRs re-saving one conflict.<span class="out">Kept: a plain-text copy would add 4 files to every re-save for little gain, since <code>--compare</code> shows the changes. The README notes the conflict case; the claim about identical bytes was removed.</span></div></li>
+      <li><span class="sev minor">Minor</span><div><code>--careers</code>, <code>--years</code>, <code>--policy</code>, <code>--party</code> weren't checked up front.<span class="out">Fixed.</span></div></li>
+      <li><span class="sev minor">Minor</span><div>Claims too broad: "replaces the worktree run" holds only for the four stored scenarios; README contradicted itself on new fields.<span class="out">Fixed in the README and D-202. Kept the measurements in D-202, as other entries do.</span></div></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Not built</h2>
+    <ul class="plain">
+      <li>A CI balance check and an HTML report: proposed in D-202, waiting for your call.</li>
+    </ul>
+  </section>
+</div>
