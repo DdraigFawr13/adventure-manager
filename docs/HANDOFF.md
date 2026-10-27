@@ -11,7 +11,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 - 2026-10-27 PR #20 merged (7b29e15): planning round D-159–D-161, repo audit fixes, phone R4 test, D-162–D-164; four reviews, 41 findings, 34 fixed, 7 kept (https://claude.ai/artifact/UTo26LBwZBfbtNh17GjYjb). Detail: `docs/archive/handoff-2026-10.md` and the PR.
 - 2026-10-27 R4 passes (D-165): round 2 on the owner's phone, 5 of 5 under 10 s (8.9, 8.0, 9.8, 5.8, 6.1 s), via Find and the desk's Money page. Round 1 had failed (0 of 5). Test page: https://claude.ai/artifact/PkKz6nGhVqJ4Fr8Fz89MMX. Merged as PR #22.
 - 2026-10-27 R5 passes (D-166): the owner read the 15 px text with lining figures comfortably on their phone. Merged as PR #23.
-- 2026-10-27 Mobile-first tools review approved (D-167; detail in `docs/design/TOOLS-REVIEW.md` §6): phone checks in `tools/mockup-shot.mjs`, Vercel project `adventure-manager`. This branch waits on the owner's approval (D-133).
+- 2026-10-27 Mobile-first tools review approved (D-167; detail in `docs/design/TOOLS-REVIEW.md` §6): phone checks in `tools/mockup-shot.mjs`, Vercel project `adventure-manager`. Merged as PR #24 (5f6c5a6). The owner confirmed a private tab asks for a Vercel sign-in.
 
 ## Next
 
