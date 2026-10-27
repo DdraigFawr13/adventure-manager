@@ -1,4 +1,4 @@
-// One JS and one CSS file, so tools/build-prototype.mjs can inline them into a single page.
+// The step 4 prototype at the root of the Vercel link (D-200): one JS and one CSS file.
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
