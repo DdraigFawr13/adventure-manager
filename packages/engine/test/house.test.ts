@@ -936,7 +936,7 @@ describe('house (house SPEC.md)', () => {
         play(burnt, { type: 'house.repair', day: today(burnt), place: hall(1, 1) }),
       ).toThrow(/no fire damage/);
       let run = play(burnt, { type: 'house.repair', day: today(burnt), place: hall(1, 0) });
-      expect(paid(run, 'building')).toEqual([-Math.floor(cost / 2)]);
+      expect(paid(run, 'repair')).toEqual([-Math.floor(cost / 2)]);
       expect(chest(run)).toBeLessThan(0);
       expect(() => play(run, { type: 'house.repair', day: today(run), place: hall(1, 0) })).toThrow(
         /under work/,
@@ -948,6 +948,46 @@ describe('house (house SPEC.md)', () => {
       expect(houseOf(run).scars.some((x) => x.place.area === 'hall' && x.place.cell === 0)).toBe(
         false,
       );
+    });
+
+    it("holds a standing fire letter's cell, so no work starts on it before the answer", () => {
+      const run = struck(3, [fire], barracksAt(2));
+      expect(() =>
+        play(run, { type: 'house.upgrade', day: today(run), place: hall(1, 0) }),
+      ).toThrow(/under work/);
+    });
+
+    it('refuses a repair that would make its run longer than the kind allows', () => {
+      const burnt = answer(struck(4, [fire], {}, -10_000), 'free');
+      // The fixture's barracks runs 2 cells; with 1 allowed, the burnt cell can't rejoin its neighbour.
+      const base = burnt.state.content;
+      const narrow = {
+        ...structuredClone(burnt.state),
+        content: {
+          ...base,
+          guild: {
+            ...base.guild!,
+            house: {
+              ...base.guild!.house!,
+              kinds: base.guild!.house!.kinds.map((k) =>
+                k.id === 'room.barracks' ? { ...k, maxCells: 1 } : k,
+              ),
+            },
+          },
+        },
+      };
+      expect(() =>
+        play(
+          { ...burnt, state: narrow },
+          { type: 'house.repair', day: today(burnt), place: hall(1, 0) },
+        ),
+      ).toThrow(/at most 1/);
+    });
+
+    it('sends no break-in letter when the share would round to nothing', () => {
+      const run = struck(3, [{ ...theft, shareBp: [0, 0, 0], noRoomShareBp: 0 }]);
+      expect(letterOf(run)).toBeNull();
+      expect(ofType(run.events, 'incident.struck')).toEqual([]);
     });
 
     it('a second fire keeps the first scar, and building on a burnt place clears it', () => {

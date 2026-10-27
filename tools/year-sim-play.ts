@@ -14,6 +14,7 @@ import {
   type GameState,
   type GuildRules,
   type Plan,
+  type Place,
   type ResolutionContent,
   AREAS,
   weekInYear,
@@ -187,17 +188,20 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
     run({ type: 'guild.pick', day: 1, partyIndex, extraIds });
   };
 
-  /** The first fire damage to repair (D-193), barracks first; null when nothing needs repair. */
-  const repair = (day: number): { command: Bare; urgent: boolean } | null => {
-    const scars = now().house?.scars ?? [];
-    const scar = scars.find((x) => x.kindId === 'room.barracks') ?? scars[0];
-    if (!scar) return null;
-    // Lost barracks beds put members at the inn: repaired at once, into debt if need be.
-    return {
-      command: { type: 'house.repair', day, place: scar.place },
-      urgent: scar.kindId === 'room.barracks',
-    };
-  };
+  /** Scars the engine refused to repair (a run grown too long since); the policy stops asking. */
+  const unrepairable = new Set<string>();
+  const scarKey = (p: Place) =>
+    p.area === 'hall' ? `h${p.floor}.${p.cell}` : `c${p.side}.${p.plot}`;
+  /** The fire damage to repair (D-193), barracks first. */
+  const repairs = (day: number): { command: Bare; urgent: boolean }[] =>
+    [...(now().house?.scars ?? [])]
+      .filter((x) => !unrepairable.has(scarKey(x.place)))
+      .sort((a, b) => Number(b.kindId === 'room.barracks') - Number(a.kindId === 'room.barracks'))
+      .map((x) => ({
+        command: { type: 'house.repair', day, place: x.place },
+        // Lost barracks beds put members at the inn: repaired at once, into debt if need be.
+        urgent: x.kindId === 'room.barracks',
+      }));
 
   /** The house policy: at a week start with no work running, repair fire damage first (barracks at once, D-193), else start the plan's next step, if the chest after paying keeps 12 weeks of spending. */
   let planStep = 0;
@@ -207,33 +211,53 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
     const houseRules = state.content.guild?.house;
     if (!plan || !guild.house || !houseRules) return;
     if ((day - 1) % rules.daysPerWeek !== 0 || guild.house.work.length > 0) return;
-    const fix = repair(day);
-    if (!fix && planStep >= plan.length) return;
-    const step = plan[planStep];
-    const command: Bare = fix
-      ? fix.command
-      : step!.type === 'build' // non-null: planStep < plan.length when there is no repair.
-        ? { type: 'house.build', day, place: step!.place, kindId: step!.kindId }
-        : step!.type === 'upgrade'
-          ? { type: 'house.upgrade', day, place: step!.place }
-          : { type: 'house.extend', day, direction: step!.direction };
-    let cost: number;
-    try {
-      // A preview on a copy: only the cost is wanted, and a chest too thin for it is not an error.
-      // cast-ok: the id is added to a bare command, so the union member is whole.
-      const preview = simulate(state, { ...command, id: 'preview' } as Command);
-      cost = -preview.events.flatMap((e) =>
-        e.type === 'money.changed' && e.reason === 'building' ? [e.amountCopper] : [],
-      )[0]!; // non-null: a started job pays once, for building.
-    } catch (error) {
-      if (error instanceof Error && /chest/.test(error.message)) return;
-      throw error;
-    }
     const wages = guild.members.reduce((sum, m) => sum + m.wageCopper, 0);
     const weekly = wages + rules.runningCostCopper + upkeepOf(guild.house, houseRules);
-    if (!fix?.urgent && guild.chestCopper - cost < HOUSE_RESERVE_WEEKS * weekly) return;
-    run(command);
-    if (!fix) planStep += 1;
+    /** Starts the job if the chest allows; the cost comes from a preview on a copy. */
+    const tryRun = (command: Bare, urgent: boolean, reason: 'building' | 'repair'): boolean => {
+      let cost: number;
+      try {
+        // cast-ok: the id is added to a bare command, so the union member is whole.
+        const preview = simulate(state, { ...command, id: 'preview' } as Command);
+        cost = -preview.events.flatMap((e) =>
+          e.type === 'money.changed' && e.reason === reason ? [e.amountCopper] : [],
+        )[0]!; // non-null: a started job pays once.
+      } catch (error) {
+        // No coin yet, or a cell held by work or a standing letter: try again next week.
+        if (error instanceof Error && /chest|under work/.test(error.message)) return false;
+        // A plan step on a burnt-out cell waits for its repair.
+        if (
+          error instanceof Error &&
+          /holds no room/.test(error.message) &&
+          command.type === 'house.upgrade'
+        )
+          if ((now().house?.scars ?? []).some((x) => scarKey(x.place) === scarKey(command.place)))
+            return false;
+        if (
+          command.type === 'house.repair' &&
+          error instanceof Error &&
+          /runs to at most/.test(error.message)
+        ) {
+          unrepairable.add(scarKey(command.place));
+          return false;
+        }
+        throw error;
+      }
+      if (!urgent && now().chestCopper - cost < HOUSE_RESERVE_WEEKS * weekly) return false;
+      run(command);
+      return true;
+    };
+    // Repairs first; one the chest can't spare doesn't hold up the plan (house/SPEC.md, Simulator).
+    for (const fix of repairs(day)) if (tryRun(fix.command, fix.urgent, 'repair')) return;
+    const step = plan[planStep];
+    if (!step) return;
+    const command: Bare =
+      step.type === 'build'
+        ? { type: 'house.build', day, place: step.place, kindId: step.kindId }
+        : step.type === 'upgrade'
+          ? { type: 'house.upgrade', day, place: step.place }
+          : { type: 'house.extend', day, direction: step.direction };
+    if (tryRun(command, false, 'building')) planStep += 1;
   };
 
   /** A full delegator (R6): each area goes to the best listed candidate better than the staff member already hired, if a year's wage is in the chest; the guildmaster's own skill is never weighed. */

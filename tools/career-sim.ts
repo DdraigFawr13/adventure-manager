@@ -424,7 +424,7 @@ function reportIncidents(): void {
   const share = (pick: (r: Career) => number) =>
     late.map((r) => (100 * pick(r)) / r.spendingLateCopper);
   console.log(
-    `  share of all spending, years 10+ (mean of careers): inn fees ${mean(share((r) => r.innLateCopper)).toFixed(2)}%, theft ${mean(share((r) => r.theftLateCopper)).toFixed(2)}%`,
+    `  share of all spending, years 10+ (mean of careers): inn fees ${mean(share((r) => r.innLateCopper)).toFixed(2)}%, theft ${mean(share((r) => r.theftLateCopper)).toFixed(2)}%, repairs ${mean(share((r) => r.repairLateCopper)).toFixed(2)}%`,
   );
   console.log(
     `  dismissals (see how careers ended above): ${results.filter((r) => r.end === 'dismissed').length} of ${careers}`,

@@ -92,6 +92,7 @@ export interface Career {
   lodgerWeeks: number;
   innLateCopper: number;
   theftLateCopper: number;
+  repairLateCopper: number;
   seconds: number;
 }
 
@@ -201,6 +202,7 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     lodgerWeeks: counts.lodgerWeeks,
     innLateCopper: 0,
     theftLateCopper: 0,
+    repairLateCopper: 0,
     seconds: 0,
   };
   let housesFinished = 0;
@@ -246,11 +248,12 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     if (e.type === 'incident.struck')
       c.incidentsByKind[e.kindId] = (c.incidentsByKind[e.kindId] ?? 0) + 1;
     if (e.type === 'incident.settled' && e.effect === 'fire') c.fires += 1;
-    if (e.type === 'house.started') {
+    // Repairs after fires (D-193) are not plan steps; their cost counts as an incident cost.
+    if (e.type === 'house.started' && e.job !== 'repair') {
       c.houseFirstStarted ??= yearOfEvent(e);
       c.houseFirstWeek ??= Math.floor((e.day - 1) / rules.daysPerWeek) + 1;
     }
-    if (e.type === 'house.finished') {
+    if (e.type === 'house.finished' && e.job !== 'repair') {
       c.houseFirstFinished ??= yearOfEvent(e);
       housesFinished += 1;
       if (housesFinished === fullHousePlan.length) c.houseCompleted = yearOfEvent(e);
@@ -265,6 +268,7 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
       if (e.reason === 'rooms') c.roomsLateCopper -= e.amountCopper;
       if (e.reason === 'inn') c.innLateCopper -= e.amountCopper;
       if (e.reason === 'theft') c.theftLateCopper -= e.amountCopper;
+      if (e.reason === 'repair') c.repairLateCopper -= e.amountCopper;
     }
     if (e.type === 'money.changed') c.chestByYear[yearOfEvent(e) - 1] = e.chestCopper;
   }

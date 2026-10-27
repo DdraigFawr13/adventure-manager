@@ -1,4 +1,4 @@
-// House v0 (SPEC.md): the guild house's space, what building costs and takes, upkeep, and beds.
+// The guild house (SPEC.md): space, what building costs and takes, upkeep, beds, room effects and incidents.
 import type { EventSink } from '../core/events.ts';
 import { divRoundDown } from '../core/math.ts';
 import { BP_CERTAIN, streamFor } from '../core/rng.ts';
@@ -201,15 +201,27 @@ export function startHouse(turn: GuildTurn, size: number): void {
   turn.guild.house = house;
 }
 
+/** Cells of a kind that running builds and repairs will add, so runs count them before they finish. */
+function pendingCells(house: HouseState, kindId: string): Place[] {
+  return house.work.flatMap((w) =>
+    (w.job.kind === 'build' || w.job.kind === 'repair') && w.job.kindId === kindId
+      ? [w.job.place]
+      : [],
+  );
+}
+
 /** Every place a running job holds, so no other command can touch it. */
 function placesHeld(house: HouseState): Place[] {
-  return house.work.flatMap((w) =>
+  const held = house.work.flatMap((w) =>
     w.job.kind === 'build' || w.job.kind === 'repair'
       ? [w.job.place]
       : w.job.kind === 'upgrade'
         ? [...w.job.places]
         : [],
   );
+  // A standing letter's cell can't take work until it is answered, so no work erases a fire (SPEC.md).
+  if (house.letter?.place) held.push(house.letter.place);
+  return held;
 }
 
 function jobParts(job: HouseJob): {
@@ -265,7 +277,9 @@ function begin(
   house.nextWorkNo += 1;
   const id = `house.work.${house.nextWorkNo}`;
   house.work.push({ id, job, doneWeek });
-  const paid = pay(turn, -costCopper, 'building', command.id, [id]);
+  const paid = pay(turn, -costCopper, job.kind === 'repair' ? 'repair' : 'building', command.id, [
+    id,
+  ]);
   turn.sink.emit({
     type: 'house.started',
     causeId: paid,
@@ -308,9 +322,7 @@ export function buildRoom(
   if (place.area !== kind.where) throw new Error(`${kind.id} goes in the ${kind.where}.`);
   if (kind.belowGround && !(place.area === 'hall' && place.floor < 0))
     throw new Error(`${kind.id} goes below ground.`);
-  const pending = house.work.flatMap((w) =>
-    w.job.kind === 'build' && w.job.kindId === kind.id ? [w.job.place] : [],
-  );
+  const pending = pendingCells(house, kind.id);
   const run = runAround(house, place, kind.id, pending);
   // A room with a cell under work can't be joined: the new cell would take a level about to change.
   const held = placesHeld(house);
@@ -326,9 +338,6 @@ export function buildRoom(
   const level = joined.length > 0 ? Math.min(...joined) : 1;
   let cost = 0;
   for (let n = 0; n < level; n += 1) cost += kind.cellCostCopper[n] ?? 0;
-  // Building on a burnt-out place, at full price, replaces any repair it was owed (D-193).
-  const scar = house.scars.findIndex((x) => samePlace(x.place, place));
-  if (scar >= 0) house.scars.splice(scar, 1);
   begin(
     turn,
     house,
@@ -338,6 +347,9 @@ export function buildRoom(
     cost,
     kind.weeks[0] ?? 0,
   );
+  // Building on a burnt-out place, at full price, replaces any repair it was owed (D-193).
+  const scar = house.scars.findIndex((x) => samePlace(x.place, place));
+  if (scar >= 0) house.scars.splice(scar, 1);
 }
 
 export function upgradeRoom(
@@ -354,9 +366,7 @@ export function upgradeRoom(
   if (cell === undefined) throw new Error(`There is no ${where}.`);
   if (cell === null) throw new Error(`The ${where} holds no room.`);
   const kind = kindOf(rules, cell.kindId);
-  const pending = house.work.flatMap((w) =>
-    w.job.kind === 'build' && w.job.kindId === kind.id ? [w.job.place] : [],
-  );
+  const pending = pendingCells(house, kind.id);
   // A room with a cell under work (a new cell joining it, or an upgrade) can't be raised.
   const whole = runAround(house, place, kind.id, pending);
   if (whole.some((p) => held.some((q) => samePlace(p, q))))
@@ -394,6 +404,11 @@ export function repairRoom(
   const cell = slot(house, place);
   if (cell && cell.kindId !== scar.kindId) throw new Error(`The ${where} holds another room.`);
   const kind = kindOf(rules, scar.kindId);
+  if (
+    runAround(house, place, kind.id, [place, ...pendingCells(house, kind.id)]).length >
+    kind.maxCells
+  )
+    throw new Error(`${kind.id} runs to at most ${kind.maxCells} cells.`);
   const from = cell?.level ?? 0;
   let cost = 0;
   for (let n = from; n < scar.level; n += 1) cost += kind.cellCostCopper[n] ?? 0;
@@ -570,7 +585,10 @@ function rollIncidents(
       const bp = incidentChanceBp(incidents, kind.weeklyBp, level, inDebt, false);
       if (!rng.chance(bp)) continue;
       const share = level === null ? kind.noRoomShareBp : (kind.shareBp[level - 1] ?? 0);
-      strike(kind, null, divRoundDown(turn.guild.chestCopper * share, BP));
+      const stolen = divRoundDown(turn.guild.chestCopper * share, BP);
+      // A chest too thin to lose a coin is no break-in worth a letter.
+      if (stolen === 0) continue;
+      strike(kind, null, stolen);
       return;
     }
     for (const place of cellPlaces(house)) {
@@ -670,7 +688,7 @@ function fallIll(
     house.sickbeds.splice(0, house.sickbeds.length, ...held);
     const sickbed = held.length < sickbedsOf(house, rules);
     const days = sickbed ? Math.max(1, divRoundDown(base * kind.sickbedBp, BP)) : base;
-    member.outUntilDay = Math.max(member.outUntilDay, today + days);
+    member.outUntilDay = today + days;
     if (sickbed) house.sickbeds.push({ memberId: member.id, untilDay: member.outUntilDay });
     turn.sink.emit({
       type: 'member.fell-ill',

@@ -221,7 +221,8 @@ export type MoneyReason =
   | 'crisis'
   | 'inn'
   | 'incident'
-  | 'theft';
+  | 'theft'
+  | 'repair';
 export type IncidentAnswer = 'paid' | 'free';
 export type IncidentResult =
   'saved' | 'lowered' | 'burnt-out' | 'written-off' | 'recovered' | 'not-recovered' | 'ill';

@@ -37,7 +37,8 @@
 //   (career-sim house=on incidents=on, 100 careers x 26 years, every letter on its default,
 //   2026-10-27): 1.24 incidents a year (fire 0.66, theft 0.52, sickness 0.07: the barracks is
 //   rarely full after year 1), target 1-2; dismissals 12% against 14% without incidents; theft 3.3%
-//   of spending from year 10; lodgers in 0.6% of weeks. First pass at 8 / 30 / 120 bp: 0.33 a year.
+//   and repairs 3.8% of spending from year 10; lodgers in 0.6% of weeks; full house in year 13
+//   (12 without), 9.6 years of surplus. First pass at 8 / 30 / 120 bp: 0.33 a year.
 //   Not in baseHouseRules, so house=on without incidents is unchanged; houseIncidentGuildRules adds them.
 // - Storeys: the first added 8,000, each later 8,000 more; cellars 10,000 then 10,000 more; a wall
 //   push 5,000 then 5,000 more, up to 6 plots a side (D-172, D-183).
