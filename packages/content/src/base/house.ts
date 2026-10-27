@@ -28,7 +28,7 @@
 //   start is measured against it). The simulator then signs up to the beds.
 // - Barracks beds per cell by level 8 / 10 / 12 (D-170, D-174).
 // - Incidents (v2, D-173, D-191-D-193; baseIncidentRules, ASSUMPTIONS): fire 30 bp a week on a forge,
-//   tavern, works or barracks cell, theft 110 bp, sickness 400 bp on a full barracks cell; times
+//   tavern, works or barracks cell, theft 110 bp, sickness 110 bp on a barracks cell at least 3/4 full (D-206); times
 //   150% / 100% / 50% by room level 1 / 2 / 3, 200% in debt, 200% for a full target (200% for theft
 //   with no strongroom). A fire fee is 400 copper, theft 300, sickness 250; thieves take 12% / 6% / 3%
 //   of the chest by strongroom level (20% with none), the thief-takers get it back 50% of the time;
@@ -38,7 +38,9 @@
 //   2026-10-27): 1.24 incidents a year (fire 0.66, theft 0.52, sickness 0.07: the barracks is
 //   rarely full after year 1), target 1-2; dismissals 12% against 14% without incidents; theft 3.3%
 //   and repairs 3.8% of spending from year 10; lodgers in 0.6% of weeks; full house in year 13
-//   (12 without), 9.6 years of surplus. First pass at 8 / 30 / 120 bp: 0.33 a year.
+//   (12 without), 9.6 years of surplus. First pass at 8 / 30 / 120 bp: 0.33 a year. With sickness
+//   on a crowded barracks (D-206) and D-205's purse, same run: 1.47 a year (fire 0.67, theft 0.54,
+//   sickness 0.26; 400 bp gave sickness 1.06); dismissals 12%; full house in year 13.
 //   Not in baseHouseRules, so house=on without incidents is unchanged; houseIncidentGuildRules adds them.
 // - Storeys: the first added 8,000, each later 8,000 more; cellars 10,000 then 10,000 more; a wall
 //   push 5,000 then 5,000 more, up to 6 plots a side (D-172, D-183).
@@ -137,7 +139,8 @@ export const baseIncidentRules: IncidentRules = {
       id: 'incident.sickness',
       effect: 'sickness',
       roomKindIds: ['room.barracks'],
-      weeklyBp: 400,
+      crowdedBp: 7500,
+      weeklyBp: 110,
       paidCopper: 250,
       count: 3,
       freeDays: 14,

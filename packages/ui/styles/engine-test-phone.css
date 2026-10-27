@@ -1,0 +1,316 @@
+/* The phone map page (/map.html, D-154, D-164, D-204): the inked map fills the screen on a walnut
+   desk; parchment controls and a bottom sheet sit over it. Palette and fonts follow STYLE §2; text is
+   15 px or more (D-084) and every control is at least 44 x 44 px. Fonts are the local OFL files. */
+@font-face {
+  font-family: 'IM Fell English SC';
+  src: url('../fonts/IMFeENsc28P.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IM Fell DW Pica';
+  src: url('../fonts/IMFePIrm28P.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sorts Mill Goudy';
+  src: url('../fonts/SortsMillGoudy-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #2c1f16;
+  overscroll-behavior: none;
+}
+
+.etp {
+  --etp-desk: #3b2a1e;
+  --etp-desk-2: #2c1f16;
+  --etp-paper: #efe4cc;
+  --etp-ink: #2a2017;
+  --etp-ink-2: #6b5a45;
+  --etp-rule: #d6c6a5;
+  --etp-seal: #8e2a22;
+  --etp-brass: #b8923e;
+  --etp-title: 'IM Fell English SC', Georgia, serif;
+  --etp-letter: 'IM Fell DW Pica', Georgia, serif;
+  --etp-ledger: 'Sorts Mill Goudy', Georgia, serif;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  color: var(--etp-ink);
+  font-family: var(--etp-ledger);
+  font-size: 16px;
+  font-variant-numeric: lining-nums tabular-nums;
+  background: repeating-linear-gradient(92deg, var(--etp-desk) 0 34px, var(--etp-desk-2) 34px 36px);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.etp-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.etp-viewport {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+}
+
+.etp-viewport:focus-visible {
+  outline: 3px solid var(--etp-brass);
+  outline-offset: -3px;
+}
+
+.etp-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.etp-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* A keyboard user tabbing into the places list sees it (WCAG 2.4.7). */
+.etp-sr:focus-within {
+  z-index: 5;
+  top: 8px;
+  left: 8px;
+  width: auto;
+  height: auto;
+  max-height: 60vh;
+  overflow: auto;
+  clip-path: none;
+  padding: 8px;
+  background: var(--etp-paper);
+  border: 2px solid var(--etp-brass);
+}
+
+.etp-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  font: 400 28px/1 var(--etp-title);
+  color: var(--etp-paper);
+  background: rgba(44, 31, 22, 0.85);
+  pointer-events: none;
+}
+
+/* Frame-rate panel: small, top left, never in the way of a tap on the map's edge. */
+.etp-fps {
+  position: absolute;
+  left: max(8px, env(safe-area-inset-left));
+  top: max(8px, env(safe-area-inset-top));
+  display: grid;
+  gap: 2px;
+  padding: 4px 8px;
+  font: 400 15px/1.2 var(--etp-ledger);
+  color: var(--etp-paper);
+  background: rgba(44, 31, 22, 0.78);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.etp button {
+  min-width: 44px;
+  min-height: 44px;
+  font-size: 16px;
+  font-family: var(--etp-title);
+  color: var(--etp-ink);
+  background: var(--etp-paper);
+  border: 1px solid var(--etp-ink);
+  border-radius: 4px;
+  box-shadow:
+    0 0 0 2px var(--etp-paper),
+    0 0 0 3px var(--etp-brass),
+    0 4px 10px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.etp button:focus-visible {
+  outline: 3px solid var(--etp-seal);
+  outline-offset: 3px;
+}
+
+.etp button[aria-pressed='true'] {
+  color: var(--etp-paper);
+  background: var(--etp-seal);
+}
+
+.etp-fps-toggle {
+  position: absolute;
+  right: max(10px, env(safe-area-inset-right));
+  top: max(10px, env(safe-area-inset-top));
+  min-width: 44px;
+  height: 44px;
+  padding: 0 8px;
+  font-size: 15px;
+}
+
+.etp-zoom {
+  position: absolute;
+  right: max(10px, env(safe-area-inset-right));
+  bottom: calc(max(10px, env(safe-area-inset-bottom)) + 76px);
+  display: grid;
+  gap: 10px;
+}
+
+.etp-zoom button {
+  width: 44px;
+  height: 44px;
+  font-size: 26px;
+  line-height: 1;
+}
+
+/* The clock bar sits low, where the thumb is. */
+.etp-clock {
+  position: absolute;
+  left: max(10px, env(safe-area-inset-left));
+  right: max(10px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--etp-paper);
+  border: 1px solid var(--etp-ink);
+  border-radius: 4px;
+  box-shadow:
+    0 0 0 3px var(--etp-paper),
+    0 0 0 4px var(--etp-brass),
+    0 8px 18px rgba(0, 0, 0, 0.45);
+}
+
+.etp-clock button {
+  min-width: 44px;
+  height: 44px;
+  padding: 0 10px;
+  font-size: 17px;
+  box-shadow: none;
+}
+
+.etp-clock .etp-play {
+  min-width: 72px;
+}
+
+.etp-date {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: right;
+  font: 400 16px/1.2 var(--etp-ledger);
+  white-space: nowrap;
+}
+
+/* The bottom sheet: pop-up for a mark's details or a letter. */
+.etp-backdrop {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(20, 13, 8, 0.55);
+}
+
+.etp-sheet {
+  box-sizing: border-box;
+  width: 100%;
+  max-height: 78%;
+  overflow-y: auto;
+  padding: 14px 16px calc(16px + env(safe-area-inset-bottom));
+  background: var(--etp-paper);
+  border-top: 3px double var(--etp-brass);
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.5);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.etp-sheet-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.etp-sheet h2 {
+  margin: 0;
+  font: 400 24px/1.15 var(--etp-title);
+  letter-spacing: 0.03em;
+}
+
+.etp-kind {
+  margin: 4px 0 0;
+  font: italic 16px/1.2 var(--etp-letter);
+  color: var(--etp-ink-2);
+}
+
+.etp-close {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.etp-picture {
+  display: grid;
+  gap: 4px;
+  margin: 12px 0;
+  padding: 8px;
+  background: repeating-linear-gradient(135deg, #e6d8b9 0 6px, #efe4cc 6px 12px);
+  border: 1px solid var(--etp-ink);
+  box-shadow: inset 0 0 0 3px var(--etp-paper);
+}
+
+.etp-picture figcaption {
+  text-align: center;
+  font: italic 15px/1.2 var(--etp-letter);
+  color: var(--etp-ink-2);
+}
+
+.etp-motif {
+  display: block;
+  width: 100%;
+  height: 120px;
+}
+
+.etp-motif-frame {
+  fill: none;
+  stroke: var(--etp-rule);
+  stroke-width: 1.5;
+}
+
+.etp-motif-ink {
+  fill: none;
+  stroke: var(--etp-ink);
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.etp-lines p {
+  margin: 0 0 8px;
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .etp * {
+    transition: none;
+    animation: none;
+  }
+}

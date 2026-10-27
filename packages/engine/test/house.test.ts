@@ -722,6 +722,7 @@ describe('house (house SPEC.md)', () => {
       id: 'incident.sickness',
       effect: 'sickness',
       roomKindIds: ['room.barracks'],
+      crowdedBp: 7500,
       weeklyBp: 10_000,
       paidCopper: 25,
       count: 2,
@@ -885,8 +886,9 @@ describe('house (house SPEC.md)', () => {
         sickbeds: [1, 2, 3],
       };
       const ill = (run: Run) => ofType(run.events, 'member.fell-ill');
-      // Only a full barracks falls ill: 3 members on 4 beds do not.
-      expect(ofType(struck(3, [sickness]).events, 'incident.struck')).toEqual([]);
+      // Only a crowded barracks falls ill (D-206): 2 members on 4 beds do not, 3 (3/4) do.
+      expect(ofType(struck(2, [sickness]).events, 'incident.struck')).toEqual([]);
+      expect(ofType(struck(3, [sickness]).events, 'incident.struck')).toHaveLength(1);
       const free = answer(struck(4, [sickness]), 'free');
       expect(ill(free).map((e) => [e.days, e.sickbed])).toEqual([
         [14, false],

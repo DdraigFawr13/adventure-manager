@@ -596,7 +596,11 @@ function rollIncidents(
       if (!cell || !kind.roomKindIds.includes(cell.kindId)) continue;
       if (held.some((p) => samePlace(p, place))) continue;
       const full = isFull(turn, house, rules, kindOf(rules, cell.kindId));
-      if (kind.effect === 'sickness' && !full) continue;
+      if (
+        kind.effect === 'sickness' &&
+        turn.guild.members.length * BP < bedsOf(house, rules) * kind.crowdedBp
+      )
+        continue;
       const level = roomLevelAt(house, place, cell.kindId);
       if (!rng.chance(incidentChanceBp(incidents, kind.weeklyBp, level, inDebt, full))) continue;
       strike(kind, place);

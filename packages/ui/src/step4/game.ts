@@ -222,8 +222,8 @@ export function pull(save: Save): number {
   return days;
 }
 
-/** Weeks of spending the default player keeps in the chest after paying for a step (the simulator's). */
-const HOUSE_RESERVE_WEEKS = 12;
+/** Weeks of spending the default player keeps in the chest after paying for a step (the simulator's, D-205). */
+const HOUSE_RESERVE_WEEKS = 24;
 
 const samePlace = (a: Place, b: Place) =>
   a.area === 'hall' && b.area === 'hall'
@@ -233,7 +233,7 @@ const samePlace = (a: Place, b: Place) =>
 /**
  * House and staff on defaults (D-195), the career simulator's policy (tools/year-sim-play.ts): at
  * a week start with no work running, repair fire damage first (barracks at once, into debt),
- * else start the full-house plan's next step if the chest keeps 12 weeks of spending after it.
+ * else start the full-house plan's next step if the chest keeps HOUSE_RESERVE_WEEKS of spending after it.
  * The rules have no hired staff, so the guildmaster runs training and recovery.
  */
 export function playHouse(save: Save): void {

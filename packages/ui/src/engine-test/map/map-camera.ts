@@ -25,16 +25,22 @@ export const fitZoom = (viewW: number, viewH: number, sheet: Sheet2): number =>
  * Keeps the zoom in range and the sheet in view. Spare width goes to the left (the layer switches
  * live there, off the paper); spare height is shared top and bottom.
  */
-export function clampCamera(cam: Camera, viewW: number, viewH: number, sheet: Sheet2): void {
-  // On a window bigger than the sheet at MAX_ZOOM, the fit wins, so the paper still fills it.
-  cam.z = Math.max(fitZoom(viewW, viewH, sheet), Math.min(MAX_ZOOM, cam.z));
+export function clampCamera(
+  cam: Camera,
+  viewW: number,
+  viewH: number,
+  sheet: Sheet2,
+  maxZoom: number = MAX_ZOOM,
+): void {
+  // On a window bigger than the sheet at the closest zoom, the fit wins, so the paper still fills it.
+  cam.z = Math.max(fitZoom(viewW, viewH, sheet), Math.min(maxZoom, cam.z));
   const spanX = viewW / cam.z;
   const spanY = viewH / cam.z;
   cam.x = spanX >= sheet.w ? sheet.w - spanX : Math.min(sheet.w - spanX, Math.max(0, cam.x));
   cam.y = spanY >= sheet.h ? (sheet.h - spanY) / 2 : Math.min(sheet.h - spanY, Math.max(0, cam.y));
 }
 
-/** Zooms by `factor` keeping the sheet point under screen position (sx, sy) where it is. */
+/** Zooms by `factor` (up to `maxZoom`; the phone map goes closer than the desktop one) keeping the sheet point under screen position (sx, sy) where it is. */
 export function zoomAt(
   cam: Camera,
   factor: number,
@@ -43,14 +49,15 @@ export function zoomAt(
   viewW: number,
   viewH: number,
   sheet: Sheet2,
+  maxZoom: number = MAX_ZOOM,
 ): void {
   const wx = cam.x + sx / cam.z;
   const wy = cam.y + sy / cam.z;
   cam.z *= factor;
-  clampCamera(cam, viewW, viewH, sheet);
+  clampCamera(cam, viewW, viewH, sheet, maxZoom);
   cam.x = wx - sx / cam.z;
   cam.y = wy - sy / cam.z;
-  clampCamera(cam, viewW, viewH, sheet);
+  clampCamera(cam, viewW, viewH, sheet, maxZoom);
 }
 
 /** Opens fitted: the whole March in view. */

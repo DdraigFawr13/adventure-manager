@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vite build -c vite.quest-watch.config.ts",
+    "build": "vite build && vite build -c vite.quest-watch.config.ts && vite build -c vite.map.config.ts",
     "build:engine-test": "vite build -c vite.engine-test.config.ts"
   },
   "devDependencies": {
