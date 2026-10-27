@@ -20,7 +20,7 @@ const maxYears = Number(process.argv[3] ?? 40);
 const policyArg = process.argv[4] ?? 'default';
 const comparePolicies = policyArg === 'compare';
 const policyName = comparePolicies ? 'default' : policyArg;
-if (!POLICIES[policyName]) throw new Error(`Unknown policy ${policyName}.`);
+if (!Object.hasOwn(POLICIES, policyName)) throw new Error(`Unknown policy ${policyName}.`);
 const staffMode = process.argv[5] ?? 'off';
 if (staffMode !== 'off' && staffMode !== 'compare')
   throw new Error(`Unknown staff mode ${staffMode}.`);
@@ -76,6 +76,11 @@ async function playAll(all: readonly CareerJob[]): Promise<Career[]> {
       });
     }),
   );
+  // A thread that ends without reporting every career would leave a gap; fail rather than print
+  // a report over fewer careers.
+  const missing = all.findIndex((_, i) => out[i] === undefined);
+  if (missing >= 0)
+    throw new Error(`No result for ${all[missing]!.seed} (${all[missing]!.policy}).`); // non-null: an index of all.
   return out;
 }
 

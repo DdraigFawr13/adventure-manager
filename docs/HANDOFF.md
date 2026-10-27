@@ -17,7 +17,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
   - Reviews (D-093): 3 rounds, 12 + 8 + 3 findings, no blockers; all fixed or kept with reasons. Findings page: https://claude.ai/artifact/CjcdmX55Nk5uaNmuzMQ6fE
   - Not fixed, for the owner: chests grow to millions of copper over long careers (no money sinks yet; gear and buildings, D-143, are the planned sinks).
 - 2026-10-26 Step 3 merged as PR #14 (writing test R8 passed, contracts from parts D-139, desk mock-ups; R4 round 3 awaits the owner's fact test). Engine test (PR #12) and year simulator first slice (PR #13) merged. Detail in the archive.
-- 2026-10-27 Faster headless runs, part 1 (D-148; branch `ccr-c510692c-px9h9x`): `simulate()` shares the read-only `content` instead of cloning it each command; engine and content tests freeze content (a write throws) and check it is shared. Measured `node tools/year-sim.ts 100`: 48.2 s to 19.1 s, output identical; sweep outputs identical. Parts 2-3 (in-place `apply()` for tools, careers across cores) wait for the step-2 merge; the step-2 branch's next decision is numbered after D-148.
+- 2026-10-27 Faster headless runs, part 1 (D-148; branch `ccr-c510692c-px9h9x`): `simulate()` shares the read-only `content` instead of cloning it each command; engine and content tests freeze content (a write throws) and check it is shared. Measured `node tools/year-sim.ts 100`: 48.2 s to 19.1 s, output identical; sweep outputs identical. Parts 2–3: see the entry above.
 - Older entries (plan phase, to M0): `docs/archive/handoff-2026-10.md`.
 
 ## Next
