@@ -1075,5 +1075,5 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 ## D-166 R5 passes: 15 px with lining figures reads well on the phone
 
 - **Status:** Accepted (2026-10-27)
-- **Decision:** The readability check (R5, PLAN §9a) passes on the owner's phone (443 × 790 px): the 15 px minimum with lining figures (D-084) stays. The fallbacks, our own ledger cut (D-052) and clear print as the default (D-077), are not needed now; clear print stays a player option.
-- **Why:** Owner (2026-10-27), asked whether the 15 px text read comfortably in the fact test: "Yes, readable".
+- **Decision:** The readability check (R5, PLAN §9a) passes on the owner's phone, the one used for R4 (D-165): the 15 px minimum with lining figures (D-084) stays. The fallbacks, our own ledger cut (D-052) and clear print as the default (D-077), are not needed now; clear print stays a player option. The test was short sittings; reading over long sittings is checked again in the step 4 prototype.
+- **Why:** Owner (2026-10-27), asked whether the 15 px text read comfortably in the fact test: "Yes, readable". That the fallbacks are not needed, and the long-sitting recheck, are the session's reading of that answer.
