@@ -167,4 +167,7 @@ export const houseGuildRules: GuildRules = {
   ...careerGuildRules,
   career: { ...baseCareerRules, grace: baseGraceRules },
   house: baseHouseRules,
+  // A stand-in for the founding purse (D-188) until the draft is built: measured over 100 careers,
+  // 17,000 left 20% of guildmasters dismissed, 30,000 13% (45,000 no better; house off 10%).
+  startingChestCopper: 30000,
 };
