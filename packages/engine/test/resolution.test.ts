@@ -299,6 +299,23 @@ describe('the engine stays deterministic and sound (GAME-01, GAME-06)', () => {
     expect(state).toEqual(before);
   });
 
+  it('shares the read-only content with the new state instead of copying it', () => {
+    // Frozen, so any engine write to content throws: sharing is only safe while nothing writes it.
+    const deepFreeze = (value: unknown): void => {
+      if (typeof value !== 'object' || value === null || Object.isFrozen(value)) return;
+      Object.freeze(value);
+      for (const child of Object.values(value)) deepFreeze(child);
+    };
+    const state = game(party());
+    deepFreeze(state.content);
+    const result = run(state, { ...steadyPlan, retreat: 'down' });
+    expect(result.state.content).toBe(state.content);
+    const guild = foundedGuild(5);
+    deepFreeze(guild.state.content);
+    const year = playDays(guild, 60);
+    expect(year.state.content).toBe(guild.state.content);
+  });
+
   // An invariant sweep, not a balance battery (GAME-06): many seeds reach more code paths.
   it('keeps the invariants over many seeded quests, and every quest ends', () => {
     const outcomes = new Set<string>();
