@@ -1,9 +1,11 @@
 // House v0 (SPEC.md): the guild house's space, what building costs and takes, upkeep, and beds.
 import type { EventSink } from '../core/events.ts';
 import { divRoundDown } from '../core/math.ts';
-import { BP_CERTAIN } from '../core/rng.ts';
-import { guildTurn, pay, weekInYear, weekOf, type GuildTurn } from '../guild/turn.ts';
-import type { Command, GameEvent, GameState } from '../resolution/types.ts';
+import { BP_CERTAIN, streamFor } from '../core/rng.ts';
+import { ageOf, setAttribute } from '../career/people.ts';
+import { trainingBp } from '../staff/areas.ts';
+import { guildTurn, isFree, pay, weekInYear, weekOf, type GuildTurn } from '../guild/turn.ts';
+import { ATTRIBUTES, type Command, type GameEvent, type GameState } from '../resolution/types.ts';
 import type {
   BuiltCell,
   CompoundSide,
@@ -398,6 +400,45 @@ export function houseWeek(turn: GuildTurn, causeId: string): void {
   }
   const upkeep = upkeepOf(house, rules);
   if (upkeep > 0) pay(turn, -upkeep, 'rooms', causeId);
+  trainAtHome(turn, house, rules, causeId);
+}
+
+/** Training at home (SPEC.md, D-187): members at home and fit, youngest first; the yard's places go first. */
+function trainAtHome(turn: GuildTurn, house: HouseState, rules: HouseRules, causeId: string): void {
+  const career = turn.rules.career;
+  if (!career) return;
+  const today = turn.state.calendar;
+  const home: { id: string; age: number }[] = [];
+  for (const m of turn.guild.members) {
+    if (!isFree(m, today)) continue;
+    const who = turn.state.roster.find((a) => a.id === m.id);
+    const age = who ? ageOf(turn, who) : null;
+    if (age !== null) home.push({ id: m.id, age });
+  }
+  home.sort((a, b) => a.age - b.age || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  const places = trainingPlacesOf(house, rules);
+  const rng = streamFor(turn.state, 'house.training');
+  const { homeTraining } = rules;
+  home.forEach(({ id, age }, rank) => {
+    const who = turn.state.roster.find((a) => a.id === id);
+    if (!who?.potential) return;
+    const base =
+      age <= career.growth.youngAge
+        ? homeTraining.youngBp
+        : age <= career.primeAge
+          ? homeTraining.primeBp
+          : 0;
+    const share = rank < places ? homeTraining.placedBp : homeTraining.unplacedBp;
+    const scaled = divRoundDown(base * trainingBp(turn), BP_CERTAIN);
+    const chance = divRoundDown(scaled * share, BP_CERTAIN);
+    const potential = who.potential;
+    const options = ATTRIBUTES.filter((a) => who.attributes[a] < potential[a]);
+    // Always draw twice, so a member's outcome never shifts the stream for the next one.
+    const grows = rng.chance(chance);
+    const attribute = options[rng.int(Math.max(1, options.length))];
+    if (grows && attribute)
+      setAttribute(turn, id, attribute, who.attributes[attribute] + 1, 'training', causeId);
+  });
 }
 
 function finish(house: HouseState, rules: HouseRules, job: HouseJob): void {

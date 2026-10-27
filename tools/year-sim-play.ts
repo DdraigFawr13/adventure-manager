@@ -90,6 +90,9 @@ export interface RunOptions {
   readonly housePlan?: readonly HousePlanStep[];
 }
 
+/** With the house on: the roster the policy grows toward as beds allow. */
+const HOUSE_ROSTER = 15;
+
 /** Weeks of spending the house policy keeps in the chest after paying for a step. */
 const HOUSE_RESERVE_WEEKS = 12;
 
@@ -146,11 +149,13 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
       run({ type: 'patron.grant', day });
     if (options.housePlan) houseStep(day);
     const houseRules = state.content.guild?.house;
-    const beds = () => {
+    // With the house on, `size` is only the founding roster (D-187): the policy grows toward
+    // HOUSE_ROSTER (two parties and backups) as beds allow, the roster the simulator was tuned at.
+    const limit = () => {
       const h = now().house;
-      return h && houseRules ? bedsOf(h, houseRules) : Infinity;
+      return h && houseRules ? Math.min(HOUSE_ROSTER, bedsOf(h, houseRules)) : size;
     };
-    while (now().prospects.length > 0 && now().members.length < Math.min(size, beds())) {
+    while (now().prospects.length > 0 && now().members.length < limit()) {
       const cheapest = [...now().prospects].sort(
         (a, b) => a.wageCopper - b.wageCopper || (a.adventurer.id < b.adventurer.id ? -1 : 1),
       )[0]!; // non-null: the list is not empty.

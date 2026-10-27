@@ -63,7 +63,7 @@ const house: HouseRules = {
   maxPlotsPerSide: 3,
   winterWeeksBp: 7500,
   noSickbedBp: 20_000,
-  noPlaceGrowthBp: 5000,
+  homeTraining: { youngBp: 0, primeBp: 0, placedBp: 15_000, unplacedBp: 7500 },
 };
 const WEEK = 7;
 /** The first day of a week counted from the guild's first day. */
@@ -562,31 +562,99 @@ describe('house (house SPEC.md)', () => {
       }
     });
 
-    it('training places go to the youngest members; the rest grow at their share of the chance', () => {
-      const growth = { youngAge: 24, youngBp: 10_000, primeBp: 10_000 };
-      const career = { ...testCareer, growth };
-      const grown = (run: Run) => {
-        const ids = ofType(run.events, 'attribute.changed')
-          .filter((e) => e.reason === 'growth')
-          .map((e) => e.subjectIds[0]);
-        return new Set(ids);
-      };
+    describe('training at home', () => {
+      const training = (youngBp: number, placedBp: number, unplacedBp: number) => ({
+        homeTraining: { youngBp, primeBp: youngBp, placedBp, unplacedBp },
+      });
       const yardCell = [{ place: plot('west', 0), kindId: 'room.training-yard' }];
-      // The third member is the youngest by a year; one place.
-      const younger = (run: Run): Run => {
+      // From day 2: week 1 starts inside the founding, before a test can change the people.
+      const trained = (run: Run) =>
+        ofType(run.events, 'attribute.changed')
+          .filter((e) => e.reason === 'training' && e.day > 1)
+          .map((e) => e.subjectIds[0]);
+      /** Member `n` is made one year younger than the others (all are 20). */
+      const younger = (run: Run, n: number): Run => {
         const state = structuredClone(run.state);
-        const c = state.guild!.members[2]!.id;
-        const who = state.roster.find((r) => r.id === c)!;
+        const who = state.roster.find((r) => r.id === state.guild!.members[n]!.id)!;
         state.roster[state.roster.indexOf(who)] = { ...who, birthYear: who.birthYear! + 1 };
         return { ...run, state };
       };
-      const c = withRooms(yardCell, career).state.guild!.members[2]!.id;
-      // With no share for those without a place, only the youngest grows.
-      const strict = younger(withRooms(yardCell, career, { noPlaceGrowthBp: 0 }));
-      expect([...grown(playDays(strict, 60))]).toEqual([c]);
-      // At full share for everyone the others grow too.
-      const all = younger(withRooms(yardCell, career, { noPlaceGrowthBp: 10_000 }));
-      expect(grown(playDays(all, 60)).size).toBeGreaterThan(1);
+      const ids = (run: Run) => run.state.guild!.members.map((m) => m.id);
+
+      it('only members with a place grow when the rest have no share, the youngest first', () => {
+        const start = withRooms(yardCell, testCareer, training(10_000, 10_000, 0));
+        const youngest = ids(start)[2];
+        const done = advanceTo(younger(start, 2), 3 * WEEK + 1);
+        expect(trained(done).length).toBeGreaterThan(0);
+        expect(new Set(trained(done))).toEqual(new Set([youngest]));
+        for (const e of ofType(done.events, 'attribute.changed'))
+          expect([e.reason, e.to - e.from]).toEqual(['training', 1]);
+      });
+
+      it('ties by age go to the lower id', () => {
+        const start = withRooms(yardCell, testCareer, training(10_000, 10_000, 0));
+        const lowest = [...ids(start)].sort()[0];
+        expect(new Set(trained(advanceTo(start, 3 * WEEK + 1)))).toEqual(new Set([lowest]));
+      });
+
+      it('members without a place grow at their share', () => {
+        const all = withRooms(yardCell, testCareer, training(10_000, 10_000, 10_000));
+        expect(new Set(trained(advanceTo(all, 3 * WEEK + 1)))).toEqual(new Set(ids(all)));
+        const none = withRooms([], testCareer, training(10_000, 10_000, 0));
+        expect(trained(advanceTo(none, 3 * WEEK + 1))).toEqual([]);
+        const slow = withRooms([], testCareer, training(10_000, 10_000, 5000));
+        const n = trained(advanceTo(slow, 40 * WEEK)).length;
+        const full = trained(
+          advanceTo(withRooms([], testCareer, training(10_000, 10_000, 10_000)), 40 * WEEK),
+        ).length;
+        expect(n).toBeGreaterThan(0);
+        expect(n).toBeLessThan(full);
+      });
+
+      it('only members at home and fit train, and none past the prime', () => {
+        const start = withRooms(yardCell, testCareer, training(10_000, 10_000, 10_000));
+        const state = structuredClone(start.state);
+        const [hurt, away, old] = state.guild!.members;
+        hurt!.outUntilDay = 1000;
+        away!.away = true;
+        const who = state.roster.find((r) => r.id === old!.id)!;
+        state.roster[state.roster.indexOf(who)] = { ...who, birthYear: who.birthYear! - 30 };
+        const done = advanceTo({ ...start, state }, 3 * WEEK + 1);
+        expect(trained(done)).toEqual([]);
+      });
+
+      it('stops at the potential', () => {
+        const start = withRooms(yardCell, testCareer, training(10_000, 10_000, 10_000));
+        const state = structuredClone(start.state);
+        const who = state.roster[0]!;
+        state.roster[0] = { ...who, potential: { ...who.potential!, might: who.attributes.might } };
+        const done = advanceTo({ ...start, state }, 60 * WEEK);
+        const mine = ofType(done.events, 'attribute.changed').filter(
+          (e) => e.subjectIds[0] === who.id && e.attribute === 'might',
+        );
+        expect(mine).toEqual([]);
+      });
+
+      it('does nothing without house rules', () => {
+        const run = foundedGuild(3, { career: testCareer });
+        expect(trained(advanceTo(run, 10 * WEEK))).toEqual([]);
+      });
+
+      it('leaves growth after quests as it was', () => {
+        const growth = { youngAge: 24, youngBp: 10_000, primeBp: 10_000 };
+        const career = { ...testCareer, growth };
+        const grown = (run: Run) =>
+          ofType(run.events, 'attribute.changed')
+            .filter((e) => e.reason === 'growth')
+            .map((e) => [e.subjectIds[0], e.attribute, e.from, e.to]);
+        const plain = playDays(foundedGuild(3, { career }), 60);
+        const housed = playDays(
+          withRooms(yardCell, career, { ...training(0, 0, 0), noSickbedBp: 10_000 }),
+          60,
+        );
+        expect(grown(plain).length).toBeGreaterThan(0);
+        expect(grown(housed)).toEqual(grown(plain));
+      });
     });
 
     it('changes nothing without house rules', () => {

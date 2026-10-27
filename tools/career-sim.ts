@@ -289,6 +289,20 @@ function reportHouse(): void {
     );
   if (finished.length > 0)
     console.log(line('  first plan step finished (year)', finished, 'year 1', 0));
+  // D-187: what the yard and the quests grow, and how big the guild gets on its beds.
+  const growth = (pick: (r: Career) => number[]) =>
+    pct(
+      results.flatMap((r) => Array.from({ length: r.years }, (_, y) => pick(r)[y] ?? 0)),
+      50,
+    );
+  const rosterAt = (year: number) =>
+    pct(
+      results.flatMap((r) => r.rosterByYear[year - 1] ?? []),
+      50,
+    );
+  console.log(
+    `  attribute points a year, median per career-year: from training at home ${growth((r) => r.trainingByYear)}, from quests ${growth((r) => r.growthByYear)}; roster at the end of year 1 / 5 / 10 (median): ${rosterAt(1)} / ${rosterAt(5)} / ${rosterAt(10)}`,
+  );
   console.log(
     `  plan completed in ${done.length} of ${careers} careers (${((100 * done.length) / careers).toFixed(0)}%)`,
   );

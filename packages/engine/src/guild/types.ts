@@ -275,7 +275,7 @@ export type GuildEventBody =
       readonly attribute: Attribute;
       readonly from: number;
       readonly to: number;
-      readonly reason: 'growth' | 'age' | 'injury';
+      readonly reason: 'growth' | 'age' | 'injury' | 'training';
     }
   | { readonly type: 'adventurer.retired'; readonly age: number }
   | {

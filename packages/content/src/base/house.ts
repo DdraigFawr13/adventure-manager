@@ -17,10 +17,14 @@
 //   wall 4. Work started in winter takes 75% of that (D-067, D-169).
 // - Upkeep per cell per week by level 8 / 17 / 34, set for about 20% of spending from year 10
 //   (owner, D-185; a lever to adjust).
-// - Infirmary sickbeds per cell by level 2 / 3 / 4; training-yard places 3 / 4 / 5. Without a free
-//   sickbed a lasting injury lasts twice as long; without a place growth runs at half (D-186).
-// - Barracks beds per cell by level 8 / 10 / 12. A new guild has 2 barracks cells, 16 beds, for a
-//   founded roster of 15 (D-170, D-174).
+// - Infirmary sickbeds per cell by level 2 / 3 / 4; without a free sickbed a lasting injury lasts
+//   twice as long (D-186). Training-yard places 4 / 6 / 8 a plot. Training at home (D-187): each week
+//   a member at home and fit grows a point with chance 1% (young) / 0.5% (prime), times 1.5 with a
+//   yard place or 0.75 without; the base rate is a first guess to measure.
+// - A new guild starts small (D-187): a 1-cell barracks (8 beds) for a founded roster of 7 (one party
+//   and backups), a 1-plot training yard (4 places), and no infirmary (the rudimentary-infirmary
+//   start is measured against it). The simulator then signs up to the beds.
+// - Barracks beds per cell by level 8 / 10 / 12 (D-170, D-174).
 // - Storeys: the first added 8,000, each later 8,000 more; cellars 10,000 then 10,000 more; a wall
 //   push 5,000 then 5,000 more, up to 6 plots a side (D-172, D-183).
 import type { GuildRules, HouseRules, Place, RoomKind } from '@adventure-manager/engine';
@@ -59,7 +63,7 @@ export const baseHouseRules: HouseRules = {
     kind('room.tavern', 'hall', 3, 3000),
     kind('room.strongroom', 'hall', 1, 5000, { belowGround: true }),
     kind('room.heroes', 'hall', 3, 3000),
-    kind('room.training-yard', 'compound', 3, 3500, { trainingPlaces: [3, 4, 5] }),
+    kind('room.training-yard', 'compound', 3, 3500, { trainingPlaces: [4, 6, 8] }),
     kind('room.forge', 'compound', 3, 4500),
     kind('room.works', 'compound', 3, 3000),
     kind('room.gate', 'compound', 1, 2500),
@@ -73,8 +77,8 @@ export const baseHouseRules: HouseRules = {
     cells: [
       { place: hall(0, 0), kindId: 'room.tavern', level: 1 },
       { place: hall(1, 0), kindId: 'room.barracks', level: 1 },
-      { place: hall(1, 1), kindId: 'room.barracks', level: 1 },
       { place: plot('west', 0), kindId: 'room.gate', level: 1 },
+      { place: plot('west', 1), kindId: 'room.training-yard', level: 1 },
     ],
   },
   storey: { baseCopper: 8000, stepCopper: 8000, weeks: 6 },
@@ -83,7 +87,7 @@ export const baseHouseRules: HouseRules = {
   maxPlotsPerSide: 6,
   winterWeeksBp: 7500,
   noSickbedBp: 20000,
-  noPlaceGrowthBp: 5000,
+  homeTraining: { youngBp: 100, primeBp: 50, placedBp: 15000, unplacedBp: 7500 },
 };
 
 /** One step of the simulator's build plan; places refer to the starting layout and the floors the plan adds. */
@@ -97,9 +101,9 @@ const upgrade = (place: Place): HousePlanStep => ({ type: 'upgrade', place });
 
 /** One cell of every room in the reference full house; the plan raises each room twice. */
 const ROOMS: readonly Place[] = [
+  hall(1, 0), // barracks
   hall(0, 2), // infirmary
   plot('west', 1), // training yard
-  hall(1, 0), // barracks
   hall(0, 0), // tavern
   hall(2, 0), // armoury
   hall(2, 1), // Hall of Heroes
@@ -112,16 +116,16 @@ const ROOMS: readonly Place[] = [
 
 /**
  * The reference full house the simulator builds toward, in order (D-172): every kind at level 3.
- * The infirmary and training yard come first, as a new guild has neither and heals and grows slower
- * without them (D-186). Hall: ground floor tavern, study, infirmary; floor 1 barracks (3 cells);
+ * Barracks first, so the founded party can grow into a second (D-187), then the infirmary (a new
+ * guild has none, so injuries last twice as long, D-186) and the yard's second plot. Hall: ground floor tavern, study, infirmary; floor 1 barracks (3 cells);
  * floor 2 armoury, the Hall of Heroes and a spare cell; floor 3 library (2) and a spare cell; cellar
  * strongroom and 2 spare cells. Compound: gate and training yard (2) west, forge and works east,
  * 1 spare plot. That is 2 storeys and 1 cellar added, no wall pushed. Tools only; the game has no
  * "full" house.
  */
 export const fullHousePlan: readonly HousePlanStep[] = [
+  build(hall(1, 1), 'room.barracks'),
   build(hall(0, 2), 'room.infirmary'),
-  build(plot('west', 1), 'room.training-yard'),
   build(plot('west', 2), 'room.training-yard'),
   build(hall(1, 2), 'room.barracks'),
   { type: 'extend', direction: 'up' },

@@ -5,7 +5,6 @@ import { BP_CERTAIN, streamFor } from '../core/rng.ts';
 import type { GuildTurn } from '../guild/turn.ts';
 import { yearOf } from '../guild/turn.ts';
 import type { StopReason } from '../guild/types.ts';
-import { trainingPlacesOf } from '../house/house.ts';
 import { trainingBp } from '../staff/areas.ts';
 import { ATTRIBUTES, type Adventurer, type Attribute } from '../resolution/types.ts';
 
@@ -38,12 +37,12 @@ export function ageOf(turn: GuildTurn, who: Adventurer): number | null {
 }
 
 /** Replaces a roster entry's attribute and records why (attributes are part of the person). */
-function setAttribute(
+export function setAttribute(
   turn: GuildTurn,
   id: string,
   attribute: Attribute,
   to: number,
-  reason: 'growth' | 'age' | 'injury',
+  reason: 'growth' | 'age' | 'injury' | 'training',
   causeId: string,
 ): void {
   const at = turn.state.roster.findIndex((a) => a.id === id);
@@ -64,21 +63,6 @@ function setAttribute(
   });
 }
 
-/** With a house: the youngest current members, as many as the yard has places, ties by id. */
-function trainingPlaceHolders(turn: GuildTurn): Set<string> | null {
-  const rules = turn.rules.house;
-  const house = turn.guild.house;
-  if (!rules || !house) return null;
-  const aged: { id: string; age: number }[] = [];
-  for (const m of turn.guild.members) {
-    const who = turn.state.roster.find((a) => a.id === m.id);
-    const age = who ? ageOf(turn, who) : null;
-    if (age !== null) aged.push({ id: m.id, age });
-  }
-  aged.sort((a, b) => a.age - b.age || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
-  return new Set(aged.slice(0, trainingPlacesOf(house, rules)).map((m) => m.id));
-}
-
 /** Growth by doing: each survivor may gain a point in one attribute the quest tested. */
 export function growAfterQuest(
   turn: GuildTurn,
@@ -89,7 +73,6 @@ export function growAfterQuest(
   const career = turn.rules.career;
   if (!career) return;
   const rng = streamFor(turn.state, 'career.growth');
-  const placed = trainingPlaceHolders(turn);
   for (const id of ids) {
     const who = turn.state.roster.find((a) => a.id === id);
     const age = who ? ageOf(turn, who) : null;
@@ -101,10 +84,7 @@ export function growAfterQuest(
           ? career.growth.primeBp
           : 0;
     // Training scales the chance (staff/SPEC.md).
-    let chance = divRoundDown(base * trainingBp(turn), BP_CERTAIN);
-    // Without a yard place the chance shrinks (house/SPEC.md, D-186).
-    if (placed && !placed.has(id))
-      chance = divRoundDown(chance * (turn.rules.house?.noPlaceGrowthBp ?? BP_CERTAIN), BP_CERTAIN);
+    const chance = divRoundDown(base * trainingBp(turn), BP_CERTAIN);
     const options = tested(who).filter((a) => who.attributes[a] < (who.potential?.[a] ?? 0));
     // Always draw twice, so a member's growth never shifts the stream for the next one.
     const grows = rng.chance(chance);

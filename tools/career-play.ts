@@ -50,6 +50,9 @@ export interface Career {
   confidence: number[];
   /** R6: attribute points grown each year; days each lasting injury added to time out (`member.laid-up`); the skill running each area, summed over days. */
   growthByYear: number[];
+  /** House line (D-187): points grown a year from training at home, and members at each year's end. */
+  trainingByYear: number[];
+  rosterByYear: number[];
   grants: number;
   /** The year of the first emergency grant, if any. */
   firstGrantYear: number | null;
@@ -93,6 +96,7 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
   const started = performance.now();
   const skillDays: Record<Area, number> = { training: 0, recovery: 0 };
   let days = 0;
+  const rosterByYear: number[] = [];
   // runYear runs the guild and resolution invariants over the whole career and throws on a problem.
   const { events } = runYear(seed, planToUse, {
     content,
@@ -102,6 +106,8 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     refuseGrants,
     ...(setup.houseMode === 'on' ? { housePlan: fullHousePlan } : {}),
     onDay: (state) => {
+      if (state.calendar % yearDays === 0)
+        rosterByYear[state.calendar / yearDays - 1] = state.guild?.members.length ?? 0;
       const staff = state.guild?.staff;
       if (!staff) return;
       days += 1;
@@ -122,6 +128,8 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     rivalRenown: [],
     confidence: [],
     growthByYear: [],
+    trainingByYear: [],
+    rosterByYear,
     grants: 0,
     firstGrantYear: null,
     firstOfferYear: null,
@@ -172,6 +180,10 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     if (e.type === 'attribute.changed' && e.reason === 'growth') {
       const y = yearOfEvent(e) - 1;
       c.growthByYear[y] = (c.growthByYear[y] ?? 0) + 1;
+    }
+    if (e.type === 'attribute.changed' && e.reason === 'training') {
+      const y = yearOfEvent(e) - 1;
+      c.trainingByYear[y] = (c.trainingByYear[y] ?? 0) + 1;
     }
     if (e.type === 'member.laid-up') c.injuryDays.push(e.days);
     if (e.type === 'patron.offered') c.firstOfferYear ??= yearOfEvent(e);

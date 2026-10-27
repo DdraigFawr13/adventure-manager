@@ -64,8 +64,13 @@ export interface HouseRules {
   readonly winterWeeksBp: number;
   /** Lasting-injury days for a member with no free sickbed, as a share (20,000 is twice, D-186). */
   readonly noSickbedBp: number;
-  /** Growth chance for a member with no training place, as a share (5,000 is half, D-186). */
-  readonly noPlaceGrowthBp: number;
+  /** Training at home (D-187): weekly growth chance by age band, and the share for members with and without a yard place. */
+  readonly homeTraining: {
+    readonly youngBp: number;
+    readonly primeBp: number;
+    readonly placedBp: number;
+    readonly unplacedBp: number;
+  };
 }
 
 export interface BuiltCell {
