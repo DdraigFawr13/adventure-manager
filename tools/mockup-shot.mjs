@@ -3,6 +3,10 @@
 // loaded and whether the page scrolls sideways (a failure), and on phones flags tap targets under
 // 44 × 44 px, text under 15 px (D-084) and unlabelled controls (warnings). Saves screenshots and, for
 // phones, the accessibility snapshot (what a screen reader would announce).
+// Exit code: 1 only for sideways scroll or a tap that fails; read the warnings yourself. The warnings
+// are heuristics: controls are found by tag, role, tabindex and pointer cursor (a click handler added
+// in script alone is invisible), inline text links are skipped, and text size is the CSS font size,
+// so scaled (transformed) text and ::before/::after text are not measured.
 // Usage: node tools/mockup-shot.mjs <page.html> [out-dir] [--tap <css selector>]...
 // Each --tap is tapped in order on every phone; the checks run before the first tap and after each,
 // so screens that appear only after a tap are checked too.
@@ -18,10 +22,11 @@ const taps = [];
 const positional = [];
 for (let i = 0; i < args.length; i++) {
   if (args[i] === '--tap') taps.push(args[++i]);
+  else if (args[i].startsWith('--')) positional.push(undefined);
   else positional.push(args[i]);
 }
 const [src, outArg] = positional;
-if (!src || taps.includes(undefined)) {
+if (!src || taps.includes(undefined) || positional.includes(undefined)) {
   console.error('usage: node tools/mockup-shot.mjs <page.html> [out-dir] [--tap <css selector>]...');
   process.exit(2);
 }
@@ -50,10 +55,19 @@ function phoneFindings({ minTap, minText }) {
     const s = getComputedStyle(e);
     return b.width > 0 && b.height > 0 && s.visibility !== 'hidden' && s.display !== 'none';
   };
-  const label = (e) => (e.getAttribute('aria-label') || e.textContent || e.getAttribute('title') || '').trim().replace(/\s+/g, ' ').slice(0, 30);
-  const controls = [...document.querySelectorAll('a[href],button,input,select,textarea,summary,[role=button],[role=tab],[role=link],[onclick]')].filter(shown);
+  const label = (e) =>
+    (e.getAttribute('aria-label') || e.textContent || e.getAttribute('title') || (e.type === 'submit' || e.type === 'button' ? e.value : '') || e.querySelector('img[alt]')?.alt || '')
+      .trim().replace(/\s+/g, ' ').slice(0, 30);
+  const tagged = 'a[href],button,input:not([type=hidden]),select,textarea,summary,[role=button],[role=tab],[role=link],[onclick],[tabindex]:not([tabindex="-1"])';
+  // Elements styled as clickable, minus those inside a control already counted.
+  const pointer = [...document.querySelectorAll('body *')].filter((e) => getComputedStyle(e).cursor === 'pointer' && !e.parentElement?.closest(tagged) && getComputedStyle(e.parentElement).cursor !== 'pointer');
+  const controls = [...new Set([...document.querySelectorAll(tagged), ...pointer])].filter(shown);
+  // A link inside running text is exempt from target size (WCAG 2.5.8); so is a box or radio inside a label.
+  const exempt = (e) =>
+    (e.tagName === 'A' && getComputedStyle(e).display === 'inline' && [...e.parentElement.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) ||
+    (e.labels?.length && [...e.labels].some((l) => { const b = l.getBoundingClientRect(); return b.width >= minTap && b.height >= minTap; }));
   const small = controls
-    .filter((e) => { const b = e.getBoundingClientRect(); return b.width < minTap || b.height < minTap; })
+    .filter((e) => { const b = e.getBoundingClientRect(); return (b.width < minTap || b.height < minTap) && !exempt(e); })
     .map((e) => { const b = e.getBoundingClientRect(); return `${e.tagName.toLowerCase()} "${label(e)}" ${Math.round(b.width)}×${Math.round(b.height)}`; });
   const unlabelled = controls
     .filter((e) => !(label(e) || e.labels?.length || e.getAttribute('aria-labelledby') || e.getAttribute('placeholder')))
@@ -84,13 +98,13 @@ for (const [width, height] of PHONES) {
   await tab.waitForTimeout(1500);
   for (let step = 0; step <= taps.length; step++) {
     if (step > 0) {
-      const target = tab.locator(taps[step - 1]).first();
-      if (!(await target.count())) {
-        console.log(`phone ${width}px: TAP FAILED, nothing matches ${taps[step - 1]}`);
+      try {
+        await tab.locator(taps[step - 1]).first().tap({ timeout: 3000 });
+      } catch {
+        console.log(`phone ${width}px: TAP FAILED, nothing visible and tappable matches ${taps[step - 1]}`);
         failed = true;
         break;
       }
-      await target.tap();
       await tab.waitForTimeout(400);
     }
     const f = await tab.evaluate(phoneFindings, { minTap: MIN_TAP, minText: MIN_TEXT });

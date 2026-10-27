@@ -90,7 +90,7 @@ Run with the `setup-audit` skill: scope this repo, quick depth (docs not fetched
 
 ## 6. Mobile-first reassessment (D-161, 2026-10-27)
 
-Asked for in D-161, before step 4. Status: accepted 2026-10-27, items 1–6 (D-167); item 7 is the owner's setting, not needed now. Measured: run in this cloud container on 2026-10-27. Everything else is labelled as estimate or judgement (REP-01).
+Asked for in D-161, before step 4. Status: accepted 2026-10-27, items 1–6 (D-167); item 7 is the owner's setting, not needed now. Measured: run in this cloud container on 2026-10-27, by the session that wrote this section (outputs not kept in the repo; rerun `tools/mockup-shot.mjs` to reproduce the page checks). Everything else is labelled as estimate or judgement (REP-01).
 
 ### What the container can and cannot do (measured)
 
@@ -100,7 +100,7 @@ Asked for in D-161, before step 4. Status: accepted 2026-10-27, items 1–6 (D-1
 - **A page's states must be scripted.** The R4 page has 0 room buttons before Start and 12 after, so a one-shot check sees only the first screen. A phone check needs a short list of taps per page.
 - **The owner's phone is 443 px wide, not 412.** D-159 estimated about 412 dp; the R4 page measured 443 × 790 (D-165). Playwright's Pixel 10 Pro XL preset says 448.
 - **Blocked by the network policy:** `api.vercel.com` (so the Vercel CLI cannot deploy from here) and `dl.google.com` (so the Android SDK cannot be installed, and no Android build runs here). npm, Gradle and Java are reachable. iPhone builds need macOS in any case (D-151).
-- **The Vercel connector works.** It reads the owner's account: Hobby plan, 1 concurrent build, 6 other projects, no Adventure Manager project yet. It can read deployments, build logs and protected preview pages.
+- **The Vercel connector works.** As the connector reported: the owner's account is on the Hobby plan with 1 concurrent build and 6 other projects, and had no Adventure Manager project yet. It can read deployments, build logs and protected preview pages.
 
 ### Proposals
 
@@ -114,5 +114,5 @@ Asked for in D-161, before step 4. Status: accepted 2026-10-27, items 1–6 (D-1
 
 ### Done (2026-10-27)
 
-- Item 1: `tools/mockup-shot.mjs` checks phones at 375, 412, 430 and 443 px, with `--tap` steps. On the R4 page (first screen, then Look around first, then the barracks) it found no problems; on `mobile-hall-desk.html` it flagged one small link and the miniature phones' text (5.5 px), as expected. Phone screenshots show the visible screen, since a full-page shot draws the fixed tab bar mid-page.
-- Item 2: Vercel project `adventure-manager` on the owner's Hobby account, linked to this repo, Node 22, build settings in `vercel.json`. Every deployment, `main` included, sits behind Vercel's login (stricter than proposed: an unreleased game stays private). Created without a first deploy, because `main` had no build settings yet. The built page was checked in the container at 443 px: it loads with no console errors.
+- Item 1: `tools/mockup-shot.mjs` (its header says what it checks, and that the warnings are heuristics and do not fail the run). On the R4 page (first screen, then Look around first, then the barracks) it found no problems; on `mobile-hall-desk.html` it flagged the miniature phones' text (5.5 px CSS size), as expected; inline text links are exempt from the tap-target size. Phone screenshots show the visible screen, since a full-page shot draws the fixed tab bar mid-page.
+- Item 2: Vercel project `adventure-manager`, created through the connector without a first deploy, because `main` had no build settings yet. Build settings live in `vercel.json`; Node 22 and the login protection are dashboard settings (connector-reported: Vercel Authentication on all deployments, `main` included; stricter than proposed, so an unreleased game stays private; not tested from outside, since the container cannot reach `vercel.app`). The first build, from this branch, was READY and served the game page (fetched through the connector); Vercel made it the production link although the production branch is `main`. Locally, the built page loads at 443 px with no console errors. The engine test builds separately (`build:engine-test`), so putting it on the link needs a second output.
