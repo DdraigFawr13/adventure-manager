@@ -667,7 +667,7 @@ Packages (one repository):
 - **engine**: the rules. Pure code, no UI, no clock, no unseeded randomness (GAME-01). One `simulate(state, command)` used for preview and commit (GAME-02); random streams live in the state (§11h, D-114). Every change is an **event** with a cause id.
 - **content**: classes, ancestries, monsters, sites, quests, key moments, text templates as data files with schemas (GAME-04).
 - **ui**: screens that read state and events, send commands, never compute rules.
-- **shell**: the phone app wrapper (Capacitor from the vertical slice, D-167): saves on the device, the phone's backup, and Game Center and Google Play Games achievements (D-158). A desktop shell comes when Windows follows (D-151).
+- **shell**: the phone app wrapper (Capacitor from the vertical slice, D-167): saves on the device, the phone's backup, and optional Game Center and Google Play Games achievements (D-158). A desktop shell comes when Windows follows (D-151).
 - **tools**: the headless year simulator (§9b step 2), a content validator, a save inspector.
 
 The **event log** is the spine: the Trace and inspector histories (D-082), the Chronicle (D-042), the week report, letters (D-083) and playtest logs (D-088) are all views of the same events, so they can never disagree.
@@ -828,8 +828,8 @@ Each milestone ends at a gate: the owner reviews the exit checks and says go, lo
 | M1 | Prototypes | §9b steps 0–4: engine test (rebuilt for the phone, D-154), one watched quest, headless year simulator, desk mock-ups and writing test, two years in the text prototype. The simulation core is kept; prototype screens are throwaway (§9, D-113) | Owner | Engine settled web-first (D-110); R1–R4 and R6–R8 pass lines met (D-086); R9 proxy shows 20–30-year careers; §9d checks pass | 5–8 months |
 | M2 | Vertical slice | The production engine, content, ui and shell packages (§11b). The prologue and first season (D-076) in one corner of the March: 2 biomes, 3 settlements, 4 classes, ~10 monster kinds, ~6 quest templates; final art and audio for that corner only; the slice's corner of the kingdom map in final style, the rest sketched (D-113); the first phone app build (D-156) | 6–10 invited players, on the stores' closed test tracks (D-158) | First season in 3–4 h (D-064); no dense screen needs more than one explanation (D-065); testers name 3 adventurers (R7); determinism test and save upgrade test pass (GAME-05, GAME-06); a tester's bug replays from their save (D-114) | 7–10 months |
 | M3 | Alpha | All 14 launch systems (D-070) in, playable over many years; whole March with about half the launch content; placeholder art allowed outside the slice | 30–50 closed testers | Medians within ±25% of the §4 targets over real play; ≤ 100 stops a year for the mid-sized guild (D-068, §9d); no unreadable saves; feature complete for launch | 10–15 months |
-| M4 | Free demo | The first season, free inside the one app before the unlock (D-040, D-152, D-158), with final art for what it shows; a store presence since M2 (its phone form is for the owner, D-150) | Public (e.g. a Steam festival) | ≥ 70% of demo starts finish the first season (D-065); crash-free sessions; store feedback logged | 2–3 months, alongside M5 |
-| M5 | Beta | All launch content (D-080, D-081 as cut by D-109), final art and audio, achievements, cloud saves through the phone's backup (D-158); balance and writing passes | 200+ testers, on the stores' open test tracks (D-158) | 30-year saves load and upgrade; succession reached in long saves (R9); §11g performance met on a small phone; no known save-losing bug | 7–10 months |
+| M4 | Free demo | The first season, free inside the one app before the unlock (D-040, D-152, D-158), with final art for what it shows; a store presence since M2 (its phone form is for the owner, D-150) | Public (the venue is for the owner to decide, D-150) | ≥ 70% of demo starts finish the first season (D-065); crash-free sessions; store feedback logged | 2–3 months, alongside M5 |
+| M5 | Beta | All launch content (D-080, D-081 as cut by D-109), final art and audio, optional Game Center and Google Play Games achievements, cloud saves through the phone's backup (D-158); balance and writing passes | 200+ testers, on the stores' open test tracks (D-158) | 30-year saves load and upgrade; succession reached in long saves (R9); §11g performance met on a small phone; no known save-losing bug | 7–10 months |
 | M6 | Launch | Release build, store assets, day-one patch plan | Everyone | Release checklist (§15) passes; owner signs off | 2–3 months |
 | M7 | Post-launch | Free updates (§13c) | Everyone | Each update keeps old saves loading (GAME-05) | ongoing |
 
@@ -861,7 +861,7 @@ Free updates, in this order (owner chose war campaigns first, Plan Q13b); each a
 
 ## 14. Budget, team and business assumptions (Accepted 2026-10-26)
 
-Decisions: D-102..D-104, D-108, D-113. Inputs: art and audio costs (D-098), milestones and timing (D-099), launch model at the alpha gate (D-100), premium with a free demo (D-040), success targets (D-065), no runtime dependency, paid service or backend without asking (SAFE-03). **Every figure here is an estimate** (REP-01) unless marked as a fact; quotes and real spending replace them.
+Decisions: D-102..D-104, D-108, D-113, D-150, D-152, D-156, D-157. Inputs: art and audio costs (D-098), milestones and timing (D-099), launch model at the alpha gate (D-100), premium with a free demo (D-040), success targets (D-065), no runtime dependency, paid service or backend without asking (SAFE-03). **Every figure here is an estimate** (REP-01) unless marked as a fact; quotes and real spending replace them.
 
 ### 14a. Team (Accepted 2026-10-26, D-102)
 
@@ -885,7 +885,7 @@ Two cases: solo all the way, and solo plus one developer hired at a gate. Contin
 | Marketing | 5,000 | 15,000 | Trailer, store capsule art, festival build polish; festivals themselves are free |
 | Legal and business | 2,000 | 6,000 | Contractor agreements that transfer rights (§12e), a name and trademark check, company set-up if needed |
 | AI and dev tools | 3,900 | 13,600 | $100–200 a month for 39–68 months (D-157; plan prices to check) |
-| Test hardware | 1,000 | 2,000 | A minimum-spec laptop (D-103; may not be needed before launch now that Windows follows it) |
+| Test hardware | 1,000 | 2,000 | A minimum-spec laptop (D-103, kept in D-157) |
 | Test phones | 300 | 1,000 | Two or three phones (D-157) |
 | Mac or Mac rental | 600 | 1,500 | iPhone builds need a Mac (D-151, D-157) |
 | Store fees | 425 | 625 | Apple about $99 a year over 4–6 years, Google about $25 once (D-157) |
@@ -905,7 +905,7 @@ Earlier figures: ~$52,000–174,000 solo and ~$124,000–347,000 with a hire for
 - **Break-even (estimate, D-157):** solo budget about **5,500–22,000 unlocks**; with a hire about **11,500–39,000 unlocks**. This covers cash costs only: not the owner's time, income tax, company costs or post-launch work (D-113).
 - **Post-launch work** (free updates, D-101) is owner time plus art per update, budgeted after launch from sales.
 - **Demo:** the first season, free inside the same app (D-040, D-158, M4); D-065's 15% demo conversion is the measure (a Steam-era target, to check against phone-store data).
-- **§1d targets** (D-065) were revisited for this budget and stand unchanged; break-even needs no extra target.
+- **§1d targets** (D-065) were revisited for the Windows budget and stood unchanged; break-even needs no extra target. Their phone sources are still for the owner to decide (D-150).
 - **Paid expansions:** stay undecided (D-040); decide after launch on sales and the post-launch plan (D-101). Free updates first.
 - **Languages:** English at launch. Text lives in template files ready for translation (D-091); translation is decided after launch on sales by region.
 
@@ -927,7 +927,7 @@ Each is an assumption the budget rests on; if one breaks, §14 is revisited at t
 
 ### 14f. Wishlists and testers (Accepted 2026-10-26, D-113)
 
-- **Wishlist targets** (estimates, set for a Steam page): about 1,000 at the slice gate, about 5,000 after the demo's first festival, 10,000 or more at launch. Missing a target by half goes to the owner at that gate. Phone stores have no wishlists, so the phone measure and its targets are for the owner to decide (D-150).
+- **Wishlist targets** (estimates, set for a Steam page): about 1,000 at the slice gate, about 5,000 after the demo's first festival, 10,000 or more at launch. Missing a target by half goes to the owner at that gate. Phone stores have no direct equivalent of wishlists (to check), so the phone measure and its targets are for the owner to decide (D-150).
 - **Audience:** a short devlog about once a month from M2 (map art, letters, a death in the Chronicle), linked from the store page.
 - **Testers:** alpha and beta testers join through the stores' test tracks, TestFlight and Google Play's testing tracks (D-158); they are recruited from the devlog. How they are recruited beyond it (the plan used Steam's playtest sign-up) is for the owner to decide (D-150). A community space (such as a Discord server) is the owner's call at M2 (SAFE-01).
 
