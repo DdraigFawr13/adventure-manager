@@ -881,7 +881,7 @@ Owner's choice (Plan Q14a): **start solo, hire later.**
 
 ### 14b. Budget (Accepted 2026-10-26, D-103)
 
-**Amended (2026-10-27, D-156):** add about $9,000–30,000 of art for the hall rooms and town views, plus a Mac or Mac rental, test phones and the store fees (estimates in D-156). The table below predates mobile first.
+**Amended (2026-10-27, D-156, D-157):** for mobile first, the solo budget is about $66,000–219,000 with contingency. D-157 lists each change from the table below, which predates mobile first.
 
 Two cases: solo all the way, and solo plus one developer hired at a gate. Contingency 20%. All figures in US dollars, estimates.
 
@@ -906,7 +906,7 @@ Figures restated on 2026-10-26 for the lean cut and solo timeline (D-108, D-109)
 
 ### 14c. Price and revenue (Accepted 2026-10-26, D-104)
 
-**Amended (2026-10-27, D-152):** on the phone stores the game is a free download with a $14.99 unlock, about $10–12 net per sale (estimate). Break-even is to be redone.
+**Amended (2026-10-27, D-152, D-157):** on the phone stores the game is a free download with a $14.99 unlock, about $10–12 net per sale. Break-even is about 5,500–22,000 unlocks (estimates).
 
 - **Launch price: $24.99** (owner's choice, Plan Q14b). Comparable deep management games sit around $25–35 (for example Darkest Dungeon, Wildermyth, Battle Brothers, RimWorld; list prices to recheck at launch); Football Manager is higher with an established brand.
 - **Net per copy: about $12.50–15** (50–60% of the list price, estimate). Steam keeps 30% (fact for the first $10 million of sales); sales tax and VAT come out of prices in many regions, and regional pricing, launch discounts and refunds take more.
@@ -982,7 +982,7 @@ Every check runs locally before a push (VER-02); CI repeats the fast ones.
 
 ### 15d. Versions and builds (Accepted 2026-10-26, D-105, D-106)
 
-**Amended (2026-10-27, D-151):** launch is on iPhone and Android phones, and Windows follows. Store builds replace Steam branches for the launch; the release checklist is to be adapted when builds start.
+**Amended (2026-10-27, D-151, D-158):** launch is on iPhone and Android phones, and Windows follows. D-158 replaces the Steam branches, Cloud, achievements and rollback below for the phone launch, and adapts checklist items 4 and 5.
 
 - **Launch platform: Windows** (owner's choice, Plan Q15a). Linux and Steam Deck players can run the Windows build through Proton, but it is not promised on the store page. Steam Deck support (a 1280×800 layout below the 1366×768 minimum, D-091, and controller play) and a Mac build are decided after launch.
 - **Version:** `major.minor.patch` for the game, plus the save-format and content versions stored in every save (D-091).

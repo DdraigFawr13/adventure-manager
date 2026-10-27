@@ -646,13 +646,14 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Amended (2026-10-26, D-108, D-109):** about $52,000–174,000 solo and $124,000–347,000 with a hire; about $8,000–27,000 before the hire gate.
 - **Why:** Owner accepted the draft (Plan Q14c); the slice is the pitch, so funding is chosen when there is something to show.
 - **Amended (2026-10-27, D-156):** mobile first; the phone engine test joins M1, phone builds from M2, launch about 39–68 months from plan approval (estimate), with extra art and phone costs listed in D-156.
+- **Restated (2026-10-27, D-157):** the solo budget for mobile first is about $66,000–219,000 with contingency.
 
 ## D-104 Price $24.99; English at launch
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Launch price $24.99, with about $12.50–15 net per copy (estimate) and break-even at about 4,000–15,000 copies solo. English only at launch; translation decided after launch on regional sales. Paid expansions decided after launch (D-040). Detail: `docs/design/PLAN.md` §14c.
 - **Amended (2026-10-26, D-109):** break-even about 3,500–14,000 copies solo, cash costs only.
-- **Replaced for the phone launch (2026-10-27, D-152):** free download with a $14.99 unlock; break-even to be redone. English only at launch stands.
+- **Replaced for the phone launch (2026-10-27, D-152, D-157):** a free download with a $14.99 unlock; break-even is about 5,500–22,000 unlocks. English only at launch stands.
 - **Why:** Owner's choice (Plan Q14b): in line with comparable deep management games and an easy buy after the free demo.
 
 ## D-105 Quality, CI and release process
@@ -660,6 +661,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Every push runs format, lint, strict types, engine unit tests, the determinism test, the content validator, save fixtures (from M2) and the docs and drift checks; screen tests when ui changes. The 1,000-guild-year balance run and performance checks run before each gate and release, not per push. CI uses path filters so docs-only changes stay free; game builds and Steam uploads run on release tags only, with Steam credentials as secrets set up by the owner. Bugs are GitHub issues in three severities; a save-losing or common-path crash blocks a release, and every fixed blocker or major bug gets a test. Steam branches `playtest`, `beta` and `default`; rollback to the previous build. An 8-step release checklist for the demo, launch and every patch, ending in the owner's sign-off. Detail: `docs/design/PLAN.md` §15.
 - **Why:** Owner accepted the draft (Plan Q15b); adopts the tools review (D-092..D-094) and keeps CI minutes low (CI-01..CI-06).
+- **Amended (2026-10-27, D-158):** the phone stores' test tracks, staged rollouts, fix-forward releases and cloud saves replace the Steam steps for the phone launch.
 
 ## D-106 Launch platform: Windows
 
@@ -935,6 +937,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27) as the direction for any later phone version, except the parts marked Proposed below. Windows-only launch stands (D-106); no mobile work is scheduled.
 - **Decision:** A phone version, if built, follows "Hall and Road" with the owner's change. Accepted: the guildhall cutaway is the hub, with one system per room; a work desk, reachable as a tab and as the study in the hall, holds what spans the whole guild (notices, the contract board, the year's numbers and the patron's target, the full roster ledger); the living map is the outside; Ask the clerk answers plain questions; Continue is a pull-down handle; four tabs (Hall, March, Desk, Ask). Proposed, for the owner's review: which system sits in which of the eleven rooms (barracks for members, infirmary, training yard, armoury, smith, library, tavern, gate, strongroom, Hall of Heroes, works), and each room showing who runs it with the never-delegated choices (D-038) marked. Not settled: the tablet layout (the open-book spread was the session's suggestion, not chosen). Phone only: STYLE §3 stays the PC rule; on the phone the pull handle replaces the top bar's fixed Continue. Rough estimate: 1,200–2,420 hours and about $9,000–30,000 more art, less if the hall and map are built for Windows first. Detail: `docs/design/mockups/mobile-hall-desk.html`; earlier rounds `mobile-concepts.html`, `mobile-concepts-2.html`, `mobile-hall-and-road.html`.
 - **Why:** Owner (2026-10-27), after four rounds of mock-ups: liked the recommended phone mix with the guildhall and living map added, then "I want satchel to be changed to something like work desk where you can go through notifications and deeper into rosters some of the overall stats that the individual rooms don't provide… the guild house is the hub and the work desk is for overall stuff and notifications and contracts."
+- **Amended (2026-10-27):** the room-by-room split (barracks, infirmary, training yard, armoury, smith, library, tavern, gate, strongroom, Hall of Heroes, works) and the staff display in each room are Accepted. The owner said "Do what you recommend", and the session had recommended the split as proposed. The tablet layout stays not settled.
 
 ## D-150 Mobile first: the phone becomes the lead platform
 
@@ -977,3 +980,33 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Amends D-099, D-103 and D-108 for the phone launch (re-plan under D-150).
 - **Decision:** The milestone ladder (D-099) and the lean content cut (D-109) stay. M1 gains the phone engine test (D-154). The phone app is built from the vertical slice (M2) on, and every later milestone ships to both phone stores. Estimated extra work is about 500–1,400 hours: the phone interface (the hub, 11 rooms, the work desk, map navigation), less the PC desk it replaces, plus two stores and phone testing. At about 15 hours a week that is about 8–22 months more, so launch moves to about 39–68 months from plan approval (estimate). Estimated extra money: about $9,000–30,000 of art for the hall rooms and town views; a Mac or Mac rental for iPhone builds; two or three test phones; Apple's developer fee of about $99 a year and Google's of about $25 once. Prices are to be rechecked when spent. The hire stays an option at the slice gate (D-102, D-103). The stop and slip rules (D-111) apply as before.
 - **Why:** Owner's choice (re-plan question 6, 2026-10-27), the recommended option: "Accept the longer timeline", rather than trimming the hall or bringing the hire forward.
+
+## D-157 Budget and break-even for mobile first
+
+- **Status:** Accepted (2026-10-27). Restates D-103's budget and D-104's break-even for the phone launch (D-152, D-156). All figures are estimates in US dollars; store prices and fees are to be rechecked when spent.
+- **Decision:** The solo budget becomes about $66,000–219,000, including 20% contingency (it was about $52,000–174,000). This is the D-103 subtotal of $43,600–145,100 with these changes:
+  - Hall-room and town-view art: +$9,000–30,000 (D-156).
+  - A Mac or Mac rental for iPhone builds: +$600–1,500.
+  - Two or three test phones: +$300–1,000.
+  - Store fees: +$425–625 (Apple about $99 a year over 4–6 years, Google about $25 once).
+  - Longer AI and tool subscriptions at $100–200 a month for 39–68 months: +$900–4,600.
+  - The Steam fee is no longer needed at launch: −$100.
+  - The subtotal becomes $54,725–182,725.
+  
+  At about $10–12 net per $14.99 unlock (D-152), break-even on cash costs is about 5,500–22,000 unlocks. A developer hire, if chosen at the slice gate, still adds about $60,000–144,000 before contingency (D-103).
+- **Why:** The owner said "Do what you recommend" (2026-10-27) to the re-plan's remaining items. Mobile first changes the art, the hardware, the fees, the timeline and the price, so the earlier figures no longer held.
+
+## D-158 Releases through the two phone stores
+
+- **Status:** Accepted (2026-10-27). Adapts D-105's release process and PLAN §15 for the phone launch (D-151); store terms are to be rechecked at sign-up.
+- **Decision:**
+  - **Test builds:** Apple's TestFlight and Google Play's testing tracks replace the Steam `playtest` and `beta` branches. Slice and alpha testers (M2, M3) use the closed tracks; the beta (M5) uses the open ones.
+  - **Releases:** the demo and the full game are one app with the in-app unlock (D-152), so there is no separate demo app. Each release goes out as a staged rollout on both stores, and a bad rollout is paused.
+  - **Rollback:** a store cannot set an earlier build live again. A bad release is fixed forward with a higher version number, and saves made by the bad build must load in the fixed one (GAME-05).
+  - **Cloud saves:** iCloud and Google's backup replace Steam Cloud (D-091).
+  - **Achievements:** the Steam achievements become optional Game Center and Google Play Games achievements.
+  - **Screen tests:** screens are tested upright at 375 and 430 points wide, with 15 px minimum text and no clipping at 150% text size (D-077, D-084, D-154).
+  - **Builds:** iPhone builds run on the owner's Mac or a rented one, on release tags only. CI keeps running on Linux, because macOS runners cost many times more minutes (CI-01).
+  - **Crashes:** the game itself still sends nothing (D-088). The stores' own crash reports, sent by the phone with the player's consent, are read alongside testers' attached logs.
+  - **Release checklist:** item 4 (fresh and upgrade installs) becomes "on a small phone and a large phone on each system". Item 5 becomes "cloud saves and achievements work on the store build".
+- **Why:** The owner said "Do what you recommend" (2026-10-27) to the re-plan's remaining items. Steam-specific steps no longer apply to a phone launch.

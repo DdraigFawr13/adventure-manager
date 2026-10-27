@@ -23,7 +23,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Next
 
-1. Mobile-first re-plan (D-150), this branch: owner answered questions 1–6 (D-151 phones at launch, D-152 free + $14.99 unlock, D-153 same veteran player in short sittings, D-154 375-pt phones and phone tests, D-155 hub home everywhere, D-156 about 39–68 months, accepted); PLAN sections carry one-line amendment pointers. Left: owner's review of the room split (D-149, Proposed), redo break-even (§14c) and the budget table (§14b), adapt the release checklist (§15) to the stores; then review (D-093), approval, PR.
+1. Mobile-first re-plan (D-150), this branch: decided D-151 (phones at launch), D-152 (free + $14.99 unlock), D-153 (veteran player, short sittings), D-154 (375-pt phones, phone tests), D-155 (hub home everywhere), D-156 (about 39–68 months), D-157 (budget about $66,000–219,000, break-even about 5,500–22,000 unlocks), D-158 (store releases); room split accepted (D-149). PLAN sections carry amendment pointers. Next: review (D-093), owner approval, PR.
 2. R4: the owner runs the round-3 fact test in the published desk mock-up at 1366 px and pastes the result (round 1 missed the 10 s line).
 3. Step 4: the two-year text prototype (R7), with histories and memorial letters built on the report grammar; standing parties (D-014, D-142) join here.
 4. Engine test verdict (D-110): the owner runs `npm start -w @adventure-manager/shell` on Windows for real fps (60 fps bar at 1366×768; container software rendering gave 48 idle, 44 panning).
@@ -35,7 +35,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 - Reference party for PLAN §4c targets: settled, a well-built party with the sample party as reference (D-137).
 - Permissions (from the PR #3 review): tighten the allow list (`cat`/`grep`/`find` can read `.env`; `git branch:*` allows `-D`; `find:*` allows `-delete`) and widen the force-push ask rules (`-fu`, `origin +main`, `git -C`)? Owner to decide; see D-096 limits.
 - Kingdom map art direction continues past §12 (D-097): Story-Generator layout as the artist's base; the workshop now includes a geography review (D-144: sensible rivers and roads, towns placed for a reason with specialties, another major city, wild-country outposts).
-- Mobile first (D-150) reopens D-106, CONCEPT §13, STYLE §3, D-091/D-110 screen bars, R4, D-063, D-104, D-099/D-108 and D-103; settle each with the owner one question at a time and record the replacements. Design: D-149, `docs/design/mockups/mobile-hall-desk.html` (https://claude.ai/artifact/5HsQ7krT9epLXSWZmEA6mA); the room-by-room split is still Proposed.
+- Mobile first (D-150): every reopened rule now has its replacement (D-151–D-158). Design: D-149, `docs/design/mockups/mobile-hall-desk.html` (https://claude.ai/artifact/5HsQ7krT9epLXSWZmEA6mA). Open: the tablet layout, and Windows' own details after launch.
 - Later: 20 class levels (D-074) need a pacing decision; facility compound / city-building style guildhall (D-075) not scoped.
 - Intrigue and underhanded dealings (owner's note, D-069): Later tier; content not decided.
 - Exploring the wilds (owner's wish, D-136): explorers uncover hidden places and items; design with expeditions, the map's charting and the R1 hidden-items note; tier not set.
