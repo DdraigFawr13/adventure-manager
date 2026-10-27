@@ -31,6 +31,7 @@ The guild's years run on, one after another, until the guildmaster's career ends
 
 - At each Assembly the patron sets one **target** from the guild's place: win promotion (top two of a lower tier), finish in the top half, or avoid relegation (bottom tier: avoid last place; top tier: stay up). Also every year: end it out of debt.
 - **Confidence** 0–100 starts at 60. At the next Assembly: target met +15; missed −15 per place short (at most −40); in debt at year's end −15. At 0 the guildmaster is dismissed and the career ends.
+- **Emergency grant (D-146, PLAN §4g):** at a week start, a guild in debt gets the patron's offer of a grant (weeks of its current wages, content), at most one taken every few years. The offer stands for that week (`patron.offered`, a must stop `patron-offer`); `patron.grant` takes it: the money (`money.changed`, reason `emergency`), lower confidence and next year's target one step harder (`patron.granted`). Abstract rivals have no chest, so they never need it.
 - **The guildmaster** starts aged 30–45 (stream `career.patron`). From 60, a yearly chance to retire on health, rising to certain by about 75; that also ends the career.
 - Events: `year.settled` (the standings), `tier.changed`, `patron.reviewed` (target, met, confidence), `patron.target`, `career.ended` (reason, years). Career ending is a must stop.
 

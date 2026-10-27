@@ -1,5 +1,6 @@
 // The one entry point (GAME-02, PLAN §11b): preview and commit both call simulate, and it never
 // changes the state it is given, so a preview leaves the real game untouched.
+import { takeEmergency } from './career/emergency.ts';
 import { EventSink } from './core/events.ts';
 import { takeContract } from './guild/board.ts';
 import { advanceDay, foundGuild } from './guild/day.ts';
@@ -43,6 +44,9 @@ export function simulate(state: GameState, command: Command): SimulationResult {
       break;
     case 'staff.release':
       releaseStaff(next, command, sink);
+      break;
+    case 'patron.grant':
+      takeEmergency(next, command, sink);
       break;
   }
   return { state: next, events: sink.events };

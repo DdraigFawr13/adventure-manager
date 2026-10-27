@@ -8,6 +8,7 @@ import {
   play,
   playDays,
   type Run,
+  WAGE,
 } from './guild-fixture.ts';
 
 const YEAR = 48 * 7;
@@ -151,5 +152,42 @@ describe('careers (career SPEC.md)', () => {
     expect(fresh.length).toBeGreaterThan(0);
     // The fixture's fee is 1000 with no spread; the middle tier pays 110%.
     for (const e of fresh) expect(e.feeCopper).toBe(1100);
+  });
+});
+
+describe('the patron emergency grant (D-146)', () => {
+  const emergency = { wageWeeks: 8, everyYears: 3, confidenceCost: 15 };
+  /** Puts the guild in debt on the last day of a week, then steps into the next week start. */
+  function inDebt(run: Run): Run {
+    const state = structuredClone(run.state);
+    state.calendar = 7 * Math.ceil(state.calendar / 7);
+    state.guild!.chestCopper = -100_000; // non-null: founded.
+    return play({ ...run, state }, { type: 'day.advance', day: state.calendar + 1 });
+  }
+
+  it('offers a guild in debt a grant of weeks of wages, costing confidence and a harder target', () => {
+    let run = inDebt(begun({ emergency }));
+    const offer = ofType(run.events, 'patron.offered')[0];
+    expect(offer?.grantCopper).toBe(8 * 3 * WAGE);
+    expect(ofType(run.events, 'stop.raised').some((e) => e.reason === 'patron-offer')).toBe(true);
+    run = play(run, { type: 'patron.grant', day: run.state.calendar });
+    expect(ofType(run.events, 'patron.granted')[0]?.confidence).toBe(45);
+    const paid = ofType(run.events, 'money.changed').find((e) => e.reason === 'emergency');
+    expect(paid?.amountCopper).toBe(8 * 3 * WAGE);
+    // Next year's target is one step harder than the usual "avoid the bottom".
+    run = settle(run, (s) => (s.guild!.chestCopper = 0)); // non-null: founded.
+    expect(ofType(run.events, 'patron.target').at(-1)?.target).toBe('top-half');
+  });
+
+  it('lapses after the week, and offers again only after the interval', () => {
+    let run = inDebt(begun({ emergency }));
+    run = play(run, { type: 'patron.grant', day: run.state.calendar });
+    expect(() => play(run, { type: 'patron.grant', day: run.state.calendar })).toThrow(/no grant/);
+    run = inDebt(run);
+    expect(ofType(run.events, 'patron.offered').length).toBe(1);
+    // Untaken offers lapse at the next week start.
+    const fresh = inDebt(inDebt(begun({ emergency })));
+    expect(ofType(fresh.events, 'patron.offered').length).toBe(2);
+    expect(fresh.state.guild!.career!.emergencyOffer?.week).toBe(3); // non-null: careers are on.
   });
 });

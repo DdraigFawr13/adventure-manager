@@ -17,7 +17,9 @@
 //   quest 10% to age 24, 5% to 32; past 32, a 3% a year step (to 30%) to lose each physical point,
 //   and an 8% a year step (to 60%) to ask to retire.
 // - Patron (D-141): confidence starts at 60 of 100; met +15, missed -15 a place short (at most -40),
-//   in debt at year's end -15. Guildmaster starts at 30-45; health retirement from 60, certain by 75.
+//   in debt at year's end -15. Emergency grant (D-146): offered to a guild in debt at a week start,
+//   8 weeks of its wages, at most one taken in 3 years, costing 15 confidence and a target one step
+//   harder next year. Guildmaster starts at 30-45; health retirement from 60, certain by 75.
 import type { CareerRules, GuildRules } from '@adventure-manager/engine';
 import { baseGuildRules } from './guild.ts';
 
@@ -62,6 +64,7 @@ export const baseCareerRules: CareerRules = {
   rivalSpread: 10,
   rivalDrift: { pullDiv: 3, renownPerPoint: 25, noise: 3 },
   patron: { start: 60, met: 15, perPlaceShort: 15, maxMiss: 40, debt: 15, max: 100 },
+  emergency: { wageWeeks: 8, everyYears: 3, confidenceCost: 15 },
   guildmaster: { age: { min: 30, max: 45 }, healthFromAge: 60, certainAge: 75 },
 };
 

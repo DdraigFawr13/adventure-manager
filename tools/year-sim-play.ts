@@ -132,6 +132,8 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
   const play = (planToUse: Plan) => {
     const day = state.calendar;
     if (options.delegate) delegate(day);
+    // The simulated player always takes the patron's emergency grant (D-146).
+    if (now().career?.emergencyOffer) run({ type: 'patron.grant', day });
     while (now().prospects.length > 0 && now().members.length < size) {
       const cheapest = [...now().prospects].sort(
         (a, b) => a.wageCopper - b.wageCopper || (a.adventurer.id < b.adventurer.id ? -1 : 1),

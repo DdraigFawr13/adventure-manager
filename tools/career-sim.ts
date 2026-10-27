@@ -1,7 +1,9 @@
 // Career simulator (PLAN §9b step 2: R2, R3, R9, §9d; D-140, D-141): plays seeded guilds from
 // their founding until the guildmaster's career ends (or a cap), with careers on, rivals abstract,
 // and the one-year simulator's player policy. The invariants run over every career.
-// Usage: node tools/career-sim.ts [careers=100] [maxYears=40] [policy=default|cautious|bold] [staff=off|compare]
+// Usage: node tools/career-sim.ts [careers=100] [maxYears=40] [policy=default|cautious|bold|compare]
+//   [staff=off|compare] [size=15]
+// With policy=compare, each seed is also played cautious and bold, for §9d's no-dominant-safe-play check.
 // With staff=compare, each seed is played hands-on (the guildmaster runs training and recovery)
 // and delegated (the best affordable hire runs both), and R6 compares the two (staff/SPEC.md).
 import {
@@ -13,16 +15,19 @@ import {
   type GameEvent,
 } from '@adventure-manager/engine';
 import { baseResolution, careerGuildRules, staffGuildRules } from '@adventure-manager/content';
-import { POLICIES, rules, runYear } from './year-sim-play.ts';
+import { GUILD_SIZE, POLICIES, rules, runYear } from './year-sim-play.ts';
 
 const careers = Number(process.argv[2] ?? 100);
 const maxYears = Number(process.argv[3] ?? 40);
-const policyName = process.argv[4] ?? 'default';
+const policyArg = process.argv[4] ?? 'default';
+const comparePolicies = policyArg === 'compare';
+const policyName = comparePolicies ? 'default' : policyArg;
 const plan = POLICIES[policyName];
 if (!plan) throw new Error(`Unknown policy ${policyName}.`);
 const staffMode = process.argv[5] ?? 'off';
 if (staffMode !== 'off' && staffMode !== 'compare')
   throw new Error(`Unknown staff mode ${staffMode}.`);
+const size = Number(process.argv[6] ?? GUILD_SIZE);
 const content = {
   ...baseResolution,
   guild: staffMode === 'compare' ? staffGuildRules : careerGuildRules,
@@ -46,19 +51,23 @@ interface Career {
   confidence: number[];
   /** R6: attribute points grown each year; days from each lasting injury to fit again; the skill running each area, summed over days. */
   growthByYear: number[];
+  grants: number;
+  /** The year of the first emergency grant, if any. */
+  firstGrantYear: number | null;
   injuryDays: number[];
   skillDays: Record<Area, number>;
   days: number;
   seconds: number;
 }
 
-function play(seed: string, delegate = false): Career {
+function play(seed: string, delegate = false, planToUse = plan!): Career {
   const started = performance.now();
   const skillDays: Record<Area, number> = { training: 0, recovery: 0 };
   let days = 0;
   // runYear runs the guild and resolution invariants over the whole career and throws on a problem.
-  const { events } = runYear(seed, plan!, {
+  const { events } = runYear(seed, planToUse, {
     content,
+    size,
     lastDay: maxYears * yearDays,
     delegate,
     onDay: (state) => {
@@ -82,6 +91,8 @@ function play(seed: string, delegate = false): Career {
     rivalRenown: [],
     confidence: [],
     growthByYear: [],
+    grants: 0,
+    firstGrantYear: null,
     injuryDays: [],
     skillDays,
     days,
@@ -108,6 +119,10 @@ function play(seed: string, delegate = false): Career {
     if (e.type === 'career.ended') {
       c.years = e.years;
       c.end = e.reason;
+    }
+    if (e.type === 'patron.granted') {
+      c.grants += 1;
+      c.firstGrantYear ??= yearOfEvent(e);
     }
     if (e.type === 'attribute.changed' && e.reason === 'growth') {
       const y = yearOfEvent(e) - 1;
@@ -140,13 +155,19 @@ const line = (label: string, values: number[], target: string, digits = 1) =>
 
 const results: Career[] = [];
 const delegated: Career[] = [];
+const cautious: Career[] = [];
+const bold: Career[] = [];
 for (let n = 0; n < careers; n += 1) {
   results.push(play(`career-${n}`));
   if (staffMode === 'compare') delegated.push(play(`career-${n}`, true));
+  if (comparePolicies) {
+    cautious.push(play(`career-${n}`, false, POLICIES.cautious!)); // non-null: a fixed policy.
+    bold.push(play(`career-${n}`, false, POLICIES.bold!)); // non-null: a fixed policy.
+  }
 }
 
 console.log(
-  `${careers} careers, policy ${policyName}, staff ${staffMode === 'compare' ? 'hands-on (delegated below)' : 'off'}, cap ${maxYears} years; a founded guild of 15 in the bottom tier (assumptions: packages/content/src/base/career.ts)`,
+  `${careers} careers, policy ${policyName}, staff ${staffMode === 'compare' ? 'hands-on (delegated below)' : 'off'}, cap ${maxYears} years; a founded guild of ${size} in the bottom tier (assumptions: packages/content/src/base/career.ts)`,
 );
 console.log(
   line(
@@ -225,16 +246,41 @@ console.log(
   ),
 );
 const badStart = results.filter(
-  (r) => (r.chestByYear[1] ?? 0) < careerGuildRules.startingChestCopper / 2,
+  (r) =>
+    (r.chestByYear[1] ?? 0) < careerGuildRules.startingChestCopper / 2 ||
+    (r.firstGrantYear !== null && r.firstGrantYear <= 2),
 );
 console.log(
-  `§9d bad starts (chest below half the start after 2 years): ${badStart.length}; of those, careers lasting 10+ years: ${badStart.filter((r) => r.years >= 10).length}`,
+  `§9d bad starts (chest below half the start after 2 years, or a grant in them): ${badStart.length}; of those, careers lasting 10+ years: ${badStart.filter((r) => r.years >= 10).length} [most recover, §4g]`,
+);
+console.log(
+  `  emergency grants taken (D-146): ${results.filter((r) => r.grants > 0).length} careers took one; ${results.reduce((n, r) => n + r.grants, 0)} in all`,
 );
 console.log(
   '§9d late goals (a crisis between years 5 and 15): not measurable yet; crises are not built (D-112).',
 );
-if (staffMode === 'compare') reportR6();
-else console.log('R6 delegated vs hands-on: run with staff=compare.');
+if (comparePolicies) {
+  console.log('§9d no dominant safe play: the share of seeds where each side ends ahead');
+  ahead('cautious', cautious, 'bold', bold);
+}
+if (staffMode === 'compare') {
+  reportR6();
+  ahead('hands-on', results, 'delegated', delegated);
+} else console.log('R6 delegated vs hands-on: run with staff=compare.');
+
+/** Per seed: who earned more renown over the career, and who ended with the bigger chest. */
+function ahead(aName: string, a: Career[], bName: string, b: Career[]): void {
+  const renown = (r: Career) => r.myRenown.reduce((x, y) => x + (y ?? 0), 0);
+  const chest = (r: Career) => r.chestByYear[r.years - 1] ?? 0;
+  const share = (pick: (r: Career) => number) => {
+    const wins = a.filter((r, i) => pick(r) > pick(b[i]!)).length; // non-null: same seeds.
+    const losses = a.filter((r, i) => pick(r) < pick(b[i]!)).length; // non-null: same seeds.
+    return `${aName} ${((100 * wins) / careers).toFixed(0)}%, ${bName} ${((100 * losses) / careers).toFixed(0)}%`;
+  };
+  console.log(
+    `  career renown: ${share(renown)}; final chest: ${share(chest)} [each side ahead in some seeds]`,
+  );
+}
 
 function reportR6(): void {
   const perYear = (rs: Career[], pick: (r: Career) => number[]) =>

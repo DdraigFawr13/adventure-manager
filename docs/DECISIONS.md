@@ -901,3 +901,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26); skills, staff quality, wages and every number are starting assumptions for tuning.
 - **Decision:** M1 builds just enough to test R6 honestly: a guildmaster with a few skills that grow when the player does that work personally (D-029, PLAN §5d), and two delegable areas, **training** (how fast adventurers grow) and **recovery** (how fast the injured heal). Each area is run either by the guildmaster or by a hired staff member whose quality and wage vary. The year simulator plays a hands-on policy and a delegated one on the same seeds and reports the difference against R6's pass line (player focus 10–25% better on the chosen area; delegation never ruinous). The other staff roles (deputy, scout, librarian, quartermaster) come with M2.
 - **Why:** Owner's choice (2026-10-26), "Two areas, minimal", over all six staff roles in M1 and over deferring R6 to M2.
+
+## D-146 Bad starts in M1: the patron's emergency grant
+
+- **Status:** Accepted (2026-10-27); the amount, interval and costs are starting assumptions for tuning.
+- **Decision:** The one recovery lever M1 builds (PLAN §4g) is the patron's emergency grant: when the guild is in debt at a week start, the patron offers a grant of about 8 weeks of the guild's wages, at most once every 3 years. Taking it is the player's confirmed decision; it costs 15 patron confidence and raises next year's target one step. The simulator always takes it. Abstract rivals (D-140) have no chest, so the lever is theirs only once rivals keep accounts. Charity contracts and debt paid in service wait for factions and the finance system.
+- **Why:** Owner's choice (2026-10-27), "Emergency grant", over the grant plus debt in service and over all three levers: in 100 simulated careers, 34 guilds ended year 2 below half their starting chest and only 15 of those lasted 10+ years (§9d bad starts).

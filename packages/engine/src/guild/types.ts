@@ -149,7 +149,16 @@ export interface GuildState {
 
 export type { CareerEnd, TargetKind };
 export type MoneyReason =
-  'founding' | 'grant' | 'wages' | 'upkeep' | 'fee' | 'loot' | 'funeral' | 'sign-on' | 'staff';
+  | 'founding'
+  | 'grant'
+  | 'wages'
+  | 'upkeep'
+  | 'fee'
+  | 'loot'
+  | 'funeral'
+  | 'sign-on'
+  | 'staff'
+  | 'emergency';
 export type StopClass = 'must' | 'digest';
 export type StopReason =
   | 'week-report'
@@ -161,7 +170,8 @@ export type StopReason =
   | 'retirement'
   | 'career-ended'
   | 'training-plan'
-  | 'infirmary';
+  | 'infirmary'
+  | 'patron-offer';
 
 export type GuildCommand =
   | {
@@ -196,7 +206,8 @@ export type GuildCommand =
       readonly id: string;
       readonly day: number;
       readonly area: Area;
-    };
+    }
+  | { readonly type: 'patron.grant'; readonly id: string; readonly day: number };
 
 export type GuildEventBody =
   | { readonly type: 'week.started'; readonly week: number; readonly year: number }
@@ -251,6 +262,8 @@ export type GuildEventBody =
     }
   | { readonly type: 'patron.target'; readonly target: TargetKind; readonly tier: number }
   | { readonly type: 'career.ended'; readonly reason: CareerEnd; readonly years: number }
+  | { readonly type: 'patron.offered'; readonly grantCopper: number }
+  | { readonly type: 'patron.granted'; readonly grantCopper: number; readonly confidence: number }
   | { readonly type: 'skill.grew'; readonly area: Area; readonly from: number; readonly to: number }
   | {
       readonly type: 'staff.listed';

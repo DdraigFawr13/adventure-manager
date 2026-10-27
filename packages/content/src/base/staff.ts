@@ -1,8 +1,8 @@
 // Staff v0 starting numbers (packages/engine/src/staff/SPEC.md, D-145). Every number is an
 // ASSUMPTION for the R6 run (tools/career-sim.ts, hands-on against delegated); none is settled.
 //
-// - Guildmaster skill per area 8-12 at the founding, cap 18; a year running the area gives a 60%
-//   chance of a point, 30% from 14 up.
+// - Guildmaster skill per area 8-12 at the founding, cap 18; a year running the area gives a 90%
+//   chance of a point, 40% from 14 up (PLAN §5d: about a point a year early, slowing toward the cap).
 // - Shortlist: 3 candidates per area at each Assembly, quality 6-12, wage 30 copper a week plus 4
 //   per point above 10 (so 14-38): staff are competent but limited, below a seasoned guildmaster.
 // - Effect per point above or below 10: 10% on the growth chance (training), 5% on injury days
@@ -14,8 +14,8 @@ import { careerGuildRules } from './career.ts';
 export const baseStaffRules: StaffRules = {
   guildmasterSkill: { min: 8, max: 12 },
   skillCap: 18,
-  growBp: 6000,
-  growNearCapBp: 3000,
+  growBp: 9000,
+  growNearCapBp: 4000,
   nearCapFrom: 14,
   candidatesPerArea: 3,
   quality: { min: 6, max: 12 },

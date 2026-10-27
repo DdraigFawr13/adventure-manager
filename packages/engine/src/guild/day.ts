@@ -6,6 +6,7 @@ import { expireOffers, freeMemberIds, postOffers } from './board.ts';
 import { arrive, comeHome } from './parties.ts';
 import { drawPerson, engage, listProspects } from './people.ts';
 import { startCareer, settleYear } from '../career/year.ts';
+import { offerEmergency } from '../career/emergency.ts';
 import { staffAssembly, staffWeek, startStaff } from '../staff/areas.ts';
 import {
   guildTurn,
@@ -30,12 +31,14 @@ const STOP_CLASS: Readonly<Record<StopReason, StopClass>> = {
   'career-ended': 'must',
   'training-plan': 'digest',
   infirmary: 'digest',
+  'patron-offer': 'must',
 };
 
 const STOP_ORDER: readonly StopReason[] = [
   'career-ended',
   'assembly',
   'retirement',
+  'patron-offer',
   'signing-window',
   'week-report',
   'new-contracts',
@@ -141,6 +144,7 @@ function weekStart(turn: GuildTurn, causeId: string, stops: Set<StopReason>): vo
   pay(turn, -rules.runningCostCopper, 'upkeep', started);
   const campaigning = week > rules.assemblyWeeks && week < rules.winterFromWeek;
   staffWeek(turn, campaigning ? week - rules.assemblyWeeks : null, started, stops);
+  offerEmergency(turn, started, stops);
   expireOffers(turn, weekOf(state.calendar, rules), started);
   postOffers(turn, week, weekOf(state.calendar, rules), started);
   if (inWindow(week, rules)) {
