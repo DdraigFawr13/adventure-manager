@@ -554,7 +554,7 @@ Ranked by how much of the game fails if the assumption is wrong. "Cheapest test"
 | R2 | The simulation hits the §4 targets: ~2 deaths a year, money tight early, ladder movement | Balance needs rework after art is built | Headless year simulator (no graphics): 1,000 seeded guild-years, report deaths, money, promotions | Medians within ±25% of §4 targets; no runaway rival in 30 simulated years |
 | R3 | A year fits the friction budget: ~80 stops, ~145 min (D-068) | Sessions drag or feel empty | Same headless simulator counts stops by class; then a timed playtest of one year in the text prototype | ≤ 100 stops a year for the mid-sized guild (top guild: §9d); owner plays a year in ≤ 3 h |
 | R4 | The desk layout holds FM density (30-row roster, finances) on a 1366 px screen | Dense screens need a redesign late | Clickable HTML mock-ups of roster, finances and contract board at 1366 and 1920 px | 25+ roster rows visible at 1366 px; owner finds 5 set facts in under 10 s each |
-| R5 | Old-press ledgers are readable | Dense screens tire players (STYLE §5) | Rendered ledger specimens at real sizes (done, §9c: 15 px, lining figures) | Confirmed on real monitors during R4 |
+| R5 | Old-press ledgers are readable | Dense screens tire players (STYLE §5) | Rendered ledger specimens at real sizes (done, §9c: 15 px, lining figures) | Confirmed on real monitors during R4 (now: confirmed on the owner's phone in R4, D-166) |
 | R6 | Staff are competent but limited: the player's own focus visibly beats delegation (D-038) | Delegating everything is optimal; the player becomes a spectator | Headless simulator: same seeds, delegated vs a careful player policy | Player focus 10–25% better on the chosen area; delegation never ruinous |
 | R7 | Players get attached to adventurers who die about twice a year | Deaths feel like stat loss, not loss | Owner plays two years in the text prototype with generated histories and memorial letters | Owner can name and describe 3 adventurers after a session |
 | R8 | Template writing stays fresh at ~4,500 lines (D-080, D-109) | Repetition breaks the fiction within a few years | Write one template family (quest reports) with variants; generate 200 reports; count repeated sentences | No sentence repeats more than once in 50 reports |
@@ -583,7 +583,7 @@ Mock-up: `docs/design/mockups/readability.html` (first section).
 
 - **Minimum ledger size: 15 px** at 100% (owner's choice); the size slider (D-077) goes up from there.
 - **All numbers use lining figures** (`lining-nums`). Measured at 40 px: the ledger face's default figures are old-style and proportional (13.6–20.8 px wide); lining figures are equal width (21.1 px) and sit on the line.
-- Still to confirm, now on the owner's phone in the phone R4 (D-154, D-159); if it fails there, D-052 (own ledger cut) and clear print (D-077) are the fallbacks.
+- Confirmed on the owner's phone in the phone R4 (D-166); D-052 (own ledger cut) and clear print as the default (D-077) are not needed now. Long sittings are not yet tested.
 
 ### 9d. Added checks (Accepted 2026-10-26, D-113)
 
