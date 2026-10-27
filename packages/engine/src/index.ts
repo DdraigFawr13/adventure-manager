@@ -16,4 +16,5 @@ export * from './contract/types.ts';
 export * from './contract/compose.ts';
 export * from './career/types.ts';
 export { PLAYER_ID } from './career/year.ts';
+export * from './staff/types.ts';
 export { yearOf, weekInYear } from './guild/turn.ts';

@@ -7,3 +7,4 @@ export * from './base/guild.ts';
 export * from './base/reports.ts';
 export * from './base/contracts.ts';
 export * from './base/career.ts';
+export * from './base/staff.ts';

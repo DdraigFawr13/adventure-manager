@@ -12,6 +12,7 @@ import {
   type GuildRules,
   type Plan,
   type ResolutionContent,
+  AREAS,
   weekInYear,
 } from '@adventure-manager/engine';
 import { baseResolution } from '@adventure-manager/content';
@@ -76,6 +77,10 @@ export interface RunOptions {
   readonly lastDay?: number;
   /** Content to play (the career tool turns careers on); default the base content. */
   readonly content?: ResolutionContent;
+  /** With staff on: hire the best candidate the chest can carry a year of, for each area (R6). */
+  readonly delegate?: boolean;
+  /** Called after each day's play, to sample the state (the career tool's R6 readings). */
+  readonly onDay?: (state: GameState) => void;
 }
 
 export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tracked {
@@ -111,6 +116,7 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
   let winterLowestChest = Infinity;
   const afterDay = () => {
     play(plan);
+    options.onDay?.(state);
     const guild = now();
     lowestChest = Math.min(lowestChest, guild.chestCopper);
     const week = weekInYear(state.calendar, rules);
@@ -125,6 +131,7 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
   /** The player's side: sign the cheapest prospects, then send out parties on board order. */
   const play = (planToUse: Plan) => {
     const day = state.calendar;
+    if (options.delegate) delegate(day);
     while (now().prospects.length > 0 && now().members.length < size) {
       const cheapest = [...now().prospects].sort(
         (a, b) => a.wageCopper - b.wageCopper || (a.adventurer.id < b.adventurer.id ? -1 : 1),
@@ -136,6 +143,20 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
       const party = offer ? formParty() : [];
       if (!offer || party.length < rules.partySize.min) break;
       run({ type: 'contract.take', day, offerId: offer.id, partyIds: party, plan: planToUse });
+    }
+  };
+
+  /** For each area, the best listed candidate better than whoever runs it, if a year's wage is in the chest. */
+  const delegate = (day: number) => {
+    for (const area of AREAS) {
+      const staff = now().staff;
+      if (!staff) return;
+      const current = staff.staff[area]?.quality ?? 0;
+      const best = staff.candidates
+        .filter((c) => c.area === area && c.quality > current)
+        .filter((c) => c.wageCopper * rules.weeksPerYear <= now().chestCopper)
+        .sort((a, b) => b.quality - a.quality || (a.id < b.id ? -1 : 1))[0];
+      if (best) run({ type: 'staff.hire', day, candidateId: best.id });
     }
   };
 

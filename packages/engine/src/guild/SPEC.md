@@ -15,12 +15,12 @@ The calendar, the contract board, wages, recovery and recruitment for one guild,
 
 ## Money (PLAN §4b)
 
-- Every week start pays wages (each adventurer's weekly wage) and running costs (staff and upkeep, one content number). Fees and loot arrive when the party is home. The chest may go below zero; that is debt, and the report counts weeks in debt. Bankruptcy rules wait for the finance system.
+- Every week start pays wages (each adventurer's weekly wage) and running costs (upkeep, one content number; hired staff are paid apart, staff/SPEC.md). Fees and loot arrive when the party is home. The chest may go below zero; that is debt, and the report counts weeks in debt. Bankruptcy rules wait for the finance system.
 - The Assembly (day 1) pays the patron grant. Every change is a `money.changed` event with its reason and the chest after it; renown changes (win: the danger's renown, rout: minus the same) are `renown.changed` events.
 
 ## People
 
-- After a quest, each survivor is out from the day the party is home for rest days per wound step left, plus 3–8 weeks (stream `guild.recovery`) if the quest gave an injury (`injury.gained`); `contract.take` refuses anyone still out, and `member.recovered` marks the day they are fit. A death costs the guild (D-138): the content's funeral, a family share of weeks of the dead member's wage, and renown when the plan was reckless (bold risk, or never retreating); amounts in `packages/content/src/base/guild.ts`.
+- After a quest, each survivor is out from the day the party is home for rest days per wound step left, plus 3–8 weeks (stream `guild.recovery`) if the quest gave an injury (`injury.gained`), scaled by whoever runs recovery (staff/SPEC.md); `contract.take` refuses anyone still out, and `member.recovered` marks the day they are fit. A death costs the guild (D-138): the content's funeral, a family share of weeks of the dead member's wage, and renown when the plan was reckless (bold risk, or never retreating); amounts in `packages/content/src/base/guild.ts`.
 - Recruitment: on each week start inside a window, a shortlist of prospects replaces the last (stream `guild.recruit`, attributes from the class leanings in content; outside a window it is empty); `recruit.sign` adds one at their asked wage (class base plus a step per point the best three attributes average above 10) and pays the content's sign-on fee, a number of weeks of that wage (D-138). The starting roster is drawn the same way but pays no fee. Signing is never delegated (D-038), so it is always a stop.
 - Retirement, ageing, training and morale are later slices.
 

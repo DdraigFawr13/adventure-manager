@@ -10,7 +10,7 @@ The guild's years run on, one after another, until the guildmaster's career ends
 ## Adventurers
 
 - Drawn people get a birth year (age 18–30 when drawn) and a hidden **potential** per attribute (current plus 0–4; stream `guild.recruit`'s sister stream `career.potential`, so recruit rolls don't move).
-- **Growth by doing:** each survivor of a quest rolls once (stream `career.growth`) to gain 1 point in one attribute the quest tested (the approach's attribute, or the class's attack attribute), if it is below potential and they are not past their prime. Chance by age band in content.
+- **Growth by doing:** each survivor of a quest rolls once (stream `career.growth`) to gain 1 point in one attribute the quest tested (the approach's attribute, or the class's attack attribute), if it is below potential and they are not past their prime. Chance by age band in content, scaled by whoever runs training (staff/SPEC.md).
 - **Ageing** at the Assembly: past the prime age (content, about 32 for the March's people), each physical attribute (Might, Agility, Toughness) has a chance to drop 1 a year, rising with age.
 - **Lasting injury:** costs 1 point of one physical attribute at once (PLAN §5a). Picked on `career.growth`.
 - **Retirement** at the Assembly: past the prime, a chance by age (content) that the adventurer asks to retire. Retirement is a conversation (D-038, never delegated), so it is a stop; the simulator's policy accepts. A retiree leaves the roster and the wage bill (staff careers come later).

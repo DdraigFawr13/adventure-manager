@@ -1,9 +1,18 @@
 // Career simulator (PLAN §9b step 2: R2, R3, R9, §9d; D-140, D-141): plays seeded guilds from
 // their founding until the guildmaster's career ends (or a cap), with careers on, rivals abstract,
 // and the one-year simulator's player policy. The invariants run over every career.
-// Usage: node tools/career-sim.ts [careers=100] [maxYears=40] [policy=default|cautious|bold]
-import { PLAYER_ID, stopDays, yearOf, type GameEvent } from '@adventure-manager/engine';
-import { baseResolution, careerGuildRules } from '@adventure-manager/content';
+// Usage: node tools/career-sim.ts [careers=100] [maxYears=40] [policy=default|cautious|bold] [staff=off|compare]
+// With staff=compare, each seed is played hands-on (the guildmaster runs training and recovery)
+// and delegated (the best affordable hire runs both), and R6 compares the two (staff/SPEC.md).
+import {
+  AREAS,
+  PLAYER_ID,
+  stopDays,
+  yearOf,
+  type Area,
+  type GameEvent,
+} from '@adventure-manager/engine';
+import { baseResolution, careerGuildRules, staffGuildRules } from '@adventure-manager/content';
 import { POLICIES, rules, runYear } from './year-sim-play.ts';
 
 const careers = Number(process.argv[2] ?? 100);
@@ -11,7 +20,13 @@ const maxYears = Number(process.argv[3] ?? 40);
 const policyName = process.argv[4] ?? 'default';
 const plan = POLICIES[policyName];
 if (!plan) throw new Error(`Unknown policy ${policyName}.`);
-const content = { ...baseResolution, guild: careerGuildRules };
+const staffMode = process.argv[5] ?? 'off';
+if (staffMode !== 'off' && staffMode !== 'compare')
+  throw new Error(`Unknown staff mode ${staffMode}.`);
+const content = {
+  ...baseResolution,
+  guild: staffMode === 'compare' ? staffGuildRules : careerGuildRules,
+};
 const yearDays = rules.weeksPerYear * rules.daysPerWeek;
 const TIERS = ['bottom', 'middle', 'top'];
 
@@ -29,13 +44,30 @@ interface Career {
   myRenown: number[];
   rivalRenown: number[];
   confidence: number[];
+  /** R6: attribute points grown each year; days from each lasting injury to fit again; the skill running each area, summed over days. */
+  growthByYear: number[];
+  injuryDays: number[];
+  skillDays: Record<Area, number>;
+  days: number;
   seconds: number;
 }
 
-function play(seed: string): Career {
+function play(seed: string, delegate = false): Career {
   const started = performance.now();
+  const skillDays: Record<Area, number> = { training: 0, recovery: 0 };
+  let days = 0;
   // runYear runs the guild and resolution invariants over the whole career and throws on a problem.
-  const { events } = runYear(seed, plan!, { content, lastDay: maxYears * yearDays }); // non-null: checked above.
+  const { events } = runYear(seed, plan!, {
+    content,
+    lastDay: maxYears * yearDays,
+    delegate,
+    onDay: (state) => {
+      const staff = state.guild?.staff;
+      if (!staff) return;
+      days += 1;
+      for (const area of AREAS) skillDays[area] += staff.staff[area]?.quality ?? staff.skills[area];
+    },
+  }); // non-null: checked above.
   const c: Career = {
     years: 0,
     end: 'cap',
@@ -49,8 +81,13 @@ function play(seed: string): Career {
     myRenown: [],
     rivalRenown: [],
     confidence: [],
+    growthByYear: [],
+    injuryDays: [],
+    skillDays,
+    days,
     seconds: 0,
   };
+  const injuredOn = new Map<string, number>();
   const yearOfEvent = (e: GameEvent) => yearOf(e.day, rules);
   for (const e of events) {
     if (e.type === 'year.settled') {
@@ -71,6 +108,15 @@ function play(seed: string): Career {
     if (e.type === 'career.ended') {
       c.years = e.years;
       c.end = e.reason;
+    }
+    if (e.type === 'attribute.changed' && e.reason === 'growth') {
+      const y = yearOfEvent(e) - 1;
+      c.growthByYear[y] = (c.growthByYear[y] ?? 0) + 1;
+    }
+    if (e.type === 'injury.gained' && e.subjectIds[0]) injuredOn.set(e.subjectIds[0], e.day);
+    if (e.type === 'member.recovered' && e.subjectIds[0] && injuredOn.has(e.subjectIds[0])) {
+      c.injuryDays.push(e.day - injuredOn.get(e.subjectIds[0])!); // non-null: just checked.
+      injuredOn.delete(e.subjectIds[0]);
     }
     if (e.type === 'money.changed') c.chestByYear[yearOfEvent(e) - 1] = e.chestCopper;
   }
@@ -93,10 +139,14 @@ const line = (label: string, values: number[], target: string, digits = 1) =>
   `${label.padEnd(46)} median ${pct(values, 50).toFixed(digits).padStart(7)}  p10 ${pct(values, 10).toFixed(digits).padStart(7)}  p90 ${pct(values, 90).toFixed(digits).padStart(7)}  [${target}]`;
 
 const results: Career[] = [];
-for (let n = 0; n < careers; n += 1) results.push(play(`career-${n}`));
+const delegated: Career[] = [];
+for (let n = 0; n < careers; n += 1) {
+  results.push(play(`career-${n}`));
+  if (staffMode === 'compare') delegated.push(play(`career-${n}`, true));
+}
 
 console.log(
-  `${careers} careers, policy ${policyName}, cap ${maxYears} years; a founded guild of 15 in the bottom tier (assumptions: packages/content/src/base/career.ts)`,
+  `${careers} careers, policy ${policyName}, staff ${staffMode === 'compare' ? 'hands-on (delegated below)' : 'off'}, cap ${maxYears} years; a founded guild of 15 in the bottom tier (assumptions: packages/content/src/base/career.ts)`,
 );
 console.log(
   line(
@@ -183,9 +233,47 @@ console.log(
 console.log(
   '§9d late goals (a crisis between years 5 and 15): not measurable yet; crises are not built (D-112).',
 );
-console.log(
-  '§9d delegated vs hands-on, R6: not measurable yet; staff and delegation are a later slice.',
-);
+if (staffMode === 'compare') reportR6();
+else console.log('R6 delegated vs hands-on: run with staff=compare.');
+
+function reportR6(): void {
+  const perYear = (rs: Career[], pick: (r: Career) => number[]) =>
+    rs.flatMap((r) => Array.from({ length: r.years }, (_, y) => pick(r)[y] ?? 0));
+  const mean = (v: number[]) => v.reduce((a, b) => a + b, 0) / Math.max(1, v.length);
+  const sides = [
+    ['hands-on', results],
+    ['delegated', delegated],
+  ] as const;
+  console.log(
+    'R6 hands-on vs delegated, same seeds (staff/SPEC.md; assumptions: packages/content/src/base/staff.ts)',
+  );
+  const rows = sides.map(([name, rs]) => ({
+    name,
+    trainingSkill: mean(rs.map((r) => r.skillDays.training / Math.max(1, r.days))),
+    recoverySkill: mean(rs.map((r) => r.skillDays.recovery / Math.max(1, r.days))),
+    growth: mean(perYear(rs, (r) => r.growthByYear)),
+    injury: mean(rs.flatMap((r) => r.injuryDays)),
+    stops: mean(perYear(rs, (r) => r.stopsByYear)),
+    years: pct(
+      rs.map((r) => r.years),
+      50,
+    ),
+    chest: pct(
+      rs.map((r) => r.chestByYear[r.years - 1] ?? 0),
+      50,
+    ),
+  }));
+  for (const r of rows)
+    console.log(
+      `  ${r.name.padEnd(10)} skill running training ${r.trainingSkill.toFixed(1)}, recovery ${r.recoverySkill.toFixed(1)}; growth ${r.growth.toFixed(1)} points a year; injury to fit ${r.injury.toFixed(1)} days; stop days ${r.stops.toFixed(1)} a year; career median ${r.years} years; final chest median ${r.chest}`,
+    );
+  const hands = rows[0]!; // non-null: two sides.
+  const del = rows[1]!; // non-null: two sides.
+  const gain = (a: number, b: number) => `${((100 * (a - b)) / Math.max(1e-9, b)).toFixed(1)}%`;
+  console.log(
+    `  hands-on better by: training ${gain(hands.growth, del.growth)} (growth), recovery ${gain(del.injury, hands.injury)} (days to fit) [10-25% each]; running both yourself costs ${(hands.stops - del.stops).toFixed(1)} stop days a year`,
+  );
+}
 console.log(
   line(
     'runtime per career (s)',

@@ -6,6 +6,7 @@ import { expireOffers, freeMemberIds, postOffers } from './board.ts';
 import { arrive, comeHome } from './parties.ts';
 import { drawPerson, engage, listProspects } from './people.ts';
 import { startCareer, settleYear } from '../career/year.ts';
+import { staffAssembly, staffWeek, startStaff } from '../staff/areas.ts';
 import {
   guildTurn,
   inWindow,
@@ -27,6 +28,8 @@ const STOP_CLASS: Readonly<Record<StopReason, StopClass>> = {
   'party-home': 'digest',
   retirement: 'must',
   'career-ended': 'must',
+  'training-plan': 'digest',
+  infirmary: 'digest',
 };
 
 const STOP_ORDER: readonly StopReason[] = [
@@ -38,6 +41,8 @@ const STOP_ORDER: readonly StopReason[] = [
   'new-contracts',
   'death',
   'party-home',
+  'infirmary',
+  'training-plan',
 ];
 
 export function foundGuild(
@@ -65,6 +70,7 @@ export function foundGuild(
   const turn = guildTurn(state, sink);
   pay(turn, rules.startingChestCopper, 'founding', command.id);
   startCareer(turn, command.id);
+  startStaff(turn);
   for (let n = 0; n < command.size; n += 1) engage(turn, drawPerson(turn), command.id);
   runDay(turn, command.id);
 }
@@ -128,15 +134,18 @@ function weekStart(turn: GuildTurn, causeId: string, stops: Set<StopReason>): vo
     if (year > 1 && settleYear(turn, started, stops)) return;
     const tier = guild.career ? rules.career?.tiers[guild.career.tier] : undefined;
     pay(turn, tier ? tier.grantCopper : rules.patronGrantCopper, 'grant', started);
+    staffAssembly(turn, year, started);
   }
   const wages = guild.members.reduce((sum, m) => sum + m.wageCopper, 0);
   if (wages > 0) pay(turn, -wages, 'wages', started);
   pay(turn, -rules.runningCostCopper, 'upkeep', started);
+  const campaigning = week > rules.assemblyWeeks && week < rules.winterFromWeek;
+  staffWeek(turn, campaigning ? week - rules.assemblyWeeks : null, started, stops);
   expireOffers(turn, weekOf(state.calendar, rules), started);
   postOffers(turn, week, weekOf(state.calendar, rules), started);
   if (inWindow(week, rules)) {
     listProspects(turn, started);
     stops.add('signing-window');
   } else guild.prospects.length = 0;
-  if (week > rules.assemblyWeeks && week < rules.winterFromWeek) stops.add('week-report');
+  if (campaigning) stops.add('week-report');
 }

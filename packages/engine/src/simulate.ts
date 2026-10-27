@@ -4,6 +4,7 @@ import { EventSink } from './core/events.ts';
 import { takeContract } from './guild/board.ts';
 import { advanceDay, foundGuild } from './guild/day.ts';
 import { signRecruit } from './guild/people.ts';
+import { hireStaff, releaseStaff } from './staff/areas.ts';
 import { chooseMoment, startQuest, stepQuest } from './resolution/quest.ts';
 import type { Command, GameEvent, GameState } from './resolution/types.ts';
 
@@ -36,6 +37,12 @@ export function simulate(state: GameState, command: Command): SimulationResult {
       break;
     case 'recruit.sign':
       signRecruit(next, command, sink);
+      break;
+    case 'staff.hire':
+      hireStaff(next, command, sink);
+      break;
+    case 'staff.release':
+      releaseStaff(next, command, sink);
       break;
   }
   return { state: next, events: sink.events };

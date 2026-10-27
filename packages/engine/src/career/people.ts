@@ -1,10 +1,11 @@
 // Careers v0, people (SPEC.md, Adventurers): a life drawn at signing, growth by doing, lasting
 // injuries, ageing past the prime, and asking to retire.
-import { clamp } from '../core/math.ts';
-import { streamFor } from '../core/rng.ts';
+import { clamp, divRoundDown } from '../core/math.ts';
+import { BP_CERTAIN, streamFor } from '../core/rng.ts';
 import type { GuildTurn } from '../guild/turn.ts';
 import { yearOf } from '../guild/turn.ts';
 import type { StopReason } from '../guild/types.ts';
+import { trainingBp } from '../staff/areas.ts';
 import { ATTRIBUTES, type Adventurer, type Attribute } from '../resolution/types.ts';
 
 const PHYSICAL: readonly Attribute[] = ['might', 'agility', 'toughness'];
@@ -76,12 +77,14 @@ export function growAfterQuest(
     const who = turn.state.roster.find((a) => a.id === id);
     const age = who ? ageOf(turn, who) : null;
     if (!who || age === null || !who.potential) continue;
-    const chance =
+    const base =
       age <= career.growth.youngAge
         ? career.growth.youngBp
         : age <= career.primeAge
           ? career.growth.primeBp
           : 0;
+    // Training scales the chance (staff/SPEC.md).
+    const chance = divRoundDown(base * trainingBp(turn), BP_CERTAIN);
     const options = tested(who).filter((a) => who.attributes[a] < (who.potential?.[a] ?? 0));
     // Always draw twice, so a member's growth never shifts the stream for the next one.
     const grows = rng.chance(chance);

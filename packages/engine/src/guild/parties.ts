@@ -5,6 +5,7 @@ import { BP_CERTAIN, streamFor } from '../core/rng.ts';
 import { startQuest, stepQuest } from '../resolution/quest.ts';
 import { WOUND } from '../resolution/types.ts';
 import { growAfterQuest, injuryLoss } from '../career/people.ts';
+import { injuryDays, runsArea } from '../staff/areas.ts';
 import { addRenown, memberOf, pay, type GuildTurn } from './turn.ts';
 import type { Party, StopReason } from './types.ts';
 
@@ -54,10 +55,13 @@ export function arrive(turn: GuildTurn, party: Party, causeId: string, stops: Se
     }
     let restDays = rules.refitDays + (steps.get(id) ?? WOUND.fit) * rules.restDaysPerWoundStep;
     const injury = injured.get(id);
-    if (injury !== undefined) injuryLoss(turn, id, injury);
-    if (injury !== undefined)
-      restDays +=
-        rules.daysPerWeek * recovery.between(rules.injuryWeeks.min, rules.injuryWeeks.max);
+    if (injury !== undefined) {
+      injuryLoss(turn, id, injury);
+      const weeks = recovery.between(rules.injuryWeeks.min, rules.injuryWeeks.max);
+      restDays += injuryDays(turn, rules.daysPerWeek * weeks);
+      // The guildmaster running recovery sees each injured member in (staff/SPEC.md).
+      if (runsArea(turn, 'recovery')) stops.add('infirmary');
+    }
     who.outUntilDay = restDays > 0 ? party.homeDay + restDays : 0;
   }
   // Growth by doing (career/SPEC.md): the quest tested the approach and each member's attack.

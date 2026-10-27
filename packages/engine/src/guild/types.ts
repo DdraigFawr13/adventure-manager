@@ -1,6 +1,7 @@
 // Shapes for guild year v0 (SPEC.md). Content supplies GuildRules; the engine only reads them.
 import type { CareerEnd, CareerRules, CareerState, TargetKind } from '../career/types.ts';
 import type { PronounKey } from '../core/text.ts';
+import type { Area, StaffRules, StaffState } from '../staff/types.ts';
 import type { Adventurer, Attribute, Danger, Plan, QuestOutcome } from '../resolution/types.ts';
 
 export interface DangerRules {
@@ -45,6 +46,8 @@ export interface GuildRules {
   readonly naming?: NamingRules;
   /** Absent: one year only, no rivals, ladder or patron (career/SPEC.md). */
   readonly career?: CareerRules;
+  /** Absent: no staff; training and recovery run at their neutral rate (staff/SPEC.md). */
+  readonly staff?: StaffRules;
   readonly weeksPerYear: number;
   readonly daysPerWeek: number;
   /** Weeks 1..assemblyWeeks are the Assembly; winter starts at winterFromWeek. */
@@ -134,6 +137,8 @@ export interface GuildState {
   readonly prospects: Prospect[];
   /** Many years, rivals, the ladder and the patron; absent when the rules have no career. */
   career?: CareerState;
+  /** Who runs training and recovery; absent when the rules have no staff. */
+  staff?: StaffState;
   /** Real shape ids the board drew recently, oldest first, per danger (contract/SPEC.md). Engine-only: it can name a hidden twist, so views never read it. */
   readonly recentShapes: string[];
   /** Counters for ids, so ids stay unique and replayable. */
@@ -144,7 +149,7 @@ export interface GuildState {
 
 export type { CareerEnd, TargetKind };
 export type MoneyReason =
-  'founding' | 'grant' | 'wages' | 'upkeep' | 'fee' | 'loot' | 'funeral' | 'sign-on';
+  'founding' | 'grant' | 'wages' | 'upkeep' | 'fee' | 'loot' | 'funeral' | 'sign-on' | 'staff';
 export type StopClass = 'must' | 'digest';
 export type StopReason =
   | 'week-report'
@@ -154,7 +159,9 @@ export type StopReason =
   | 'signing-window'
   | 'party-home'
   | 'retirement'
-  | 'career-ended';
+  | 'career-ended'
+  | 'training-plan'
+  | 'infirmary';
 
 export type GuildCommand =
   | {
@@ -177,6 +184,18 @@ export type GuildCommand =
       readonly id: string;
       readonly day: number;
       readonly prospectId: string;
+    }
+  | {
+      readonly type: 'staff.hire';
+      readonly id: string;
+      readonly day: number;
+      readonly candidateId: string;
+    }
+  | {
+      readonly type: 'staff.release';
+      readonly id: string;
+      readonly day: number;
+      readonly area: Area;
     };
 
 export type GuildEventBody =
@@ -232,6 +251,20 @@ export type GuildEventBody =
     }
   | { readonly type: 'patron.target'; readonly target: TargetKind; readonly tier: number }
   | { readonly type: 'career.ended'; readonly reason: CareerEnd; readonly years: number }
+  | { readonly type: 'skill.grew'; readonly area: Area; readonly from: number; readonly to: number }
+  | {
+      readonly type: 'staff.listed';
+      readonly area: Area;
+      readonly quality: number;
+      readonly wageCopper: number;
+    }
+  | {
+      readonly type: 'staff.hired';
+      readonly area: Area;
+      readonly quality: number;
+      readonly wageCopper: number;
+    }
+  | { readonly type: 'staff.released'; readonly area: Area }
   | {
       readonly type: 'stop.raised';
       readonly stopClass: StopClass;

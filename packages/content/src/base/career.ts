@@ -5,16 +5,16 @@
 // - 3 tiers of 6 guilds (PLAN §4e). Danger mix per tier: bottom 45/40/13/2, middle 30/40/25/5 (the
 //   one-year simulator's mix), top 15/35/35/15. Fee scale 85% / 100% / 120%; patron grant
 //   3000 / 4000 / 6000 copper.
-// - Rivals: strength 0-100, tier means 52 / 62 / 72, spread +-10 at the start; contracts a year
-//   36 / 38 / 40; win chance 50% + 1.5% per point of strength above the danger's difficulty
+// - Rivals: strength 0-100, tier means 64 / 62 / 72 (see the bottom tier's note), spread +-10 at
+//   the start; contracts a year 36 / 38 / 40; win chance 50% + 1.5% per point of strength above the danger's difficulty
 //   (routine 20, hazardous 40, perilous 60, deadly 80), 5-95%. Expected renown a year for a rival
-//   at its tier's mean, from those numbers: about 61 / 100 / 166, set so the default player policy
-//   (about 65 / 88 / 104 renown a year in the first runs) climbs out of the bottom tier, holds the
-//   middle and struggles at the top.
+//   at its tier's mean, from those numbers: about 77 / 100 / 166, set so the default player policy
+//   (about 75 / 110 / 139 renown a year in a 20-career run) climbs out of the bottom tier in 3-5
+//   years, holds the middle and struggles at the top.
 // - Drift a year: a third of the way to the tier's mean, 1 point per 25 renown above or below
 //   that expectation, noise +-3.
-// - People: drawn at 18-30, potential 0-4 above each attribute; prime ends at 32; growth chance per
-//   quest 15% to age 24, 7% to 32; past 32, a 3% a year step (to 30%) to lose each physical point,
+// - People: drawn at 18-30, potential 0-6 above each attribute; prime ends at 32; growth chance per
+//   quest 10% to age 24, 5% to 32; past 32, a 3% a year step (to 30%) to lose each physical point,
 //   and an 8% a year step (to 60%) to ask to retire.
 // - Patron (D-141): confidence starts at 60 of 100; met +15, missed -15 a place short (at most -40),
 //   in debt at year's end -15. Guildmaster starts at 30-45; health retirement from 60, certain by 75.
@@ -28,9 +28,9 @@ export const baseCareerRules: CareerRules = {
       dangerWeights: { routine: 45, hazardous: 40, perilous: 13, deadly: 2 },
       feeBp: 8500,
       grantCopper: 3000,
-      rivalMean: 52,
+      rivalMean: 64, // Above the middle's 62: strength earns renown by the tier's contracts, so 64 here is about 77 a year.
       rivalContracts: 36,
-      rivalRenown: 61,
+      rivalRenown: 77,
     },
     {
       dangerWeights: { routine: 30, hazardous: 40, perilous: 25, deadly: 5 },
@@ -50,9 +50,9 @@ export const baseCareerRules: CareerRules = {
     },
   ],
   drawAge: { min: 18, max: 30 },
-  potential: { min: 0, max: 4 },
+  potential: { min: 0, max: 6 },
   primeAge: 32,
-  growth: { youngAge: 24, youngBp: 1500, primeBp: 700 },
+  growth: { youngAge: 24, youngBp: 1000, primeBp: 500 },
   declineStepBp: 300,
   declineMaxBp: 3000,
   retireStepBp: 800,

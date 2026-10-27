@@ -1,33 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { PLAYER_ID, type CareerRules, type GameState } from '../src/index.ts';
 import { ofType } from './fixture.ts';
-import { advanceTo, foundedGuild, play, playDays, type Run } from './guild-fixture.ts';
+import {
+  advanceTo,
+  testCareer as career,
+  foundedGuild,
+  play,
+  playDays,
+  type Run,
+} from './guild-fixture.ts';
 
-const career: CareerRules = {
-  guildsPerTier: 6,
-  tiers: [0, 1, 2].map((t) => ({
-    dangerWeights: { routine: 0, hazardous: 1, perilous: 0, deadly: 0 },
-    feeBp: 10_000 + 1000 * t,
-    grantCopper: 1000 * (t + 1),
-    rivalMean: 50,
-    rivalContracts: 10,
-    rivalRenown: 15,
-  })),
-  drawAge: { min: 20, max: 20 },
-  potential: { min: 4, max: 4 },
-  primeAge: 32,
-  growth: { youngAge: 24, youngBp: 0, primeBp: 0 },
-  declineStepBp: 0,
-  declineMaxBp: 0,
-  retireStepBp: 0,
-  retireMaxBp: 0,
-  rivalWin: { baseBp: 5000, stepBp: 0, minBp: 5000, maxBp: 5000 },
-  dangerDifficulty: { routine: 20, hazardous: 40, perilous: 60, deadly: 80 },
-  rivalSpread: 0,
-  rivalDrift: { pullDiv: 3, renownPerPoint: 25, noise: 0 },
-  patron: { start: 60, met: 15, perPlaceShort: 15, maxMiss: 40, debt: 15, max: 100 },
-  guildmaster: { age: { min: 40, max: 40 }, healthFromAge: 90, certainAge: 99 },
-};
 const YEAR = 48 * 7;
 
 function begun(rules: Partial<CareerRules> = {}, size = 3): Run {
