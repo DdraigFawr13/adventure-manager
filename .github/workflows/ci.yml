@@ -1,16 +1,17 @@
 # Per-push checks (D-105): drift and docs checks, then npm run check (format, typecheck,
-# package boundaries, tests). docs/, root Markdown, package AGENTS.md files and system SPEC.md
+# package boundaries, tests). docs/, README.md, package AGENTS.md files and system SPEC.md
 # files are not formatted or compiled, so changes to only those skip CI; run the docs check
-# locally for them (AGENTS.md). Other Markdown still runs CI: the drift check guards .claude/,
-# and the boundary check rejects stray Markdown in packages/*/src.
+# locally for them (AGENTS.md). Other Markdown still runs CI: the drift check guards .claude/
+# and the size budget of AGENTS.md and CLAUDE.md, and the boundary check rejects stray
+# Markdown in packages/*/src.
 name: CI
 
 on:
   pull_request:
-    paths-ignore: ["docs/**", "*.md", "packages/*/AGENTS.md", "packages/*/src/**/SPEC.md"]
+    paths-ignore: ["docs/**", "README.md", "packages/*/AGENTS.md", "packages/*/src/**/SPEC.md"]
   push:
     branches: [main]
-    paths-ignore: ["docs/**", "*.md", "packages/*/AGENTS.md", "packages/*/src/**/SPEC.md"]
+    paths-ignore: ["docs/**", "README.md", "packages/*/AGENTS.md", "packages/*/src/**/SPEC.md"]
   workflow_dispatch:
 
 permissions:

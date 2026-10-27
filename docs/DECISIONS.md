@@ -394,8 +394,8 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** A typical player takes about 2–2.5 h per in-game season. Derived targets: adventurer career about 12–30 h, guildmaster career about 40–75 h, first season about 3–4 h with onboarding. Weeks per season are set in PLAN §2. Detail: `docs/design/PLAN.md` §1c.
 - **Why:** Owner's choice (Plan Q1c), between the proposed 3 h (FM-like) and 1.5 h (faster generations); keeps succession within reach of committed players.
-
 - **Amended (2026-10-27, D-153):** a sitting on the phone is about 10–30 minutes; a season is spread over several sittings.
+
 ## D-065 Design goals and success criteria (starting set)
 
 - **Status:** Accepted (2026-10-26)
@@ -950,7 +950,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** A phone version, if built, follows "Hall and Road" with the owner's change. Accepted: the guildhall cutaway is the hub, with one system per room; a work desk, reachable as a tab and as the study in the hall, holds what spans the whole guild (notices, the contract board, the year's numbers and the patron's target, the full roster ledger); the living map is the outside; Ask the clerk answers plain questions; Continue is a pull-down handle; four tabs (Hall, March, Desk, Ask). Proposed, for the owner's review: which system sits in which of the eleven rooms (barracks for members, infirmary, training yard, armoury, smith, library, tavern, gate, strongroom, Hall of Heroes, works), and each room showing who runs it with the never-delegated choices (D-038) marked. Not settled: the tablet layout (the open-book spread was the session's suggestion, not chosen). Phone only: STYLE §3 stays the PC rule; on the phone the pull handle replaces the top bar's fixed Continue. Rough estimate: 1,200–2,420 hours and about $9,000–30,000 more art, less if the hall and map are built for Windows first. Detail: `docs/design/mockups/mobile-hall-desk.html`; earlier rounds `mobile-concepts.html`, `mobile-concepts-2.html`, `mobile-hall-and-road.html`.
 - **Why:** Owner (2026-10-27), after four rounds of mock-ups: liked the recommended phone mix with the guildhall and living map added, then "I want satchel to be changed to something like work desk where you can go through notifications and deeper into rosters some of the overall stats that the individual rooms don't provide… the guild house is the hub and the work desk is for overall stuff and notifications and contracts."
 - **Amended (2026-10-27):** the room-by-room split (barracks, infirmary, training yard, armoury, smith, library, tavern, gate, strongroom, Hall of Heroes, works) and the staff display in each room are Accepted. The owner said "Do what you recommend", and the session had recommended the split as proposed. The tablet layout stays not settled.
-- **Superseded in part (2026-10-27, D-150, D-151, D-155):** mobile first. The phone is now the launch platform, and the hub is home on every platform, so the "Windows-only launch stands" and "Phone only" lines above no longer apply.
+- **Superseded in part (2026-10-27, D-150, D-151, D-155):** mobile first. The phone is now the launch platform, and the hub is home on every platform, so the "no mobile work is scheduled", "Windows-only launch stands" and "Phone only" lines above no longer apply.
 
 ## D-150 Mobile first: the phone becomes the lead platform
 
@@ -1029,11 +1029,12 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Sets how the phone R4 test (D-154) runs.
 - **Decision:** The owner takes R4 on their own Android phone, a Pixel 10 Pro XL (about 412 dp wide at the default display size, an estimate; the test page shows the measured width). Screens are built for 375 points and checked at 375, 412 and 430. The session picks 5 facts from a simulated guild and keeps them hidden until the owner taps Start. The page times each answer, checks it, and saves the results to the published artifact, so the owner pastes nothing.
 - **Why:** Owner's answers (planning round, 2026-10-27): "Android phone", then "Pixel 10 xl I think?", then "Blind, page-timed", the recommended option. A blind test measures finding a fact, not remembering a question the owner wrote.
+- **Corrected (2026-10-27):** measured on the owner's phone in the Claude app, the page is 443 × 790 px at 2.4375× (round 1), not about 412; screenshots now also check 443.
 
 ## D-160 The step 4 text prototype is a phone-first web page
 
 - **Status:** Accepted (2026-10-27). Applies D-150 to PLAN §9b step 4 (R7).
-- **Decision:** The two-year text prototype plays in a phone browser in short sittings (D-153), with the hub's four tabs in plain text. It also works in a PC browser. Its screens are throwaway (D-113); the simulation core is kept.
+- **Decision:** The two-year text prototype plays in a phone browser in short sittings (D-153), with the hub's four tabs in plain text. It should also work in a PC browser (from the recommended option's wording, not the owner's reply). Its screens are throwaway (D-113); the simulation core is kept.
 - **Why:** Owner (planning round, 2026-10-27): "Maybe phone first web page or we can start a project in vercel? We will want to reassess tools and skills for this shift I think".
 
 ## D-161 Vercel Hobby for phone builds while the game is a hobby; tools reassessed for mobile first
@@ -1041,3 +1042,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27) for hosting. The tools and skills review is to be done; its choices are Proposed until the owner approves them.
 - **Decision:** Phone-playable builds (the step 4 prototype, the phone engine test) are hosted on Vercel's free Hobby plan while the game is a hobby project. Before any sale, the account moves to Pro (about $20 a month, to recheck), since Hobby is for non-commercial use. The R4 test stays a published artifact, because it saves the timings. Before step 4, the session reassesses the project's tools, skills and agents for mobile first (phone screenshots, touch checks, Vercel previews, a store wrapper later), as an update to `docs/design/TOOLS-REVIEW.md`.
 - **Why:** Owner (planning round, 2026-10-27): "right now this is a hobby game and if I choose to move on to actually put this into sale o would change to the pro plan", and "We will want to reassess tools and skills for this shift". D-152's price and D-157's break-even stay the plan for a commercial launch.
+
+## D-162 Phone R4 round 2: names A–Z with a filter, money on the desk, a Find field
+
+- **Status:** Accepted (2026-10-27). Changes the phone R4 page (D-154, D-159) after round 1.
+- **Decision:** (1) Lists of people (Barracks, Infirmary, the desk roster) run A–Z by name with a filter box at the top. (2) The work desk gets a Money page with the week-by-week ledger and the year's figures, in place of Overview; the Strongroom keeps its ledger. (3) A Find field on the hall and the work desk answers as the owner types a name, a week, a site or a topic, with the clerk's answer shown in place. Round 2 runs on a new seed.
+- **Why:** Round 1 (2026-10-27, seed phone-1): 5 of 5 right, 0 under 10 s (12.5, 21.1, 46.1, 11.6, 10.6 s). The paths showed names hunted in party-grouped or date-sorted lists, the weekly wages sought on 7 desk screens before the Strongroom, and Ask the clerk never used. Owner's choice: "All three fixes", the recommended option.

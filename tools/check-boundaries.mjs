@@ -220,7 +220,11 @@ if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === imp
   }
   // Tools follow the same type rules; their tests, like the packages' tests, are not scanned.
   for (const entry of await sources(path.join(root, 'tools')))
-    if (/\.tsx?$/.test(entry) && !entry.includes(`${path.sep}test${path.sep}`)) files.push(entry);
+    if (
+      /\.tsx?$/.test(entry) &&
+      !path.relative(root, entry).startsWith(`tools${path.sep}test${path.sep}`)
+    )
+      files.push(entry);
   const errors = files.length ? [] : ['No source modules found under packages/*/src.'];
   for (const file of files) {
     errors.push(
