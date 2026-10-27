@@ -565,6 +565,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Five packages (engine, content, ui, shell, tools); the engine is pure rules with seeded randomness and injected time, one simulate function, and every change an event with a cause id. The event log feeds the Trace, histories, Chronicle, reports, letters and playtest logs. Game values are integers. Content is JSON with schemas, loaded as packs (mods later). Ironman saves are written safely each day, versioned with migrations, never overwritten when unreadable, synced by Steam Cloud. Optional AI flavour is off by default, player-keyed and never blocks templates. Performance: 1366×768 minimum, 60 fps map, day tick under 50 ms, simulated year under 1 s, save/load under 1 s. Detail: `docs/design/PLAN.md` §11b–§11g.
 - **Why:** Owner accepted the draft (Plan Q11b); holds for either engine in D-090.
+- **Amended (2026-10-27, D-154):** the screen minimum is a phone 375 points wide, held upright; the PC minimum returns with the Windows version.
 
 ## D-092 Tools adopted now: docs checker, mock-up script, one setup audit
 
@@ -687,6 +688,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The engine-test pieces (ledger and kingdom map) are built in web tech (Electron, TypeScript), reusing the Story-Generator map code. Godot 4 (C#) is built only if web misses its bar: 60 fps map at 1366×768, readable 15 px ledger, the find-the-fact task. A screen-reader check joins the judging list. Amends D-090. Detail: `docs/design/PLAN.md` §11a.
 - **Why:** Owner's choice (plan review Q3) on new evidence: Story-Generator is TypeScript and canvas, and building both engines costs weeks a solo builder does not have.
+- **Amended (2026-10-27, D-154):** the engine test is rebuilt as a phone app and judged on the owner's phone.
 
 ## D-111 Stop and slip rules
 
@@ -953,3 +955,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Amends D-063 for the phone launch (re-plan under D-150).
 - **Decision:** The primary player stays the management-sim veteran from D-063, now on a phone, in the style of a Football Manager Mobile player. A sitting is about 10–30 minutes. The daily Ironman autosave (D-033) lets them stop at any point and resume exactly there. A season still takes about 2–2.5 hours in total (D-064), spread over several sittings. The depth is not cut for the phone. Tabletop fans stay secondary, carried by the gentle first season and delegation.
 - **Why:** Owner's choice (re-plan question 3, 2026-10-27), the recommended option: "Same veterans, short sittings". The owner wants the depth shown in the D-149 mock-ups kept.
+
+## D-154 Phones 375 points wide and up; phone versions of the engine test and R4
+
+- **Status:** Accepted (2026-10-27). Amends D-091's screen minimum, D-110's bars and PLAN §9a R4 for the phone launch (re-plan under D-150).
+- **Decision:** (1) The game supports phones 375 points wide and wider, held upright: the iPhone SE and most Android phones from about 2019 on. It must also lay out correctly on larger phones. (2) The engine test is rebuilt as a phone app from the same web code. It is judged on the owner's own phone: a 60 fps map with smooth pinch and pan, text no smaller than 15 px (D-084), and a screen-reader check. Measurements in the container count only as a floor; the verdict needs the owner's device evidence (VER-07). (3) R4 becomes a phone test. The owner finds 5 set facts in under 10 seconds each, using the hall hub, the work desk and Ask the clerk (D-149). The 25-row roster rule is dropped.
+- **Why:** Owner's choice (re-plan question 4, 2026-10-27), the recommended option: "375-pt phones, new phone tests". Testing phones now, not at the slice, finds layout or speed problems while they are cheap.
