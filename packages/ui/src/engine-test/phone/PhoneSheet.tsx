@@ -111,8 +111,8 @@ export function PhoneSheet({ content, say, onClose }: Props) {
           </figure>
         )}
         <div className="etp-lines">
-          {content.lines.map((line) => (
-            <p key={line}>{line}</p>
+          {content.lines.map((line, n) => (
+            <p key={n}>{line}</p>
           ))}
         </div>
       </div>

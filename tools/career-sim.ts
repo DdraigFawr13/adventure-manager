@@ -212,9 +212,15 @@ console.log(
   const careerYears = results.reduce((n, r) => n + r.years, 0);
   const quests = sum(results.map((r) => sum(r.growthByYear)));
   const training = sum(results.map((r) => sum(r.trainingByYear)));
-  const memberYears = sum(results.map((r) => sum(r.rosterByYear.slice(0, r.years))));
+  // Per member: only the years whose end recorded a roster, so a dismissed career's last part-year
+  // counts on neither side.
+  const ended = (r: Career, v: number[]) => sum(v.slice(0, r.rosterByYear.length));
+  const memberPoints = sum(
+    results.map((r) => ended(r, r.growthByYear) + ended(r, r.trainingByYear)),
+  );
+  const memberYears = sum(results.map((r) => sum(r.rosterByYear)));
   console.log(
-    `attribute points a year, mean per career-year: from quests ${(quests / Math.max(1, careerYears)).toFixed(1)}, from training at home ${(training / Math.max(1, careerYears)).toFixed(1)}, in all ${((quests + training) / Math.max(1, careerYears)).toFixed(1)}; per member on the roster at year ends ${((quests + training) / Math.max(1, memberYears)).toFixed(2)} [D-187: up to about a quarter above the house-off run's]`,
+    `attribute points a year, mean per career-year: from quests ${(quests / Math.max(1, careerYears)).toFixed(1)}, from training at home ${(training / Math.max(1, careerYears)).toFixed(1)}, in all ${((quests + training) / Math.max(1, careerYears)).toFixed(1)}; per member on the roster at year ends ${(memberPoints / Math.max(1, memberYears)).toFixed(2)} [D-187: up to about a quarter above the house-off run's]`,
   );
 }
 /** §9d's bad start: the same test whether grants are taken or refused. */

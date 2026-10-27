@@ -315,7 +315,7 @@ export function createScene(
     const add = (id: string, kind: MarkKind, x: number, y: number, r = HIT_RADIUS) =>
       out.push({ id, kind, x, y, r });
     sites.forEach((c, k) => {
-      if (!hidden[k]) add(`town.${k}`, 'town', cx(c), cy(c) - 4);
+      if (!hidden[k]) add(`town.${k}`, 'town', cx(c), cy(c) - 4 / z);
     });
     data.villageCells.forEach((c, k) => {
       if (!veiled(c)) add(`village.${k}`, 'village', cx(c), cy(c));

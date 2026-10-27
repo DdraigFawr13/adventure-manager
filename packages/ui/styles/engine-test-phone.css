@@ -82,6 +82,21 @@ body {
   white-space: nowrap;
 }
 
+/* A keyboard user tabbing into the places list sees it (WCAG 2.4.7). */
+.etp-sr:focus-within {
+  z-index: 5;
+  top: 8px;
+  left: 8px;
+  width: auto;
+  height: auto;
+  max-height: 60vh;
+  overflow: auto;
+  clip-path: none;
+  padding: 8px;
+  background: var(--etp-paper);
+  border: 2px solid var(--etp-brass);
+}
+
 .etp-loading {
   position: absolute;
   inset: 0;

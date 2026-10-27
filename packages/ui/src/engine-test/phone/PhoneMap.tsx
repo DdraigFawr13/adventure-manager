@@ -129,9 +129,10 @@ export function PhoneMap() {
     const stats = new FrameStats();
     const frame = (now: number) => {
       const c = clock.current;
-      advanceClock(c, (now - before) / 1000);
-      before = now;
       const s = scene.current;
+      // The clock waits for the map: no game time passes while the atlas is still being inked.
+      if (s) advanceClock(c, (now - before) / 1000);
+      before = now;
       if (s) {
         const party = s.partyState(c.seconds);
         if (c.playing && walking !== null && justStopped(walking, party.walking)) {
@@ -197,6 +198,7 @@ export function PhoneMap() {
     return a && b ? [a, b] : null;
   };
   const onDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
     e.currentTarget.setPointerCapture(e.pointerId);
     const p = local(e);
     touches.current.set(e.pointerId, p);
@@ -228,7 +230,9 @@ export function PhoneMap() {
     const t = tap.current;
     const p = local(e);
     touches.current.delete(e.pointerId);
-    pinch.current = null;
+    // With two fingers still down (a third lifted), the pinch carries on from where they are.
+    const two = pair();
+    pinch.current = two ? pinchOf(two[0], two[1]) : null;
     if (!t || t.id !== e.pointerId || !t.ok) return;
     tap.current = null;
     if (!isTap(Math.hypot(p.x - t.x, p.y - t.y), e.timeStamp - t.at)) return;
@@ -238,9 +242,18 @@ export function PhoneMap() {
   };
   const onCancel = (e: PointerEvent<HTMLDivElement>) => {
     touches.current.delete(e.pointerId);
-    pinch.current = null;
+    const two = pair();
+    pinch.current = two ? pinchOf(two[0], two[1]) : null;
     tap.current = null;
   };
+  // A pop-up opening mid-gesture (an auto-stop) makes the map inert, so its pointer-ups may never
+  // come: start the next gesture clean.
+  useEffect(() => {
+    if (!open) return;
+    touches.current.clear();
+    pinch.current = null;
+    tap.current = null;
+  }, [open]);
   const onKey = (e: KeyboardEvent) => {
     const keys: Record<string, () => void> = {
       ArrowLeft: () => panBy(-PAN_STEP, 0),
@@ -281,6 +294,11 @@ export function PhoneMap() {
     return { kind: info.kind, kindName: info.kindName, title: info.name, lines: info.lines };
   })();
 
+  // The places list says only what the map shows: names under the uncharted vellum stay unsaid.
+  const shown = new Set(
+    scene.current?.marks(clock.current.seconds, camera.current.z).map((m) => m.id) ?? [],
+  );
+
   return (
     <div className="etp">
       <div className="etp-stage" inert={open !== null}>
@@ -296,19 +314,22 @@ export function PhoneMap() {
           onPointerMove={onMove}
           onPointerUp={onUp}
           onPointerCancel={onCancel}
+          onLostPointerCapture={onCancel}
         >
           <canvas ref={canvas} className="etp-canvas" />
         </div>
         <div className="etp-sr">
           <h2>{say('phone.places')}</h2>
           <ul>
-            {marks.map((m) => (
-              <li key={m.id}>
-                <button type="button" onClick={() => setOpen({ mark: m.id })}>
-                  {`${m.name}, ${m.kindName}`}
-                </button>
-              </li>
-            ))}
+            {marks
+              .filter((m) => shown.has(m.id))
+              .map((m) => (
+                <li key={m.id}>
+                  <button type="button" onClick={() => setOpen({ mark: m.id })}>
+                    {`${m.name}, ${m.kindName}`}
+                  </button>
+                </li>
+              ))}
           </ul>
         </div>
         {!ready && (
@@ -362,7 +383,14 @@ export function PhoneMap() {
           <span className="etp-date" ref={dateLabel} />
         </div>
       </div>
-      {content && <PhoneSheet content={content} say={say} onClose={() => setOpen(null)} />}
+      {content && (
+        <PhoneSheet
+          key={JSON.stringify(open)}
+          content={content}
+          say={say}
+          onClose={() => setOpen(null)}
+        />
+      )}
     </div>
   );
 }

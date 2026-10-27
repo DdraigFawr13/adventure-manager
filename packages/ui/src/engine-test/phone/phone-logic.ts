@@ -42,7 +42,7 @@ export const pinchStep = (
 
 export const isTap = (movedPx: number, ms: number): boolean => movedPx < TAP_MOVE_PX && ms < TAP_MS;
 
-/** The mark nearest a screen point, if one is within its hit radius (capped at `HIT_PX`). */
+/** The mark nearest a screen point, within `reach` or the mark's own larger radius (the party's). */
 export function hitMark(
   marks: readonly Mark[],
   cam: Camera,
