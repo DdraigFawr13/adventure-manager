@@ -1295,3 +1295,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). For the step 4 prototype (D-195–D-198).
 - **Decision:** The eight phone screens in `docs/design/mockups/step4-prototype.html` (Hall, Desk, Send a party, Letter home, Person card, Memorial letter, March, Pause check) are the plan for the prototype's page. Two people become friends after 5 quests together (a content number). The guild's chaplain writes memorial letters; friends and the party leader appear as reactions. Each new game opens with the founding draft (D-188).
 - **Why:** Owner (2026-10-27) on the mock-up (https://claude.ai/artifact/Juj8jvugedBsjqhaY4Brm8): "Approved but just as a prototype it will need a lot of polishing later". The three open points: the recommended "5 quests, chaplain, draft", over the leader writing (needs a fallback when the leader dies) and 3 quests with a fixed start.
+
+## D-200 The step 4 prototype takes the main Vercel link; the Quest Watch moves aside
+
+- **Status:** Accepted (2026-10-27). For the step 4 page (D-199) on Vercel (D-161, D-167).
+- **Decision:** When the prototype's page merges, it is the page at the root of the Vercel link. The R1 Quest Watch moves to `/quest-watch.html` so it stays reachable.
+- **Why:** Owner's choice (2026-10-27), the recommended option: "Go with recommended". The owner asked why the Vercel link still showed the Quest Watch; it is the only page `vercel.json` builds (`packages/ui/index.html`), and the prototype is what the owner will play repeatedly.
