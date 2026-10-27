@@ -13,7 +13,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Next
 
-1. R5 readability (D-084): ask the owner whether the 15 px text read well on their phone in R4; until then it stays open.
+1. R5 readability: the owner's answer (Open questions).
 2. Tools and skills reassessment for mobile first (D-161), before step 4: phone screenshots and touch checks, Vercel Hobby previews, the phone wrapper choice (needs SAFE-03 approval; D-117 approved only Electron).
 3. Step 4, the two-year text prototype (R7) as a phone-first web page (D-160), with histories and memorial letters; standing parties (D-014, D-142) join here.
 4. Engine test verdict (D-110, D-154): rebuild the engine test as a phone app; the owner judges it on their phone (60 fps map with smooth pinch, 15 px text, screen reader). The map is free pan and zoom with tappable towns, places, parties and events opening a pop-up with details and a placeholder image (D-164).
@@ -26,7 +26,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 - Mobile first (D-150): the phone sources for the §1d measures, and the phone versions of the Steam store page, wishlists, playtest recruiting and Early Access (D-099, D-100, D-113). Open too: the tablet layout. The test laptop in the budget (PLAN §14) may no longer be needed before launch.
 - Engine findings from R4, for the owner: two people can get the same full name (`packages/engine/src/guild/people.ts:68` draws given and family names independently; seed phone-2 has two Ash Thornes); at week 23 of seed phone-1, 23 of 30 members rest from wounds (maybe balance).
 - Kingdom map art direction (D-097, D-144): Story-Generator layout as the base; geography review in the workshop.
-- Old-press ledger readability: confirm 15 px with lining figures on the owner's phone in the phone R4 (D-084, D-154); fallbacks D-052, D-077.
+- R5, old-press ledger readability (D-084): did the 15 px text with lining figures read well on the owner's phone in R4? Fallbacks D-052, D-077.
 - Later, tier not set: 20 class levels (D-074); facility compound (D-075); intrigue (D-069); exploring the wilds (D-136); quest board flair (STYLE §4); bardic songs (D-056).
 
 ## Working style with the owner
