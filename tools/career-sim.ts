@@ -277,21 +277,30 @@ function reportHouse(): void {
   console.log(
     `House (fullHousePlan, ${fullHousePlan.length} jobs; assumptions: packages/content/src/base/house.ts); started a job in ${started.length} of ${careers} careers`,
   );
-  if (started.length > 0)
-    console.log(line('  first plan step started (year)', started, 'first room in year 1', 0));
+  const firstWeeks = results.flatMap((r) => r.houseFirstWeek ?? []);
+  if (firstWeeks.length > 0)
+    console.log(
+      line(
+        '  first plan step started (week from founding)',
+        firstWeeks,
+        'first room in season 1: week 48 or before',
+        0,
+      ),
+    );
   if (finished.length > 0)
-    console.log(line('  first plan step finished (year)', finished, 'first room in year 1', 0));
+    console.log(line('  first plan step finished (year)', finished, 'year 1', 0));
   console.log(
     `  plan completed in ${done.length} of ${careers} careers (${((100 * done.length) / careers).toFixed(0)}%)`,
   );
-  // Yearly surplus before building: the chest at a year end less the previous year end, plus what
-  // that year paid for building, by the tier played that year (D-172 measures the house against it).
+  // Yearly surplus before the house: the chest at a year end less the previous year end, plus what
+  // that year paid for building and room upkeep, by the tier played that year (D-172 measures the
+  // house against a mid guild's surplus; grants stay in, as they do in a house=off run).
   const gains = results.flatMap((r) =>
     r.tierByYear.flatMap((tier, y) => {
       const now = r.chestByYear[y];
       const before = r.chestByYear[y - 1];
       return tier === 1 && y >= 1 && now !== undefined && before !== undefined
-        ? [{ gain: now - before + (r.buildingByYear[y] ?? 0) }]
+        ? [{ gain: now - before + (r.houseMoneyByYear[y] ?? 0) }]
         : [];
     }),
   );
@@ -300,7 +309,7 @@ function reportHouse(): void {
     50,
   );
   console.log(
-    `  middle tier median yearly surplus before building, this run: ${medianGain} copper over ${gains.length} career-years`,
+    `  middle tier median yearly surplus before house money (building and room upkeep), this run: ${medianGain} copper over ${gains.length} career-years`,
   );
   if (done.length === 0) {
     console.log('  no career completed the plan: no completion year, cost or ratio to report');
@@ -314,10 +323,10 @@ function reportHouse(): void {
       ),
     );
     const costs = done.map((r) => r.houseCostCopper);
-    console.log(line('  plan total cost (copper)', costs, 'tuning', 0));
+    console.log(line('  plan total cost (copper), plan finishers only', costs, 'tuning', 0));
     console.log(
       line(
-        '  plan total cost / middle-tier median surplus (years)',
+        '  plan cost / middle-tier surplus (years), plan finishers only',
         costs.map((c) => c / medianGain),
         'full house 8-12 years of surplus',
       ),

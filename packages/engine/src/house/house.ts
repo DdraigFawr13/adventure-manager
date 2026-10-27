@@ -119,6 +119,11 @@ export function startHouse(turn: GuildTurn, size: number): void {
     added: { up: 0, down: 0, west: 0, east: 0 },
     nextWorkNo: 0,
   };
+  for (const kind of rules.kinds) {
+    const levels = kind.cellCostCopper.length;
+    if (kind.weeks.length !== levels || kind.upkeepCopper.length !== levels)
+      throw new Error(`${kind.id} needs costs, weeks and upkeep for each of its levels.`);
+  }
   for (let floor = start.lowestFloor; floor <= start.highestFloor; floor += 1)
     house.floors[floor] = emptyCells(rules.cellsPerFloor);
   for (const c of start.cells) {
@@ -126,6 +131,7 @@ export function startHouse(turn: GuildTurn, size: number): void {
     const found = rowOf(house, c.place);
     if (
       !found ||
+      samePlace(c.place, rules.studyPlace) ||
       found.row[found.at] !== null ||
       c.level < 1 ||
       c.level > kind.cellCostCopper.length
@@ -237,6 +243,10 @@ export function buildRoom(
     w.job.kind === 'build' && w.job.kindId === kind.id ? [w.job.place] : [],
   );
   const run = runAround(house, place, kind.id, pending);
+  // A room with a cell under work can't be joined: the new cell would take a level about to change.
+  const held = placesHeld(house);
+  if (run.some((p) => !samePlace(p, place) && held.some((q) => samePlace(p, q))))
+    throw new Error(`The ${kind.id} beside the ${where} is under work.`);
   if (run.length > kind.maxCells)
     throw new Error(`${kind.id} runs to at most ${kind.maxCells} cells.`);
   // Joining a run takes its lowest level; the new cell pays every level up to it.
@@ -272,12 +282,17 @@ export function upgradeRoom(
   if (cell === undefined) throw new Error(`There is no ${where}.`);
   if (cell === null) throw new Error(`The ${where} holds no room.`);
   const kind = kindOf(rules, cell.kindId);
-  const run = runAround(house, place, kind.id, []);
+  const pending = house.work.flatMap((w) =>
+    w.job.kind === 'build' && w.job.kindId === kind.id ? [w.job.place] : [],
+  );
+  // A room with a cell under work (a new cell joining it, or an upgrade) can't be raised.
+  const whole = runAround(house, place, kind.id, pending);
+  if (whole.some((p) => held.some((q) => samePlace(p, q))))
+    throw new Error(`The ${kind.id} has a cell under work.`);
+  const run = whole.filter((p) => slot(house, p) !== null);
   const level = Math.min(...run.map((p) => slot(house, p)?.level ?? Infinity));
   if (level >= kind.cellCostCopper.length) throw new Error(`The ${kind.id} is at its top level.`);
   const targets = run.filter((p) => slot(house, p)?.level === level);
-  if (targets.some((t) => held.some((p) => samePlace(p, t))))
-    throw new Error(`The ${kind.id} has a cell under work.`);
   begin(
     turn,
     house,

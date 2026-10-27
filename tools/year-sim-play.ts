@@ -186,8 +186,8 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
       // cast-ok: the id is added to a bare command, so the union member is whole.
       const preview = simulate(state, { ...command, id: 'preview' } as Command);
       cost = -preview.events.flatMap((e) =>
-        e.type === 'money.changed' ? [e.amountCopper] : [],
-      )[0]!; // non-null: a started job pays once.
+        e.type === 'money.changed' && e.reason === 'building' ? [e.amountCopper] : [],
+      )[0]!; // non-null: a started job pays once, for building.
     } catch (error) {
       if (error instanceof Error && /chest/.test(error.message)) return;
       throw error;

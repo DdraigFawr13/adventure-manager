@@ -244,7 +244,48 @@ describe('house (house SPEC.md)', () => {
     run = finishAll(run);
     run = upgrade(run, plot('west', 0));
     expect(() => upgrade(run, plot('west', 0))).toThrow(/under work/);
+    // A room being raised can't be joined until it finishes.
+    expect(() => build(run, plot('west', 1), 'room.yard')).toThrow(/under work/);
+    run = finishAll(run);
     expect(() => build(run, plot('west', 1), 'room.yard')).not.toThrow();
+  });
+
+  it('refuses to join or raise a room while one of its cells is under work', () => {
+    let run = begun(3, {}, 1_000_000);
+    run = build(run, hall(1, 2), 'room.barracks'); // joins the starting run (1,0)-(1,1)
+    expect(() => upgrade(run, hall(1, 0))).toThrow(/under work/);
+    run = finishAll(run);
+    run = upgrade(run, hall(1, 0));
+    run = extend(run, 'up');
+    run = finishAll(run);
+    // A new cell can't join a room that is being raised: it would land at the old level.
+    run = upgrade(run, hall(1, 0));
+    expect(() => build(run, hall(2, 0), 'room.barracks')).not.toThrow(); // another floor, its own room
+    expect(levels(run, [hall(1, 0), hall(1, 1), hall(1, 2)])).toEqual([2, 2, 2]);
+    run = finishAll(run);
+    expect(levels(run, [hall(1, 0), hall(1, 1), hall(1, 2)])).toEqual([3, 3, 3]);
+  });
+
+  it('has no places at negative or missing indices', () => {
+    const run = begun();
+    expect(() => build(run, hall(1, -1), 'room.barracks')).toThrow(/no hall/);
+    expect(() => build(run, hall(0, 3), 'room.barracks')).toThrow(/no hall/);
+    expect(() => build(run, plot('west', -1), 'room.yard')).toThrow(/no west/);
+    expect(() => upgrade(run, hall(5, 0))).toThrow(/no hall/);
+  });
+
+  it('refuses a starting layout on the study or with uneven level tables', () => {
+    expect(() =>
+      begun(3, {
+        start: {
+          ...house.start,
+          cells: [{ place: hall(0, 1), kindId: 'room.barracks', level: 1 }],
+        },
+      }),
+    ).toThrow(/starting layout/);
+    expect(() => begun(3, { kinds: [{ ...barracks, weeks: [2, 3] }, vault, yard] })).toThrow(
+      /each of its levels/,
+    );
   });
 
   it('finishes at the first week start on or after the due week', () => {
@@ -271,6 +312,11 @@ describe('house (house SPEC.md)', () => {
     run = advanceTo(run, startOf(40));
     expect(houseOf(run).compound.west[0]?.level).toBe(1);
     expect(houseOf(run).highestFloor).toBe(1);
+    // Week 36 is the last week before winter: the full weeks apply.
+    let late = begun(3, {}, 1_000_000);
+    late = advanceTo(late, startOf(36));
+    late = build(late, plot('west', 0), 'room.yard');
+    expect(ofType(late.events, 'house.started').at(-1)?.doneWeek).toBe(40);
     // Before winter the full weeks apply.
     let early = begun(3, {}, 1_000_000);
     early = build(early, plot('west', 0), 'room.yard');
@@ -339,8 +385,12 @@ describe('house (house SPEC.md)', () => {
     run = extend(run, 'west');
     expect(paid(run, 'building').at(-1)).toBe(-400);
     run = finishAll(run);
+    run = extend(run, 'east');
+    expect(paid(run, 'building').at(-1)).toBe(-400); // each side counts its own pushes
+    run = finishAll(run);
+    expect(() => extend(run, 'west')).toThrow(/3 plots/);
     expect(houseOf(run).compound.west.length).toBe(3);
-    expect(houseOf(run).compound.east.length).toBe(2);
+    expect(houseOf(run).compound.east.length).toBe(3);
     expect(ofType(run.events, 'house.finished').at(-1)).toMatchObject({
       job: 'extend',
       places: [],

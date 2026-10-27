@@ -67,8 +67,10 @@ export interface Career {
   houseFirstFinished: number | null;
   houseCompleted: number | null;
   houseCostCopper: number;
-  /** Copper paid for building in each year (index 0 is year 1), so the surplus before building can be read. */
-  buildingByYear: number[];
+  /** Copper paid for building and for room upkeep in each year (index 0 is year 1), so the surplus before any house money can be read. */
+  houseMoneyByYear: number[];
+  /** The week (counted from the founding) the first plan step was started. */
+  houseFirstWeek: number | null;
   roomsLateCopper: number;
   spendingLateCopper: number;
   seconds: number;
@@ -133,7 +135,8 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     houseFirstFinished: null,
     houseCompleted: null,
     houseCostCopper: 0,
-    buildingByYear: [],
+    houseMoneyByYear: [],
+    houseFirstWeek: null,
     roomsLateCopper: 0,
     spendingLateCopper: 0,
     seconds: 0,
@@ -174,16 +177,19 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     if (e.type === 'patron.offered') c.firstOfferYear ??= yearOfEvent(e);
     if (e.type === 'money.changed' && e.reason === 'emergency' && yearOfEvent(e) <= 2)
       c.earlyGrantCopper += e.amountCopper;
-    if (e.type === 'house.started') c.houseFirstStarted ??= yearOfEvent(e);
+    if (e.type === 'house.started') {
+      c.houseFirstStarted ??= yearOfEvent(e);
+      c.houseFirstWeek ??= Math.floor((e.day - 1) / rules.daysPerWeek) + 1;
+    }
     if (e.type === 'house.finished') {
       c.houseFirstFinished ??= yearOfEvent(e);
       housesFinished += 1;
       if (housesFinished === fullHousePlan.length) c.houseCompleted = yearOfEvent(e);
     }
-    if (e.type === 'money.changed' && e.reason === 'building') {
-      c.houseCostCopper -= e.amountCopper;
+    if (e.type === 'money.changed' && (e.reason === 'building' || e.reason === 'rooms')) {
+      if (e.reason === 'building') c.houseCostCopper -= e.amountCopper;
       const y = yearOfEvent(e) - 1;
-      c.buildingByYear[y] = (c.buildingByYear[y] ?? 0) - e.amountCopper;
+      c.houseMoneyByYear[y] = (c.houseMoneyByYear[y] ?? 0) - e.amountCopper;
     }
     if (e.type === 'money.changed' && e.amountCopper < 0 && yearOfEvent(e) >= 10) {
       c.spendingLateCopper -= e.amountCopper;
