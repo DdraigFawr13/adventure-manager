@@ -66,6 +66,8 @@ The anchor is **one in-game season ≈ 2–2.5 h** for a typical player (owner's
 
 ### 1d. Success criteria (Accepted 2026-10-26, D-065)
 
+**Under review (2026-10-27, D-150):** the Steam-review and Steam-data measures need phone sources. The owner decides them (D-065, D-088).
+
 Accepted 2026-10-26 as a starting set (D-065); numbers are estimates, revisited in §10 and §14. Measured after release from opt-in, offline-friendly telemetry or store data (method decided in §10):
 
 - **Demo:** at least 15% of demo players who finish the free seasons buy the game.
@@ -621,6 +623,8 @@ Decisions: D-088, D-089. Ties the §1 targets (D-065) and the §9 pass lines (D-
 
 ### 10c. How data is collected (Accepted 2026-10-26, D-088)
 
+**Under review (2026-10-27, D-150):** the release still sends nothing, but the Steam data and achievement rates named here have no phone equivalent yet.
+
 Owner's note: "1 but leave 2 open as a future option."
 
 - **Playtest builds** write a local log of the §10b measures; testers choose to send it with their feedback. No server.
@@ -666,6 +670,8 @@ What the game mostly is: ledgers, letters and inspectors (dense typography), plu
 | Iteration with AI help | Fastest: one language, and the mock-ups are already HTML | Good | Fair |
 
 ### 11b. Architecture (Accepted 2026-10-26, D-091)
+
+**Amended (2026-10-27, D-154, D-158):** on phones, saves use the stores' own backup in place of Steam Cloud, and the shell is a phone app wrapper in place of Electron for the launch.
 
 Packages (one repository):
 
@@ -844,6 +850,8 @@ Total to launch: **about 31–46 months** (about 2.5–4 years) from plan approv
 
 ### 13b. Rules across milestones (Accepted 2026-10-26, D-099, D-100)
 
+**Under review (2026-10-27, D-150):** the Steam page from M2 and Early Access are Steam-only. Their phone equivalents are open.
+
 - **Art money follows proof.** No bulk art or music is commissioned before M1 passes R1 and R2 (the game is fun to watch and the economy holds). M2 commissions only the slice's corner, and the map's full base waits for alpha balance (§12d); bulk art starts once alpha balance is stable, so systems that change late don't waste drawings (§12).
 - **The slice sets the bar, the alpha sets the breadth.** The slice is small but final quality, so it tests feel and readability; the alpha is wide but rough, so it tests systems and balance.
 - **Content grows as data.** Content added after M2 is data entries only (GAME-04); the content validator runs in CI from M2.
@@ -925,6 +933,8 @@ Figures restated on 2026-10-26 for the lean cut and solo timeline (D-108, D-109)
 
 ### 14e. Assumptions to check (Accepted 2026-10-26, D-103)
 
+**Amended (2026-10-27, D-157):** check the restated mobile-first figures in D-157, not the Steam ones below.
+
 Each is an assumption the budget rests on; if one breaks, §14 is revisited at the next gate.
 
 1. Art and audio quotes land within the §12c ranges.
@@ -935,6 +945,8 @@ Each is an assumption the budget rests on; if one breaks, §14 is revisited at t
 
 ### 14f. Wishlists and testers (Accepted 2026-10-26, D-113)
 
+**Under review (2026-10-27, D-150):** wishlists and Steam playtest recruiting have no phone version yet. Test builds go through the stores' test tracks (D-158).
+
 - **Wishlist targets** (estimates, to check against current store data when the page goes up at M2): about 1,000 at the slice gate, about 5,000 after the demo's first festival, 10,000 or more at launch. Missing a target by half goes to the owner at that gate.
 - **Audience:** a short devlog about once a month from M2 (map art, letters, a death in the Chronicle), linked from the Steam page.
 - **Testers:** alpha and beta testers come from a sign-up on the Steam page (Steam's own playtest feature) and the devlog. A community space (such as a Discord server) is the owner's call at M2 (SAFE-01).
@@ -942,6 +954,8 @@ Each is an assumption the budget rests on; if one breaks, §14 is revisited at t
 ---
 
 ## 15. Quality, CI and release process (Accepted 2026-10-26)
+
+**Amended (2026-10-27, D-158):** for the phone launch, the stores' test tracks, staged rollouts, fix-forward releases and phone screen tests (375 and 430 points) replace the Steam and 1366×768 items below.
 
 Decisions: D-105, D-106, D-114. Inputs: tools review (D-092..D-094, `docs/design/TOOLS-REVIEW.md` §3), architecture and saves (D-091), milestones (D-099), playtest logs (D-088), team (D-102), shared rules CI-01..CI-06, VER-01..VER-07, GAME-01..GAME-06. Tool names for the checks follow the engine test (D-090); the shape below holds for either engine.
 
