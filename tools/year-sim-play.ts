@@ -1,6 +1,9 @@
 // One seeded guild year played by a fixed policy (used by tools/year-sim.ts).
 import {
   apply,
+  bedsOf,
+  simulate,
+  upkeepOf,
   checkGuildInvariants,
   checkInvariants,
   isFree,
@@ -15,7 +18,7 @@ import {
   AREAS,
   weekInYear,
 } from '@adventure-manager/engine';
-import { baseResolution } from '@adventure-manager/content';
+import { baseResolution, type HousePlanStep } from '@adventure-manager/content';
 export const POLICIES: Readonly<Record<string, Plan>> = {
   default: { approach: 'assault', risk: 'steady', retreat: 'leader' },
   cautious: { approach: 'assault', risk: 'cautious', retreat: 'down' },
@@ -83,7 +86,12 @@ export interface RunOptions {
   readonly onDay?: (state: GameState) => void;
   /** Refuse the patron's emergency grant instead of taking it (a comparison run). */
   readonly refuseGrants?: boolean;
+  /** With house rules on: the build plan to follow, one job at a time (the career tool's house mode). */
+  readonly housePlan?: readonly HousePlanStep[];
 }
+
+/** Weeks of spending the house policy keeps in the chest after paying for a step. */
+const HOUSE_RESERVE_WEEKS = 12;
 
 export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tracked {
   const size = options.size ?? GUILD_SIZE;
@@ -136,7 +144,13 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
     // The simulated player takes the patron's emergency grant (D-146) unless told to refuse.
     if (now().career?.emergencyOffer && now().chestCopper < 0 && !options.refuseGrants)
       run({ type: 'patron.grant', day });
-    while (now().prospects.length > 0 && now().members.length < size) {
+    if (options.housePlan) houseStep(day);
+    const houseRules = state.content.guild?.house;
+    const beds = () => {
+      const h = now().house;
+      return h && houseRules ? bedsOf(h, houseRules) : Infinity;
+    };
+    while (now().prospects.length > 0 && now().members.length < Math.min(size, beds())) {
       const cheapest = [...now().prospects].sort(
         (a, b) => a.wageCopper - b.wageCopper || (a.adventurer.id < b.adventurer.id ? -1 : 1),
       )[0]!; // non-null: the list is not empty.
@@ -149,6 +163,40 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
       if (!offer || party.length < rules.partySize.min) break;
       run({ type: 'contract.take', day, offerId: offer.id, partyIds: party, plan: planToUse });
     }
+  };
+
+  /** The house policy: at a week start with no work running, start the plan's next step if the chest after paying keeps 12 weeks of spending. */
+  let planStep = 0;
+  const houseStep = (day: number) => {
+    const plan = options.housePlan;
+    const guild = now();
+    const houseRules = state.content.guild?.house;
+    if (!plan || !guild.house || !houseRules || planStep >= plan.length) return;
+    if ((day - 1) % rules.daysPerWeek !== 0 || guild.house.work.length > 0) return;
+    const step = plan[planStep]!; // non-null: planStep < plan.length.
+    const command: Bare =
+      step.type === 'build'
+        ? { type: 'house.build', day, place: step.place, kindId: step.kindId }
+        : step.type === 'upgrade'
+          ? { type: 'house.upgrade', day, place: step.place }
+          : { type: 'house.extend', day, direction: step.direction };
+    let cost: number;
+    try {
+      // A preview on a copy: only the cost is wanted, and a chest too thin for it is not an error.
+      // cast-ok: the id is added to a bare command, so the union member is whole.
+      const preview = simulate(state, { ...command, id: 'preview' } as Command);
+      cost = -preview.events.flatMap((e) =>
+        e.type === 'money.changed' && e.reason === 'building' ? [e.amountCopper] : [],
+      )[0]!; // non-null: a started job pays once, for building.
+    } catch (error) {
+      if (error instanceof Error && /chest/.test(error.message)) return;
+      throw error;
+    }
+    const wages = guild.members.reduce((sum, m) => sum + m.wageCopper, 0);
+    const weekly = wages + rules.runningCostCopper + upkeepOf(guild.house, houseRules);
+    if (guild.chestCopper - cost < HOUSE_RESERVE_WEEKS * weekly) return;
+    run(command);
+    planStep += 1;
   };
 
   /** A full delegator (R6): each area goes to the best listed candidate better than the staff member already hired, if a year's wage is in the chest; the guildmaster's own skill is never weighed. */

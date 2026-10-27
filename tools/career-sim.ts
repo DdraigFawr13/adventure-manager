@@ -2,16 +2,18 @@
 // their founding until the guildmaster's career ends (or a cap), with careers on, rivals abstract,
 // and the one-year simulator's player policy. The invariants run over every career.
 // Usage: node tools/career-sim.ts [careers=100] [maxYears=40] [policy=default|cautious|bold|compare]
-//   [staff=off|compare] [size=15] [grants=take|refuse]
+//   [staff=off|compare] [size=15] [grants=take|refuse] [house=off|on]
 // With policy=compare, each seed is also played cautious and bold, for §9d's no-dominant-safe-play check.
 // With staff=compare, each seed is played hands-on (the guildmaster runs training and recovery)
 // and delegated (the best affordable hire runs both), and R6 compares the two (staff/SPEC.md).
+// With house=on, the guild plays with the house rules and builds the content's fullHousePlan one
+// job at a time (house/SPEC.md, D-172); the house lines are added to the report.
 // Careers run on worker threads across the machine's cores (D-148); results are put back in seed
 // order, so the report is the same however many threads ran it. CAREER_SIM_THREADS overrides.
 import { availableParallelism } from 'node:os';
 import { Worker } from 'node:worker_threads';
 import { PLAYER_ID } from '@adventure-manager/engine';
-import { careerGuildRules } from '@adventure-manager/content';
+import { careerGuildRules, fullHousePlan } from '@adventure-manager/content';
 import { pct, type Career, type CareerJob, type CareerSetup } from './career-play.ts';
 import { GUILD_SIZE, POLICIES } from './year-sim-play.ts';
 
@@ -29,7 +31,11 @@ const grantsArg = process.argv[7] ?? 'take';
 if (grantsArg !== 'take' && grantsArg !== 'refuse')
   throw new Error(`Unknown grants mode ${grantsArg}.`);
 const refuseGrants = grantsArg === 'refuse';
-const setup: CareerSetup = { maxYears, staffMode, size, refuseGrants };
+const houseMode = process.argv[8] ?? 'off';
+if (houseMode !== 'off' && houseMode !== 'on') throw new Error(`Unknown house mode ${houseMode}.`);
+if (houseMode === 'on' && staffMode !== 'off')
+  throw new Error('house=on plays one side; use staff=off.');
+const setup: CareerSetup = { maxYears, staffMode, size, refuseGrants, houseMode };
 const TIERS = ['bottom', 'middle', 'top'];
 
 const line = (label: string, values: number[], target: string, digits = 1) =>
@@ -85,7 +91,7 @@ async function playAll(all: readonly CareerJob[]): Promise<Career[]> {
 }
 
 console.log(
-  `${careers} careers, policy ${policyName}, staff ${staffMode === 'compare' ? 'hands-on (delegated below)' : 'off'}, cap ${maxYears} years; a founded guild of ${size} in the bottom tier (assumptions: packages/content/src/base/career.ts)`,
+  `${careers} careers, policy ${policyName}, staff ${staffMode === 'compare' ? 'hands-on (delegated below)' : 'off'}${houseMode === 'on' ? ', house on' : ''}, cap ${maxYears} years; a founded guild of ${size} in the bottom tier (assumptions: packages/content/src/base/career.ts)`,
 );
 console.log(
   line(
@@ -261,6 +267,77 @@ function reportR6(): void {
     `  hands-on better by, as a share of delegated: training ${gain(hands.growth, del.growth)} (growth), recovery ${((100 * (del.injury - hands.injury)) / Math.max(1e-9, del.injury)).toFixed(1)}% (injury days saved) [10-25% each]; running both yourself costs ${(hands.stops - del.stops).toFixed(1)} stop days a year`,
   );
 }
+if (houseMode === 'on') reportHouse();
+
+function reportHouse(): void {
+  const years = (pick: (r: Career) => number | null) => results.flatMap((r) => pick(r) ?? []);
+  const started = years((r) => r.houseFirstStarted);
+  const finished = years((r) => r.houseFirstFinished);
+  const done = results.filter((r) => r.houseCompleted !== null);
+  console.log(
+    `House (fullHousePlan, ${fullHousePlan.length} jobs; assumptions: packages/content/src/base/house.ts); started a job in ${started.length} of ${careers} careers`,
+  );
+  const firstWeeks = results.flatMap((r) => r.houseFirstWeek ?? []);
+  if (firstWeeks.length > 0)
+    console.log(
+      line(
+        '  first plan step started (week from founding)',
+        firstWeeks,
+        'first room in season 1: week 48 or before',
+        0,
+      ),
+    );
+  if (finished.length > 0)
+    console.log(line('  first plan step finished (year)', finished, 'year 1', 0));
+  console.log(
+    `  plan completed in ${done.length} of ${careers} careers (${((100 * done.length) / careers).toFixed(0)}%)`,
+  );
+  // Yearly surplus before the house: the chest at a year end less the previous year end, plus what
+  // that year paid for building and room upkeep, by the tier played that year (D-172 measures the
+  // house against a mid guild's surplus; grants stay in, as they do in a house=off run).
+  const gains = results.flatMap((r) =>
+    r.tierByYear.flatMap((tier, y) => {
+      const now = r.chestByYear[y];
+      const before = r.chestByYear[y - 1];
+      return tier === 1 && y >= 1 && now !== undefined && before !== undefined
+        ? [{ gain: now - before + (r.houseMoneyByYear[y] ?? 0) }]
+        : [];
+    }),
+  );
+  const medianGain = pct(
+    gains.map((g) => g.gain),
+    50,
+  );
+  console.log(
+    `  middle tier median yearly surplus before house money (building and room upkeep), this run: ${medianGain} copper over ${gains.length} career-years`,
+  );
+  if (done.length === 0) {
+    console.log('  no career completed the plan: no completion year, cost or ratio to report');
+  } else {
+    console.log(
+      line(
+        '  plan completed (year)',
+        done.map((r) => r.houseCompleted!), // non-null: filtered.
+        'full house 8-12 years of surplus',
+        0,
+      ),
+    );
+    const costs = done.map((r) => r.houseCostCopper);
+    console.log(line('  plan total cost (copper), plan finishers only', costs, 'tuning', 0));
+    console.log(
+      line(
+        '  plan cost / middle-tier surplus (years), plan finishers only',
+        costs.map((c) => c / medianGain),
+        'full house 8-12 years of surplus',
+      ),
+    );
+  }
+  const share = results
+    .filter((r) => r.spendingLateCopper > 0)
+    .map((r) => (100 * r.roomsLateCopper) / r.spendingLateCopper);
+  console.log(line('  room upkeep share of all spending, years 10+ (%)', share, 'tuning'));
+}
+
 console.log(
   line(
     'runtime per career (s)',

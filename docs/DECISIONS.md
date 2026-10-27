@@ -1119,6 +1119,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27).
 - **Decision:** Every room kind has 3 levels, like the town sites (D-171). A cell costs more the higher or deeper it is, so the first upper storey and the first cellar are cheap and the tenth is not. Pacing targets for the year simulator, from the option the owner chose: the first extra room is affordable in the first season, and a full house costs about 8–12 years of a mid guild's surplus, the old facilities' target (PLAN §5c). Kinds may differ in width (some 1 cell only, some up to 3); the exact costs, widths and capacities are set in the simulator. Mock-up: `docs/design/mockups/guild-house.html` (https://claude.ai/artifact/D57ueUj99aC7vVxZX9hMLU).
 - **Why:** Owner's choice (2026-10-27), the recommended option "3 levels, height costs", over a flat cell cost and over 5 levels. It keeps the money target the simulator already checks, and the level count matches the town.
+- **Amended (2026-10-27, D-185):** "costs more the higher or deeper" applies to the extensions (each storey, cellar or wall push dearer than the last), not to rooms by floor.
 
 ## D-173 The house has a few incidents, as letters
 
@@ -1151,6 +1152,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27).
 - **Decision:** Each room costs a small weekly upkeep that rises with its level, shown on the room's page and on the desk's Money page. Amounts are set in the year simulator, with D-172's pacing targets.
 - **Why:** Owner's choice (2026-10-27), the recommended option "Small weekly upkeep", over no upkeep. A big house has a running price, and late-game money gets another sink (the roadmap's money risk).
+- **Amended (2026-10-27, D-185):** sized at about 20% of spending from year 10.
 
 ## D-178 A compound around the hall, with outdoor-only buildings
 
@@ -1195,3 +1197,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Settles the town's layout, left open in D-179.
 - **Decision:** The home town is one hand-drawn map, the same in every new game. It shows the 5 launch sites already standing (D-171), some unfunded at the start; the guild's compound; the council hall of its city faction (D-181); and 3 empty plots held for site kinds added in updates. At launch the guild's first payment to an unfunded site counts as founding it (D-179). Not settled: what the 3 spare plots show at launch before any update fills them.
 - **Why:** Owner's choice (2026-10-27), the recommended option "Hand-made, 5 sites + 3 plots", over a town generated per game and over a town of 5 empty plots. The map art is drawn once and reads the same in every game.
+
+## D-185 Room upkeep near 20% of late spending, a lever to adjust
+
+- **Status:** Accepted (2026-10-27). Sizes D-177's "small weekly upkeep"; confirms the session's reading of D-172.
+- **Decision:** Room upkeep is set so that, in the career simulator with the house on, it comes to about 20% of all spending from year 10 (measured 20.0%, p10 12.5%, p90 26%, 40 careers), up from the first pass's 13%. Content: 8 / 17 / 34 copper per cell per week by level. It is a lever to adjust with playtests. And D-172's "a cell costs more the higher or deeper it is" means each new storey, cellar or wall push costs more than the last; a room costs the same on any floor that exists.
+- **Why:** Owner (2026-10-27), asked whether 13% counted as small: "Raise to 20 but this is a lever we can adjust if needed." On height costs the owner chose the recommended "Extensions only" over a per-floor surcharge on every room.

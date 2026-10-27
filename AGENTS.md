@@ -22,6 +22,7 @@ Concept, style and plan are done; the plan was approved on 2026-10-26 (D-115), a
 - Every push that touches code: `npm run check` (format, typecheck, package boundaries, tests). Install with npm 11 (`npx npm@11.9.0 ci`); npm 10 crashes on this lockfile's optional peers.
 - Chain checks, commit and push with `&&`, never `;`, so a failed check stops the commit (LESSONS ×2).
 - Stop a background run by its PID (`ps -eo pid,args`), never `pkill -f`: the pattern matches the shell running it (LESSONS ×3).
+- A baseline run in a git worktree needs its own `node_modules/@adventure-manager` links to the worktree's packages; the shared ones load this branch's code (LESSONS ×2).
 - Code rules: `docs/STANDARDS.md`; each package's `AGENTS.md` adds its local rules.
 
 ## What CI runs

@@ -8,6 +8,7 @@ import { drawPerson, engage, listProspects } from './people.ts';
 import { startCareer, settleYear } from '../career/year.ts';
 import { offerEmergency } from '../career/emergency.ts';
 import { crisisAssembly, crisisWeek } from '../crisis/chain.ts';
+import { houseWeek, startHouse } from '../house/house.ts';
 import { staffAssembly, staffWeek, startStaff } from '../staff/areas.ts';
 import {
   guildTurn,
@@ -77,6 +78,7 @@ export function foundGuild(
   pay(turn, rules.startingChestCopper, 'founding', command.id);
   startCareer(turn, command.id);
   startStaff(turn);
+  startHouse(turn, command.size);
   for (let n = 0; n < command.size; n += 1) engage(turn, drawPerson(turn), command.id);
   runDay(turn, command.id);
 }
@@ -147,6 +149,7 @@ function weekStart(turn: GuildTurn, causeId: string, stops: Set<StopReason>): vo
   if (wages > 0) pay(turn, -wages, 'wages', started);
   pay(turn, -rules.runningCostCopper, 'upkeep', started);
   const campaigning = week > rules.assemblyWeeks && week < rules.winterFromWeek;
+  houseWeek(turn, started);
   staffWeek(turn, campaigning ? week - rules.assemblyWeeks : null, started, stops);
   expireOffers(turn, weekOf(state.calendar, rules), started);
   postOffers(turn, week, weekOf(state.calendar, rules), started);

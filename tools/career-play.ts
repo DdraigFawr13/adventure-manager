@@ -8,7 +8,13 @@ import {
   type Area,
   type GameEvent,
 } from '@adventure-manager/engine';
-import { baseResolution, careerGuildRules, staffGuildRules } from '@adventure-manager/content';
+import {
+  baseResolution,
+  careerGuildRules,
+  fullHousePlan,
+  houseGuildRules,
+  staffGuildRules,
+} from '@adventure-manager/content';
 import { POLICIES, rules, runYear } from './year-sim-play.ts';
 
 export interface CareerSetup {
@@ -16,6 +22,7 @@ export interface CareerSetup {
   readonly staffMode: 'off' | 'compare';
   readonly size: number;
   readonly refuseGrants: boolean;
+  readonly houseMode: 'off' | 'on';
 }
 
 /** One career to play: its seed, the player policy's name, and whether staff run both areas. */
@@ -55,6 +62,17 @@ export interface Career {
   injuryDays: number[];
   skillDays: Record<Area, number>;
   days: number;
+  /** House mode: the year the first plan job started and finished, the year the whole plan was done, copper paid for building, and room upkeep and all spending in years 10+. */
+  houseFirstStarted: number | null;
+  houseFirstFinished: number | null;
+  houseCompleted: number | null;
+  houseCostCopper: number;
+  /** Copper paid for building and for room upkeep in each year (index 0 is year 1), so the surplus before any house money can be read. */
+  houseMoneyByYear: number[];
+  /** The week (counted from the founding) the first plan step was started. */
+  houseFirstWeek: number | null;
+  roomsLateCopper: number;
+  spendingLateCopper: number;
   seconds: number;
 }
 
@@ -65,7 +83,12 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
   if (!planToUse) throw new Error(`Unknown policy ${job.policy}.`);
   const content = {
     ...baseResolution,
-    guild: setup.staffMode === 'compare' ? staffGuildRules : careerGuildRules,
+    guild:
+      setup.houseMode === 'on'
+        ? houseGuildRules
+        : setup.staffMode === 'compare'
+          ? staffGuildRules
+          : careerGuildRules,
   };
   const started = performance.now();
   const skillDays: Record<Area, number> = { training: 0, recovery: 0 };
@@ -77,6 +100,7 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     lastDay: maxYears * yearDays,
     delegate,
     refuseGrants,
+    ...(setup.houseMode === 'on' ? { housePlan: fullHousePlan } : {}),
     onDay: (state) => {
       const staff = state.guild?.staff;
       if (!staff) return;
@@ -107,8 +131,17 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     injuryDays: [],
     skillDays,
     days,
+    houseFirstStarted: null,
+    houseFirstFinished: null,
+    houseCompleted: null,
+    houseCostCopper: 0,
+    houseMoneyByYear: [],
+    houseFirstWeek: null,
+    roomsLateCopper: 0,
+    spendingLateCopper: 0,
     seconds: 0,
   };
+  let housesFinished = 0;
   const yearOfEvent = (e: GameEvent) => yearOf(e.day, rules);
   for (const e of events) {
     if (e.type === 'year.settled') {
@@ -144,6 +177,24 @@ export function playCareer(setup: CareerSetup, job: CareerJob): Career {
     if (e.type === 'patron.offered') c.firstOfferYear ??= yearOfEvent(e);
     if (e.type === 'money.changed' && e.reason === 'emergency' && yearOfEvent(e) <= 2)
       c.earlyGrantCopper += e.amountCopper;
+    if (e.type === 'house.started') {
+      c.houseFirstStarted ??= yearOfEvent(e);
+      c.houseFirstWeek ??= Math.floor((e.day - 1) / rules.daysPerWeek) + 1;
+    }
+    if (e.type === 'house.finished') {
+      c.houseFirstFinished ??= yearOfEvent(e);
+      housesFinished += 1;
+      if (housesFinished === fullHousePlan.length) c.houseCompleted = yearOfEvent(e);
+    }
+    if (e.type === 'money.changed' && (e.reason === 'building' || e.reason === 'rooms')) {
+      if (e.reason === 'building') c.houseCostCopper -= e.amountCopper;
+      const y = yearOfEvent(e) - 1;
+      c.houseMoneyByYear[y] = (c.houseMoneyByYear[y] ?? 0) - e.amountCopper;
+    }
+    if (e.type === 'money.changed' && e.amountCopper < 0 && yearOfEvent(e) >= 10) {
+      c.spendingLateCopper -= e.amountCopper;
+      if (e.reason === 'rooms') c.roomsLateCopper -= e.amountCopper;
+    }
     if (e.type === 'money.changed') c.chestByYear[yearOfEvent(e) - 1] = e.chestCopper;
   }
   if (c.end === 'cap') c.years = maxYears;
