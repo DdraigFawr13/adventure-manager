@@ -647,6 +647,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Launch price $24.99, with about $12.50–15 net per copy (estimate) and break-even at about 4,000–15,000 copies solo. English only at launch; translation decided after launch on regional sales. Paid expansions decided after launch (D-040). Detail: `docs/design/PLAN.md` §14c.
 - **Amended (2026-10-26, D-109):** break-even about 3,500–14,000 copies solo, cash costs only.
+- **Replaced for the phone launch (2026-10-27, D-152):** free download with a $14.99 unlock; break-even to be redone. English only at launch stands.
 - **Why:** Owner's choice (Plan Q14b): in line with comparable deep management games and an easy buy after the free demo.
 
 ## D-105 Quality, CI and release process
@@ -939,3 +940,9 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-27). Replaces D-106 (re-plan under D-150).
 - **Decision:** The game launches on iPhone and Android phones at the same time, held upright, as one web-tech codebase wrapped for both stores. Tablets run the phone layout scaled up; a tablet layout of its own is decided later (D-149 leaves it open). Windows follows after launch, and the order of later platforms (Windows, Mac, Steam Deck) is decided then. iPhone builds need a Mac, bought or rented; that cost is set in the budget re-plan.
 - **Why:** Owner's choice (re-plan question 1, 2026-10-27), the recommended option: "iPhone + Android". One build serves both stores, and premium games usually sell best on iPhone.
+
+## D-152 Free download, first season free, one $14.99 unlock
+
+- **Status:** Accepted (2026-10-27). Replaces D-104's $24.99 price for the phone launch (re-plan under D-150); D-040's model holds: one purchase, a free demo, no microtransactions.
+- **Decision:** On both phone stores the game is a free download. The first season is the demo (D-040, PLAN M4). A single in-app purchase of $14.99 unlocks the full game, for good, with no other purchases. Net per sale is about $10–12 after the store's cut and sales taxes (estimate; the small-developer cut of about 15% is to be rechecked at sign-up). Break-even and the budget are redone in the budget re-plan. English only at launch stays (D-104).
+- **Why:** Owner's choice (re-plan question 2, 2026-10-27), the recommended option: "Free + $14.99 unlock". It keeps the free demo from D-040 and a premium price for a deep game, near what phone players will pay (the session's judgement, not measured).
