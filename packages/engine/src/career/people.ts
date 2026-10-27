@@ -4,7 +4,7 @@ import { clamp, divRoundDown } from '../core/math.ts';
 import { BP_CERTAIN, streamFor } from '../core/rng.ts';
 import type { GuildTurn } from '../guild/turn.ts';
 import { yearOf } from '../guild/turn.ts';
-import type { StopReason } from '../guild/types.ts';
+import type { PersonMods, StopReason } from '../guild/types.ts';
 import { trainingBp } from '../staff/areas.ts';
 import { ATTRIBUTES, type Adventurer, type Attribute } from '../resolution/types.ts';
 
@@ -14,15 +14,19 @@ const PHYSICAL: readonly Attribute[] = ['might', 'agility', 'toughness'];
 export function drawLife(
   turn: GuildTurn,
   attributes: Readonly<Record<Attribute, number>>,
+  mods: PersonMods = {},
 ): Pick<Adventurer, 'birthYear' | 'potential'> {
   const career = turn.rules.career;
   if (!career) return {};
-  const rng = streamFor(turn.state, 'career.potential');
-  const age = rng.between(career.drawAge.min, career.drawAge.max);
+  // A draft draws its own lives, so it leaves the shared stream for later prospects (D-188).
+  const rng = streamFor(turn.state, mods.stream ? `${mods.stream}-life` : 'career.potential');
+  const band = mods.age ?? career.drawAge;
+  const age = rng.between(band.min, band.max);
+  const bonus = mods.potentialBonus ?? 0;
   const potential = Object.fromEntries(
     ATTRIBUTES.map((a) => [
       a,
-      Math.min(20, attributes[a] + rng.between(career.potential.min, career.potential.max)),
+      Math.min(20, attributes[a] + rng.between(career.potential.min, career.potential.max) + bonus),
     ]),
   );
   // cast-ok: built from every name in ATTRIBUTES just above.

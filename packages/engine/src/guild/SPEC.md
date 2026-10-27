@@ -35,3 +35,18 @@ Money adds up (every `money.changed` carries the running chest; the last equals 
 ## Derived state
 
 Some fields are bookkeeping read back from events, not changes of their own: who is away (set by `party.departed`, cleared by `party.returned`), the day a member is fit again (shown by `member.recovered`), today's date (the command's day), and the shortlist being emptied outside a window (it only ever holds the last `prospect.listed`). They need no events of their own.
+
+## Founding draft (D-188)
+
+With `founding` rules in content, `guild.found` doesn't draw a roster. It pays the founding purse into the chest (`money.changed`, reason `founding`) and lists the draft: 3 starter parties of 5 and a shortlist of extras, all drawn from the seed on the draft's own streams (`guild.founding` for attributes and class, `guild.founding-life` for ages and potential, `guild.founding-names` for names), so the shared streams later prospects draw from are untouched. Until `guild.pick` settles the draft, `day.advance` is refused.
+
+- **Party characters** are content: each has a name id, an attribute shift (added to every drawn attribute, kept within 1-20), an age band, a potential bonus and a fee share (`feeBp`). The numbers are assumptions in `packages/content/src/base/founding.ts`. Each listed party has one character, in content order.
+- **Extras:** `extras.offered` people drawn as normal prospects (no shift).
+- **Fees:** each picked person costs `feeWeeks` of their wage (like the sign-on fee, D-138), paid at the pick (reason `sign-on`). A party's members pay that times their character's `feeBp` (a premium for a seasoned party, a discount for a green one); extras pay the plain fee. A party's fee is the sum of its members'. The pick happens on the founding day after its week start, so the chest it pays from already holds the year's grant less the week's running costs; the pick also pays the picked people's first week of wages (reason `wages`), which that week start could not.
+- **`guild.pick`** (party index, extra ids): exactly one party and `extras.min`-`extras.max` extras from the shortlist, no repeats; refused if the fees exceed the chest or the beds (house rules) can't hold everyone. Picked people join (`recruit.signed`), the draft is cleared, and the house's bed check runs against the picked roster.
+- Events: `founding.listed` per listed person (party index or extra, class, wage, fee), `founding.picked`.
+- Without `founding` rules, `guild.found` draws `size` people as before.
+
+### Simulator
+
+The career simulator's house mode founds through the draft. Its player picks a party by a policy (default balanced; `seasoned` and `green` to compare) and the 2 cheapest extras. Target: the purse leaves about 30,000 after a balanced pick (the measured stand-in, 15% dismissed); compare the three characters' dismissals, year-1 chest and early renown.

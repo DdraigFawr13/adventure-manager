@@ -88,6 +88,8 @@ export interface RunOptions {
   readonly refuseGrants?: boolean;
   /** With house rules on: the build plan to follow, one job at a time (the career tool's house mode). */
   readonly housePlan?: readonly HousePlanStep[];
+  /** With founding rules: the character of the starter party to pick (D-188); default balanced. */
+  readonly party?: string;
 }
 
 /** With the house on: the roster the policy grows toward as beds allow. */
@@ -170,6 +172,21 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
     }
   };
 
+  /** With a founding draft (D-188): the party of the chosen character and the 2 cheapest extras. */
+  const pickFounders = () => {
+    const draft = now().draft;
+    const founding = state.content.guild?.founding;
+    if (!draft || !founding) return;
+    const character = options.party ?? 'balanced';
+    const partyIndex = founding.characters.findIndex((c) => c.id === character);
+    if (partyIndex < 0) throw new Error(`Unknown party character ${character}.`);
+    const extraIds = [...draft.extras]
+      .sort((a, b) => a.wageCopper - b.wageCopper || (a.adventurer.id < b.adventurer.id ? -1 : 1))
+      .slice(0, founding.extras.min)
+      .map((p) => p.adventurer.id);
+    run({ type: 'guild.pick', day: 1, partyIndex, extraIds });
+  };
+
   /** The house policy: at a week start with no work running, start the plan's next step if the chest after paying keeps 12 weeks of spending. */
   let planStep = 0;
   const houseStep = (day: number) => {
@@ -241,6 +258,7 @@ export function runYear(seed: string, plan: Plan, options: RunOptions = {}): Tra
   };
 
   run({ type: 'guild.found', day: 1, size });
+  pickFounders();
   afterDay();
   // A career run stops when the guildmaster's career ends (career/SPEC.md).
   for (let day = 2; day <= lastDay && !state.guild?.career?.ended; day += 1) {

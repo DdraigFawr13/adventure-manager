@@ -7,6 +7,7 @@ import { takeEmergency } from './career/emergency.ts';
 import { EventSink } from './core/events.ts';
 import { takeContract } from './guild/board.ts';
 import { advanceDay, foundGuild } from './guild/day.ts';
+import { pickDraft } from './guild/founding.ts';
 import { signRecruit } from './guild/people.ts';
 import { buildRoom, extendHouse, upgradeRoom } from './house/house.ts';
 import { hireStaff, releaseStaff } from './staff/areas.ts';
@@ -45,6 +46,9 @@ export function apply(state: GameState, command: Command): readonly GameEvent[] 
       break;
     case 'guild.found':
       foundGuild(state, command, sink);
+      break;
+    case 'guild.pick':
+      pickDraft(state, command, sink);
       break;
     case 'day.advance':
       advanceDay(state, command, sink);

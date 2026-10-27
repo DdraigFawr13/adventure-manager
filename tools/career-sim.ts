@@ -3,17 +3,27 @@
 // and the one-year simulator's player policy. The invariants run over every career.
 // Usage: node tools/career-sim.ts [careers=100] [maxYears=40] [policy=default|cautious|bold|compare]
 //   [staff=off|compare] [size=15, or 7 with house=on] [grants=take|refuse] [house=off|on]
+//   [party=balanced|seasoned|green|compare]
 // With policy=compare, each seed is also played cautious and bold, for §9d's no-dominant-safe-play check.
 // With staff=compare, each seed is played hands-on (the guildmaster runs training and recovery)
 // and delegated (the best affordable hire runs both), and R6 compares the two (staff/SPEC.md).
 // With house=on, the guild plays with the house rules and builds the content's fullHousePlan one
 // job at a time (house/SPEC.md, D-172); the house lines are added to the report.
+// With house=on the guild is founded through the draft (D-188): the player picks the starter party of
+// the character named by party (default balanced) and the 2 cheapest extras. With party=compare, each
+// seed is played with all three characters and the report compares them (dismissals, year-1 chest,
+// first-year renown, bad starts); the main report is the balanced party's. The size is unused then.
 // Careers run on worker threads across the machine's cores (D-148); results are put back in seed
 // order, so the report is the same however many threads ran it. CAREER_SIM_THREADS overrides.
 import { availableParallelism } from 'node:os';
 import { Worker } from 'node:worker_threads';
 import { PLAYER_ID } from '@adventure-manager/engine';
-import { careerGuildRules, fullHousePlan, houseGuildRules } from '@adventure-manager/content';
+import {
+  baseFoundingRules,
+  careerGuildRules,
+  fullHousePlan,
+  houseGuildRules,
+} from '@adventure-manager/content';
 import { pct, type Career, type CareerJob, type CareerSetup } from './career-play.ts';
 import { GUILD_SIZE, POLICIES } from './year-sim-play.ts';
 
@@ -37,6 +47,11 @@ const houseMode = process.argv[8] ?? 'off';
 if (houseMode !== 'off' && houseMode !== 'on') throw new Error(`Unknown house mode ${houseMode}.`);
 if (houseMode === 'on' && staffMode !== 'off')
   throw new Error('house=on plays one side; use staff=off.');
+const partyArg = process.argv[9] ?? 'balanced';
+const CHARACTERS = baseFoundingRules.characters.map((c) => c.id);
+const compareParties = partyArg === 'compare';
+const partyName = compareParties ? 'balanced' : partyArg;
+if (!CHARACTERS.includes(partyName)) throw new Error(`Unknown party ${partyName}.`);
 const setup: CareerSetup = { maxYears, staffMode, size, refuseGrants, houseMode };
 const TIERS = ['bottom', 'middle', 'top'];
 
@@ -48,16 +63,20 @@ const line = (label: string, values: number[], target: string, digits = 1) =>
 const jobs: CareerJob[] = [];
 for (let n = 0; n < careers; n += 1) {
   const seed = `career-${n}`;
-  jobs.push({ seed, policy: policyName, delegate: false });
-  if (staffMode === 'compare') jobs.push({ seed, policy: policyName, delegate: true });
+  jobs.push({ seed, policy: policyName, delegate: false, party: partyName });
+  if (compareParties && houseMode === 'on')
+    for (const party of CHARACTERS.filter((c) => c !== partyName))
+      jobs.push({ seed, policy: policyName, delegate: false, party });
+  if (staffMode === 'compare')
+    jobs.push({ seed, policy: policyName, delegate: true, party: partyName });
   if (comparePolicies) {
-    jobs.push({ seed, policy: 'cautious', delegate: false });
-    jobs.push({ seed, policy: 'bold', delegate: false });
+    jobs.push({ seed, policy: 'cautious', delegate: false, party: partyName });
+    jobs.push({ seed, policy: 'bold', delegate: false, party: partyName });
   }
 }
 const played = await playAll(jobs);
 const pick = (keep: (job: CareerJob) => boolean) => played.filter((_, i) => keep(jobs[i]!)); // non-null: one result per job.
-const results = pick((j) => j.policy === policyName && !j.delegate);
+const results = pick((j) => j.policy === policyName && !j.delegate && j.party === partyName);
 const delegated = pick((j) => j.delegate);
 const cautious = comparePolicies ? pick((j) => j.policy === 'cautious') : [];
 const bold = comparePolicies ? pick((j) => j.policy === 'bold') : [];
@@ -93,7 +112,7 @@ async function playAll(all: readonly CareerJob[]): Promise<Career[]> {
 }
 
 console.log(
-  `${careers} careers, policy ${policyName}, staff ${staffMode === 'compare' ? 'hands-on (delegated below)' : 'off'}${houseMode === 'on' ? ', house on' : ''}, cap ${maxYears} years; a founded guild of ${size} in the bottom tier (assumptions: packages/content/src/base/career.ts)`,
+  `${careers} careers, policy ${policyName}, staff ${staffMode === 'compare' ? 'hands-on (delegated below)' : 'off'}${houseMode === 'on' ? ', house on' : ''}, cap ${maxYears} years; a founded guild of ${houseMode === 'on' ? `the ${partyName} party and 2 extras` : size} in the bottom tier (assumptions: packages/content/src/base/career.ts)`,
 );
 console.log(
   line(
@@ -172,14 +191,18 @@ console.log(
     0,
   ),
 );
-const badStart = results.filter(
-  // The same test whether grants are taken or refused: in debt at a week start in years 1-2, or
-  // the chest after two years, less any grant money, below half the start.
-  (r) =>
+/** §9d's bad start: the same test whether grants are taken or refused. */
+const isBadStart = (r: Career) => {
+  const rules = houseMode === 'on' ? houseGuildRules : careerGuildRules;
+  const start = rules.founding?.purseCopper ?? rules.startingChestCopper;
+  // In debt at a week start in years 1-2, or the chest after two years, less any grant money,
+  // below half the start.
+  return (
     (r.firstOfferYear !== null && r.firstOfferYear <= 2) ||
-    (r.chestByYear[1] ?? r.chestByYear[0] ?? 0) - r.earlyGrantCopper <
-      (houseMode === 'on' ? houseGuildRules : careerGuildRules).startingChestCopper / 2,
-);
+    (r.chestByYear[1] ?? r.chestByYear[0] ?? 0) - r.earlyGrantCopper < start / 2
+  );
+};
+const badStart = results.filter(isBadStart);
 console.log(
   `§9d bad starts (in debt at a week start in years 1-2, or the chest less grants below half the start after 2 years): ${badStart.length}; of those, careers lasting 10+ years: ${badStart.filter((r) => r.years >= 10).length} [most recover, §4g]`,
 );
@@ -270,6 +293,8 @@ function reportR6(): void {
   );
 }
 if (houseMode === 'on') reportHouse();
+if (compareParties && houseMode === 'on') reportParties();
+else if (compareParties) console.log('party=compare needs house=on (the draft).');
 
 function reportHouse(): void {
   const years = (pick: (r: Career) => number | null) => results.flatMap((r) => pick(r) ?? []);
@@ -362,3 +387,28 @@ console.log(
     2,
   ),
 );
+
+/** The draft's three characters on the same seeds (D-188): how careers ended, year-1 chest, first-year renown, bad starts. */
+function reportParties(): void {
+  console.log(
+    `Starter party compared, same ${careers} seeds each (assumptions: packages/content/src/base/founding.ts):`,
+  );
+  console.log(
+    '  bad starts are measured against half the purse for every party, so a dear party starts nearer the line; long-run payoff (growth, later renown) is not compared here',
+  );
+  for (const party of CHARACTERS) {
+    const rs = pick((j) => j.policy === policyName && !j.delegate && j.party === party);
+    const ended = new Map<string, number>();
+    for (const r of rs) ended.set(r.end, (ended.get(r.end) ?? 0) + 1);
+    const bad = rs.filter(isBadStart).length;
+    console.log(
+      `  ${party.padEnd(9)} careers ended: ${[...ended].map(([k, v]) => `${k} ${((100 * v) / careers).toFixed(0)}%`).join(', ')}; chest at the end of year 1 median ${pct(
+        rs.map((r) => r.chestByYear[0] ?? 0),
+        50,
+      ).toFixed(0)}; first-year renown median ${pct(
+        rs.map((r) => r.myRenown[0] ?? 0),
+        50,
+      ).toFixed(0)}; bad starts ${bad}`,
+    );
+  }
+}

@@ -1,13 +1,13 @@
 // People: drawing adventurers from class leanings, their wages, the shortlist and signing.
 import type { EventSink } from '../core/events.ts';
-import { divRoundDown } from '../core/math.ts';
-import { streamFor } from '../core/rng.ts';
+import { clamp, divRoundDown } from '../core/math.ts';
+import { BP_CERTAIN, streamFor } from '../core/rng.ts';
 import type { Adventurer, Attribute, Command, GameEvent, GameState } from '../resolution/types.ts';
 import { ATTRIBUTES } from '../resolution/types.ts';
 import { drawLife } from '../career/people.ts';
 import { bedsOf } from '../house/house.ts';
 import { guildTurn, type GuildTurn, pay } from './turn.ts';
-import type { GuildRules, Prospect } from './types.ts';
+import type { GuildRules, PersonMods, Prospect } from './types.ts';
 
 /** Wage by class base and the best three attributes' average (SPEC.md, People). */
 export function wageFor(
@@ -28,10 +28,13 @@ export function wageFor(
   return Math.max(leaning.wageBaseCopper - rules.wageFloorBelowBaseCopper, wage);
 }
 
-/** Draws one person on the `guild.recruit` stream. */
-export function drawPerson(turn: GuildTurn): Prospect {
+/**
+ * Draws one person on the `guild.recruit` stream. The founding draft passes modifiers (and its own
+ * stream), which change the numbers and not the number of draws; without them the draw is the plain one.
+ */
+export function drawPerson(turn: GuildTurn, mods: PersonMods = {}): Prospect {
   const { rules, guild } = turn;
-  const rng = streamFor(turn.state, 'guild.recruit');
+  const rng = streamFor(turn.state, mods.stream ?? 'guild.recruit');
   const leaning = rng.weighted(rules.classes.map((c) => [c, c.weight] as const));
   // cast-ok: every attribute is set in the loop below before the object is used.
   const attributes = {} as Record<Attribute, number>;
@@ -39,13 +42,15 @@ export function drawPerson(turn: GuildTurn): Prospect {
     const lead = leaning.lead.includes(a)
       ? rng.between(rules.leadBonus.min, rules.leadBonus.max)
       : 0;
-    attributes[a] = rng.between(rules.attributeRange.min, rules.attributeRange.max) + lead;
+    const drawn = rng.between(rules.attributeRange.min, rules.attributeRange.max) + lead;
+    attributes[a] =
+      mods.attributeShift === undefined ? drawn : clamp(drawn + mods.attributeShift, 1, 20);
   }
   guild.nextPersonNo += 1;
   const adventurer: Adventurer = {
     id: `adv.${guild.nextPersonNo}`,
-    ...drawIdentity(turn),
-    ...drawLife(turn, attributes),
+    ...drawIdentity(turn, mods.stream),
+    ...drawLife(turn, attributes, mods),
     classId: leaning.classId,
     position: leaning.position,
     attributes,
@@ -57,10 +62,10 @@ export function drawPerson(turn: GuildTurn): Prospect {
 }
 
 /** Name and pronouns on their own stream, so adding names never moves the recruit rolls. */
-function drawIdentity(turn: GuildTurn): Pick<Adventurer, 'name' | 'pronouns'> {
+function drawIdentity(turn: GuildTurn, stream?: string): Pick<Adventurer, 'name' | 'pronouns'> {
   const naming = turn.rules.naming;
   if (!naming) return {};
-  const rng = streamFor(turn.state, 'guild.names');
+  const rng = streamFor(turn.state, stream ? `${stream}-names` : 'guild.names');
   const pronouns = rng.weighted(naming.pronouns);
   const given =
     pronouns === 'they'
@@ -80,6 +85,11 @@ export function engage(turn: GuildTurn, person: Prospect, causeId: string): void
     subjectIds: [adventurer.id],
     wageCopper,
   });
+}
+
+/** The founding draft's fee for one person (D-188): `feeWeeks` of their wage. */
+export function foundingFee(weeks: number, person: Prospect, feeBp = BP_CERTAIN): number {
+  return divRoundDown(weeks * person.wageCopper * feeBp, BP_CERTAIN);
 }
 
 /** A window week's shortlist replaces the last one. */
