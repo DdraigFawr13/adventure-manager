@@ -14,7 +14,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Next
 
-1. Plan D-207's fights and delve with the owner (planning-interview forms), then prototype one fight on the watched-quest page (D-127) and judge the punch before building the delve. Plan D-208's four ideas alongside (storied gear inside the gear workshop, D-143).
+1. Plan D-207's fights and delve with the owner (planning-interview forms), then prototype one fight on the watched-quest page (D-127) and judge the punch before building the delve. Plan D-208/D-209's ideas alongside as two clusters, a living threat and a life on the road, plus trouble in town (storied gear inside the gear workshop, D-143).
 2. Engine test verdict (D-110, D-154, D-167): the owner opens `/map.html` on their phone and judges 60 fps pinch and pan, 15 px text and a screen reader; record the verdict. Known gaps: the atlas's own lettering (title, scale) isn't enlarged; map.js 710 KB.
 3. Letters, people and real time (D-203, D-204): what would make letters and people vivid (owner: "we will flesh that out"), and the step 4 page on a real-time clock with the map; design with the owner before building. R7 reruns after.
 4. Open from house work: the inn fee is one number until the town's inn is in the engine; town sites (D-171, D-179, D-184) designed but not in the engine; draft fees unconfirmed (purse confirmed, D-205).
