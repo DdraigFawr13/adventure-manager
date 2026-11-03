@@ -90,6 +90,7 @@ After approval:
 
 - **Fresh session per slice.** Build each slice in a fresh session, or give it to the `implementer` agent with a DEL-04 brief made from the slice: goal, files, checks, commands. Never build it in the session that wrote the spec.
 - **Re-check before each slice.** If the spec or the merged code changed since the last check, run the zero-decision check (with its cross-slice part) on the sections the slice touches, against what earlier slices actually merged. Ask Morgan any gap before building.
+- **Screen changes.** A slice that adds a screen, changes a screen's layout or controls, or changes a style token starts with a mock-up made with `ui-mockups`, approved by Morgan before code.
 - **Checks fail first.** Before writing code, run the slice's checks and confirm they fail.
 - **Done with evidence.** Done means the checks pass, with evidence: the command and its output, or a screenshot (VER-06, VER-07). "Tests pass" on its own is not evidence.
 - **Review against the spec.** After each slice, a fresh `reviewer` compares the diff with the spec and reports correctness gaps only, not style.

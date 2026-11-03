@@ -19,6 +19,12 @@ export const KEY_PATTERNS = [
 export const DIFF_LIMIT = 1024 * 1024;
 
 const PRINTERS = new Set(['cat', 'less', 'more', 'head', 'tail', 'bat', 'source', '.']);
+/**
+ * Commands that can't show a file's contents, so naming a protected path is fine. Any other command
+ * that names one (grep, awk, sed, cp, python…) asks: a list of readers can never be complete.
+ * `git` is left to secrets.stage.
+ */
+export const NON_READERS = new Set(['ls', 'stat', 'test', '[', 'echo', 'printf', 'touch', 'rm', 'mkdir', 'cd', 'chmod', 'chown', 'wc', 'file', 'du', 'realpath', 'basename', 'dirname', 'git', 'mv', 'ln']);
 /** Later pipeline stages that pass `env` output on without sending it anywhere else. */
 const FILTERS = new Set(['grep', 'sort', 'uniq', 'head', 'tail', 'wc']);
 /** A stage that writes a file or runs a program (`sort -o f`, `sort --compress-program=sh`, `uniq - out`) is not a filter. */
@@ -169,11 +175,27 @@ export const checks = [
         if (bare && excused(c, commands)) continue;
         if (c.name === 'printenv') return '`printenv` prints environment variables, which can hold secrets';
         if (c.name === 'env' && !c.args.length) return '`env` with no command prints environment variables, which can hold secrets';
-        if (!PRINTERS.has(c.name)) continue;
-        const hit = operands(c.args, new Set(['-n', '-c'])).map((o) => facts.rel(o, c.dir)).find((r) => isProtected(r, facts));
-        if (hit) return `\`${c.name}\` prints protected file \`${hit}\``;
+        if (NON_READERS.has(c.name)) continue;
+        let ops = operands(c.args, new Set(['-n', '-c']));
+        // `cp`'s last operand is where it writes (`cp .env.example .env`), unless -t names the target.
+        if (c.name === 'cp' && !c.args.some((a) => a === '-t' || a.startsWith('--target-directory'))) ops = ops.slice(0, -1);
+        const hit = ops.map((o) => facts.rel(o, c.dir)).find((r) => isProtected(r, facts));
+        if (hit) return `\`${c.name}\` ${PRINTERS.has(c.name) ? 'prints' : 'reads'} protected file \`${hit}\``;
       }
       return null;
+    },
+  },
+  {
+    id: 'secrets.read',
+    rule: 'SAFE-02',
+    tools: ['Read', 'Grep'],
+    mode: 'ask', // D-054
+    test(input, facts) {
+      const t = input.tool_input ?? {};
+      const file = input.tool_name === 'Read' ? t.file_path : t.path;
+      if (typeof file !== 'string') return null;
+      const rel = facts.rel(file);
+      return isProtected(rel, facts) ? `\`${input.tool_name}\` opens protected file \`${rel}\`` : null;
     },
   },
   {
