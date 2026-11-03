@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-03 (fourteenth session: combat brainstorm, D-207). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-11-03 (fourteenth session: combat brainstorm D-207–D-210, PR #40 merged). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
@@ -8,9 +8,9 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Just done
 
-- 2026-11-03 Master draft PR #78 (owner's request): `--check` notes a newer master release (v4.8.0, master D-059); after merge and Morgan's tag, bump here.
+- 2026-11-03 Master PR #78 merged (8a63ad4, owner's request): `--check` notes a newer master release (v4.8.0, master D-059); waiting for Morgan's tag, then bump here.
 - 2026-11-03 AI-Master-Instructions upgraded v4.3.0 → v4.7.0 (sync reported 14 changes): adds the `brainstorm`, `ui-style` and `ui-mockups` skills, wider guard hooks, CI-07 (schedule your own CI check after pushing). Older merged entries (PRs #35–#38) moved to `docs/archive/handoff-2026-10.md`.
-- 2026-11-03 Combat and fun brainstorm: https://claude.ai/artifact/NiWZ2Tg3yYcgxym1GJ3tDA. Owner chose the direction (D-207): turn-based orders for the guildmaster in the main fight, foes show their intent, delves room by room; per-adventurer turns or grid tactics only if playtests call for them. Of the eight non-combat ideas, the owner picked four to plan (D-208): nemeses, personal quests, growing map threats, storied gear; the rest stay Proposed. Round 2 (same page): two idea clusters and five more picks (D-209), clients who lie now and three later (D-210). No PR yet (D-133).
+- 2026-11-03 Combat and fun brainstorm: https://claude.ai/artifact/NiWZ2Tg3yYcgxym1GJ3tDA. Owner chose the direction (D-207): turn-based orders for the guildmaster in the main fight, foes show their intent, delves room by room; per-adventurer turns or grid tactics only if playtests call for them. Of the eight non-combat ideas, the owner picked four to plan (D-208): nemeses, personal quests, growing map threats, storied gear; the rest stay Proposed. Round 2 (same page): two idea clusters and five more picks (D-209), clients who lie now and three later (D-210). Merged (PR #40, 84dcfd0); review: https://claude.ai/artifact/Lq6fjTatznbBgkneGkmSdv.
 - 2026-10-27 R7 round 1 (D-203): the owner played and gave notes, no report: letters stale and disjointed, people impersonal, jumping through time boring, nothing punchy. Not passed; the page isn't tuned now. Owner's choice: time runs in real time with pause at 2–3 speeds and still stops itself for what needs the player (D-204, amends D-009).
 
 ## Next
