@@ -1,7 +1,7 @@
 {
-  "version": "v4.7.0",
-  "commit": "19dca68c49c5cedb0507c4b2691a8aca2d0fd17f",
-  "manifest": "29cb808d6f099ac45346c08bd643b92023484f7a0c9701f0537546dbc4e1f149",
+  "version": "v4.8.0",
+  "commit": "8a63ad46c49b97c6db884658b305ed0cce56ab5e",
+  "manifest": "35671e7c4faf67d9a58dd8c6cf2aafdb18d4e647060cba1b0f0ed29bdb26ef8e",
   "budget": {
     "lines": 200,
     "bytes": 24576
@@ -31,8 +31,8 @@
     ".claude/hooks/guards/pre-tool-use.mjs": "01601a586de20da7206a611be58b370421175d63e6b45026d551c1fa7c510f86",
     ".claude/hooks/guards/stop.mjs": "39c808c3dd240233eb94f64c13f7061ed19cb8bdac01506133d92f5941ec2bb6",
     ".claude/hooks/session-start.sh": "a5936b916dffaf98d8ab875600c5ca195d88194053f22b444bf2d8767d57bfd1",
-    ".claude/master/RULES.md": "85b2eca949b1d23f6dcc0130e054bb88d71aa2e663b5d5b2d50c3eab1e5ab001",
-    ".claude/master/sync.mjs": "d155cf44592042b32325ea937b65b5d2291a6845a879e2ea451da8fd4618188f",
+    ".claude/master/RULES.md": "aaacfda9a1a9889a759a7aecdced375cd6d7dd6103a9a5c046590fd996a853dc",
+    ".claude/master/sync.mjs": "e112037c8b31ae5464beb4807c5ee2f7376cfaf9c114f5859d9017c6e4bf77c5",
     ".claude/skills/audit/assets/report.md": "2a19661a5343fcf354e0f720435214f398a4f57d31d2e960d0869a98d6620e41",
     ".claude/skills/audit/references/design.md": "745fec1d297a493cc688e831d705972ca350749d719983b4c2a34807ed8e8c20",
     ".claude/skills/audit/references/repo.md": "d3b6e6173c8df508d91a51cc47e60e77f7303bb871e8bdb6a3e2d3e32ae1d08c",
