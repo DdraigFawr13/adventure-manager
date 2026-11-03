@@ -39,7 +39,7 @@ The goal is fewer billed runner minutes **with the same coverage**: run the chea
    - Run the repo's local checks.
    - For sharded suites, run the shard runner and coverage verifier locally once.
    - Then push **once** and let the PR's single run be the live test.
-6. **Document and set agent rules.** Write a short `docs/CI.md`: before/after with measured run IDs, what runs when, how to run full regression and deploy. The budget rules themselves (CI-01 to CI-06) come from AI-Master-Instructions in `.claude/master/RULES.md`; don't paste them into `AGENTS.md`. Add only the repo-specific sections from `references/agent-policy.md`.
+6. **Document and set agent rules.** Write a short `docs/CI.md`: before/after with measured run IDs, what runs when, how to run full regression and deploy. The budget rules themselves (CI-02 to CI-06) come from AI-Master-Instructions in `.claude/master/RULES.md`; don't paste them into `AGENTS.md`. Add only the repo-specific sections from `references/agent-policy.md`.
 7. **PR body:** problems found (with numbers), changes, expected savings marked as estimates, testing done, risks, and manual steps for the owner. After merge, check that the first default-branch run behaved as designed and record the measured minutes.
 
 ## Traps (each one has bitten a real run)

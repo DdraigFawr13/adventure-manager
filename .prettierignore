@@ -11,3 +11,35 @@ tools/docs-check.mjs
 tools/mockup-shot.mjs
 .github/
 packages/ui/assets/engine-test/map-base.json
+
+# ai-master:start (managed by .claude/master/sync.mjs)
+.ai-master.lock
+.claude/agents/ci-fixer.md
+.claude/agents/implementer.md
+.claude/agents/reader.md
+.claude/agents/reviewer.md
+.claude/agents/test-runner.md
+.claude/hooks/guards/checks/gates.mjs
+.claude/hooks/guards/checks/git.mjs
+.claude/hooks/guards/checks/secrets.mjs
+.claude/hooks/guards/checks/shell.mjs
+.claude/hooks/guards/checks/synced.mjs
+.claude/hooks/guards/checks/tests.mjs
+.claude/hooks/guards/counts.mjs
+.claude/hooks/guards/glob.mjs
+.claude/hooks/guards/lib.mjs
+.claude/hooks/guards/modules.mjs
+.claude/hooks/guards/parse.mjs
+.claude/hooks/guards/pre-tool-use.mjs
+.claude/hooks/guards/stop.mjs
+.claude/hooks/session-start.sh
+.claude/master/
+.claude/master/RULES.md
+.claude/master/sync.mjs
+.claude/skills/audit/
+.claude/skills/efficient-github-actions/
+.claude/skills/planning-interview/
+.claude/skills/routing/
+.claude/skills/write-spec/
+.github/workflows/prune-merged-branches.yml
+# ai-master:end

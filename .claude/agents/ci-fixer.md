@@ -1,6 +1,6 @@
 ---
 name: ci-fixer
-description: Diagnoses a failing GitHub Actions run from its logs, reproduces it locally where possible, and applies the minimal fix. Use when CI is red on a pull request or the default branch. Does not commit or push unless the brief says to.
+description: Diagnoses a failing GitHub Actions run from its logs, reproduces it locally where possible, and applies the minimal fix. Use when CI is red on a pull request or the default branch and its logs would fill the main context. Not when the run failed on billing, quota or runner provisioning (stop and report, CI-03), or when the fix needs a design decision. Does not commit or push unless the brief says to.
 model: sonnet
 ---
 

@@ -8,6 +8,7 @@ name: CI
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review] # ready_for_review starts the first run of a draft
     paths-ignore: ["docs/**", "README.md", "packages/*/AGENTS.md", "packages/*/src/**/SPEC.md"]
   push:
     branches: [main]
@@ -23,6 +24,8 @@ concurrency:
 
 jobs:
   check:
+    # Draft PRs skip CI (CI-06); marking the PR ready runs it.
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

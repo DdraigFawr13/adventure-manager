@@ -1,6 +1,6 @@
 # AGENTS.md section template
 
-Paste these sections into the repository's `AGENTS.md`. Replace each `<...>` with the repository's real commands and workflows, and keep it short. The budget rules are not repeated here: every synced project gets them as CI-01 to CI-06 in `.claude/master/RULES.md`.
+Paste these sections into the repository's `AGENTS.md`. Replace each `<...>` with the repository's real commands and workflows, and keep it short. The budget rules are not repeated here: every synced project gets them as CI-02 to CI-06 in `.claude/master/RULES.md`.
 
 ```markdown
 ## Local checks (run before pushing)

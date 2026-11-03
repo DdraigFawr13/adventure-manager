@@ -11,7 +11,7 @@
 // Synced files are owned by the master: change them there, never here (rule SRC-06).
 
 import { createHash } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -22,18 +22,21 @@ export const MANIFEST = '.ai-master.json';
 export const LOCK = '.ai-master.lock';
 export const RULES_OUT = '.claude/master/RULES.md';
 export const SCRIPT_OUT = '.claude/master/sync.mjs';
+export const SETTINGS = '.claude/settings.json';
+export const SCRIPT_PATH = fileURLToPath(import.meta.url);
 export const BUDGET_FILES = [RULES_OUT, 'AGENTS.md', 'CLAUDE.md'];
 const SYNCED_KINDS = new Set(['skill', 'agent', 'hook', 'workflow']);
 const RULE_LINE = /^- \*\*([A-Z]+-\d+)\*\* (.*)$/;
 const WHY_LINE = /^\s+<!-- why: (.+?) \| source: (.+?) -->$/;
 const PRETTIER_START = '# ai-master:start (managed by .claude/master/sync.mjs)';
 const PRETTIER_END = '# ai-master:end';
+const GUARDS_DIR = '.claude/hooks/guards/';
 
 export class SyncError extends Error {}
 
 // ---------- rules ----------
 
-/** Parse one rule file into { title, rules: [{ id, text, neverOverride, why, source }] }. */
+/** Parse one rule file into { title, rules: [{ id, text, neverOverride, superseded, why, source }] }. */
 export function parseRules(text, file = 'rules') {
   const lines = text.split('\n');
   const title = (lines.find((l) => l.startsWith('# ')) ?? '').slice(2).trim();
@@ -47,6 +50,7 @@ export function parseRules(text, file = 'rules') {
       id: m[1],
       text: m[2],
       neverOverride: m[2].trim().endsWith('(never override)'),
+      superseded: m[2].startsWith('SUPERSEDED'),
       why: why?.[1] ?? null,
       source: why?.[2] ?? null,
     });
@@ -54,13 +58,23 @@ export function parseRules(text, file = 'rules') {
   return { title, rules };
 }
 
-/** Read the rule files of the given layers, in layer order then file name order. */
-export function loadRules(sourceDir, layers) {
+/**
+ * Read the rule files of the given layers in layer order. Within a layer, files listed in `order`
+ * (catalog.json "ruleOrder", paths such as core/rules/working-style.md) come first in list order,
+ * then the rest by file name.
+ */
+export function loadRules(sourceDir, layers, order = []) {
   const files = [];
   for (const layer of layers) {
     const dir = path.join(sourceDir, layer, 'rules');
     if (!fs.existsSync(dir)) continue;
-    for (const name of fs.readdirSync(dir).filter((n) => n.endsWith('.md')).sort()) {
+    const rank = (name) => {
+      const i = order.indexOf(path.posix.join(layer, 'rules', name));
+      return i === -1 ? order.length : i;
+    };
+    const names = fs.readdirSync(dir).filter((n) => n.endsWith('.md')).sort();
+    names.sort((a, b) => rank(a) - rank(b));
+    for (const name of names) {
       const rel = path.posix.join(layer, 'rules', name);
       files.push({ path: rel, ...parseRules(fs.readFileSync(path.join(dir, name), 'utf8'), rel) });
     }
@@ -68,8 +82,13 @@ export function loadRules(sourceDir, layers) {
   return files;
 }
 
-/** Render RULES.md: headings demoted, why/source comments stripped, overridden rules replaced by a pointer. */
-export function renderRules(ruleFiles, { version, overrides = [] }) {
+const NEVER = ' (never override)';
+
+/**
+ * Render RULES.md: headings demoted, why/source comments and superseded rules stripped, overridden rules
+ * replaced by a pointer, and " (never override)" dropped from rules a synced hook enforces (D-034).
+ */
+export function renderRules(ruleFiles, { version, overrides = [], enforced = new Set() }) {
   const overridden = new Set(overrides.map((o) => o.id));
   const out = [
     `# Shared rules (AI-Master-Instructions ${version})`,
@@ -78,15 +97,35 @@ export function renderRules(ruleFiles, { version, overrides = [] }) {
   ];
   for (const file of ruleFiles) {
     out.push('', `## ${file.title}`, '');
-    for (const rule of file.rules) {
+    for (const rule of file.rules.filter((r) => !r.superseded)) {
       out.push(
         overridden.has(rule.id)
           ? `- **${rule.id}** Overridden by this project: see AGENTS.md "Overrides".`
-          : `- **${rule.id}** ${rule.text}`,
+          : `- **${rule.id}** ${enforced.has(rule.id) && rule.text.trimEnd().endsWith(NEVER) ? rule.text.trimEnd().slice(0, -NEVER.length) : rule.text}`,
       );
     }
   }
   return out.join('\n') + '\n';
+}
+
+/** Problems with catalog items' `enforces`: each id must exist, be live and be marked "(never override)" (J8). */
+export function enforcesProblems(items, ruleFiles) {
+  const byId = new Map(ruleFiles.flatMap((f) => f.rules.map((r) => [r.id, r])));
+  const out = [];
+  for (const item of items) {
+    if (item.enforces === undefined) continue;
+    if (!Array.isArray(item.enforces) || !item.enforces.length) {
+      out.push(`catalog: ${item.id} "enforces" must be a non-empty list of rule ids`);
+      continue;
+    }
+    for (const id of item.enforces) {
+      const r = byId.get(id);
+      if (!r) out.push(`catalog: ${item.id} enforces unknown rule ${id}`);
+      else if (r.superseded) out.push(`catalog: ${item.id} enforces superseded rule ${id}`);
+      else if (!r.neverOverride) out.push(`catalog: ${item.id} enforces ${id}, which is not marked "(never override)"`);
+    }
+  }
+  return out;
 }
 
 // ---------- catalog, manifest, selection ----------
@@ -132,6 +171,9 @@ export function select(catalog, ruleFiles, manifest) {
   for (const ov of manifest.overrides) {
     const rule = rules.get(ov.id);
     if (!rule) throw new SyncError(`override: unknown rule "${ov.id}" in the selected layers`);
+    if (rule.superseded) {
+      throw new SyncError(`override: ${ov.id} is superseded (${rule.text.split(':')[0]}); override the rule named there instead`);
+    }
     if (rule.neverOverride) throw new SyncError(`override: ${ov.id} is marked "never override"`);
     if (!ov.reason) throw new SyncError(`override "${ov.id}": a reason is required`);
   }
@@ -151,7 +193,7 @@ export function select(catalog, ruleFiles, manifest) {
 
 /** Build { relPath: Buffer } for everything sync writes, plus the executable set. */
 export function plan(sourceDir, catalog, manifest, scriptSource) {
-  const ruleFiles = loadRules(sourceDir, catalog.layers.filter((l) => manifest.layers.includes(l)));
+  const ruleFiles = loadRules(sourceDir, catalog.layers.filter((l) => manifest.layers.includes(l)), catalog.ruleOrder);
   const items = select(catalog, ruleFiles, manifest);
   const files = new Map();
   const executable = new Set();
@@ -165,7 +207,8 @@ export function plan(sourceDir, catalog, manifest, scriptSource) {
       if (dest.endsWith('.sh') || dest.endsWith('.py')) executable.add(dest);
     }
   }
-  files.set(RULES_OUT, Buffer.from(renderRules(ruleFiles, manifest)));
+  const enforced = new Set(items.flatMap((i) => i.enforces ?? []));
+  files.set(RULES_OUT, Buffer.from(renderRules(ruleFiles, { ...manifest, enforced })));
   files.set(SCRIPT_OUT, fs.readFileSync(scriptSource));
   executable.add(SCRIPT_OUT);
   return { files, executable, items };
@@ -205,14 +248,132 @@ export function budgetProblems(size, budget) {
   return problems;
 }
 
+// ---------- hook settings ----------
+
+/** Read the project's .claude/settings.json; null when missing. Invalid JSON or a bad "hooks" shape is a SyncError. */
+export function readSettings(targetDir) {
+  const file = path.join(targetDir, SETTINGS);
+  if (!fs.existsSync(file)) return null;
+  let data;
+  try {
+    data = JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (err) {
+    throw new SyncError(`${SETTINGS} is not valid JSON (${err.message}); fix it, then sync again`);
+  }
+  if (!data || typeof data !== 'object' || Array.isArray(data)) throw new SyncError(`${SETTINGS} must hold a JSON object`);
+  const hooks = data.hooks;
+  const ok = hooks === undefined || (hooks && typeof hooks === 'object' && !Array.isArray(hooks) && Object.values(hooks).every(Array.isArray));
+  if (!ok) throw new SyncError(`${SETTINGS}: "hooks" must be an object of arrays`);
+  return data;
+}
+
+/** The hook groups the selected items register, one per command: [{ event, matcher, command, timeout }]. */
+export function ownedGroups(items) {
+  const out = [];
+  for (const item of items) {
+    for (const [event, groups] of Object.entries(item.settings ?? {})) {
+      for (const group of groups) {
+        for (const hook of group.hooks) out.push({ event, matcher: group.matcher ?? null, command: hook.command, timeout: hook.timeout ?? null });
+      }
+    }
+  }
+  return out;
+}
+
+/**
+ * Merge sync's hook groups into a project's "hooks" object. Hooks sync added before (the old lock's
+ * list) are dropped, then the wanted groups are added unless the project already has a hook with the
+ * same command under that event (the project's own; left alone and not recorded).
+ */
+export function mergeHooks(hooks = {}, previous = [], wanted = []) {
+  const key = (event, command) => `${event}\0${command}`;
+  const drop = new Set(previous.map((o) => key(o.event, o.command)));
+  const wantedByKey = new Map(wanted.map((w) => [key(w.event, w.command), w]));
+  const groupOf = (w) => ({
+    ...(w.matcher != null && { matcher: w.matcher }),
+    hooks: [{ type: 'command', command: w.command, ...(w.timeout != null && { timeout: w.timeout }) }],
+  });
+  const next = {};
+  const placed = new Set();
+  for (const [event, groups] of Object.entries(hooks)) {
+    const kept = [];
+    let removed = false;
+    for (const group of groups) {
+      const list = Array.isArray(group?.hooks) ? group.hooks : [];
+      const left = list.filter((h) => !drop.has(key(event, h?.command)));
+      if (left.length === list.length) {
+        kept.push(group);
+        continue;
+      }
+      removed = true;
+      // A group sync owned that is still wanted is rewritten in place, so the order stays stable.
+      const ownedHere = list.filter((h) => drop.has(key(event, h?.command)));
+      for (const h of ownedHere) {
+        const w = wantedByKey.get(key(event, h.command));
+        if (w && !placed.has(key(event, h.command))) {
+          kept.push(groupOf(w));
+          placed.add(key(event, h.command));
+        }
+      }
+      if (left.length) kept.push({ ...group, hooks: left });
+    }
+    // Keep an event the project left empty; delete one only when sync emptied it.
+    if (kept.length || !removed) next[event] = kept;
+  }
+  const owned = [];
+  for (const w of wanted) {
+    const k = key(w.event, w.command);
+    if (placed.has(k)) {
+      owned.push(w);
+      continue;
+    }
+    const groups = next[w.event] ?? [];
+    if (groups.some((g) => (g?.hooks ?? []).some((h) => h?.command === w.command))) continue;
+    groups.push(groupOf(w));
+    next[w.event] = groups;
+    owned.push(w);
+  }
+  return { hooks: next, owned };
+}
+
+/** Problems with the hook entries a lock says sync owns. */
+function settingsProblems(targetDir, lock) {
+  if (!lock.settings) {
+    return Object.keys(lock.files).some((f) => f.startsWith(GUARDS_DIR)) ? ['hook entries missing; run sync again'] : [];
+  }
+  if (!lock.settings.length) return [];
+  let settings;
+  try {
+    settings = readSettings(targetDir);
+  } catch (err) {
+    return [err.message];
+  }
+  const problems = [];
+  for (const o of lock.settings) {
+    const group = (settings?.hooks?.[o.event] ?? []).find((g) => (g?.hooks ?? []).some((h) => h?.command === o.command));
+    const hook = group?.hooks.find((h) => h?.command === o.command);
+    if (!hook) problems.push(`${SETTINGS}: ${o.event} hook missing: ${o.command}; run sync again`);
+    else if ((group.matcher ?? null) !== o.matcher || (hook.timeout ?? null) !== o.timeout) {
+      problems.push(`${SETTINGS}: ${o.event} hook changed (matcher or timeout): ${o.command}; run sync again`);
+    }
+  }
+  return problems;
+}
+
 // ---------- sync and check ----------
 
 export function sync({ targetDir, sourceDir, dryRun = false, log = console.log }) {
   const manifest = readManifest(targetDir);
   const catalog = loadCatalog(sourceDir);
   const scriptSource = path.join(sourceDir, 'sync', 'sync.mjs');
-  const { files, executable } = plan(sourceDir, catalog, manifest, scriptSource);
+  const { files, executable, items } = plan(sourceDir, catalog, manifest, scriptSource);
   const oldLock = readLock(targetDir);
+
+  // Parse the project's settings before writing anything, so invalid JSON stops the sync cleanly.
+  const settings = readSettings(targetDir);
+  const oldHooks = settings?.hooks ?? {};
+  const merged = mergeHooks(oldHooks, oldLock?.settings ?? [], ownedGroups(items));
+  const settingsChanged = JSON.stringify(merged.hooks) !== JSON.stringify(oldHooks);
 
   // Never silently replace a project's own file: it must be removed or the item excluded first.
   const owned = new Set(Object.keys(oldLock?.files ?? {}));
@@ -240,6 +401,15 @@ export function sync({ targetDir, sourceDir, dryRun = false, log = console.log }
     changes.push(`remove ${rel}`);
     if (!dryRun) removeAndPrune(targetDir, rel);
   }
+  if (settingsChanged) {
+    changes.push(`${settings ? 'update' : 'add'} ${SETTINGS}`);
+    if (!dryRun) {
+      const next = { ...(settings ?? {}), hooks: merged.hooks };
+      if (!Object.keys(merged.hooks).length) delete next.hooks;
+      fs.mkdirSync(path.join(targetDir, path.dirname(SETTINGS)), { recursive: true });
+      fs.writeFileSync(path.join(targetDir, SETTINGS), JSON.stringify(next, null, 2) + '\n');
+    }
+  }
 
   const lock = {
     version: manifest.version,
@@ -247,6 +417,7 @@ export function sync({ targetDir, sourceDir, dryRun = false, log = console.log }
     manifest: manifestHash(manifest),
     budget: catalog.budget.consumer,
     files: Object.fromEntries([...files].sort(([a], [b]) => a.localeCompare(b)).map(([rel, buf]) => [rel, sha256(buf)])),
+    settings: merged.owned,
   };
   if (!dryRun) {
     fs.writeFileSync(path.join(targetDir, LOCK), JSON.stringify(lock, null, 2) + '\n');
@@ -275,6 +446,7 @@ export function check({ targetDir }) {
     if (!fs.existsSync(abs)) problems.push(`missing ${rel}`);
     else if (sha256(fs.readFileSync(abs)) !== hash) problems.push(`modified ${rel} (synced files are edited in the master, rule SRC-06)`);
   }
+  problems.push(...settingsProblems(targetDir, lock));
   const over = budgetProblems(measure(targetDir), lock.budget);
   if (over.length) problems.push(`start-up size over budget: ${over.join(', ')}`);
   return problems;
@@ -371,6 +543,16 @@ function main() {
   const { version } = readManifest(args.target);
   const source = resolveSource(args.source, version);
   try {
+    // Hand over to the fetched version's own script, so an upgrade runs the new code in one go.
+    // The handed-over script compares equal with itself, so this never loops.
+    const fetched = path.join(source.dir, 'sync', 'sync.mjs');
+    if (fs.existsSync(fetched) && !fs.readFileSync(fetched).equals(fs.readFileSync(SCRIPT_PATH))) {
+      const argv = [fetched, '--source', source.dir, '--target', args.target, ...(args.dryRun ? ['--dry-run'] : [])];
+      const child = spawnSync(process.execPath, argv, { stdio: 'inherit' });
+      if (child.error) throw new SyncError(`could not run ${fetched}: ${child.error.message}`);
+      process.exitCode = child.status ?? 1;
+      return;
+    }
     sync({ targetDir: args.target, sourceDir: source.dir, dryRun: args.dryRun });
   } finally {
     source.cleanup();
@@ -385,5 +567,3 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
     process.exit(1);
   }
 }
-
-export const SCRIPT_PATH = fileURLToPath(import.meta.url);
