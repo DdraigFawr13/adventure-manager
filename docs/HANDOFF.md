@@ -8,9 +8,9 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Just done
 
-- 2026-11-03 Master PR #78 merged (8a63ad4, owner's request): `--check` notes a newer master release (v4.8.0, master D-059); waiting for Morgan's tag, then bump here.
+- 2026-11-03 Master PR #78 merged (8a63ad4): `--check` notes a newer master release (master D-059). Morgan tagged `v4.8.0`; the game bumped v4.7.0 → v4.8.0 the same day.
 - 2026-11-03 AI-Master-Instructions upgraded v4.3.0 → v4.7.0 (sync reported 14 changes): adds the `brainstorm`, `ui-style` and `ui-mockups` skills, wider guard hooks, CI-07 (schedule your own CI check after pushing). Older merged entries (PRs #35–#38) moved to `docs/archive/handoff-2026-10.md`.
-- 2026-11-03 Combat and fun brainstorm: https://claude.ai/artifact/NiWZ2Tg3yYcgxym1GJ3tDA. Owner chose the direction (D-207): turn-based orders for the guildmaster in the main fight, foes show their intent, delves room by room; per-adventurer turns or grid tactics only if playtests call for them. Of the eight non-combat ideas, the owner picked four to plan (D-208): nemeses, personal quests, growing map threats, storied gear; the rest stay Proposed. Round 2 (same page): two idea clusters and five more picks (D-209), clients who lie now and three later (D-210). Merged (PR #40, 84dcfd0); review: https://claude.ai/artifact/Lq6fjTatznbBgkneGkmSdv.
+- 2026-11-03 Combat and fun brainstorm: https://claude.ai/artifact/NiWZ2Tg3yYcgxym1GJ3tDA. Owner chose the direction (D-207): turn-based orders in the main fight, foe intents, delves room by room; per-adventurer turns or grid tactics only if playtests call for them. Non-combat picks: four in round 1 (D-208: nemeses, personal quests, growing threats, storied gear). Round 2 (same page): two idea clusters and five more picks (D-209), clients who lie now and three later (D-210). Merged (PR #40); review: https://claude.ai/artifact/Lq6fjTatznbBgkneGkmSdv.
 - 2026-10-27 R7 round 1 (D-203): the owner played and gave notes, no report: letters stale and disjointed, people impersonal, jumping through time boring, nothing punchy. Not passed; the page isn't tuned now. Owner's choice: time runs in real time with pause at 2–3 speeds and still stops itself for what needs the player (D-204, amends D-009).
 
 ## Next
@@ -21,7 +21,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 4. Open from house work: the inn fee is one number until the town's inn is in the engine; town sites (D-171, D-179, D-184) designed but not in the engine; draft fees unconfirmed (purse confirmed, D-205).
 5. Gear (D-143): workshop with the owner before the year simulator uses gear.
 6. R1 notes (D-132): hidden items and branching paths wait for quest design. Tuning left: reckless doubles deaths only on perilous work; injuries per death ~2.5–5 on composed contracts (target ~5).
-7. Master follow-ups: when Morgan tags `v4.8.0`, bump `.ai-master.json` and sync (master D-059: `--check` then notes newer releases). Before the first `ui-mockups` use, STYLE.md needs `Minimum text`, `Minimum tap` and `Where facts live` lines (15 px, D-166; 44 px, D-167), else the skill asks once; mock-ups stay in `docs/design/mockups/` with `tools/mockup-shot.mjs`.
+7. Master follow-up: before the first `ui-mockups` use, STYLE.md needs `Minimum text`, `Minimum tap` and `Where facts live` lines (15 px, D-166; 44 px, D-167), else the skill asks once; mock-ups stay in `docs/design/mockups/` with `tools/mockup-shot.mjs`.
 
 ## Open questions
 

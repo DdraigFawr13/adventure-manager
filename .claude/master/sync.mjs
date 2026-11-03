@@ -3,7 +3,8 @@
 // into this project, as pinned by .ai-master.json. No dependencies; Node 18 or newer.
 //
 //   node .claude/master/sync.mjs              sync to the version in .ai-master.json
-//   node .claude/master/sync.mjs --check      verify synced files against .ai-master.lock (CI)
+//   node .claude/master/sync.mjs --check      verify synced files against .ai-master.lock (CI); notes a
+//                                             newer master release (AI_MASTER_NO_UPDATE_CHECK=1 skips it)
 //   node .claude/master/sync.mjs --dry-run    show what a sync would change
 //   node <master>/sync/sync.mjs --init lite --source <master>
 //                                             start a project on the lite profile (D-056): writes
@@ -581,6 +582,30 @@ export function latestVersion(sourceDir) {
   return m[1];
 }
 
+/** Compare two vX.Y.Z versions: negative if a is older, 0 if equal, positive if newer. */
+export function compareVersions(a, b) {
+  const pa = a.replace(/^v/, '').split('.').map(Number);
+  const pb = b.replace(/^v/, '').split('.').map(Number);
+  for (let i = 0; i < 3; i++) if (pa[i] !== pb[i]) return pa[i] - pb[i];
+  return 0;
+}
+
+/** The newest vX.Y.Z tag in `tags` that is newer than `current`, or null. Other tag names are ignored. */
+export function newerVersion(current, tags) {
+  const newest = tags.filter((t) => /^v\d+\.\d+\.\d+$/.test(t)).sort(compareVersions).at(-1);
+  return newest && compareVersions(newest, current) > 0 ? newest : null;
+}
+
+/** The master's release tags from GitHub, or null when they can't be read within 10 s (offline, proxy). */
+function remoteTags() {
+  try {
+    const out = execFileSync('git', ['ls-remote', '--tags', '--refs', MASTER_REPO], { encoding: 'utf8', timeout: 10_000, stdio: ['ignore', 'pipe', 'ignore'], env: { ...process.env, GIT_TERMINAL_PROMPT: '0' } });
+    return out.split('\n').map((l) => l.split('refs/tags/')[1]).filter(Boolean);
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Start a project on a profile (D-056): write .ai-master.json and the profile's starter files the
  * project lacks, then sync. Never overwrites an existing manifest or file.
@@ -632,6 +657,14 @@ function main() {
     // A HANDOFF over its cap is a note, not a failure: it is the project's file, not a synced one (D-055).
     const lock = readLock(args.target);
     for (const n of handoffProblems(args.target, lock?.handoff)) console.log(`ai-master check: note: ${n} (CTX-02); move finished entries to docs/archive/`);
+    // A newer master release is a note, never a failure: projects upgrade deliberately (README "Update").
+    // AI_MASTER_NO_UPDATE_CHECK=1 skips the network call.
+    if (lock?.version && !process.env.AI_MASTER_NO_UPDATE_CHECK) {
+      const tags = remoteTags();
+      const newer = tags && newerVersion(lock.version, tags);
+      if (!tags) console.log('ai-master check: note: could not read the master\'s release tags, so a newer version was not checked');
+      else if (newer) console.log(`ai-master check: note: ${newer} is out; this project pins ${lock.version}. Bump "version" in ${MANIFEST}, run node ${SCRIPT_OUT}, and read the master's CHANGELOG.md`);
+    }
     console.log('ai-master check: OK');
     return;
   }
