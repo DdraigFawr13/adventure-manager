@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-03 (fourteenth session: combat brainstorm D-207–D-210, PR #40 merged). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-11-03 (fourteenth session: combat brainstorm D-207–D-210, PRs #40 and #41 merged). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
