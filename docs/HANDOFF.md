@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-10-27 (end of the thirteenth session; PR #38 merged, 51914d3). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-11-03 (fourteenth session: combat brainstorm, D-207). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
@@ -8,6 +8,7 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Just done
 
+- 2026-11-03 Combat and fun brainstorm (owner's request: turn-based combat in dungeons, plus non-combat ideas): https://claude.ai/artifact/NiWZ2Tg3yYcgxym1GJ3tDA. Owner chose the direction (D-207): turn-based orders for the guildmaster in the main fight, foes show their intent, delves room by room; per-adventurer turns or grid tactics only if playtests call for them. Eight non-combat ideas on the page stay Proposed (the night after, nemeses, personal quests, growing map threats, intel gamble, replayed moments, letters that talk back, storied gear).
 - 2026-10-27 Step 4 page built and merged (PR #35), the Vercel root (D-200; Quest Watch at `/quest-watch.html`): `packages/ui/src/step4/` (`game.ts` save, default house player copied from `tools/year-sim-play.ts`, letters; `Step4.tsx` screens; `report.ts` Copy report), words `packages/content/data/step4.en.json`. Continue waits for memorial, incident and patron letters, not signing letters (D-201, owner). Tested: a two-year game and a save round trip (`packages/ui/test/step4.test.ts`); a scripted Playwright player tapped two years through the built page at iPhone size. Review: https://claude.ai/artifact/DDUycPaXb31Jg95UmVsWhi.
 - 2026-10-27 Fresh-eyes review of the project for the owner (chat only), then PR #36: the step 4 page's fonts are separate WOFF2 files (app.css 703 kB to 6 kB; fonts 222 kB, cached across deploys) and `@adventure-manager/content` is `sideEffects: false` (app.js 435 to 402 kB); PLAN.md's 17 "Amended"/"Under review" notes folded into text that states the mobile-first plan, no decision changed. Review: https://claude.ai/artifact/4NuijA2Zswcgphok17GDLW. Still noticed: duplicate full names should be fixed before R7 (Open questions).
 
@@ -18,11 +19,12 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 
 ## Next
 
-1. Engine test verdict (D-110, D-154, D-167): the owner opens `/map.html` on their phone and judges 60 fps pinch and pan, 15 px text and a screen reader; record the verdict. Known gaps: the atlas's own lettering (title, scale) isn't enlarged; map.js 710 KB.
-2. Letters, people and real time (D-203, D-204): what would make letters and people vivid (owner: "we will flesh that out"), and the step 4 page on a real-time clock with the map; design with the owner before building. R7 reruns after.
-3. Open from house work: the inn fee is one number until the town's inn is in the engine; town sites (D-171, D-179, D-184) designed but not in the engine; draft fees unconfirmed (purse confirmed, D-205).
-4. Gear (D-143): workshop with the owner before the year simulator uses gear.
-5. R1 notes (D-132): hidden items and branching paths wait for quest design. Tuning left: reckless doubles deaths only on perilous work; injuries per death ~2.5–5 on composed contracts (target ~5).
+1. Plan D-207's fights and delve with the owner (planning-interview forms), then prototype one fight on the watched-quest page (D-127) and judge the punch before building the delve; the owner also picks 2–3 of the brainstorm's non-combat ideas.
+2. Engine test verdict (D-110, D-154, D-167): the owner opens `/map.html` on their phone and judges 60 fps pinch and pan, 15 px text and a screen reader; record the verdict. Known gaps: the atlas's own lettering (title, scale) isn't enlarged; map.js 710 KB.
+3. Letters, people and real time (D-203, D-204): what would make letters and people vivid (owner: "we will flesh that out"), and the step 4 page on a real-time clock with the map; design with the owner before building. R7 reruns after.
+4. Open from house work: the inn fee is one number until the town's inn is in the engine; town sites (D-171, D-179, D-184) designed but not in the engine; draft fees unconfirmed (purse confirmed, D-205).
+5. Gear (D-143): workshop with the owner before the year simulator uses gear.
+6. R1 notes (D-132): hidden items and branching paths wait for quest design. Tuning left: reckless doubles deaths only on perilous work; injuries per death ~2.5–5 on composed contracts (target ~5).
 
 ## Open questions
 
