@@ -1,6 +1,6 @@
 ---
 name: test-runner
-description: Runs the project's checks (format, lint, typecheck, tests, build, browser smoke) and reports a short pass/fail summary with only the failing tests and their key error lines. Use for long or noisy check runs; run short checks directly instead. Read-only; never edits files.
+description: Runs the project's checks (format, lint, typecheck, tests, build, browser smoke) and reports a short pass/fail summary with only the failing tests and their key error lines. Use when a check run is long or its output is noisy and you only need the failures. Not when the checks are short (run them directly) or you need the full output to debug. Read-only; never edits files.
 model: haiku
 tools: Bash, Read, Grep, Glob
 ---

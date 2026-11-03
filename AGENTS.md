@@ -28,7 +28,7 @@ Concept, style and plan are done; the plan was approved on 2026-10-26 (D-115), a
 
 ## What CI runs
 
-- **CI** (`ci.yml`): on every PR update and `main` push, one Linux job runs the drift check, the docs check and `npm run check`. Changes only to `docs/`, README.md, package AGENTS.md files or system SPEC.md files skip it, so run the docs check locally for those.
+- **CI** (`ci.yml`): on every update of a ready (non-draft) PR and every `main` push, one Linux job runs the drift check, the docs check and `npm run check`. Changes only to `docs/`, README.md, package AGENTS.md files or system SPEC.md files skip it, so run the docs check locally for those. Draft PRs skip it; marking one ready runs it (CI-06).
 - No deploys yet.
 
 ## Project rules

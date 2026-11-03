@@ -7,6 +7,7 @@ These snippets are drawn from the workflows merged in Story-Generator #39/#41, C
 ```yaml
 on:
   pull_request:            # feature work is verified here
+    types: [opened, synchronize, reopened, ready_for_review]   # ready_for_review starts the first run of a draft
   push:
     branches: [main]       # post-merge check; NOT feature branches
   workflow_dispatch:       # manual run on any branch
@@ -18,6 +19,8 @@ concurrency:
   group: ci-${{ github.ref }}   # refs/pull/N/merge per PR, refs/heads/main for main
   cancel-in-progress: true
 ```
+
+Every job skips draft PRs (CI-06): `if: github.event_name != 'pull_request' || !github.event.pull_request.draft`. A skipped job bills nothing and counts as passing for a required check, so a draft can't merge on a skip: marking it ready runs the real checks.
 
 Add `paths-ignore: ['docs/**', '**/*.md']` to both events only if (a) no required check depends on this workflow and (b) the checks don't lint those files.
 
@@ -52,7 +55,7 @@ Pass `contains(github.event.pull_request.labels.*.name, 'full-regression')` into
       browser: ${{ steps.scope.outputs.browser }}
       engines: ${{ steps.scope.outputs.engines }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ inputs.ref }}   # empty = triggering commit; set by the dispatch wrapper
           fetch-depth: 2           # HEAD^1 = PR base on the merge commit

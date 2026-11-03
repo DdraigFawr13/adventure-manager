@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Read-only reviewer for a diff, a set of files or a document. Reports evidence-backed findings in a fixed format and states what it checked. Use for large diffs, pre-merge review, or as a template for a project-specific review lens. Read-only; never edits files.
+description: Read-only reviewer for a diff, a set of files or a document. Reports evidence-backed findings in a fixed format and states what it checked. Use when a review needs a fresh context: a large diff, a pre-merge review of delegated or long-session work, or a project-specific review lens. Not when the diff is small enough to read yourself, or when the review turns on decisions made in this conversation that no file records. Read-only; never edits files.
 model: sonnet
 tools: Read, Grep, Glob
 ---

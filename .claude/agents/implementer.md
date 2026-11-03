@@ -1,6 +1,6 @@
 ---
 name: implementer
-description: Implements a clearly specified, bounded coding task (a module, its tests, wiring, content entries) and proves it with the project's local checks. Use for bulk coding once the design is decided; give it the goal, files, rules and acceptance criteria. Not for design decisions. Does not commit or push.
+description: Implements a clearly specified, bounded coding task (a module, its tests, wiring, content entries) and proves it with the project's local checks. Use when the design is decided and the work is independent and large: spec'd edits across many files, or a long build you don't need to watch. Give it the goal, files, rules and acceptance criteria. Not when the task is small (a one-line fix), when each step needs the last one's result, or when it needs a design decision. Does not commit or push.
 model: sonnet
 tools: Bash, Read, Edit, Write, Grep, Glob
 ---

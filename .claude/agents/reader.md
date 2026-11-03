@@ -1,6 +1,6 @@
 ---
 name: reader
-description: Haiku reader that answers factual questions about files, docs or code with verbatim path:line quotes. Use it instead of reading yourself when answering would mean loading more than about 8 KB you won't edit (long docs, many files, code traces, complete lists). Brief it with exact paths, numbered questions and a line cap. Don't use it for files you are about to edit, for an answer one Grep or a short Read gives, or for judgement (design, review, which option is better); it returns facts only. Open the cited lines before acting on a claim. Read-only; never edits files.
+description: Haiku reader that answers factual questions about files, docs or code with verbatim path:line quotes. Use when a read is long and you won't edit or keep what it covers: many files, long docs, code traces, complete lists. Brief it with exact paths, numbered questions and a line cap, and open the cited lines before acting on a claim. Not when you will edit the files, when one Grep or a few short Reads answer it, or for judgement (design, review, which option is better); it returns facts only. It has no MCP tools: read connector data in the main session or with a general-purpose agent. Read-only; never edits files.
 model: haiku
 tools: Read, Grep, Glob
 ---
