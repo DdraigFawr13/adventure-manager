@@ -26,6 +26,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** Quests simulate with decision pauses at key moments; full auto-resolve is an option. A stylised tabletop-style board shows parties on missions. Detail: `docs/design/CONCEPT.md` §2.
 - **Why:** Owner's choice; matches FM's watch-and-intervene feel without building a second tactics game.
+- **Extended (2026-11-03, D-207):** in the watched party's main fight, every exchange is a decision pause (foe intents, one order); full auto-resolve stays an option.
 
 ## D-005 Rival guilds and a tiered ranking; tournaments are events
 
