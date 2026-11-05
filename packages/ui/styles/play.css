@@ -531,3 +531,24 @@ button.pl {
   align-items: center;
   justify-content: center;
 }
+
+.broken {
+  max-width: 420px;
+  margin: 40px auto;
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 2px solid var(--seal);
+  border-radius: 4px;
+}
+.broken .btn {
+  min-height: 48px;
+  border-radius: 4px;
+  background: var(--brass);
+  color: var(--desk2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -142,7 +142,8 @@ function enterFight(
       hitThisRound: false,
     };
   });
-  const everyone = [...run.fighters.filter(isUp), ...foes];
+  // Every living member keeps a place, so one raised mid-fight acts from that place (SPEC.md).
+  const everyone = [...run.fighters.filter((f) => f.status !== 'dead'), ...foes];
   const order = everyone.sort((a, b) => b.speed - a.speed || byId(a.id, b.id)).map((f) => f.id);
   run.fight = {
     round: 0,
@@ -202,7 +203,10 @@ function startRound(state: GameState, run: DelveRun, sink: Sink, cause: string):
     subjectIds: [],
     round: fight.round,
     order: [...fight.order],
-    intents: { ...fight.intents },
+    // Copied value by value: an event never holds an object from the state (engine AGENTS.md).
+    intents: Object.fromEntries(
+      Object.entries(fight.intents).map(([id, v]) => [id, v === 'off-guard' ? v : { ...v }]),
+    ),
   });
 }
 
@@ -517,6 +521,7 @@ function endRound(state: GameState, run: DelveRun, sink: Sink, cause: string): v
     f.hitThisRound = false;
   }
   fight.warded = false;
+  sink.emit({ type: 'round.ended', causeId: cause, subjectIds: [], round: fight.round });
   if (checkEnd(state, run, sink, cause)) return;
   // The flee check (D-226): a band whose Down foes are more than half of it flees; a boss fight
   // ends when the boss is Down, and its minions flee.

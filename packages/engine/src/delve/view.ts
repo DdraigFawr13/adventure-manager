@@ -4,6 +4,10 @@ import type { Value } from '../core/value.ts';
 import type { GameState } from '../resolution/types.ts';
 import {
   PACK_ACTION,
+  SWAP_ACTION,
+  actionOf,
+  canMiss,
+  packKindOf,
   actionsOf,
   allFighters,
   damageRange,
@@ -106,7 +110,9 @@ export function fightView(state: GameState): FightView | null {
     round: fight.round,
     order: fight.order.map((id) => ({ id, acted: fight.acted.includes(id) })),
     actorId: actor ? actor.id : null,
-    intents: { ...fight.intents },
+    intents: Object.fromEntries(
+      Object.entries(fight.intents).map(([id, v]) => [id, v === 'off-guard' ? v : { ...v }]),
+    ),
     fighters: fighters.map((f) => ({
       id: f.id,
       side: f.side,
@@ -134,9 +140,37 @@ export function previewAction(
   actionId: string,
   targetId: string,
   packIndex?: number,
-): { hit: Value; damage: { min: Value; max: Value } } {
+): ActionPreview {
+  const run = state.delve;
+  const actor = run ? allFighters(run).find((f) => f.id === actorId) : undefined;
+  const target = run ? allFighters(run).find((f) => f.id === targetId) : undefined;
+  if (!run || !actor || !target) throw new Error('No such fighter in a running fight.');
+  const heals =
+    actionId === PACK_ACTION
+      ? packKindOf(state, run, packIndex ?? -1).kind === 'heal'
+      : actionId !== SWAP_ACTION &&
+        actor.side === 'party' &&
+        actionOf(state, actionId).kind === 'heal';
+  const fallen = target.status === 'down' || target.status === 'dying';
   return {
     hit: hitChance(state, actorId, actionId, targetId),
     damage: damageRange(state, actorId, actionId, targetId, packIndex),
+    effect: heals
+      ? fallen
+        ? 'raise'
+        : 'heal'
+      : canMiss(state, actor, actionId) || actionId === PACK_ACTION
+        ? 'harm'
+        : 'other',
+    canMiss: canMiss(state, actor, actionId),
   };
+}
+
+/** What a tap would do: hit chance and the damage, or the health a heal gives (or raises to). */
+export interface ActionPreview {
+  readonly hit: Value;
+  readonly damage: { readonly min: Value; readonly max: Value };
+  /** `harm` strikes or bombs, `heal` and `raise` restore health, `other` is Guard or Haste. */
+  readonly effect: 'harm' | 'heal' | 'raise' | 'other';
+  readonly canMiss: boolean;
 }

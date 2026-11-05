@@ -269,6 +269,8 @@ export type DelveEventBody =
       readonly from: number;
       readonly to: number;
     }
+  /** The round's marks (Guard, Ward, Spark, hit this round) cleared, after the bleed and death rolls. */
+  | { readonly type: 'round.ended'; readonly round: number }
   | { readonly type: 'rows.set'; readonly row: Row }
   | { readonly type: 'order.changed'; readonly order: readonly string[] }
   | { readonly type: 'fighter.raised'; readonly health: number }

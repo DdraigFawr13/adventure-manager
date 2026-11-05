@@ -78,7 +78,8 @@
     "row.word.front": "front",
     "row.word.back": "back",
     "later": "From slice 2",
-    "order": "Turn order this round"
+    "order": "Turn order this round",
+    "broken": "Something went wrong with this fight. Its save is kept aside; you can start a new fight."
   },
   "log": {
     "hit": "{actor} → {target}: {damage}",

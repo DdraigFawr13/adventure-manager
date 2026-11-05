@@ -169,7 +169,7 @@ describe('delve fight: hit and damage', () => {
     expect(hitChance(state, 'foe.1', 'action.foe-strike', ODRIC).total).toBe(5000);
   });
 
-  it('Ward takes 1,500 bp off foes this round; Spark adds 1,000 for allies', () => {
+  it('Ward takes 1,500 bp off foes this round', () => {
     const { state } = started();
     run(state).fight!.warded = true;
     expect(hitChance(state, 'foe.1', 'action.foe-strike', WENNA).total).toBe(

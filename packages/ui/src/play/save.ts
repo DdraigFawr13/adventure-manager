@@ -55,7 +55,11 @@ function parse(text: string): PlaySave | null {
       !save.state ||
       typeof save.state.seed !== 'string' ||
       !Array.isArray(save.state.roster) ||
-      !save.state.delve
+      !save.state.delve ||
+      !Array.isArray(save.state.delve.fighters) ||
+      !save.state.delve.fight ||
+      !Array.isArray(save.state.delve.fight.order) ||
+      !Array.isArray(save.state.delve.fight.foes)
     )
       return null;
     return {
@@ -73,27 +77,38 @@ function parse(text: string): PlaySave | null {
  * The saved game, or null. An unreadable save is copied to `play.save.unreadable.<time>` before
  * anything else is written, so it is never lost (GAME-05).
  */
-export function readSave(store: Store, now: number): { state: GameState | null; note: LoadNote } {
+export interface Loaded {
+  readonly state: GameState | null;
+  readonly note: LoadNote;
+  /** False when an unreadable save could not be copied aside: then nothing may write `play.save`. */
+  readonly mayWrite: boolean;
+}
+
+export function readSave(store: Store, now: number): Loaded {
   let text: string | null;
   try {
     text = store.getItem(SAVE_KEY);
   } catch {
-    return { state: null, note: null };
+    return { state: null, note: null, mayWrite: false };
   }
-  if (!text) return { state: null, note: null };
+  if (!text) return { state: null, note: null, mayWrite: true };
   const save = parse(text);
-  if (!save) {
-    try {
-      store.setItem(`${SAVE_KEY}.unreadable.${now}`, text);
-    } catch {
-      // Nothing more can be done; the original key is left as it was.
-    }
-    return { state: null, note: 'unreadable' };
-  }
+  if (!save) return { state: null, note: 'unreadable', mayWrite: keepAside(store, text, now) };
   return {
     state: save.state,
     note: save.rulesVersion < GATE1_RULES_VERSION ? 'older-rules' : null,
+    mayWrite: true,
   };
+}
+
+/** Copies a save to `play.save.unreadable.<time>`; returns whether the copy is safely stored. */
+export function keepAside(store: Store, text: string, now: number): boolean {
+  try {
+    store.setItem(`${SAVE_KEY}.unreadable.${now}`, text);
+    return store.getItem(`${SAVE_KEY}.unreadable.${now}`) === text;
+  } catch {
+    return false;
+  }
 }
 
 /** A new seed from the date and a counter kept beside the save (the UI may read the clock). */

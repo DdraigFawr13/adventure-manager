@@ -7,6 +7,7 @@ export {
   bandOf,
   type FightBand,
   type FightView,
+  type ActionPreview,
   type FighterView,
   type ActionView,
 } from './view.ts';

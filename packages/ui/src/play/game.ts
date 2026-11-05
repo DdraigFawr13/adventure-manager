@@ -10,6 +10,7 @@ import {
   type GameState,
 } from '@adventure-manager/engine';
 import { GATE1_SAMPLE_PACK, GATE1_TACTICS, gate1Content } from '@adventure-manager/content';
+import { writeSave, type Store } from './save.ts';
 
 export const SAMPLE_SITE = 'site.sample-fight';
 
@@ -54,4 +55,11 @@ export function play(game: Game, choice: Choice): Game {
     ...choice,
   });
   return withView(result.state, result.events);
+}
+
+/** One command as the page runs it: play it, then save at once (gate 1 spec: a save after every command). */
+export function commit(game: Game, choice: Choice, store: Store | null, savedAt: string): Game {
+  const next = play(game, choice);
+  if (store) writeSave(store, next.state, savedAt);
+  return next;
 }

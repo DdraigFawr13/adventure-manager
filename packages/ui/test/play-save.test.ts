@@ -10,7 +10,7 @@ import {
   writeSave,
   type Store,
 } from '../src/play/save.ts';
-import { newFight, play } from '../src/play/game.ts';
+import { commit, newFight } from '../src/play/game.ts';
 
 class MapStore implements Store {
   readonly map = new Map<string, string>();
@@ -29,8 +29,13 @@ describe('play save', () => {
     writeSave(store, game.state, 't0');
     const first = store.getItem(SAVE_KEY);
     const actor = game.view!.actorId!;
-    game = play(game, { actorId: actor, actionId: 'action.throw-knife', targetId: 'foe.4' });
-    writeSave(store, game.state, 't1');
+    // The page's own path: commit plays the command and saves at once.
+    game = commit(
+      game,
+      { actorId: actor, actionId: 'action.throw-knife', targetId: 'foe.4' },
+      store,
+      't1',
+    );
     const text = store.getItem(SAVE_KEY)!;
     expect(text).not.toBe(first);
     const parsed = JSON.parse(text);
@@ -47,8 +52,31 @@ describe('play save', () => {
     const store = new MapStore();
     store.setItem(SAVE_KEY, '{"version": 99, "broken": true');
     const loaded = readSave(store, 1234);
-    expect(loaded).toEqual({ state: null, note: 'unreadable' });
+    expect(loaded).toEqual({ state: null, note: 'unreadable', mayWrite: true });
     expect(store.getItem(`${SAVE_KEY}.unreadable.1234`)).toBe('{"version": 99, "broken": true');
+  });
+
+  it('forbids writing when an unreadable save could not be copied aside', () => {
+    const store = new MapStore();
+    store.setItem(SAVE_KEY, 'not json');
+    const full: Store = {
+      getItem: (k) => store.getItem(k),
+      setItem: (k, v) => {
+        if (k !== SAVE_KEY) throw new Error('quota');
+        store.setItem(k, v);
+      },
+    };
+    expect(readSave(full, 9).mayWrite).toBe(false);
+    expect(store.getItem(SAVE_KEY)).toBe('not json');
+  });
+
+  it('treats a save with a damaged fight as unreadable', () => {
+    const store = new MapStore();
+    writeSave(store, newFight('damaged').state, 't');
+    const saved = JSON.parse(store.getItem(SAVE_KEY)!);
+    saved.state.delve.fight = null;
+    store.setItem(SAVE_KEY, JSON.stringify(saved));
+    expect(readSave(store, 5).note).toBe('unreadable');
   });
 
   it('notes a save written under older rules', () => {

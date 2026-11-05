@@ -1,6 +1,6 @@
 // The fight screen (D-225 option C as fitted in D-231, mock-up docs/design/mockups/fight-fit.html):
 // band, turn strip, side-on stage, command panel. Shows the engine's view; computes no rule.
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   PACK_ACTION,
   SWAP_ACTION,
@@ -46,6 +46,12 @@ const BACK_FOE_LANES: Readonly<Record<number, readonly number[]>> = {
   2: [52, 16],
 };
 
+interface Selection {
+  readonly key: number;
+  readonly picked: Picked | null;
+  readonly packOpen: boolean;
+}
+
 interface Picked {
   readonly actionId: string;
   readonly packIndex?: number;
@@ -83,24 +89,28 @@ function Bar({ f }: { readonly f: FighterView }) {
   );
 }
 
-function isHeal(actionId: string, packKind?: string): boolean {
-  if (actionId === PACK_ACTION) return packKind === 'item.draught';
-  return gate1Delve.actions[actionId]?.kind === 'heal';
-}
-
 export function FightScreen(props: Props) {
   const { state, view, log } = props;
   const actorId = view.actorId;
   const actions = view.actions;
   const plain = actions[0]?.actionId;
-  const [picked, setPicked] = useState<Picked | null>(plain ? { actionId: plain } : null);
-  const [packOpen, setPackOpen] = useState(false);
-
-  // A new turn starts with the plain attack picked and nothing aimed.
-  useEffect(() => {
-    setPicked(plain ? { actionId: plain } : null);
-    setPackOpen(false);
-  }, [actorId, view.round, plain]);
+  // A choice belongs to the state it was made on: after any command (state.nextEventNo moves) the
+  // screen starts again from the plain attack, in the same render, so a stale pick (an item that
+  // has left the pack, a target that fell) is never previewed.
+  const turnKey = state.nextEventNo;
+  const fresh: Selection = {
+    key: turnKey,
+    picked: plain ? { actionId: plain } : null,
+    packOpen: false,
+  };
+  const [selection, setSelection] = useState<Selection>(fresh);
+  const current = selection.key === turnKey ? selection : fresh;
+  const picked = current.picked;
+  const packOpen = current.packOpen;
+  const setPicked = (next: Picked | null): void =>
+    setSelection({ key: turnKey, picked: next, packOpen: current.packOpen });
+  const setPackOpen = (open: boolean): void =>
+    setSelection({ key: turnKey, picked: current.picked, packOpen: open });
 
   const actionView = picked ? actions.find((a) => a.actionId === picked.actionId) : undefined;
   const targets =
@@ -144,7 +154,7 @@ export function FightScreen(props: Props) {
   };
 
   const preview =
-    actorId && picked?.targetId
+    actorId && picked?.targetId && targets.includes(picked.targetId)
       ? previewAction(state, actorId, picked.actionId, picked.targetId, picked.packIndex)
       : null;
   const target = picked?.targetId ? view.fighters.find((f) => f.id === picked.targetId) : undefined;
@@ -157,17 +167,16 @@ export function FightScreen(props: Props) {
   let targetLine = log.slice(-2).join(' · ') || t('pick.action');
   if (preview && target && picked) {
     const name = labelOf(view, target.id);
-    if (isHeal(picked.actionId, packKind))
+    if (preview.effect === 'heal' || preview.effect === 'raise')
       targetLine =
-        target.band === 'down' || target.band === 'dying'
+        preview.effect === 'raise'
           ? t('pick.raise', {
               target: name,
               band: t(`band.${target.band}`),
               amount: preview.damage.min.total,
             })
           : t('pick.heal', { target: name, amount: preview.damage.min.total, verb });
-    else if (preview.hit.total >= 10_000 && preview.damage.max.total === 0)
-      targetLine = `${name}. ${t('pick.self', { verb })}`;
+    else if (preview.effect === 'other') targetLine = `${name}. ${t('pick.self', { verb })}`;
     else
       targetLine = t('pick.target', {
         target: name,
@@ -270,9 +279,9 @@ export function FightScreen(props: Props) {
               {f.status === 'up' ? <Bar f={f} /> : <span>{bandWord(f)}</span>}
               {isTarget && preview ? (
                 <span className="odds num">
-                  {isHeal(picked?.actionId ?? '', packKind)
+                  {preview.effect === 'heal' || preview.effect === 'raise'
                     ? `+${preview.damage.min.total}`
-                    : preview.hit.total >= 10_000 && preview.damage.max.total === 0
+                    : preview.effect === 'other'
                       ? actionName(picked?.actionId ?? '')
                       : `${pct(preview.hit.total)}% · ${preview.damage.min.total}–${preview.damage.max.total}`}
                 </span>
@@ -367,8 +376,11 @@ export function FightScreen(props: Props) {
               <button
                 className="cmd wide"
                 onClick={() => {
-                  setPackOpen(false);
-                  setPicked(plain ? { actionId: plain } : null);
+                  setSelection({
+                    key: turnKey,
+                    picked: plain ? { actionId: plain } : null,
+                    packOpen: false,
+                  });
                 }}
               >
                 {t('pack.close')}

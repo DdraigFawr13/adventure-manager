@@ -113,7 +113,8 @@ export function checkModule(fileName, sourceText) {
       return;
     }
     if (!allowed[layer].has(destination))
-      errors.push(`${layer} cannot import ${destination}: ${name}.`); // Gate 1's delve stays apart from frozen resolution v0 (gate 1 spec, Risks): types and
+      errors.push(`${layer} cannot import ${destination}: ${name}.`);
+    // Gate 1's delve stays apart from frozen resolution v0 (gate 1 spec, Risks): types and
     // check.ts's clamp may be shared, v0's rules may not.
     if (name.startsWith('.') && isDelveFile(fileName)) {
       const target = path.basename(path.resolve(path.dirname(fileName), name));

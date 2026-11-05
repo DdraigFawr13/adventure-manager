@@ -112,17 +112,38 @@ for (const [width, height] of [
       await tap(page.getByRole('button', { name: 'Swap row' }));
       await tap(page.getByRole('button', { name: 'Swap row' }));
     }
+    if (i === 1) {
+      // Use a pack item (a firebomb on the first reachable foe): the path the branch review found
+      // could crash the page.
+      const pack = page.getByRole('button', { name: /^Pack/ });
+      if (await pack.isEnabled()) {
+        await tap(pack);
+        await tap(page.getByRole('button', { name: 'Firebomb' }).last());
+        if (await page.locator('.fc.can').count()) {
+          await tap(page.locator('.fc.can').first());
+          await tap(page.locator('.fc.pick').first());
+        }
+        // Wait for the foes' turns to hand back to an adventurer, then read the pack's count.
+        await page.waitForTimeout(100);
+        const left = await page.getByRole('button', { name: /^Pack/ }).textContent();
+        console.log(`${where}: firebomb thrown, pack now "${left}"`);
+        if (!/3/.test(left ?? ''))
+          failures.push(`${where}: the firebomb was not used (pack "${left}")`);
+      }
+    }
     if (i === 3) {
-      // J2 on the page: a reload mid-fight shows the same fight.
-      const before = await page.locator('#fight').innerText();
+      // J2 on the page: a reload mid-fight shows the same fight (strip, health and the round).
+      const read = () =>
+        page.evaluate(() =>
+          ['.band', '.turns', '.plist']
+            .map((s) => document.querySelector(s)?.textContent ?? '')
+            .join('|'),
+        );
+      const before = await read();
       await page.reload();
       await page.waitForSelector('#fight');
-      const after = await page.locator('#fight').innerText();
-      if (
-        before.replace(/\s+/g, ' ').split('Round')[1]?.slice(0, 2) !==
-        after.replace(/\s+/g, ' ').split('Round')[1]?.slice(0, 2)
-      )
-        failures.push(`${where}: the round changed on reload`);
+      const after = await read();
+      if (before !== after) failures.push(`${where}: the fight changed on reload`);
     }
   }
   if (!(await page.locator('.endcard').count())) failures.push(`${where}: the fight did not end`);
