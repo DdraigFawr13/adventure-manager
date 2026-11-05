@@ -24,6 +24,7 @@ Phase 1 concept. Each section records what the owner decided, with their own not
 ## 1. Player role
 
 - **Decided (2026-10-25):** The player is a desk guildmaster: a pure manager who recruits, trains, assigns and negotiates but doesn't fight.
+- **Amended (2026-11-05, D-215):** in fights the player chooses to lead, the player commands each adventurer turn by turn (skill and target, front and back rows, no movement); the guildmaster still doesn't fight in person.
 - The guildmaster has their own stats (e.g. judging talent, negotiation, motivation, tactics, contacts) that make them more or less effective at whatever they choose to focus on.
 - The guild is itself a persistent character (reputation, traits, history). Control can pass to a successor guildmaster, so the guild outlives any one player character.
 - Owner's note: "1 but I like the idea of guild as a character… pass control on to others and you yourself have some stats to influence how effective you are at whatever you choose to do."

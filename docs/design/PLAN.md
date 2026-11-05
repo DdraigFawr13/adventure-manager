@@ -818,6 +818,8 @@ Mock-up: `docs/design/mockups/kingdom-map.html` (interactive: base style and lay
 
 ## 13. Milestones (Accepted 2026-10-26)
 
+**Replaced (2026-11-05, D-213, D-214):** the milestones below are replaced by fun gates (gate 0 design, gate 1 one delve, gate 2 one season, gate 3 one year, gate 4 the launch decision). This section stays as reference for gate 4: the store route, price and timeline are parked until then.
+
 Decisions: D-099..D-101, D-108, D-111, D-156. Inputs: prototype order (§9b, D-085), playtest stages (§10a, D-089), engine test (D-090), scope tiers (CONCEPT §28), launch content (D-080, D-081), art and audio (D-098). **Durations are estimates** (REP-01), restated on 2026-10-26 for the owner building solo with AI help at 10–20 hours a week (D-108; the first figures assumed a small team) and for the lean launch cut (D-109).
 
 ### 13a. The ladder (Accepted 2026-10-26, D-099)

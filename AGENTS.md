@@ -13,7 +13,7 @@ Shared rules come from AI-Master-Instructions and load through CLAUDE.md (`.clau
 
 ## Phases
 
-Concept, style and plan are done; the plan was approved on 2026-10-26 (D-115), and the build runs through milestones M1–M7 (`docs/design/PLAN.md` §13). Don't skip a milestone gate.
+Concept, style and plan are done (plan approved 2026-10-26, D-115). Replanned 2026-11-05 (D-213): a game the owner loves first, built through fun gates instead of M1–M7: gate 0 design, gate 1 one delve, gate 2 one season, gate 3 one year, gate 4 the launch decision (contents: D-214). Don't skip a gate.
 
 ## Local checks (run before pushing)
 
