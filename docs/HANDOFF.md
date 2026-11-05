@@ -26,7 +26,7 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 
 ## Next
 
-1. Slice S1 (one fight), branch `ccr-1f4ee88e-glwrq1`: built and pushed (engine `delve/`, content `gate1/`, `/play.html`, `tools/play-shot.mjs fight`; 322 tests, play-shot ok at 375 × 667 and 443 × 900). Branch review running; then publish findings, owner approval, PR (D-133). After merge, S2 (one delve) starts with its mock-up. After S2, stop for the owner's playtest (D-230).
+1. Slice S1 (one fight), branch `ccr-1f4ee88e-glwrq1`: built and pushed (engine `delve/`, content `gate1/`, `/play.html`, `tools/play-shot.mjs fight`; 322 tests, play-shot ok at 375 × 667 and 443 × 900). Branch review: 2 major, 10 minor, all fixed (https://claude.ai/artifact/HsxCeJogF6iDDYV19z4ogP); waiting for the owner's approval to open the PR (D-133). After merge, S2 (one delve) starts with its mock-up. After S2, stop for the owner's playtest (D-230).
 2. Art: any more OpenArt spend needs a new approval with an exact quote, references included (LESSONS). The repo is public; OpenArt Starter images are non-commercial only. The engine test verdict (60 fps, 15 px, screen reader; D-154) is still the owner's to record.
 
 ## Open questions
