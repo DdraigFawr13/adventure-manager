@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-05 (twentieth session: S1 fit check approved, D-231; build next). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-11-05 (twentieth session: S1 built; branch review and PR next). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
@@ -13,19 +13,20 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 - ✔ Art style: hand-painted stylised, first prototype art (D-211, D-212, PR #42)
 - ✔ Replan approved and recorded (D-213–D-217, PR #43)
 - ▶ Gate 0, design: ✔ fight (D-218–D-220); ✔ gear and budget (D-221–D-223); ✔ mock-ups (D-224, D-225, PR #46); ✔ gate 1 spec (D-226–D-230, PR #47)
-- ▶ Gate 1, S1 one fight: ✔ fit check (D-231); ○ build
+- ▶ Gate 1, S1 one fight: ✔ fit check (D-231); ✔ build; ○ review and PR
 - ○ Gate 1, the rest: recruit, equip, budget, map trip, delve, fights the owner plays, letter home. Passes when after 3 delves the owner wants a 4th
 - ○ Gate 2, one season · ○ Gate 3, one year · ○ Gate 4, launch decision
 
 ## Just done
 
+- 2026-11-05 S1 built: the barrow fight plays to the end at `/play.html`, saves after every command, reload repeats the fight. Random legal play won 300 of 300 sample fights in 4.1 rounds on average (one room; balance is S2).
 - 2026-11-05 S1 fit check approved (D-231): layout C fits 375 × 667 (stage 327 px); fresh check 3 major, 7 minor, fixed.
 - 2026-11-05 Gate 1 spec approved (D-230, https://claude.ai/artifact/7V4yjafsYVxhL7YhXyv26A): `docs/specs/gate1-one-delve.md`, 6 slices (fight, delve, loop, gear, money, art), a playtest stop after slice 2, D-218 amended (stored streams). Answers D-226–D-229 from the spec questions https://claude.ai/artifact/GSbKtp9CWP54BN3pAQfUtQ. Fresh checks: about 100 findings fixed, 1 contested, 2 escalated (LESSONS). Branch review 3 major, 6 minor, 8 fixed (https://claude.ai/artifact/NLtErQLHKdHDQ7ggC2M7b6). Merged as PR #47.
 - 2026-11-05 Owner approved the mock-ups (D-224), asked for battle art (334 OpenArt credits approved and spent; 6 standees and a backdrop in `docs/design/art/`; OpenArt spend 1,858 in all), then for a side-on fight on the place's own ground: three layouts https://claude.ai/artifact/7nLcwmrQfciWm5pAfNF3W7, chose C (D-225; open notes: scene feel, crowding). Branch review: 2 major, 3 minor, all fixed (https://claude.ai/artifact/MVin2uAh7QVxTHpNznWju9). Merged as PR #46.
 
 ## Next
 
-1. Slice S1 (one fight), branch `ccr-1f4ee88e-glwrq1`: fit check approved (D-231, https://claude.ai/artifact/9aFFu1Ljhbm4DLYQrtMqfY). Next: the build per the spec's S1 (engine `delve/`, content `gate1/`, `play.html`, `play-shot.mjs`, boundary rule, art copy with ledger test); write-spec step 8 (re-check, checks fail first, review against the spec). After S2, stop for the owner's playtest (D-230).
+1. Slice S1 (one fight), branch `ccr-1f4ee88e-glwrq1`: built and pushed (engine `delve/`, content `gate1/`, `/play.html`, `tools/play-shot.mjs fight`; 322 tests, play-shot ok at 375 × 667 and 443 × 900). Branch review running; then publish findings, owner approval, PR (D-133). After merge, S2 (one delve) starts with its mock-up. After S2, stop for the owner's playtest (D-230).
 2. Art: any more OpenArt spend needs a new approval with an exact quote, references included (LESSONS). The repo is public; OpenArt Starter images are non-commercial only. The engine test verdict (60 fps, 15 px, screen reader; D-154) is still the owner's to record.
 
 ## Open questions
