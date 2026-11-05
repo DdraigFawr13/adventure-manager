@@ -2,13 +2,17 @@
 
 Phase 2 style guide: theme, tone and visual identity. Each section records what the owner decided. Status: complete, locked by the owner on 2026-10-26 (D-061). Changes now need a new DECISIONS entry.
 
+**Under review (2026-11-05, D-211):** illustrations are now hand-painted stylised fantasy. The UI's palette (§2), type (§5), woodcut icons (§6) and the inked quest-board site maps (§4) are not yet changed to match; whether they should is an open question.
+
 ## 1. Visual metaphor (Accepted 2026-10-26)
 
 **Guildmaster's war table.** The screen is the guildmaster's desk: rosters in ledgers, contracts under wax seals, letters and criers' notices as the inbox (D-043), and quests played out on a painted regional map with miniatures (D-004).
 
 **Readability rule:** the in-world look carries the frame and the set-piece moments (map, inbox, quest board, contract signing). Dense data screens (rosters, finances, scouting) sit on a clean, legible layer: plain paper tone, crisp type, no texture behind numbers. This keeps the FM-style density (D-016, kept on the phone by D-153) readable.
 
-Rejected: modern FM interface with a fantasy skin (weak identity), illuminated manuscript as the main look (too busy for dense screens), painterly storybook (costly art and too gentle for permadeath).
+Rejected: modern FM interface with a fantasy skin (weak identity), illuminated manuscript as the main look (too busy for dense screens), painterly storybook (costly art and too gentle for permadeath; reversed for illustrations by D-211).
+
+**Amended (2026-11-05, D-211):** for illustrations only, the owner chose a painterly look after seeing pictures: hand-painted stylised fantasy. The desk metaphor and readability rule above still hold for screens.
 
 ## 2. Palette mood (Accepted 2026-10-26)
 
@@ -43,7 +47,7 @@ Rejected: ledger tabs with Letters as home (the region gets sidelined), desk-as-
 - The dungeon or site map draws itself in ink as the party explores, with the scout's margin notes; unexplored space stays blank vellum. The finished map can go into the Chronicle (D-042).
 - Adventurers and monsters are flat portrait standees on bases; a fallen member tips over. Positions are loose, not a grid: the board shows the simulation and isn't a tactics game (D-004).
 - Key moments arrive as a wax seal on the map and stop the calendar.
-- **More fantasy flair** than the mock-up (owner's note). To define when art direction starts; candidates: illuminated initials and cartouches, painted monster vignettes in the margins, glowing or gilded ink for magic and wards.
+- **More fantasy flair** than the mock-up (owner's note). Settled by D-211 (hand-painted stylised illustrations). Earlier candidates, kept for the record: illuminated initials and cartouches, painted monster vignettes in the margins, glowing or gilded ink for magic and wards.
 - **Later (owner's note):** standee animations and effects: moves, attacks, reactions, spell effects. Not at launch. Like every board movement, they play simulation events and never decide anything (GAME-02).
 
 Owner's note: "B but with a bit more fantasy flare to be added to the art styling. I will also eventually want like effects of moves and reactions of the standees and animations of them doing various things but for now it works great."
@@ -84,7 +88,11 @@ Rejected: wax seals for every icon (blur at 16 px, clash with the "bad" colour),
 
 ## 7. Portraits (Accepted 2026-10-26)
 
-**Woodcut portraits to start, painted portraits later.** Mock-up: `docs/design/mockups/portraits.html` (option A now, option C later).
+**Amended (2026-11-05, D-211):** portraits are hand-painted stylised from the start, in the same simple look as the rest of the illustrations; the woodcut cameo below is replaced. Parts, seeds, scars and the mourning corner stay as written.
+
+**Superseded by D-211 (kept for the record):** the woodcut-first text below. Still in force: parts, seeds, scar and age layers, the mourning corner, parts as data, and faces stored as art-independent data.
+
+**Woodcut portraits to start, painted portraits later** (superseded by D-211). Mock-up: `docs/design/mockups/portraits.html` (option A now, option C later).
 
 - An engraved likeness in a cameo frame, assembled from drawn parts (head, hair, brows, eyes, nose, mouth, beard, ancestry ears, scars, age lines, kit at the collar). The adventurer's seed picks the parts (GAME-01); events add layers: a scar after an injury, greying and lines with age.
 - A fallen adventurer's portrait gets a black mourning corner and goes to the Hall of Heroes (D-042).
