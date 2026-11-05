@@ -137,11 +137,11 @@ p { margin: 0; }
 <div class="pc-wrap" style="left:96px;bottom:195px"><span class="sd sd-odric" style="height:88px;width:54px" aria-hidden="true"></span><span class="tg"><span class="tn">Odric</span><span class="hp hurt"><i style="width:63%"></i></span><span class="num"><span class="ph">15/24</span></span></span></div>
 <div class="pc-wrap" style="left:12px;bottom:14px"><span class="sd sd-maud flip" style="height:104px;width:64px" aria-hidden="true"></span><span class="tg"><span class="tn">Maud</span><span class="hp hurt"><i style="width:64%"></i></span><span class="num"><span class="ph">9/14</span></span></span></div>
 <div class="pc-wrap now" style="left:102px;bottom:14px"><span class="sd sd-wenna flip" style="height:104px;width:64px" aria-hidden="true"></span><span class="tg"><span class="tn">Wenna</span><span class="hp"><i style="width:100%"></i></span><span class="num"><span class="ph">18/18</span></span></span></div>
-<button class="fc" style="left:244px;bottom:290px" aria-label="The restless warden"><span class="sd sd-warden" style="height:110px;width:68px" aria-hidden="true"></span><span class="tg"><span class="tn">Warden</span><span class="hp"><i style="width:100%"></i></span><span class="it ph">→ Maud</span><span class="odds num ph">55% · 2–4</span></span></button>
-<button class="fc" style="left:190px;bottom:165px" aria-label="Hound 1"><span class="sd sd-hound" style="height:52px;width:57px" aria-hidden="true"></span><span class="tg"><span class="tn">Hound 1</span><span class="hp"><i style="width:100%"></i></span><span class="it">Done</span><span class="odds num ph">70% · 2–4</span></span></button>
-<button class="fc" style="left:284px;bottom:165px" aria-label="Hound 3"><span class="sd sd-hound" style="height:52px;width:57px" aria-hidden="true"></span><span class="tg"><span class="tn">Hound 3</span><span class="hp"><i style="width:100%"></i></span><span class="it">→ Wenna</span><span class="odds num ph">70% · 2–4</span></span></button>
-<button class="fc pick" style="left:186px;bottom:14px" aria-label="Hound 2"><span class="sd sd-hound" style="height:60px;width:66px" aria-hidden="true"></span><span class="tg"><span class="tn">Hound 2</span><span class="hp hurt"><i style="width:50%"></i></span><span class="it">Hurt · done</span><span class="odds num ph">70% · 6–9</span></span></button>
-<button class="fc" style="left:282px;bottom:14px" aria-label="Hound 4"><span class="sd sd-hound" style="height:60px;width:66px" aria-hidden="true"></span><span class="tg"><span class="tn">Hound 4</span><span class="hp"><i style="width:100%"></i></span><span class="it">→ Odric</span><span class="odds num ph">70% · 2–4</span></span></button>
+<button class="fc" style="left:244px;bottom:290px"><span class="sd sd-warden" style="height:110px;width:68px" aria-hidden="true"></span><span class="tg"><span class="tn">Warden</span><span class="hp"><i style="width:100%"></i></span><span class="it ph">Reaches Maud</span><span class="odds num ph">55% · 2–4</span></span></button>
+<button class="fc" style="left:190px;bottom:165px"><span class="sd sd-hound" style="height:52px;width:57px" aria-hidden="true"></span><span class="tg"><span class="tn">Hound 1</span><span class="hp"><i style="width:100%"></i></span><span class="it">Done</span><span class="odds num ph">70% · 2–4</span></span></button>
+<button class="fc" style="left:284px;bottom:165px"><span class="sd sd-hound" style="height:52px;width:57px" aria-hidden="true"></span><span class="tg"><span class="tn">Hound 3</span><span class="hp"><i style="width:100%"></i></span><span class="it">→ Wenna</span><span class="odds num ph">70% · 2–4</span></span></button>
+<button class="fc pick" style="left:186px;bottom:14px"><span class="sd sd-hound" style="height:60px;width:66px" aria-hidden="true"></span><span class="tg"><span class="tn">Hound 2</span><span class="hp hurt"><i style="width:50%"></i></span><span class="it">Hurt · done</span><span class="odds num ph">70% · 6–9</span></span></button>
+<button class="fc" style="left:282px;bottom:14px"><span class="sd sd-hound" style="height:60px;width:66px" aria-hidden="true"></span><span class="tg"><span class="tn">Hound 4</span><span class="hp"><i style="width:100%"></i></span><span class="it">→ Odric</span><span class="odds num ph">70% · 2–4</span></span></button>
 </div>
 <div class="bar">
   <div class="who">Wenna Cray · Rogue<button class="chipbtn">Swap row</button></div>
@@ -153,34 +153,35 @@ p { margin: 0; }
 </div>
   <div class="hint">Tap a foe. Swapping rows uses the turn.</div>
 </div></div></div>
-    <div><p class="fcap"><b>B · Stage and party bar</b>A smaller stage with light tags (number, health, intent). The bar shows the whole party's health, the picked target's odds in words, four short skill buttons and a confirm button.</p><div class="phone" id="view-b"><div class="band"><div><div class="t">The Hollow Barrow</div><div class="s">Room 3 of 6 · Round 2</div></div>
+    <div><p class="fcap"><b>B · Stage and party bar</b>A smaller stage with light tags (number, health, intent). The bar shows the whole party's health, the picked target's odds in words, four skill buttons and a confirm button: tap a foe to see its odds, then confirm.</p><div class="phone" id="view-b"><div class="band"><div><div class="t">The Hollow Barrow</div><div class="s">Room 3 of 6 · Round 2</div></div>
   <div class="end"><button class="chipbtn">Auto</button><button class="chipbtn danger">Retreat</button></div></div>
 <div class="turns" role="group" aria-label="Turn order this round"><span class="tf done">Hound 1</span><span class="done">Odric</span><span class="tf done">Hound 2</span><span class="now">Wenna</span><span>Maud</span><span class="tf">Warden</span><span class="tf">Hound 3</span><span>Amis</span><span class="tf">Hound 4</span></div>
-<div class="stage" style="height:360px">
+<div class="stage" style="height:372px">
 <div class="wall" aria-hidden="true"></div><div class="floor" aria-hidden="true"></div><div class="haze" aria-hidden="true"></div>
 <span class="rowchip" style="left:6px;top:66px">Back</span><span class="rowchip" style="left:96px;top:66px">Front</span>
 <div class="pc-wrap" style="left:6px;bottom:150px"><span class="sd sd-amis" style="height:70px;width:43px" aria-hidden="true"></span><span class="tg"><span class="tn">Amis</span><span class="hp"><i style="width:100%"></i></span></span></div>
 <div class="pc-wrap" style="left:96px;bottom:150px"><span class="sd sd-odric" style="height:70px;width:43px" aria-hidden="true"></span><span class="tg"><span class="tn">Odric</span><span class="hp hurt"><i style="width:63%"></i></span></span></div>
 <div class="pc-wrap" style="left:12px;bottom:10px"><span class="sd sd-maud flip" style="height:80px;width:49px" aria-hidden="true"></span><span class="tg"><span class="tn">Maud</span><span class="hp hurt"><i style="width:64%"></i></span></span></div>
 <div class="pc-wrap now" style="left:102px;bottom:10px"><span class="sd sd-wenna flip" style="height:80px;width:49px" aria-hidden="true"></span><span class="tg"><span class="tn">Wenna</span><span class="hp"><i style="width:100%"></i></span></span></div>
-<button class="fc" style="left:244px;bottom:222px" aria-label="The restless warden"><span class="sd sd-warden" style="height:84px;width:52px" aria-hidden="true"></span><span class="tg"><span class="tn">Warden</span><span class="hp"><i style="width:100%"></i></span><span class="it ph">→ Maud</span></span></button>
-<button class="fc" style="left:190px;bottom:128px" aria-label="Hound 1"><span class="sd sd-hound" style="height:42px;width:46px" aria-hidden="true"></span><span class="tg"><span class="tn">1</span><span class="hp"><i style="width:100%"></i></span><span class="it">Done</span></span></button>
-<button class="fc" style="left:284px;bottom:128px" aria-label="Hound 3"><span class="sd sd-hound" style="height:42px;width:46px" aria-hidden="true"></span><span class="tg"><span class="tn">3</span><span class="hp"><i style="width:100%"></i></span><span class="it">→ Wenna</span></span></button>
-<button class="fc pick" style="left:186px;bottom:8px" aria-label="Hound 2"><span class="sd sd-hound" style="height:46px;width:50px" aria-hidden="true"></span><span class="tg"><span class="tn">2</span><span class="hp hurt"><i style="width:50%"></i></span><span class="it">Hurt · done</span><span class="odds num ph">70% · 6–9</span></span></button>
-<button class="fc" style="left:282px;bottom:8px" aria-label="Hound 4"><span class="sd sd-hound" style="height:46px;width:50px" aria-hidden="true"></span><span class="tg"><span class="tn">4</span><span class="hp"><i style="width:100%"></i></span><span class="it">→ Odric</span></span></button>
+<button class="fc" style="left:244px;bottom:236px"><span class="sd sd-warden" style="height:84px;width:52px" aria-hidden="true"></span><span class="tg"><span class="tn">Warden</span><span class="hp"><i style="width:100%"></i></span><span class="it ph">Reaches Maud</span></span></button>
+<button class="fc" style="left:190px;bottom:128px"><span class="sd sd-hound" style="height:42px;width:46px" aria-hidden="true"></span><span class="tg"><span class="tn">1</span><span class="hp"><i style="width:100%"></i></span><span class="it">Done</span></span></button>
+<button class="fc" style="left:284px;bottom:128px"><span class="sd sd-hound" style="height:42px;width:46px" aria-hidden="true"></span><span class="tg"><span class="tn">3</span><span class="hp"><i style="width:100%"></i></span><span class="it">→ Wenna</span></span></button>
+<button class="fc pick" style="left:186px;bottom:8px"><span class="sd sd-hound" style="height:46px;width:50px" aria-hidden="true"></span><span class="tg"><span class="tn">2</span><span class="hp hurt"><i style="width:50%"></i></span><span class="it">Hurt · done</span><span class="odds num ph">70% · 6–9</span></span></button>
+<button class="fc" style="left:282px;bottom:8px"><span class="sd sd-hound" style="height:46px;width:50px" aria-hidden="true"></span><span class="tg"><span class="tn">4</span><span class="hp"><i style="width:100%"></i></span><span class="it">→ Odric</span></span></button>
 </div>
 <div class="bar">
   <div class="prow4"><div class="pm"><span class="tn">Odric</span><span class="hp hurt"><i style="width:63%"></i></span><span class="num"><span class="ph">15/24</span> Hurt</span></div><div class="pm now"><span class="tn">Wenna</span><span class="hp"><i style="width:100%"></i></span><span class="num"><span class="ph">18/18</span> Fit</span></div><div class="pm"><span class="tn">Amis</span><span class="hp"><i style="width:100%"></i></span><span class="num"><span class="ph">18/18</span> Fit</span></div><div class="pm"><span class="tn">Maud</span><span class="hp hurt"><i style="width:64%"></i></span><span class="num"><span class="ph">9/14</span> Hurt</span></div></div>
   <div class="target num">Hound 2 · hit <span class="ph">70%</span> · damage <span class="ph">6–9</span> · Hurt, already hit this round</div>
   <div class="skills4">
-    <button class="skill"><b>Attack</b><small>no limit</small></button>
-    <button class="skill on" aria-pressed="true"><b>Strike</b><small class="num">2 left</small></button>
-    <button class="skill"><b>Hamstring</b><small class="num">3 left</small></button>
-    <button class="skill"><b>Pack</b><small class="num">4</small></button>
+    <button class="skill"><b>Attack</b><small>Plain</small></button>
+    <button class="skill on" aria-pressed="true"><b>Strike from shadow</b><small class="num">2 of 3</small></button>
+    <button class="skill"><b>Hamstring</b><small class="num">3 of 3</small></button>
+    <button class="skill"><b>Pack</b><small class="num">4 items</small></button>
   </div>
   <div class="row2"><button class="btn">Strike Hound 2</button><button class="chipbtn" style="flex:none">Swap row</button></div>
+  <div class="hint">Tap a foe to see its odds, then confirm. Swapping rows uses the turn.</div>
 </div></div></div>
-    <div><p class="fcap"><b>C · Classic panel</b>The closest to the owner's screenshot. Health bars only on the field; a boxed panel below with commands on the left and the party's health on the right, and what the foes do next.</p><div class="phone" id="view-c"><div class="band"><div><div class="t">The Hollow Barrow</div><div class="s">Room 3 of 6 · Round 2</div></div>
+    <div><p class="fcap"><b>C · Classic panel</b>The closest to the owner's screenshot. Health bars only on the field; a boxed panel below with commands on the left and the party's health on the right, and what the foes do next. Tapping a foe shows its odds; a second tap strikes.</p><div class="phone" id="view-c"><div class="band"><div><div class="t">The Hollow Barrow</div><div class="s">Room 3 of 6 · Round 2</div></div>
   <div class="end"><button class="chipbtn">Auto</button><button class="chipbtn danger">Retreat</button></div></div>
 <div class="turns" role="group" aria-label="Turn order this round"><span class="tf done">Hound 1</span><span class="done">Odric</span><span class="tf done">Hound 2</span><span class="now">Wenna</span><span>Maud</span><span class="tf">Warden</span><span class="tf">Hound 3</span><span>Amis</span><span class="tf">Hound 4</span></div>
 <div class="stage" style="height:340px">
@@ -190,28 +191,49 @@ p { margin: 0; }
 <div class="pc-wrap" style="left:96px;bottom:160px"><span class="sd sd-odric" style="height:80px;width:49px" aria-hidden="true"></span><span class="tg"><span class="tn">Odric</span><span class="hp hurt"><i style="width:63%"></i></span></span></div>
 <div class="pc-wrap" style="left:12px;bottom:10px"><span class="sd sd-maud flip" style="height:92px;width:57px" aria-hidden="true"></span><span class="tg"><span class="tn">Maud</span><span class="hp hurt"><i style="width:64%"></i></span></span></div>
 <div class="pc-wrap now" style="left:102px;bottom:10px"><span class="sd sd-wenna flip" style="height:92px;width:57px" aria-hidden="true"></span><span class="tg"><span class="tn">Wenna</span><span class="hp"><i style="width:100%"></i></span></span></div>
-<button class="fc" style="left:244px;bottom:215px" aria-label="The restless warden"><span class="sd sd-warden" style="height:96px;width:59px" aria-hidden="true"></span><span class="tg"><span class="tn">Warden</span><span class="hp"><i style="width:100%"></i></span></span></button>
-<button class="fc" style="left:190px;bottom:125px" aria-label="Hound 1"><span class="sd sd-hound" style="height:46px;width:50px" aria-hidden="true"></span><span class="tg"><span class="tn">1</span><span class="hp"><i style="width:100%"></i></span></span></button>
-<button class="fc" style="left:284px;bottom:125px" aria-label="Hound 3"><span class="sd sd-hound" style="height:46px;width:50px" aria-hidden="true"></span><span class="tg"><span class="tn">3</span><span class="hp"><i style="width:100%"></i></span></span></button>
-<button class="fc pick" style="left:186px;bottom:8px" aria-label="Hound 2"><span class="sd sd-hound" style="height:50px;width:55px" aria-hidden="true"></span><span class="tg"><span class="tn">2</span><span class="hp hurt"><i style="width:50%"></i></span><span class="odds num ph">70% · 6–9</span></span></button>
-<button class="fc" style="left:282px;bottom:8px" aria-label="Hound 4"><span class="sd sd-hound" style="height:50px;width:55px" aria-hidden="true"></span><span class="tg"><span class="tn">4</span><span class="hp"><i style="width:100%"></i></span></span></button>
+<button class="fc" style="left:244px;bottom:204px"><span class="sd sd-warden" style="height:90px;width:55px" aria-hidden="true"></span><span class="tg"><span class="tn">Warden</span><span class="hp"><i style="width:100%"></i></span></span></button>
+<button class="fc" style="left:190px;bottom:125px"><span class="sd sd-hound" style="height:46px;width:50px" aria-hidden="true"></span><span class="tg"><span class="tn">1</span><span class="hp"><i style="width:100%"></i></span></span></button>
+<button class="fc" style="left:284px;bottom:125px"><span class="sd sd-hound" style="height:46px;width:50px" aria-hidden="true"></span><span class="tg"><span class="tn">3</span><span class="hp"><i style="width:100%"></i></span></span></button>
+<button class="fc pick" style="left:186px;bottom:8px"><span class="sd sd-hound" style="height:50px;width:55px" aria-hidden="true"></span><span class="tg"><span class="tn">2</span><span class="hp hurt"><i style="width:50%"></i></span><span class="odds num ph">70% · 6–9</span></span></button>
+<button class="fc" style="left:282px;bottom:8px"><span class="sd sd-hound" style="height:50px;width:55px" aria-hidden="true"></span><span class="tg"><span class="tn">4</span><span class="hp"><i style="width:100%"></i></span></span></button>
 </div>
 <div class="panel">
   <div class="cmds" role="group" aria-label="Wenna's commands">
     <span class="ph-title">Wenna</span>
     <button class="cmd">Attack</button>
-    <button class="cmd on" aria-pressed="true">Strike from shadow <span class="num">2</span></button>
-    <button class="cmd">Hamstring <span class="num">3</span></button>
-    <button class="cmd">Pack <span class="num">4</span></button>
+    <button class="cmd on" aria-pressed="true">Strike from shadow <span class="num">2/3</span></button>
+    <button class="cmd">Hamstring <span class="num">3/3</span></button>
+    <button class="cmd">Pack <span class="num">4 items</span></button>
     <button class="cmd">Swap row</button>
   </div>
   <div class="plist"><div class="pl"><span class="tn">Odric Hale</span><span class="num"><span class="ph">15/24</span></span><span class="hp hurt"><i style="width:63%"></i></span></div><div class="pl now"><span class="tn">Wenna Cray</span><span class="num"><span class="ph">18/18</span></span><span class="hp"><i style="width:100%"></i></span></div><div class="pl"><span class="tn">Brother Amis</span><span class="num"><span class="ph">18/18</span></span><span class="hp"><i style="width:100%"></i></span></div><div class="pl"><span class="tn">Maud Fenwick</span><span class="num"><span class="ph">9/14</span></span><span class="hp hurt"><i style="width:64%"></i></span></div>
     <div class="foeline num"><b>Foes next:</b> 3 → Wenna · 4 → Odric · Warden → <span class="ph">Maud</span></div>
   </div>
 </div>
-<div class="hint2">Tap a foe on the field. Swapping rows uses the turn.</div>
+<div class="hint2">Tap a foe to see its odds; tap again to strike. Swapping rows uses the turn.</div>
 </div></div>
   </div></div>
 </section>
-<section id="check-record"><h2>Check record</h2><p>Written after the fact check and the fresh check.</p></section>
+<section id="check-record"><h2>Check record</h2>
+  <p>Checked 2026-11-05, before publishing.</p>
+  <h3>Files checked</h3>
+  <ul>
+    <li><code>docs/design/STYLE.md</code> (screen rules, §1 readability, §4 standees); <code>docs/DECISIONS.md</code> D-211, D-217, D-218, D-219, D-220, D-222, D-224; <code>docs/design/mockups/gate1-screens.html</code> frame <code>#fight-a</code>, the approved moment these redraw; <code>packages/content/data/text.en.json</code>; <code>docs/design/art/README.md</code>; <code>.claude/skills/ui-style/references/avoid.md</code>.</li>
+  </ul>
+  <h3>Facts</h3>
+  <p>Every name, health figure, intent, odds chip, skill, use count and the turn order is copied from the approved fight frame and agrees across A, B and C (the fresh check compared them line by line). Skill names and uses come from D-219 (Hamstring is named there; the content files don't hold gate 1 skills yet), the 4-item pack from D-222, Auto from D-220, rows, intents, odds, swap and Retreat from D-218. Stand-ins are dotted as before.</p>
+  <h3>Fixes made</h3>
+  <ul>
+    <li>Own pass: tags crashed into each other and the warden ran off the stage, so pieces now stand in three depth lanes with fixed spacing. After the owner's note that the fight should be on the place's own ground, the backdrop became a wall with the floor laid flat in perspective, with a shadow under each piece; Back and Front labels added over the party's columns.</li>
+    <li>Fresh check: the row finding was on the earlier draft and is fixed by the labels. Fixed: the warden's tag now says it reaches Maud; B shows the full name "Strike from shadow" and uses as "2 of 3"; B gained the swap hint; C shows uses as "2/3"; B and C say how a target's odds appear before the strike; foe buttons lost an <code>aria-label</code> that hid their health and odds from screen readers; the warden was clipped in C and touched a hound's tag in B (lanes moved). Rejected: "Hamstring" and "Pack 4 items" as invented, since D-219 and D-222 set them.</li>
+  </ul>
+  <h3>Lint, widths and screenshots</h3>
+  <ul>
+    <li><code>mockup-lint: 0 warnings</code> (<code>--min-text 15</code>); <code>tools/mockup-shot.mjs</code> at 1,200, 375, 412, 430 and 443 px: fonts loaded, smallest text 15 px, no sideways scroll, no tap under 44 px.</li>
+    <li>All frames at 375 px. Heights: A 805 px, B 830 px, C 817 px; B and C scroll about 20 px on a 375 × 812 phone. No screenshots embedded: the three frames are the comparison.</li>
+    <li>The ground is the existing burial hall painting reshaped in code; a painting made for a side-on battle ground would be new art and a new quote.</li>
+  </ul>
+  <h3>Fresh check and cost</h3>
+  <p>One independent reviewer agent, given the page, the style doc and the fact sources only: 51,681 tokens (measured), about $0.30 to $0.80 (estimate). No OpenArt credits spent on this page.</p>
+</section>
 </div>
