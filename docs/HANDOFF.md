@@ -12,20 +12,20 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 - ✔ M1 prototypes so far: engine, year simulator, balance runner, phone map, text prototype (kept)
 - ✔ Art style: hand-painted stylised, first prototype art (D-211, D-212, PR #42)
 - ✔ Replan approved and recorded (D-213–D-217, PR #43)
-- ▶ Gate 0, design: ✔ fight (D-218–D-220); ✔ gear and budget (D-221–D-223); ✔ mock-ups (D-224, D-225, PR #46); ▶ gate 1 spec (draft, D-226–D-229)
+- ▶ Gate 0, design: ✔ fight (D-218–D-220); ✔ gear and budget (D-221–D-223); ✔ mock-ups (D-224, D-225, PR #46); ✔ gate 1 spec (D-226–D-230)
 - ○ Gate 1, one delve: recruit, equip, budget, map trip, delve, fights the owner plays, letter home. Passes when after 3 delves the owner wants a 4th
 - ○ Gate 2, one season · ○ Gate 3, one year · ○ Gate 4, launch decision
 
 ## Just done
 
-- 2026-11-05 Gate 1 spec (`write-spec`) on branch `ccr-bd44b5a6-qqitgy`: spec questions https://claude.ai/artifact/GSbKtp9CWP54BN3pAQfUtQ (owner: "Ok go with all recommended and continue"; D-226–D-229). Spec `docs/specs/gate1-one-delve.md`, 6 slices (fight, delve, loop, gear, money, art). Fresh checks: paraphrase, critic ×2, zero decisions ×3; about 100 findings fixed, 1 contested, 2 escalated. Approval page https://claude.ai/artifact/7V4yjafsYVxhL7YhXyv26A (collection `approve1`).
+- 2026-11-05 Gate 1 spec approved (D-230, https://claude.ai/artifact/7V4yjafsYVxhL7YhXyv26A): `docs/specs/gate1-one-delve.md`, 6 slices (fight, delve, loop, gear, money, art), a playtest stop after slice 2, D-218 amended (stored streams). Answers D-226–D-229 from the spec questions https://claude.ai/artifact/GSbKtp9CWP54BN3pAQfUtQ. Fresh checks: about 100 findings fixed, 1 contested, 2 escalated (LESSONS).
 - 2026-11-05 Owner approved the mock-ups (D-224), asked for battle art (334 OpenArt credits approved and spent; 6 standees and a backdrop in `docs/design/art/`; OpenArt spend 1,858 in all), then for a side-on fight on the place's own ground: three layouts https://claude.ai/artifact/7nLcwmrQfciWm5pAfNF3W7, chose C (D-225; open notes: scene feel, crowding). Branch review: 2 major, 3 minor, all fixed (https://claude.ai/artifact/MVin2uAh7QVxTHpNznWju9). Merged as PR #46.
 - 2026-11-05 Gate 1 screen mock-ups (`ui-mockups`) on branch `gate0-mockups`: https://claude.ai/artifact/X6JUpHnw2jAHT2MSEddQzH, source `docs/design/mockups/gate1-screens.html`. 13 frames at 375 px. Fresh check: 3 major, 4 minor, all fixed; check record on the page. STYLE.md gained its screen rules (15 px, 44 px, where facts live). Found: the barrow's content has no foe that reaches the back row (D-218 needs one); no wizard in content; stipend unset.
 
 ## Next
 
-1. Read the owner's answers on the approval page (`approve1`: `rolls`, `playtest`, `approve`, notes). On approval: set the spec's Status, amend D-218 (rolls) if agreed, record the S2 playtest stop if agreed, then the D-133 branch review and PR.
-2. After approval: slice S1 (one fight) in a fresh session, starting with the 375 × 667 fit check of layout C.
+1. D-133 for this branch (`ccr-bd44b5a6-qqitgy`, docs only): independent branch review, findings page, the owner's approval, then the PR and merge.
+2. Slice S1 (one fight) in a fresh session from `main`: first the 375 × 667 fit check of layout C (`ui-mockups`, owner approves), then the build per the spec; write-spec step 8 (re-check, checks fail first, review against the spec). After S2, stop for the owner's playtest (D-230).
 3. Art: any more OpenArt spend needs a new approval with an exact quote, references included (LESSONS). The repo is public; OpenArt Starter images are non-commercial only. The engine test verdict (60 fps, 15 px, screen reader; D-154) is still the owner's to record.
 
 ## Open questions

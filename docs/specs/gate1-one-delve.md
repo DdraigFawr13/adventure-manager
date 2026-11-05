@@ -1,7 +1,7 @@
 # Gate 1: one delve
 
-- **Status:** Draft
-- **Planned in:** fight forms (D-218), gear and money forms (D-221), mock-ups (D-224, D-225), spec questions https://claude.ai/artifact/GSbKtp9CWP54BN3pAQfUtQ (owner, 2026-11-05: "go with all recommended"). **Decisions:** D-213–D-225, D-226–D-229 (this spec's answers).
+- **Status:** Approved 2026-11-05
+- **Planned in:** fight forms (D-218), gear and money forms (D-221), mock-ups (D-224, D-225), spec questions https://claude.ai/artifact/GSbKtp9CWP54BN3pAQfUtQ (owner, 2026-11-05: "go with all recommended"), approval https://claude.ai/artifact/7V4yjafsYVxhL7YhXyv26A ("Approved, start building"). **Decisions:** D-213–D-225, D-226–D-230 (this spec's answers; D-218 amended on rolls).
 
 ## Problem
 
@@ -67,6 +67,8 @@ Settled before this spec: D-213–D-225. This spec's answers (all the owner's re
 - **D-227 The delve:** choice rooms; only the approach stays; 3 sites with room pools.
 - **D-228 Time and the trip:** real time with pause and 1×/2×, 10 s a day; 1–2 road event cards a trip; template letters.
 - **D-229 Targets and build:** 1 delve in 10 costs a life; chest a little up after 3; a new `delve` system beside v0.
+- **D-218 amended (rolls):** stored named streams, a save after every turn and pure views meet "keyed to the fight, round and actor".
+- **D-230 Playtest stop after S2:** the owner plays barrow delves and judges the fights before S3.
 
 ## Alternatives rejected
 
@@ -94,7 +96,7 @@ Settled before this spec: D-213–D-225. This spec's answers (all the owner's re
 
 ### Engine: `packages/engine/src/delve/` (new; `SPEC.md` written from this section in S1)
 
-**Randomness.** Named streams via `streamFor` only (engine AGENTS.md): `delve.fight` (hits, damage, bleed, death, injury, retreat), `delve.auto` (Auto's good-choice roll), `delve.rooms` (layout, choice checks, scout), `delve.loot`; in the guild the existing `guild.recruit`, `guild.names`, `guild.backgrounds`, `guild.board` and `guild.recovery`, plus new `guild.road` (S3) and `guild.smith` (S4). The page saves after every command, so a reload restores the stream positions. Views never call `streamFor`. This meets D-218's "keyed to the fight, round and actor" by its stated purpose rather than its letter; recorded as an amendment of D-218 on approval. Bleed, death and injury rolls are written in `delve/` from the content numbers (v0's `harm.ts` is not imported).
+**Randomness.** Named streams via `streamFor` only (engine AGENTS.md): `delve.fight` (hits, damage, bleed, death, injury, retreat), `delve.auto` (Auto's good-choice roll), `delve.rooms` (layout, choice checks, scout), `delve.loot`; in the guild the existing `guild.recruit`, `guild.names`, `guild.backgrounds`, `guild.board` and `guild.recovery`, plus new `guild.road` (S3) and `guild.smith` (S4). The page saves after every command, so a reload restores the stream positions. Views never call `streamFor`. This meets D-218's "keyed to the fight, round and actor" by its stated purpose rather than its letter (D-218 amended, 2026-11-05). Bleed, death and injury rolls are written in `delve/` from the content numbers (v0's `harm.ts` is not imported).
 
 **State.** `GameState.delve: DelveRun | null` (new optional field; v0's `quest` untouched).
 
@@ -199,7 +201,7 @@ A `Letter` (same shape as `quest-report.ts`'s) built from the trip's events, whi
 - **Checks that fail now:** J3; `delve-rooms.test.ts` (layout, choice outcomes, off guard, alerted, off guard and alerted together, scout and rows, breather and Dying, boss and minions, retreat beats, `delve.ended` wound steps, injuries and deaths), `delve-auto.test.ts` (each `when`, the good-choice roll, save-for-boss); J6's S2 targets with stored baselines; `tools/play-shot.mjs delve`.
 - **Files:** `delve/{rooms.ts,auto.ts,loot.ts,retreat.ts}`, `simulate.ts`; `content/src/gate1/sites.ts` (the barrow only), words in `gate1.en.json`; `ui/src/play/delve/`; `tools/balance/{delve-player.ts,scenarios.ts,metrics.ts,run.ts}` and `baselines/delve-*.jsonl.gz`; save version unchanged unless the state's shape changes (then 2, with an upgrade and fixture).
 - **Waits on:** S1.
-- **Then:** the owner plays a few barrow delves and says whether the fights are fun before S3 starts (recommended; see Open questions).
+- **Then:** the owner plays a few barrow delves and says whether the fights are fun before S3 starts (D-230).
 
 ### S3 The loop
 
@@ -243,4 +245,3 @@ A `Letter` (same shape as `quest-report.ts`'s) built from the trip's events, whi
 ## Open questions
 
 - The scene feel (D-225: "it still doesn't feel like they exist in the scene"): side-on ground art and lit standees are Proposed; decided at S1's fit check or in S6.
-- An early playtest after S2: the owner plays a few barrow delves with the sample party and says whether the fights are fun before the loop, gear and money are built (the fresh critic's finding: the fun risk is in the fight, D-203). Recommended; the gate's verdict still comes after S5.
