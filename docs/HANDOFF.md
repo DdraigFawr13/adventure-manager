@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-05 (eighteenth session: gate 1 screen mock-ups approved (D-224), battle art made, side-on fight layout C chosen (D-225); merged as PR #46). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-11-05 (nineteenth session: gate 1 spec questions answered (D-226–D-229), spec drafted, fresh checks running). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
@@ -12,23 +12,21 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 - ✔ M1 prototypes so far: engine, year simulator, balance runner, phone map, text prototype (kept)
 - ✔ Art style: hand-painted stylised, first prototype art (D-211, D-212, PR #42)
 - ✔ Replan approved and recorded (D-213–D-217, PR #43)
-- ▶ Gate 0, design: ✔ fight (D-218–D-220); ✔ gear and budget (D-221–D-223); ✔ mock-ups (D-224, D-225, PR #46); next gate 1 spec
+- ▶ Gate 0, design: ✔ fight (D-218–D-220); ✔ gear and budget (D-221–D-223); ✔ mock-ups (D-224, D-225, PR #46); ▶ gate 1 spec (draft, D-226–D-229)
 - ○ Gate 1, one delve: recruit, equip, budget, map trip, delve, fights the owner plays, letter home. Passes when after 3 delves the owner wants a 4th
 - ○ Gate 2, one season · ○ Gate 3, one year · ○ Gate 4, launch decision
 
 ## Just done
 
+- 2026-11-05 Gate 1 spec (`write-spec`) on branch `ccr-bd44b5a6-qqitgy`: spec questions https://claude.ai/artifact/GSbKtp9CWP54BN3pAQfUtQ, owner: "Ok go with all recommended and continue", recorded as D-226 (fight gaps), D-227 (delve), D-228 (time, trip, letter), D-229 (targets; new `delve` system beside v0). Draft `docs/specs/gate1-one-delve.md`, 6 slices (fight, delve, loop, gear, money, art). Three fresh checks (paraphrase, critic, zero decisions) running; then sort findings, owner approval.
 - 2026-11-05 Owner approved the mock-ups (D-224), asked for battle art (334 OpenArt credits approved and spent; 6 standees and a backdrop in `docs/design/art/`; OpenArt spend 1,858 in all), then for a side-on fight on the place's own ground: three layouts https://claude.ai/artifact/7nLcwmrQfciWm5pAfNF3W7, chose C (D-225; open notes: scene feel, crowding). Branch review: 2 major, 3 minor, all fixed (https://claude.ai/artifact/MVin2uAh7QVxTHpNznWju9). Merged as PR #46.
-- 2026-11-05 Gate 1 screen mock-ups (`ui-mockups`) on branch `gate0-mockups`: https://claude.ai/artifact/X6JUpHnw2jAHT2MSEddQzH, source `docs/design/mockups/gate1-screens.html`. 13 frames at 375 px (fight normal also at 443): fight (turn, ally Down, band flees), party list, sheet, loot compare, smith (stock, pot short, rare offer), budget (pots, money line), drills, pack alert. Fresh check: 3 major, 4 minor, all fixed; check record on the page. STYLE.md gained its screen rules (15 px, 44 px, where facts live). Found: the barrow's content has no foe that reaches the back row (D-218 needs one); no wizard in content; stipend unset.
-- 2026-11-05 Gate 0 gear and budget design with `planning-interview`: round 1 https://claude.ai/artifact/Y4NMUNQ1HjGweJwRqGPW9d, review (independent reviewer plus mine, 16 findings, all agreed) https://claude.ai/artifact/VPo1C9L6oJNiyhs2VviDNE, final https://claude.ai/artifact/LoL5etsdMnPxiiGV98SJSJ ("Approved, record it"). Branch review: 2 major, 6 minor findings, all fixed (https://claude.ai/artifact/Y7MkkKqE2CCWDJR7vzMEqW). Merged as PR #45. Recorded as D-221 (6 rarities, gate 1 has 3; flat-point steps; armour limits; smith, loot, monster parts), D-222 (patron stipend, small chest, 3 pots that keep, party pack) and D-223 (drills in the refit week, quartermaster and gear wear in gate 2).
-- 2026-11-05 Gate 0 fight design with `planning-interview`: round 1 https://claude.ai/artifact/Ue2py2SaEcL55hMvSvwKb6, review (independent reviewer plus mine, 13 findings, all agreed) https://claude.ai/artifact/RVbyTb6kSVEpvq8baBBTwe, final https://claude.ai/artifact/7gRt8zLurycatygdqtviLn ("Approved, record it"). Recorded as D-218 (board, health pool, rows, foes flee, no round limit), D-219 (plain attack plus 2 class skills at 3 uses a delve, kits, wizard, 2 item kinds) and D-220 (Auto, Tactics, gate 2 list incl. the owner's costly revive). Review: 8 minor findings, all fixed (https://claude.ai/artifact/NSKgytzWyKxhD5GqHca8vj). Merged as PR #44.
-- 2026-11-05 Art pass merged as PR #42 (owner approved; docs-only, CI skipped by design): hand-painted stylised illustrations (D-211), keep/redo verdict (D-212), 9 prototype images and their ledger in `docs/design/art/`. Two reviews: https://claude.ai/artifact/1nPhE5RQiuSggAGzoHXMvU. OpenArt spend 1,524 credits in that pass (balance 3,345 → 1,821); detail in `docs/archive/handoff-2026-11.md`.
+- 2026-11-05 Gate 1 screen mock-ups (`ui-mockups`) on branch `gate0-mockups`: https://claude.ai/artifact/X6JUpHnw2jAHT2MSEddQzH, source `docs/design/mockups/gate1-screens.html`. 13 frames at 375 px. Fresh check: 3 major, 4 minor, all fixed; check record on the page. STYLE.md gained its screen rules (15 px, 44 px, where facts live). Found: the barrow's content has no foe that reaches the back row (D-218 needs one); no wizard in content; stipend unset.
 
 ## Next
 
-1. The gate 1 spec (`write-spec`, new branch from `main`), the fight first, to the D-225 layout (side-on, command panel); its open notes (scene feel, crowding) and the gaps D-224 lists (a foe that reaches the back row, the wizard in content, the stipend, fight height on a 375 × 667 phone) go in it: it rewrites today's fight engine (`packages/engine/src/resolution/SPEC.md`) to per-actor turns, a health pool, single foes and per-delve uses; the rogue's and wizard's plain attacks and Tactics' bonus size are set there; the balance runner measures Auto against led play (D-220). The gear and money starting numbers (rarity steps, prices, stipend, starting chest, weekly sum, drill bonus; D-221–D-223) are set there too, measured by the balance runner. Also settle there: what "most of the band" means for fleeing with single tokens and the boss, and whether the breather helps Dying allies (D-218).
-2. Map: subtle painted detail on `/map.html` in code (D-212), mock-up first. The engine test verdict (60 fps, 15 px, screen reader; D-154) is still the owner's to record.
-3. Art: the kept pieces go into the prototype pages in gate 1. Any more OpenArt spend needs a new approval with an exact quote, references included (LESSONS). The repo is public; OpenArt Starter images are non-commercial only.
+1. Finish the gate 1 spec (`docs/specs/gate1-one-delve.md`): sort the fresh checks' findings (write-spec step 6), re-run the zero-decision check on changed sections, then the owner's approval (step 7) with the reconcile items: what the spec decided that the forms never raised (keyed rolls, the cleric's plain attack as hit plus heal 1, adventurer defence, founding four signed free, a shortlist every week, Scout ahead as a Stealth check, warn and off-guard effects, slice order loop before gear and money). Then PR per D-133.
+2. After approval: slice S1 (one fight) in a fresh session, starting with the 375 × 667 fit check of layout C.
+3. Art: any more OpenArt spend needs a new approval with an exact quote, references included (LESSONS). The repo is public; OpenArt Starter images are non-commercial only. The engine test verdict (60 fps, 15 px, screen reader; D-154) is still the owner's to record.
 
 ## Open questions
 
