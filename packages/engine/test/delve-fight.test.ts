@@ -313,8 +313,9 @@ describe('delve fight: plain attacks and skills', () => {
 
 describe('delve fight: round end and the fight’s end', () => {
   it('Down adventurers roll to bleed and the Dying roll for death at the round end', () => {
-    // Chances: bleed 3,000 − 200 × (14 − 10) = 2,200 for Odric; death 3,500 − 150 × ((8 − 10) +
-    // (12 − 10)) = 3,500 for Maud. Over 40 seeds each roll must come up at least once.
+    // Chances: bleed base − 200 × (14 − 10) for Odric (1,200 − 800 = 400 since S2's tuning);
+    // death 3,500 − 150 × ((8 − 10) + (12 − 10)) = 3,500 for Maud. Over 40 seeds each roll must
+    // come up at least once.
     const dying: number[] = [];
     const died: number[] = [];
     for (let n = 0; n < 40; n += 1) {
@@ -330,7 +331,7 @@ describe('delve fight: round end and the fight’s end', () => {
     }
     expect(dying.length).toBeGreaterThan(0);
     expect(died.length).toBeGreaterThan(0);
-    expect(new Set(dying)).toEqual(new Set([2200]));
+    expect(new Set(dying)).toEqual(new Set([rules.bleed.baseBp - 200 * (14 - 10)]));
     expect(new Set(died)).toEqual(new Set([3500]));
   });
 
