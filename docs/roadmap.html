@@ -59,14 +59,14 @@ code { font-family: var(--mono); font-size: .85em; }
 
 <div class="wrap">
   <header>
-    <span class="meta">Updated 5 November 2026, nineteenth session · gate 0 done: the gate 1 spec approved</span>
+    <span class="meta">Updated 5 November 2026, twentieth session · gate 1, slice 1 merged: one fight</span>
     <h1>Adventure Manager roadmap</h1>
     <p class="sub">Where the design stands, what comes next, and what is parked for later. This page is a view of <code>docs/HANDOFF.md</code> and <code>docs/design/PLAN.md</code>; if they ever disagree, the handoff wins.</p>
   </header>
 
   <section class="now" aria-labelledby="now">
     <span class="pill p-now">Now</span>
-    <h2 id="now">Gate 0 done: the gate 1 spec is approved; slice 1 next</h2>
+    <h2 id="now">Gate 1: slice 1, one fight, is merged; slice 2, one delve, next</h2>
     <p>Gate 0 designs the fight, gear and weekly budget on phone forms before any code; the fight, gear and budget are approved.</p>
     <ul class="m1">
       <li><span class="pill p-done">Done</span> <span>Code standards, engine workspace, named random streams, self-explaining values, approved tools (D-114, D-117)</span></li>
@@ -109,7 +109,8 @@ code { font-family: var(--mono); font-size: .85em; }
       <li><span class="pill p-done">Done</span> <span>The <a href="https://claude.ai/artifact/X6JUpHnw2jAHT2MSEddQzH">gate 1 screen mock-ups</a>: the fight (your turn, an ally Down, the band fleeing), the party and its gear, the smith and the weekly budget, at phone width. Dotted numbers are starting ideas the spec sets. An independent check found 7 problems, all fixed. You approved them (D-224), then asked for battle art and a side-on fight on the place's own ground: six painted standees and a barrow backdrop made (334 credits), and <a href="https://claude.ai/artifact/7nLcwmrQfciWm5pAfNF3W7">three fight layouts</a>; you chose C, the classic panel (D-225), noting the pieces don't yet feel part of the scene and the stage is crowded, both for later. OpenArt spend so far: 1,858 credits. Merged (PR #46)</span></li>
       <li><span class="pill p-done">Done</span> <span>The <a href="https://claude.ai/artifact/GSbKtp9CWP54BN3pAQfUtQ">gate 1 spec questions</a>: you took every recommendation. Melee hits the foes' front row; the rogue throws a knife and the wizard's Spark helps allies hit; a band flees when more than half is down and the boss never flees; a Dying ally stays down after the breather; Tactics adds 1% a point (D-226). Rooms without fights are choices, the approach sets the entry room, 3 sites (D-227). Real time with pause, 10 seconds a day, 1–2 road event cards a trip, template letters (D-228). About 1 delve in 10 costs a life; the chest a little up after 3 delves; the new fight is built beside the old rules (D-229)</span></li>
       <li><span class="pill p-done">Done</span> <span>You approved the <a href="https://claude.ai/artifact/7V4yjafsYVxhL7YhXyv26A">gate 1 spec</a> (D-230), merged as PR #47: 6 slices (one fight, one delve, the loop, gear, money and drills, art and the map), checked by fresh reviewers (about 100 findings fixed). Your answers: a stop after slice 2 so you can play barrow delves and judge the fights, and D-218 amended to the simpler roll design</span></li>
-      <li><span class="pill p-soon">Next</span> <span>Slice 1, one fight: a fit check of layout C on a small phone, then a barrow fight on <code>/play.html</code>; after slice 2 you play barrow delves</span></li>
+      <li><span class="pill p-done">Done</span> <span>Slice 1, one fight. The <a href="https://claude.ai/artifact/9aFFu1Ljhbm4DLYQrtMqfY">fit check</a> you approved (D-231): layout C fits a 375 × 667 phone (667 px, stage 327 px), with a tag only on the picked foe and the adventurer acting, and each foe's intent as a mark like "Bite → Wenna". Then the build: <code>/play.html</code> opens straight into a barrow fight, the sample party against 3 hounds and an archer; hit % and damage before each strike, a save after every move, the same fight after a reload, a New fight button. Random play won 300 of 300 sample fights in 4.1 rounds (one room; balance comes with slice 2). Review: 2 major and 10 minor findings, all fixed (<a href="https://claude.ai/artifact/HsxCeJogF6iDDYV19z4ogP">findings</a>). Merged (PR #48)</span></li>
+      <li><span class="pill p-soon">Next</span> <span>Slice 2, one delve: a mock-up of the room, choice, scout, breather, retreat and end screens, then a whole barrow delve with Auto, retreat and loot, tuned to D-229's targets; then you play barrow delves and judge the fights (D-230)</span></li>
       <li><span class="pill p-wait">Then</span> <span>Gate 1, one delve: recruit and equip a party, send them across the map, play the delve and its fights, read their letter. It passes when after 3 delves you want a 4th</span></li>
       <li><span class="pill p-wait">Then</span> <span>Gate 2, one season · gate 3, one year · gate 4, the launch decision</span></li>
     </ul>
