@@ -10,8 +10,7 @@ Known gap: the four portraits came out more detailed in the faces than D-211's b
 - `cleric-stonewright.jpg`: starting party, Stonewright cleric.
 - `ranger-lanthe.jpg`: starting party, Lanthe ranger.
 - `rogue-barrowborn.jpg`: starting party, Barrowborn rogue.
-- `guild-house.jpg`: the guild house as stacked floors with the side-on compound (D-169, D-180).
-- `march-map.jpg`: the March, five biomes, eight or more settlements (PLAN §7c, D-144). A mood piece, not the map layout; the geography review (D-144) still applies.
 - `barrow-wight.jpg`: a monster of the restless dead.
-- `home-town.jpg`: the home town with its five sites and three spare plots (D-184).
 - `reference-v1-portrait.jpg`, `reference-v1-fight.jpg`: the round 2.5 V1 images the owner chose ("This is it"); the style references for everything above.
+
+Removed after the owner's review (D-212): the first guild house, home town and March map. The house and town are being redone simpler; the map stays the game's own (`/map.html`), with detail added in code.
