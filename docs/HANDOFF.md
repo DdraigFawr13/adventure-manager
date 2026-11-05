@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-05 (fifteenth session: art style chosen and merged as PR #42; replan approved and merged as PR #43). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-11-05 (sixteenth session: gate 0 fight design approved, D-218–D-220). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
@@ -12,24 +12,23 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 - ✔ M1 prototypes so far: engine, year simulator, balance runner, phone map, text prototype (kept)
 - ✔ Art style: hand-painted stylised, first prototype art (D-211, D-212, PR #42)
 - ✔ Replan approved and recorded (D-213–D-217, PR #43)
-- ▶ Gate 0, design: fight, gear and weekly-budget forms, mock-ups, gate 1 spec
+- ▶ Gate 0, design: ✔ fight (D-218–D-220); next gear and weekly-budget form, mock-ups, gate 1 spec
 - ○ Gate 1, one delve: recruit, equip, budget, map trip, delve, fights the owner plays, letter home. Passes when after 3 delves the owner wants a 4th
 - ○ Gate 2, one season · ○ Gate 3, one year · ○ Gate 4, launch decision
 
 ## Just done
 
+- 2026-11-05 Gate 0 fight design with `planning-interview`: round 1 https://claude.ai/artifact/Ue2py2SaEcL55hMvSvwKb6, review (independent reviewer plus mine, 13 findings, all agreed) https://claude.ai/artifact/RVbyTb6kSVEpvq8baBBTwe, final https://claude.ai/artifact/7gRt8zLurycatygdqtviLn ("Approved, record it"). Recorded as D-218 (board, health pool, rows, foes flee, no round limit), D-219 (plain attack plus 2 class skills at 3 uses a delve, kits, wizard, 2 item kinds) and D-220 (Auto, Tactics, gate 2 list incl. the owner's costly revive).
 - 2026-11-05 Art pass merged as PR #42 (owner approved; docs-only, CI skipped by design): hand-painted stylised illustrations (D-211), keep/redo verdict (D-212), 9 prototype images and their ledger in `docs/design/art/`. Two reviews: https://claude.ai/artifact/1nPhE5RQiuSggAGzoHXMvU. OpenArt spend 1,524 credits in all (balance 3,345 → 1,821); detail in `docs/archive/handoff-2026-11.md`.
 - 2026-11-05 Replan with `planning-interview`, ideas borrowed from Project Rotam: round 1 https://claude.ai/artifact/SqLn32L2NujjzvkFUaTCJr, review https://claude.ai/artifact/RzNpGDedS38dtJKcnNFJFS, final https://claude.ai/artifact/2cm2Vq1AVd8tUNBDEHSnLX ("Approved, start building"). Fun gates; slice-size content until gate 4; the owner commands each adventurer in fights they lead; 3 gear slots and 3 tiers; a weekly budget; craftsmen in gate 2; OpenArt images shareable for non-commercial use only.
-- 2026-11-03 Combat and fun brainstorm: https://claude.ai/artifact/NiWZ2Tg3yYcgxym1GJ3tDA. Owner chose the direction (D-207): turn-based orders in the main fight, foe intents, delves room by room; per-adventurer turns or grid tactics only if playtests call for them. Non-combat picks: four in round 1 (D-208: nemeses, personal quests, growing threats, storied gear). Round 2 (same page): two idea clusters and five more picks (D-209), clients who lie now and three later (D-210). Merged (PR #40); review: https://claude.ai/artifact/Lq6fjTatznbBgkneGkmSdv.
 
 ## Next
 
-1. Start a new branch from `main` for gate 0 (GIT-01); D-215 lists what the fight design must still settle (Tactics, disobedience, retreat, fight length, class actions as skills).
-2. Gate 0, fight design: a `planning-interview` form on the fight the owner chose (per-adventurer turns by speed, skill and target, front and back rows, no movement, foe intents; fights not led resolve on their own). Builds on D-118's exchanges and D-130's class actions.
-3. Gate 0, gear and budget workshop: 3 slots, 3 tiers, prices; the weekly split between training, gear and healing (refines D-143, D-186).
-4. Mock-ups (`ui-mockups`) of the fight, party-and-gear and budget screens; before the first use, STYLE.md needs `Minimum text`, `Minimum tap` and `Where facts live` lines (15 px, D-166; 44 px, D-167). Then the gate 1 spec (`write-spec`).
-5. Map: subtle painted detail on `/map.html` in code (D-212), mock-up first. The engine test verdict (60 fps, 15 px, screen reader; D-154) is still the owner's to record.
-6. Art: the kept pieces go into the prototype pages in gate 1. Any more OpenArt spend needs a new approval with an exact quote, references included (LESSONS). The repo is public; OpenArt Starter images are non-commercial only.
+1. Gate 0, gear and budget workshop (`planning-interview` form): 3 slots, 3 tiers, prices; the weekly split between training, gear and healing (refines D-143, D-186); drills (D-220); where the 2 fight items are carried (D-219); the quartermaster's role (D-216).
+2. Mock-ups (`ui-mockups`) of the fight, party-and-gear and budget screens; before the first use, STYLE.md needs `Minimum text`, `Minimum tap` and `Where facts live` lines (15 px, D-166; 44 px, D-167). Fight screen: 4 adventurers and up to 5 foes in portrait, turn strip, intents, odds (D-218).
+3. The gate 1 spec (`write-spec`), the fight first: it rewrites today's fight engine (`packages/engine/src/resolution/SPEC.md`) to per-actor turns, a health pool, single foes and per-delve uses; the rogue's and wizard's plain attacks and Tactics' bonus size are set there; the balance runner measures Auto against led play (D-220).
+4. Map: subtle painted detail on `/map.html` in code (D-212), mock-up first. The engine test verdict (60 fps, 15 px, screen reader; D-154) is still the owner's to record.
+5. Art: the kept pieces go into the prototype pages in gate 1. Any more OpenArt spend needs a new approval with an exact quote, references included (LESSONS). The repo is public; OpenArt Starter images are non-commercial only.
 
 ## Open questions
 
