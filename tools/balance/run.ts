@@ -21,6 +21,7 @@ import { METRICS, metricsFor, type MetricContext } from './metrics.ts';
 import { parseOverride, type Override } from './overrides.ts';
 import { playCareers } from './pool.ts';
 import { printRows, printSweep, rows } from './report.ts';
+import { DELVE_SCENARIOS, runDelveScenario } from './delve.ts';
 import { SCENARIOS } from './scenarios.ts';
 import { resamples } from './stats.ts';
 
@@ -38,6 +39,8 @@ const { values: opts, positionals } = parseArgs({
     json: { type: 'string' },
     list: { type: 'boolean' },
     force: { type: 'boolean' },
+    delves: { type: 'string' },
+    'compare-policy': { type: 'string' },
   },
 });
 
@@ -45,8 +48,25 @@ if (opts.list || positionals.length === 0) {
   console.log('Scenarios:');
   for (const [name, s] of Object.entries(SCENARIOS))
     console.log(`  ${name.padEnd(16)} ${s.description} (${s.careers} careers × ${s.years} years)`);
+  for (const [name, s] of Object.entries(DELVE_SCENARIOS))
+    console.log(`  ${name.padEnd(16)} ${s.description} (${s.delves} delves)`);
   console.log('Metrics:');
   for (const m of METRICS) console.log(`  ${m.id.padEnd(24)} ${m.label}`);
+  process.exit(0);
+}
+
+// Delve scenarios have their own mode (tools/balance/delve.ts).
+if (Object.hasOwn(DELVE_SCENARIOS, positionals[0]!)) {
+  runDelveScenario(positionals[0]!, {
+    delves: opts.delves,
+    set: opts.set,
+    sweep: opts.sweep,
+    compare: opts.compare,
+    comparePolicy: opts['compare-policy'],
+    save: opts.save,
+    force: opts.force,
+    json: opts.json,
+  });
   process.exit(0);
 }
 

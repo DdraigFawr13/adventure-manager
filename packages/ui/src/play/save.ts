@@ -1,7 +1,7 @@
 // The play page's save (gate 1 spec, UI "save.ts"; GAME-05): written after every command under
 // `play.save`, with the save format's version and the rules version, so a seed and rules version
 // replay a run (GAME-01). An unreadable save is kept aside and never overwritten.
-import type { GameState } from '@adventure-manager/engine';
+import type { DelveRun, GameState } from '@adventure-manager/engine';
 import { GATE1_RULES_VERSION, gate1Content } from '@adventure-manager/content';
 
 export const SAVE_KEY = 'play.save';
@@ -43,6 +43,12 @@ export function writeSave(store: Store, state: GameState, savedAt: string): bool
   }
 }
 
+function validRun(run: Partial<DelveRun> | undefined): boolean {
+  if (!run || !Array.isArray(run.fighters) || !Array.isArray(run.rooms)) return false;
+  if (run.fight === null) return run.phase !== 'fight';
+  return !!run.fight && Array.isArray(run.fight.order) && Array.isArray(run.fight.foes);
+}
+
 function parse(text: string): PlaySave | null {
   try {
     // cast-ok: checked field by field below; a save written by toStored has this shape.
@@ -55,11 +61,8 @@ function parse(text: string): PlaySave | null {
       !save.state ||
       typeof save.state.seed !== 'string' ||
       !Array.isArray(save.state.roster) ||
-      !save.state.delve ||
-      !Array.isArray(save.state.delve.fighters) ||
-      !save.state.delve.fight ||
-      !Array.isArray(save.state.delve.fight.order) ||
-      !Array.isArray(save.state.delve.fight.foes)
+      // A game on the start card has no delve yet (S2); a delve between fights has no fight.
+      (save.state.delve !== null && !validRun(save.state.delve))
     )
       return null;
     return {

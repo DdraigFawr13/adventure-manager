@@ -2,6 +2,7 @@
 // number, flag or word in a copy of the content, so a tuning try needs no edit to the content files.
 // A path walks object keys with dots; `name[id]` picks the array entry with that id, and a plain
 // number picks an array entry by index: `guild.house.incidents.kinds[incident.fire].weeklyBp`.
+// On a record keyed by ids, `[id]` is the key: `delve.foes[foe.hound].health`.
 
 export interface Override {
   readonly path: string;
@@ -61,6 +62,9 @@ export function applyOverrides<T extends object>(content: T, overrides: readonly
 
 function child(node: unknown, step: string | { id: string }, full: string): unknown {
   if (typeof step !== 'string') {
+    // On a record keyed by id (the delve pack's foes, classes, sites), `[id]` is that key.
+    if (isRecord(node) && !Array.isArray(node) && Object.hasOwn(node, step.id))
+      return node[step.id];
     if (!Array.isArray(node)) throw new Error(`"${full}": [${step.id}] needs a list.`);
     const found: unknown = node.find((e) => isRecord(e) && e.id === step.id);
     if (found === undefined) throw new Error(`"${full}": no entry with id ${step.id}.`);

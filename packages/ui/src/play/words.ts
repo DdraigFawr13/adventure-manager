@@ -49,6 +49,12 @@ export function logLines(view: FightView, events: readonly GameEvent[]): string[
           if (e.actionId === 'action.guard') out.push(line('guard', { actor, target }));
           else if (e.actionId === 'action.ward') out.push(line('ward', { actor }));
           else if (e.actionId === 'action.haste') out.push(line('haste', { actor, target }));
+          else {
+            // A heal on a standing ally (Mend): the health it gave, from its own event.
+            const healed = events.find((h) => h.type === 'health.changed' && h.causeId === e.id);
+            if (healed?.type === 'health.changed' && healed.to > healed.from)
+              out.push(line('heal', { actor, target, amount: healed.to - healed.from }));
+          }
         } else if (e.damage > 0) out.push(line('hit', { actor, target, damage: e.damage }));
         else out.push(line('miss', { actor, target }));
         break;
@@ -74,4 +80,32 @@ export function logLines(view: FightView, events: readonly GameEvent[]): string[
     }
   }
   return out;
+}
+
+/** An adventurer's first name. */
+export const memberLabel = (id: string): string => {
+  const shortNames: Readonly<Record<string, string>> = gate1Text.short;
+  return shortNames[id] ?? nameOf(id);
+};
+
+/** A room's name and line from the barrow's words (empty when a room has none). */
+export function roomWords(roomId: string): { name: string; line: string } {
+  const rooms: Readonly<Record<string, { name?: string; line?: string }>> = gate1Text.rooms;
+  return { name: rooms[roomId]?.name ?? roomId, line: rooms[roomId]?.line ?? '' };
+}
+
+/** The words for a choice room's way: the entry's first way takes the approach's words. */
+export function wayWords(roomId: string, optionIndex: number, approach: string): string {
+  const rooms: Readonly<
+    Record<
+      string,
+      {
+        name?: string;
+        options?: readonly string[];
+        approach?: Readonly<Record<string, string>>;
+      }
+    >
+  > = gate1Text.rooms;
+  const room = rooms[roomId];
+  return room?.options?.[optionIndex] || room?.approach?.[approach] || roomId;
 }

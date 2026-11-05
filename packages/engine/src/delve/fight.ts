@@ -25,6 +25,7 @@ import {
 } from './actions.ts';
 import type {
   DelveCommand,
+  DelveOutcome,
   DelveRun,
   FightRoom,
   Fighter,
@@ -42,75 +43,34 @@ const fightStream = (state: GameState): RngStream => streamFor(state, 'delve.fig
 /** Ties go by id (D-129); plain comparison, no locale (engine AGENTS.md). */
 const byId = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
 
-// ---- Start -------------------------------------------------------------------------------------
+// ---- Entering a fight -------------------------------------------------------------------------
 
-export function startDelve(state: GameState, command: StartCommand, sink: Sink): void {
-  if (state.delve && state.delve.phase !== 'ended') throw new Error('A delve is already running.');
+/** Builds a party fighter from the start command's member (rooms.ts calls this at `delve.start`). */
+export function partyFighter(state: GameState, member: StartCommand['members'][number]): Fighter {
   const content = delveContent(state);
-  const site = content.sites[command.siteId];
-  if (!site) throw new Error(`No site ${command.siteId}.`);
-  if (command.members.length === 0) throw new Error('A delve needs at least one member.');
-  if (command.pack.length > content.rules.packMax) throw new Error('The pack holds too much.');
   const { rules } = content;
-  const fighters: Fighter[] = command.members.map((m) => {
-    const adventurer = adventurerOf(state, m.adventurerId);
-    if (adventurer.dead) throw new Error(`${m.adventurerId} is dead.`);
-    const cls = content.classes[adventurer.classId];
-    if (!cls) throw new Error(`No delve class ${adventurer.classId}.`);
-    const maxHealth = cls.health + adventurer.attributes.toughness - rules.toughnessPivot;
-    return {
-      id: adventurer.id,
-      side: 'party',
-      kindId: adventurer.classId,
-      row: m.row,
-      health: maxHealth,
-      maxHealth,
-      speed: adventurer.attributes.agility,
-      armour: rules.armourWeight[m.loadout.armour.weight] + m.loadout.armour.rarity,
-      loadout: m.loadout,
-      status: 'up',
-      sparked: false,
-      hitThisRound: false,
-    };
-  });
-  const skillUses: Record<string, Record<string, number>> = {};
-  for (const f of fighters) {
-    const cls = content.classes[f.kindId];
-    skillUses[f.id] = Object.fromEntries((cls?.skills ?? []).map((s) => [s, rules.skillUses]));
-  }
-  const run: DelveRun = {
-    id: command.id,
-    siteId: site.id,
-    danger: site.danger,
-    approach: command.approach,
-    memberIds: fighters.map((f) => f.id),
-    tactics: command.tactics,
-    rooms: site.fightRooms.map((r) => ({ kind: 'fight', roomId: r.id, boss: false })),
-    roomIndex: 0,
-    phase: 'fight',
-    fighters,
-    fight: null,
-    pack: command.pack.map((p) => ({ kindId: p.kindId })),
-    skillUses,
-    auto: { on: false, saveSkillsForBoss: true },
-    bonuses: { offGuard: false, alerted: false, drillBp: command.drillBp },
-    scouted: false,
-    loot: { parts: [], gear: [] },
-    outcome: null,
+  const adventurer = adventurerOf(state, member.adventurerId);
+  if (adventurer.dead) throw new Error(`${member.adventurerId} is dead.`);
+  const cls = content.classes[adventurer.classId];
+  if (!cls) throw new Error(`No delve class ${adventurer.classId}.`);
+  const maxHealth = cls.health + adventurer.attributes.toughness - rules.toughnessPivot;
+  return {
+    id: adventurer.id,
+    side: 'party',
+    kindId: adventurer.classId,
+    row: member.row,
+    health: maxHealth,
+    maxHealth,
+    speed: adventurer.attributes.agility,
+    armour: rules.armourWeight[member.loadout.armour.weight] + member.loadout.armour.rarity,
+    loadout: member.loadout,
+    status: 'up',
+    sparked: false,
+    hitThisRound: false,
   };
-  state.delve = run;
-  const started = sink.emit({
-    type: 'delve.started',
-    causeId: command.id,
-    subjectIds: [...run.memberIds],
-    siteId: site.id,
-  });
-  const room = site.fightRooms[0];
-  if (!room) throw new Error(`Site ${site.id} has no fight room.`);
-  enterFight(state, run, room, sink, started);
 }
 
-function enterFight(
+export function enterFight(
   state: GameState,
   run: DelveRun,
   room: FightRoom,
@@ -156,7 +116,23 @@ function enterFight(
     foes,
   };
   run.phase = 'fight';
+  run.scouted = false;
+  run.seen = false;
   startRound(state, run, sink, entered);
+  // Alerted foes go before every adventurer in round 1 only; off guard and alerted cancel (spec).
+  const alerted = run.bonuses.alerted && !run.bonuses.offGuard;
+  run.bonuses.offGuard = false;
+  run.bonuses.alerted = false;
+  if (alerted) {
+    const fight = run.fight;
+    for (const id of [...fight.order]) {
+      const foe = fighterOf(run, id);
+      if (foe.side !== 'foe' || !isUp(foe)) continue;
+      foeTurn(state, run, foe, sink, entered);
+      fight.acted.push(foe.id);
+      if (checkEnd(state, run, sink, entered)) return;
+    }
+  }
   advance(state, run, sink, entered);
 }
 
@@ -215,7 +191,7 @@ function startRound(state: GameState, run: DelveRun, sink: Sink, cause: string):
  * the first fighter after the current one in the order who has not acted this round; anyone passed
  * while Down, Dying, dead or fled counts as passed for the round (SPEC.md "Order").
  */
-function advance(state: GameState, run: DelveRun, sink: Sink, cause: string): void {
+export function advance(state: GameState, run: DelveRun, sink: Sink, cause: string): void {
   for (let guard = 0; guard < 10_000; guard += 1) {
     if (run.phase !== 'fight' || !run.fight) return;
     const fight = run.fight;
@@ -246,7 +222,13 @@ function advance(state: GameState, run: DelveRun, sink: Sink, cause: string): vo
   throw new Error('The fight did not reach an adventurer turn.');
 }
 
-function foeTurn(state: GameState, run: DelveRun, foe: Fighter, sink: Sink, cause: string): void {
+export function foeTurn(
+  state: GameState,
+  run: DelveRun,
+  foe: Fighter,
+  sink: Sink,
+  cause: string,
+): void {
   const fight = fightOf(run);
   const intent: Intent | undefined = fight.intents[foe.id];
   if (intent === 'off-guard') return;
@@ -263,7 +245,7 @@ function foeTurn(state: GameState, run: DelveRun, foe: Fighter, sink: Sink, caus
 }
 
 /** One rolled strike: the hit roll, then damage on a hit. Returns whether it hit. */
-function strike(
+export function strike(
   state: GameState,
   run: DelveRun,
   actor: Fighter,
@@ -375,7 +357,7 @@ export function act(state: GameState, command: ActCommand, sink: Sink): void {
   if (!checkEnd(state, run, sink, command.id)) advance(state, run, sink, command.id);
 }
 
-function resolveAction(
+export function resolveAction(
   state: GameState,
   run: DelveRun,
   actor: Fighter,
@@ -487,7 +469,8 @@ function chanceFrom(
   return clamp(rule.baseBp - rule.stepBp * points, 0, BP_CERTAIN);
 }
 
-function endRound(state: GameState, run: DelveRun, sink: Sink, cause: string): void {
+/** The round's end rolls: bleed for the Down, then death for those Dying before them; marks clear. */
+export function endRoundRolls(state: GameState, run: DelveRun, sink: Sink, cause: string): void {
   const fight = fightOf(run);
   const { rules } = delveContent(state);
   const rng = fightStream(state);
@@ -522,6 +505,11 @@ function endRound(state: GameState, run: DelveRun, sink: Sink, cause: string): v
   }
   fight.warded = false;
   sink.emit({ type: 'round.ended', causeId: cause, subjectIds: [], round: fight.round });
+}
+
+function endRound(state: GameState, run: DelveRun, sink: Sink, cause: string): void {
+  const fight = fightOf(run);
+  endRoundRolls(state, run, sink, cause);
   if (checkEnd(state, run, sink, cause)) return;
   // The flee check (D-226): a band whose Down foes are more than half of it flees; a boss fight
   // ends when the boss is Down, and its minions flee.
@@ -537,7 +525,7 @@ function endRound(state: GameState, run: DelveRun, sink: Sink, cause: string): v
 }
 
 /** Ends the fight when no adventurer or no foe stands. Returns whether it ended. */
-function checkEnd(state: GameState, run: DelveRun, sink: Sink, cause: string): boolean {
+export function checkEnd(state: GameState, run: DelveRun, sink: Sink, cause: string): boolean {
   if (run.phase !== 'fight' || !run.fight) return true;
   if (!run.fighters.some(isUp)) {
     endFight(state, run, 'routed', sink, cause);
@@ -563,10 +551,58 @@ function endFight(
     subjectIds: [...run.memberIds],
     outcome,
   });
-  // Slice 1's site has one room; rooms, breathers and the boss arrive in slice 2.
-  if (outcome === 'routed' || run.roomIndex >= run.rooms.length - 1)
-    endDelve(state, run, outcome, sink, ended);
-  else run.phase = 'breather';
+  if (outcome === 'routed') {
+    endDelve(state, run, 'routed', sink, ended);
+    return;
+  }
+  dropLoot(state, run, sink, ended);
+  const room = run.rooms[run.roomIndex];
+  // No breather after the boss (spec "End"); the sample site's one room ends the delve too.
+  if ((room?.kind === 'fight' && room.boss) || run.roomIndex >= run.rooms.length - 1) {
+    endDelve(state, run, 'won', sink, ended);
+    return;
+  }
+  breather(run, delveContent(state).rules.breatherRaiseTo, sink, ended);
+}
+
+/** After a won fight: the Down rise a little, the Dying stop rolling and stay Down (D-226). */
+function breather(run: DelveRun, raiseTo: number, sink: Sink, cause: string): void {
+  const raised: string[] = [];
+  for (const f of run.fighters) {
+    if (f.status === 'down') {
+      f.status = 'up';
+      const from = f.health;
+      f.health = Math.min(f.maxHealth, raiseTo);
+      raised.push(f.id);
+      sink.emit({ type: 'fighter.raised', causeId: cause, subjectIds: [f.id], health: f.health });
+      sink.emit({ type: 'health.changed', causeId: cause, subjectIds: [f.id], from, to: f.health });
+    } else if (f.status === 'dying') f.status = 'down';
+  }
+  run.fight = null;
+  run.phase = 'breather';
+  run.scouted = false;
+  run.seen = false;
+  sink.emit({ type: 'breather', causeId: cause, subjectIds: raised, raisedIds: [...raised] });
+}
+
+/** Each Down foe of a won room drops its part on `delve.loot`; fled foes drop nothing. */
+function dropLoot(state: GameState, run: DelveRun, sink: Sink, cause: string): void {
+  const { rules } = delveContent(state);
+  const rng = streamFor(state, 'delve.loot');
+  for (const foe of fightOf(run).foes) {
+    if (foe.status !== 'down') continue;
+    const kind = foeKindOf(state, foe);
+    const chanceBp = kind.boss ? rules.loot.bossDropBp : rules.loot.dropBp;
+    if (rng.int(BP_CERTAIN) >= chanceBp) continue;
+    run.loot.parts.push({ partId: kind.partId, rarity: kind.partRarity, foeKindId: kind.id });
+    sink.emit({
+      type: 'loot.dropped',
+      causeId: cause,
+      subjectIds: [foe.id],
+      partId: kind.partId,
+      rarity: kind.partRarity,
+    });
+  }
 }
 
 export function woundStepOf(f: Fighter): number {
@@ -577,10 +613,10 @@ export function woundStepOf(f: Fighter): number {
   return WOUND.fit;
 }
 
-function endDelve(
+export function endDelve(
   state: GameState,
   run: DelveRun,
-  outcome: 'won' | 'routed',
+  outcome: DelveOutcome,
   sink: Sink,
   cause: string,
 ): void {
@@ -602,11 +638,12 @@ function endDelve(
   });
   run.phase = 'ended';
   run.outcome = outcome;
+  run.ends = members.map((m) => ({ ...m }));
   sink.emit({
     type: 'delve.ended',
     causeId: cause,
     subjectIds: [...run.memberIds],
     outcome,
-    members,
+    members: members.map((m) => ({ ...m })),
   });
 }

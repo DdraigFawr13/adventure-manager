@@ -5,7 +5,10 @@
 // state (D-148); `simulate` is a copy plus `apply`, so preview and commit still share one function.
 import { takeEmergency } from './career/emergency.ts';
 import { EventSink } from './core/events.ts';
-import { act, startDelve } from './delve/fight.ts';
+import { setAuto, stepAuto } from './delve/auto.ts';
+import { act } from './delve/fight.ts';
+import { retreat } from './delve/retreat.ts';
+import { chooseWay, nextRoom, scoutAhead, setRows, startDelve } from './delve/rooms.ts';
 import { takeContract } from './guild/board.ts';
 import { advanceDay, foundGuild } from './guild/day.ts';
 import { pickDraft } from './guild/founding.ts';
@@ -95,6 +98,27 @@ export function apply(state: GameState, command: Command): readonly GameEvent[] 
       break;
     case 'fight.act':
       act(state, command, sink);
+      break;
+    case 'delve.choose':
+      chooseWay(state, command, sink);
+      break;
+    case 'delve.scout':
+      scoutAhead(state, command, sink);
+      break;
+    case 'delve.rows':
+      setRows(state, command, sink);
+      break;
+    case 'delve.next':
+      nextRoom(state, command, sink);
+      break;
+    case 'fight.auto':
+      setAuto(state, command, sink);
+      break;
+    case 'fight.step':
+      stepAuto(state, command, sink);
+      break;
+    case 'fight.retreat':
+      retreat(state, command, sink);
       break;
   }
   // No event may hold an object that belongs to the state (engine AGENTS.md), so later commands

@@ -1,5 +1,5 @@
 {
-  "_note": "Gate 1 words (docs/specs/gate1-one-delve.md). Names, actions, intents and the fight screen's labels; slices add rooms, road cards and letters.",
+  "_note": "Gate 1 words (docs/specs/gate1-one-delve.md). Names, actions, intents, the fight and delve screens' labels and the barrow's rooms (D-232); slices add road cards and letters.",
   "names": {
     "adv.odric-hale": "Odric Hale",
     "adv.wenna-cray": "Wenna Cray",
@@ -14,7 +14,28 @@
     "foe.restless-warden": "Warden",
     "site.sample-fight": "The Hollow Barrow",
     "item.draught": "Draught",
-    "item.firebomb": "Firebomb"
+    "item.firebomb": "Firebomb",
+    "site.hollow-barrow": "The Hollow Barrow",
+    "part.hound-fang": "Hound fang",
+    "part.grave-fletching": "Grave fletching",
+    "part.warden-shroud": "Warden's shroud",
+    "rarity.0": "Common",
+    "rarity.1": "Uncommon",
+    "rarity.2": "Rare",
+    "attr.might": "Might",
+    "attr.agility": "Agility",
+    "attr.toughness": "Toughness",
+    "attr.stealth": "Stealth",
+    "attr.wits": "Wits",
+    "attr.presence": "Presence",
+    "attr.resolve": "Resolve",
+    "attr.lore": "Lore",
+    "approach.stealth": "Stealth",
+    "approach.assault": "Assault",
+    "approach.diplomacy": "Talk",
+    "danger.routine": "Routine",
+    "danger.hazardous": "Hazardous",
+    "danger.perilous": "Perilous"
   },
   "short": {
     "adv.odric-hale": "Odric",
@@ -70,16 +91,84 @@
     "end.won.line": "The foes lie still or have fled into the dark.",
     "end.routed": "The party is routed",
     "end.routed.line": "No one is left on their feet.",
-    "end.new": "New fight",
+    "end.new": "New delve",
     "end.injury": "injured",
     "save.unreadable": "The saved fight could not be read; it was kept aside and a new fight began.",
     "save.older": "This fight was saved under older rules; numbers may differ from now on.",
-    "new.fight": "New fight",
+    "new.fight": "New delve",
     "row.word.front": "front",
     "row.word.back": "back",
-    "later": "From slice 2",
+    "later": "",
     "order": "Turn order this round",
-    "broken": "Something went wrong with this fight. Its save is kept aside; you can start a new fight."
+    "broken": "Something went wrong with this fight. Its save is kept aside; you can start a new fight.",
+    "rooms": "Rooms",
+    "start.approach": "Approach",
+    "choice.who": "Who tries",
+    "scout.rows": "Rows for the next fight",
+    "start.title": "A new delve",
+    "start.sub": "5 or 6 rooms; the warden waits at the end",
+    "start.ask": "The party stands at the barrow's edge. How do they go in?",
+    "start.note": "Success either way at the barrow mouth catches the first fight's foes off guard: they lose round 1.",
+    "start.go": "Enter the barrow",
+    "start.pack": "Pack",
+    "room.of": "Room {n} of {total}",
+    "room.kind.choice": "Choice",
+    "room.kind.fight": "Fight",
+    "room.kind.boss": "Boss",
+    "room.kind.unknown": "?",
+    "room.card.fight": "Room {n} of {total} · a fight",
+    "room.card.boss": "Room {n} of {total} · the boss",
+    "room.card.go": "Fight",
+    "room.offguard": "Off guard: the foes lose round 1.",
+    "room.alerted": "Alerted: the foes act first in round 1.",
+    "choice.fail.hurt": "If it fails: the tester loses {n} health.",
+    "choice.fail.alert": "If it fails: the next room's foes are alerted.",
+    "choice.picked": "{name} {chance}%. Tap again to try.",
+    "choice.ok": "{name} gets through.",
+    "choice.ok.entry": "{name} gets through. The first fight's foes are off guard.",
+    "choice.failed.hurt": "{name} fails and loses {n} health.",
+    "choice.failed.alert": "{name} fails. The next room's foes are alerted.",
+    "choice.on": "Go on",
+    "breather": "Breather · after room {n} of {total}",
+    "breather.won": "{room} is won",
+    "breather.choice": "{room} is behind them",
+    "breather.raised": "{names} rose with {n} health.",
+    "breather.out": "{names} stays Down for the next room unless raised.",
+    "scout": "Scout ahead",
+    "scout.seen": "{name} looks ahead",
+    "scout.heard": "{name} is heard",
+    "scout.heard.line": "A stone turns underfoot. Something in the dark ahead stops moving.",
+    "scout.next.fight": "A fight: {n} foes",
+    "scout.next.boss": "The boss: {n} foes",
+    "scout.next.choice": "A choice room",
+    "scout.rules": "Hounds bite the front row; archers shoot the back row's most hurt first.",
+    "scout.front": "Front",
+    "scout.back": "Back",
+    "next": "Next room",
+    "next.room": "Room {n}",
+    "parts": "Parts",
+    "parts.kept": "Parts kept",
+    "parts.none": "None",
+    "auto.playing": "Auto is playing",
+    "auto.save": "Save skills for the boss",
+    "auto.take": "Take over",
+    "auto.did": "Auto",
+    "retreat.title": "Retreat from the barrow?",
+    "retreat.lead": "{name} leads the way out (best Wits standing): {chance}%.",
+    "retreat.beats": "Beats to get out: {beats}; {failed} if {name} fails.",
+    "retreat.beats.carry": "Beats to get out carrying the fallen: {beats}; {failed} if {name} fails.",
+    "retreat.strike": "Each beat the {n} standing foes strike once; the Down roll to bleed and the Dying roll for death.",
+    "retreat.ends": "The delve ends: retreated, or routed if no one stands at the end. Parts found so far are kept.",
+    "retreat.stay": "Stay",
+    "retreat.go": "Retreat",
+    "end.over": "Delve over",
+    "end.delve.won": "The warden falls",
+    "end.delve.won.line": "The barrow is quiet.",
+    "end.delve.retreated": "The party falls back",
+    "end.delve.retreated.line": "Out of the barrow, carrying the fallen.",
+    "end.delve.routed": "The party is routed",
+    "end.delve.routed.line": "No one is left on their feet.",
+    "piece.label": "{name}, {health} of {max}"
   },
   "log": {
     "hit": "{actor} → {target}: {damage}",
@@ -94,6 +183,63 @@
     "down": "{target} is Down",
     "dying": "{target} is Dying",
     "died": "{target} dies",
-    "fled": "The foes flee"
+    "fled": "The foes flee",
+    "beat": "Retreat: beat {n}",
+    "loot": "{part} found"
+  },
+  "rooms": {
+    "room.sample-fight": {
+      "name": "The hound run",
+      "line": "Bones gnawed white along a low passage."
+    },
+    "room.barrow-mouth": {
+      "name": "The barrow mouth",
+      "line": "A stone door, half sunk in the turf, scored with grave marks.",
+      "options": ["", "Read the grave marks"],
+      "approach": {
+        "stealth": "Slip in unseen",
+        "assault": "Break through the stone",
+        "diplomacy": "Speak the old greeting"
+      }
+    },
+    "room.hound-run": {
+      "name": "The hound run",
+      "line": "Bones gnawed white along a low passage. Hounds lift their heads; an archer stands behind them."
+    },
+    "room.bone-niches": {
+      "name": "The bone niches",
+      "line": "Skulls watch from the walls. Two hounds pace; two archers wait in the niches."
+    },
+    "room.long-gallery": {
+      "name": "The long gallery",
+      "line": "A narrow hall of pillars. A hound in front, archers far back in the dark."
+    },
+    "room.kennel-pit": {
+      "name": "The kennel pit",
+      "line": "Chains and straw. A pack of hounds, and an archer on the rim above."
+    },
+    "room.watchers-ledge": {
+      "name": "The watchers' ledge",
+      "line": "Archers line a ledge over the passage; hounds guard the way up."
+    },
+    "room.fallen-passage": {
+      "name": "The fallen passage",
+      "line": "The roof has come down. Rubble chokes the way.",
+      "options": ["Squeeze through the rubble", "Find the old way round"]
+    },
+    "room.sunken-floor": {
+      "name": "The sunken floor",
+      "line": "The floor has dropped away into black water.",
+      "options": ["Leap the gap", "Edge along the wall"]
+    },
+    "room.sealed-door": {
+      "name": "The sealed grave door",
+      "line": "A door bound in iron, cut with warding marks.",
+      "options": ["Read the warding marks", "Speak the old rites"]
+    },
+    "room.burial-hall": {
+      "name": "The burial hall",
+      "line": "The warden rises from its bier, a hound and an archer at its side."
+    }
   }
 }

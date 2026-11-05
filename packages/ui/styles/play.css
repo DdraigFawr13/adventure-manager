@@ -485,53 +485,6 @@ button.pl {
   inset: 0;
   background: rgba(20, 14, 10, 0.55);
 }
-.endcard {
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  top: 120px;
-  background: var(--paper);
-  color: var(--ink);
-  border: 2px solid var(--brass);
-  border-radius: 4px;
-  padding: 14px 16px 16px;
-  display: grid;
-  gap: 10px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-}
-.endcard h3 {
-  font-size: 26px;
-  color: var(--seal);
-}
-.endcard p {
-  font-family: var(--letter);
-  font-size: 17px;
-}
-.endcard ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 4px;
-}
-.endcard li {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--rule);
-  padding: 2px 0;
-  font-size: 16px;
-}
-.endcard .btn {
-  min-height: 48px;
-  border-radius: 4px;
-  background: var(--brass);
-  color: var(--desk2);
-  font-size: 17px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .broken {
   max-width: 420px;
   margin: 40px auto;
@@ -551,4 +504,425 @@ button.pl {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Slice 2 (D-232): the screens between the fights, copied from docs/design/mockups/delve-screens.html. */
+:root {
+  --ink2: #6b5a45;
+}
+.chipbtn.lit {
+  background: var(--brass);
+  color: var(--desk2);
+}
+.stage.scene {
+  flex: none;
+  height: 92px;
+  perspective: none;
+}
+.stage.scene .wall {
+  height: 100%;
+  background-position: center 40%;
+}
+.stage.scene .haze {
+  top: auto;
+  bottom: 0;
+  height: 60%;
+  background: linear-gradient(to bottom, rgba(44, 31, 22, 0), rgba(44, 31, 22, 0.9));
+}
+.scene .rname {
+  position: absolute;
+  left: 12px;
+  bottom: 6px;
+  right: 12px;
+  font-family: var(--title);
+  color: var(--paper3);
+  font-size: 22px;
+  line-height: 1.1;
+  text-shadow: 0 1px 3px #000;
+}
+.scene .rname small {
+  display: block;
+  font-family: var(--ledger);
+  font-size: 15px;
+  color: var(--chrome);
+}
+@media (min-height: 800px) {
+  .stage.scene {
+    height: 150px;
+  }
+}
+.track {
+  display: flex;
+  gap: 4px;
+  background: var(--desk);
+  padding: 5px 10px;
+  flex: none;
+}
+.track span {
+  flex: 1;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.5;
+  border-radius: 3px;
+  background: var(--desk3);
+  color: var(--chrome2);
+}
+.track span.done {
+  background: var(--desk2);
+  color: var(--chrome2);
+  text-decoration: line-through;
+}
+.track span.here {
+  background: var(--brass);
+  color: var(--desk2);
+}
+.track span.boss {
+  color: var(--foe-chip);
+  border: 1px solid var(--seal);
+}
+.track span.stop {
+  background: var(--seal);
+  color: var(--paper);
+}
+.sheet {
+  flex: 1 1 auto;
+  min-height: 0;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 8px 12px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  overflow-y: auto;
+}
+.sheet h3 {
+  font-size: 20px;
+  color: var(--seal);
+  line-height: 1.15;
+}
+.sheet .say {
+  font-family: var(--letter);
+  font-size: 16px;
+  line-height: 1.3;
+}
+.sheet .note {
+  font-size: 15px;
+  line-height: 1.3;
+  border-left: 3px solid var(--brass);
+  padding-left: 8px;
+}
+.sheet .note.bad {
+  border-left-color: var(--seal);
+}
+.mems {
+  display: grid;
+  gap: 4px;
+}
+.mem {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0 8px;
+  font-size: 15px;
+  line-height: 1.2;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 3px;
+}
+.mem .tn {
+  font-family: var(--title);
+}
+.mem .hp {
+  grid-column: 1 / -1;
+  margin: 2px 0;
+}
+.mem .sk {
+  grid-column: 1 / -1;
+  color: var(--ink2);
+}
+.mem.down .tn,
+.mem.down .st {
+  color: var(--bad);
+}
+.kit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: 15px;
+}
+.kit b {
+  font-weight: 400;
+  color: var(--ink2);
+}
+.acts {
+  display: flex;
+  gap: 8px;
+  background: var(--desk);
+  padding: 8px 10px;
+  border-top: 2px solid var(--brass);
+  flex: none;
+}
+.acts:empty {
+  display: none;
+}
+.btn2 {
+  flex: 1;
+  min-height: 48px;
+  border-radius: 4px;
+  border: 1px solid var(--brass);
+  color: var(--brass2);
+  font-size: 16px;
+  line-height: 1.15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.btn2:disabled {
+  opacity: 0.45;
+}
+.btn2.go {
+  background: var(--brass);
+  color: var(--desk2);
+}
+.opt {
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 6px 8px;
+  display: grid;
+  gap: 4px;
+  background: var(--paper3);
+}
+.opt .oh {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 16px;
+}
+.opt .oh .tn {
+  font-family: var(--title);
+}
+.opt .fail {
+  font-size: 15px;
+  color: var(--ink2);
+}
+.testers {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+.tester {
+  min-height: 44px;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper);
+  font-size: 15px;
+  line-height: 1.15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.tester.on {
+  background: var(--brass);
+  color: var(--desk2);
+  border-color: var(--brass);
+}
+.picked {
+  background: var(--desk3);
+  color: var(--chrome);
+  border-left: 3px solid var(--seal);
+  padding: 4px 8px;
+  font-size: 15px;
+  line-height: 1.3;
+}
+.appr {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.appr button {
+  min-height: 52px;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper3);
+  font-size: 15px;
+  line-height: 1.2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.appr button.on {
+  background: var(--brass);
+  color: var(--desk2);
+  border-color: var(--brass);
+}
+.rows {
+  display: grid;
+  gap: 4px;
+}
+.rowset {
+  display: grid;
+  grid-template-columns: 1fr 64px 64px;
+  gap: 4px;
+  align-items: center;
+  font-size: 15px;
+}
+.rowset .tn {
+  font-family: var(--title);
+}
+.rowset button {
+  min-height: 44px;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper3);
+  text-align: center;
+}
+.rowset button.on {
+  background: var(--brass);
+  color: var(--desk2);
+  border-color: var(--brass);
+}
+.foeline {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 15px;
+}
+.foeline span {
+  background: var(--paper3);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 1px 6px;
+}
+.autobox {
+  border: 1px solid var(--brass);
+  border-radius: 4px;
+  padding: 5px;
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+.autobox .ph-title {
+  font-size: 16px;
+}
+.toggle {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  line-height: 1.15;
+  color: var(--chrome);
+  border: 1px solid var(--desk3);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+.toggle .box {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--brass2);
+  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--desk2);
+  background: var(--brass2);
+  font-size: 15px;
+  line-height: 1;
+}
+.toggle[aria-checked='false'] .box {
+  background: none;
+}
+.roomcard {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 112px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 2px solid var(--brass);
+  border-radius: 4px;
+  padding: 12px 14px 14px;
+  display: grid;
+  gap: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+.roomcard .kicker {
+  font-size: 15px;
+  color: var(--ink2);
+}
+.roomcard h3 {
+  font-size: 24px;
+  color: var(--seal);
+}
+.roomcard p {
+  font-family: var(--letter);
+  font-size: 16px;
+}
+.roomcard p.note {
+  font-family: var(--ledger);
+}
+.roomcard .btn {
+  min-height: 48px;
+  border-radius: 4px;
+  background: var(--brass);
+  color: var(--desk2);
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.roomcard .row2 {
+  display: flex;
+  gap: 8px;
+}
+.roomcard .row2 .btn {
+  flex: 1;
+}
+.roomcard .btn.ghost {
+  background: none;
+  border: 1px solid var(--brass);
+  color: var(--ink);
+}
+.roomcard .btn.danger {
+  background: var(--seal);
+  color: var(--paper);
+}
+.roomcard ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 15px;
+  display: grid;
+  gap: 3px;
+}
+.sheet .res {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 3px;
+}
+.sheet .res li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid var(--rule);
+  padding: 2px 0;
+  font-size: 15px;
+}
+.sheet .res li .tn {
+  font-family: var(--title);
+}
+.sheet .res li.bad span:last-child {
+  color: var(--bad);
+}
+.sheet .lbl {
+  font-family: var(--title);
+  color: var(--ink2);
+  font-size: 16px;
 }

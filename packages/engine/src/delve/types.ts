@@ -47,6 +47,36 @@ export interface DelveClass {
   readonly plain: string;
   /** Class skills, each with `skillUses` uses a delve. */
   readonly skills: readonly string[];
+  /** Auto's rules for this class, tried in order (D-220). */
+  readonly auto: readonly AutoRule[];
+}
+
+/** When an Auto rule applies (spec "Auto"). */
+export type AutoWhen =
+  | 'ally-dying'
+  | 'ally-down'
+  | 'ally-below-third'
+  | 'foe-marked'
+  | 'two-front-foes'
+  | 'boss-room'
+  | 'always';
+
+/** Whom an Auto rule aims at. `none` is for actions with no target (Ward). */
+export type AutoTarget =
+  | 'most-hurt-ally'
+  | 'the-dying-or-down-ally'
+  | 'marked-foe'
+  | 'boss'
+  | 'most-hurt-foe-in-reach'
+  | 'none';
+
+export interface AutoRule {
+  readonly when: AutoWhen;
+  /** An action id of the class; `plain` means the class's plain attack. */
+  readonly action: string;
+  readonly target: AutoTarget;
+  /** At most once a fight or once a round for this adventurer. */
+  readonly once?: 'fight' | 'round';
 }
 
 export interface FoeKind {
@@ -79,11 +109,26 @@ export interface FightRoom {
   readonly foes: readonly RoomFoe[];
 }
 
+/** `approach` tests the attribute of the delve's approach (the entry room's first way). */
+export interface ChoiceOption {
+  readonly attribute: Attribute | 'approach';
+  readonly onFailure: 'hurt' | 'alert';
+}
+
+export interface ChoiceRoom {
+  readonly id: string;
+  readonly options: readonly [ChoiceOption, ChoiceOption];
+}
+
 export interface Site {
   readonly id: string;
   readonly danger: Danger;
-  /** Gate 1's sample site has one fight room, no entry and no boss (S1). */
+  /** A pool to draw from; the sample site has one room and nothing else (S1). */
   readonly fightRooms: readonly FightRoom[];
+  /** With `entry`, `choiceRooms` and `boss` the site is a whole delve (S2, spec "Rooms"). */
+  readonly entry?: ChoiceRoom;
+  readonly choiceRooms?: readonly ChoiceRoom[];
+  readonly boss?: FightRoom;
 }
 
 export interface DelveRules {
@@ -106,6 +151,38 @@ export interface DelveRules {
   readonly bleed: { readonly baseBp: number; readonly stepBp: number; readonly pivot: number };
   readonly deathRoll: { readonly baseBp: number; readonly stepBp: number; readonly pivot: number };
   readonly injuryBp: { readonly badlyHurt: number; readonly down: number; readonly dying: number };
+  readonly approachAttribute: Readonly<Record<Approach, Attribute>>;
+  /** Choice rooms and Scout ahead (spec "Rooms"). */
+  readonly room: {
+    readonly difficulty: Readonly<Record<Danger, number>>;
+    /** Health a failed `hurt` way costs the tester, never below 1. */
+    readonly hurt: number;
+    /** Chance of a sixth room; then a choice room or a fourth fight at equal odds. */
+    readonly extraRoomBp: number;
+    readonly scoutAttribute: Attribute;
+    /** The class whose standing member may scout ahead. */
+    readonly scoutClassId: string;
+  };
+  /** A Down member rises to this health at the breather. */
+  readonly breatherRaiseTo: number;
+  readonly loot: { readonly dropBp: number; readonly bossDropBp: number };
+  /** D-126's retreat, with v0's numbers. */
+  readonly retreat: {
+    readonly attribute: Attribute;
+    readonly difficulty: Readonly<Record<Danger, number>>;
+    readonly beats: number;
+    readonly carryBeats: number;
+    readonly failedCheckBeats: number;
+  };
+  /** Auto's good-choice chance (D-220). */
+  readonly auto: {
+    readonly baseBp: number;
+    readonly witsStepBp: number;
+    readonly tacticsStepBp: number;
+    readonly pivot: number;
+    readonly minBp: number;
+    readonly maxBp: number;
+  };
 }
 
 export interface SampleMember {
@@ -169,6 +246,8 @@ export interface FightState {
   readonly boss: boolean;
   warded: boolean;
   readonly foes: Fighter[];
+  /** Auto's once-a-fight rules already used, as `actorId actionId` (S2; absent in S1 saves). */
+  autoOnce?: string[];
 }
 
 export interface PackItem {
@@ -205,8 +284,21 @@ export interface DelveRun {
   readonly auto: { on: boolean; saveSkillsForBoss: boolean };
   readonly bonuses: { offGuard: boolean; alerted: boolean; drillBp: number };
   scouted: boolean;
+  /** A successful scout this gap: the next room is shown and rows may be set (S2). */
+  seen?: boolean;
+  /** The last choice room's try, for the screen after a reload (S2). */
+  lastChoice?: {
+    readonly optionIndex: number;
+    readonly testerId: string;
+    readonly success: boolean;
+    /** What a failure cost: health lost (`hurt`) or the next room alerted. */
+    readonly failure?: 'hurt' | 'alert' | null;
+    readonly lost?: number;
+  };
   readonly loot: { readonly parts: PartDrop[]; readonly gear: string[] };
   outcome: DelveOutcome | null;
+  /** Each member's end, copied from `delve.ended` (S2). */
+  ends?: MemberEnd[];
 }
 
 export interface MemberEnd {
@@ -242,7 +334,31 @@ export type DelveCommand =
       readonly actionId: string;
       readonly targetId?: string;
       readonly packIndex?: number;
-    };
+    }
+  | {
+      readonly type: 'delve.choose';
+      readonly id: string;
+      readonly day: number;
+      readonly optionIndex: number;
+      readonly testerId: string;
+    }
+  | { readonly type: 'delve.scout'; readonly id: string; readonly day: number }
+  | {
+      readonly type: 'delve.rows';
+      readonly id: string;
+      readonly day: number;
+      readonly rows: Readonly<Record<string, Row>>;
+    }
+  | { readonly type: 'delve.next'; readonly id: string; readonly day: number }
+  | {
+      readonly type: 'fight.auto';
+      readonly id: string;
+      readonly day: number;
+      readonly on: boolean;
+      readonly saveSkillsForBoss?: boolean;
+    }
+  | { readonly type: 'fight.step'; readonly id: string; readonly day: number }
+  | { readonly type: 'fight.retreat'; readonly id: string; readonly day: number };
 
 export type DelveEventBody =
   | { readonly type: 'delve.started'; readonly siteId: string }
@@ -278,6 +394,33 @@ export type DelveEventBody =
   | { readonly type: 'fighter.dying'; readonly roll: number; readonly chanceBp: number }
   | { readonly type: 'fighter.died'; readonly roll: number; readonly chanceBp: number }
   | { readonly type: 'band.fled' }
+  | {
+      readonly type: 'choice.rolled';
+      readonly roomId: string;
+      readonly optionIndex: number;
+      readonly attribute: Attribute;
+      readonly chance: Value;
+      readonly roll: number;
+      readonly success: boolean;
+      readonly failure: 'hurt' | 'alert' | null;
+    }
+  | {
+      readonly type: 'scout.rolled';
+      readonly chance: Value;
+      readonly roll: number;
+      readonly success: boolean;
+    }
+  | { readonly type: 'breather'; readonly raisedIds: readonly string[] }
+  | { readonly type: 'loot.dropped'; readonly partId: string; readonly rarity: Rarity }
+  | {
+      readonly type: 'retreat.rolled';
+      readonly chance: Value;
+      readonly roll: number;
+      readonly success: boolean;
+      readonly beats: number;
+    }
+  | { readonly type: 'retreat.beat'; readonly beat: number }
+  | { readonly type: 'auto.set'; readonly on: boolean; readonly saveSkillsForBoss: boolean }
   | { readonly type: 'fight.ended'; readonly outcome: 'won' | 'routed' }
   | {
       readonly type: 'delve.ended';
