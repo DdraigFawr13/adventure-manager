@@ -1,0 +1,76 @@
+<title>Branch Review Findings</title>
+<meta name="description" content="Independent review of the gate0-mockups branch: findings, fixes and checks, before its pull request.">
+<style>
+:root { --bg: #f4efe4; --surface: #fbf8f1; --fg: #2a2017; --muted: #6b5a45; --line: #ddd0b6; --major: #8e2a22; --minor: #9c7a2f; --ok: #3f6f8f; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1d1813; --surface: #261f18; --fg: #eee4d2; --muted: #b3a48c; --line: #3d3328; --major: #d0675c; --minor: #d0aa55; --ok: #7fa9c9; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #1d1813; --surface: #261f18; --fg: #eee4d2; --muted: #b3a48c; --line: #3d3328; --major: #d0675c; --minor: #d0aa55; --ok: #7fa9c9; color-scheme: dark; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.55 Georgia, serif; padding: 28px 16px 48px; }
+.wrap { max-width: 760px; margin: 0 auto; display: grid; gap: 22px; }
+h1 { font-size: 30px; margin: 0; font-weight: 400; }
+h2 { font-size: 21px; margin: 0 0 8px; font-weight: 400; }
+p { margin: 0; }
+.sub { color: var(--muted); margin-top: 6px; }
+ol { margin: 0; padding-left: 1.3em; display: grid; gap: 12px; }
+li b { font-weight: 600; }
+.sev { font: 600 15px/1.1 ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; padding: 2px 6px; border: 1px solid currentColor; border-radius: 8px; margin-right: 6px; }
+.major { color: var(--major); } .minor { color: var(--minor); } .ok { color: var(--ok); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 14px 16px; }
+code { font: 15px ui-monospace, monospace; overflow-wrap: anywhere; }
+ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
+a { color: var(--major); }
+</style>
+<div class="wrap">
+  <header>
+    <h1>Branch review: gate0-mockups</h1>
+    <p class="sub">5 November 2026. An independent reviewer read the whole branch with no view of this conversation (D-093, D-107). I checked each finding against the files before fixing it.</p>
+  </header>
+
+  <section class="card">
+    <h2>What the branch holds</h2>
+    <ul>
+      <li>Screen rules in <code>STYLE.md</code>: widths, 15 px text, 44 px taps, where facts live.</li>
+      <li>The gate 1 screen mock-ups you approved (<a href="https://claude.ai/artifact/X6JUpHnw2jAHT2MSEddQzH">page</a>, D-224).</li>
+      <li>Battle art: 6 painted standees and the burial hall backdrop, with their ledger (334 OpenArt credits).</li>
+      <li>The three side-on fight layouts and your choice, C (<a href="https://claude.ai/artifact/7nLcwmrQfciWm5pAfNF3W7">page</a>, D-225).</li>
+      <li>HANDOFF and the roadmap.</li>
+    </ul>
+    <p class="sub">Docs and design only; no game code changes.</p>
+  </section>
+
+  <section>
+    <h2>Findings: no blockers, 2 major, 3 minor, all fixed</h2>
+    <ol>
+      <li><span class="sev major">major</span><b>HANDOFF and the roadmap said both "verdict pending" and "approved".</b> A fresh session would have read two states at once. Fixed: the header, plan map, "Just done" and the roadmap's "Now" now say approved and chosen, with the PR next.</li>
+      <li><span class="sev major">major</span><b>D-225 said it amends STYLE §4, but §4 was unchanged.</b> Fixed: §4 now has an amendment line for the side-on fight on the site's own floor.</li>
+      <li><span class="sev minor">minor</span><b>D-224 still described the old fight layout.</b> Fixed: an amendment line pointing to D-225.</li>
+      <li><span class="sev minor">minor</span><b>The art ledger named only one page using the standees.</b> Fixed: it names both mock-up pages.</li>
+      <li><span class="sev minor">minor</span><b>"1,524 credits in all" was stale.</b> Fixed: that figure is now labelled the art pass's total, and the new total, 1,858, is stated.</li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>Checked clean</h2>
+    <ul>
+      <li>D-224 and D-225 have Status, Decision and Why, and D-225 says what it amends.</li>
+      <li>The new screen rules match D-084, D-151, D-159, D-166 and D-167.</li>
+      <li>All 7 new images are in the ledger with source, cost and non-commercial status (D-217); the costs add up to 334.</li>
+      <li>No image is wired into the game's code or build.</li>
+      <li>The mock-ups' sums and content numbers agree with the content files; stand-ins are marked.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Checks run after the fixes</h2>
+    <ul>
+      <li><span class="ok">OK</span> <code>node tools/docs-check.mjs</code>: "OK: 225 decisions, 38 files checked".</li>
+      <li><span class="ok">OK</span> <code>node .claude/master/sync.mjs --check</code>: "ai-master check: OK".</li>
+      <li><span class="ok">OK</span> Mock-up lint on both pages: 0 warnings. The reviewer had no shell, so I ran these myself.</li>
+      <li><code>npm run check</code> was not run: no code changed. CI skips docs-only changes by design.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Agent cost</h2>
+    <p>Four independent reviewers this session: three mock-up checks and this branch review, 253,834 tokens in all (measured), about $1.40 to $4 (estimate). OpenArt: 334 credits.</p>
+  </section>
+</div>

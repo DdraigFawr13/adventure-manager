@@ -4,6 +4,14 @@ Phase 2 style guide: theme, tone and visual identity. Each section records what 
 
 **Under review (2026-11-05, D-211):** illustrations are now hand-painted stylised fantasy. The UI's palette (§2), type (§5), woodcut icons (§6) and the inked quest-board site maps (§4) are not yet changed to match; whether they should is an open question.
 
+## Screen rules for mock-ups and builds
+
+- Target widths: 375 px first (D-159), then 412, 430 and 443 (the owner's phone, D-159); desktop after launch (D-151).
+- Minimum text: 15 px, with lining figures (D-084, D-166).
+- Minimum tap: 44 px (D-167).
+- Where facts live: `docs/DECISIONS.md`; content numbers and names in `packages/content/src/base/` (`guild.ts` wages, running costs, refit; `money.ts` coin; `resolution.ts` classes, skills, foes) and `packages/content/data/` (`text.en.json` and `prototype-party.json` names, `naming.json` name pools); engine rules in each `packages/engine/src/*/SPEC.md`. Tokens: the `:root` block of `docs/design/mockups/phone-r4.html` until a token file exists.
+- Avoid list: `.claude/skills/ui-style/references/avoid.md`; no project items yet.
+
 ## 1. Visual metaphor (Accepted 2026-10-26)
 
 **Guildmaster's war table.** The screen is the guildmaster's desk: rosters in ledgers, contracts under wax seals, letters and criers' notices as the inbox (D-043), and quests played out on a painted regional map with miniatures (D-004).
@@ -46,6 +54,7 @@ Rejected: ledger tabs with Letters as home (the region gets sidelined), desk-as-
 
 - The dungeon or site map draws itself in ink as the party explores, with the scout's margin notes; unexplored space stays blank vellum. The finished map can go into the Chronicle (D-042).
 - Adventurers and monsters are flat portrait standees on bases; a fallen member tips over. Positions are loose, not a grid: the board shows the simulation and isn't a tactics game (D-004). **Amended (2026-11-05, D-215):** in fights the player leads, the player picks each adventurer's skill and target; still no grid and no movement.
+- **Amended (2026-11-05, D-225):** in fights the player leads, the standees stand side-on on the site's own floor, party left and foes right, seen a little from above, with a command panel below (`docs/design/mockups/fight-views.html`, option C).
 - Key moments arrive as a wax seal on the map and stop the calendar.
 - **More fantasy flair** than the mock-up (owner's note). Settled by D-211 (hand-painted stylised illustrations). Earlier candidates, kept for the record: illuminated initials and cartouches, painted monster vignettes in the margins, glowing or gilded ink for magic and wards.
 - **Later (owner's note):** standee animations and effects: moves, attacks, reactions, spell effects. Not at launch. Like every board movement, they play simulation events and never decide anything (GAME-02).
