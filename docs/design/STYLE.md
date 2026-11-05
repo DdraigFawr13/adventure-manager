@@ -45,7 +45,7 @@ Rejected: ledger tabs with Letters as home (the region gets sidelined), desk-as-
 **Cartographer's map with standees.** Mock-up: `docs/design/mockups/quest-board.html` (option B).
 
 - The dungeon or site map draws itself in ink as the party explores, with the scout's margin notes; unexplored space stays blank vellum. The finished map can go into the Chronicle (D-042).
-- Adventurers and monsters are flat portrait standees on bases; a fallen member tips over. Positions are loose, not a grid: the board shows the simulation and isn't a tactics game (D-004).
+- Adventurers and monsters are flat portrait standees on bases; a fallen member tips over. Positions are loose, not a grid: the board shows the simulation and isn't a tactics game (D-004). **Amended (2026-11-05, D-215):** in fights the player leads, the player picks each adventurer's skill and target; still no grid and no movement.
 - Key moments arrive as a wax seal on the map and stop the calendar.
 - **More fantasy flair** than the mock-up (owner's note). Settled by D-211 (hand-painted stylised illustrations). Earlier candidates, kept for the record: illuminated initials and cartouches, painted monster vignettes in the margins, glowing or gilded ink for magic and wards.
 - **Later (owner's note):** standee animations and effects: moves, attacks, reactions, spell effects. Not at launch. Like every board movement, they play simulation events and never decide anything (GAME-02).
