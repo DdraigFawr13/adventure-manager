@@ -13,4 +13,7 @@ Known gap: the four portraits came out more detailed in the faces than D-211's b
 - `barrow-wight.jpg`: a monster of the restless dead.
 - `reference-v1-portrait.jpg`, `reference-v1-fight.jpg`: the round 2.5 V1 images the owner chose ("This is it"); the style references for everything above.
 
-Removed after the owner's review (D-212): the first guild house, home town and March map. The house and town are being redone simpler; the map stays the game's own (`/map.html`), with detail added in code.
+- `guild-house.jpg`: the guild house and its compound from a tilted city-builder view, redone simpler (D-212); owner's pick of two (https://claude.ai/artifact/3dTDymwhRgPETKoNALTSxR).
+- `home-town.jpg`: the home town from a tilted city-builder view, with its sites and three empty plots (D-184), redone simpler (D-212); owner's pick of two.
+
+The house and town redos were image-to-image with the same two references, 47 credits each, generated 2026-11-05. Removed after the owner's review (D-212): the first guild house, home town and March map. The map stays the game's own (`/map.html`), with detail added in code.
