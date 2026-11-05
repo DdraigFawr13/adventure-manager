@@ -86,6 +86,7 @@ Phase 1 concept. Each section records what the owner decided, with their own not
 - The quartermaster equips adventurers to a policy the player sets; the player hand-assigns special pieces.
 - Crafting means commissioning items from contacts or the guild workshop; no crafting minigames. Commissioning moved to Early update (D-070).
 - **Amended (2026-10-26, D-143):** gear is per adventurer in RPG-style slots, equipped by hand or by the quartermaster's policy (the two points above now apply per slot); basics are bought from a smith's shop, and buildings may later give discounts or rarer stock.
+- **Amended (2026-11-05, D-221, D-223):** 3 slots and a ladder of 6 rarities; each class wears armour up to its limit; no quartermaster in gate 1, a hired one from gate 2; monster parts upgrade gear at a skilled smith (gate 2).
 
 ## 10. Recruitment
 
