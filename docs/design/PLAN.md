@@ -479,7 +479,7 @@ Decisions: D-079..D-081, D-109, D-112. Every item is a data entry (GAME-04, D-04
 
 ### 7d. Guild and gear (Accepted 2026-10-26, D-080)
 
-**Amended (2026-11-05, D-216):** gear starts with 3 slots (weapon, armour, trinket) and 3 tiers.
+**Amended (2026-11-05, D-216, D-221):** gear starts with 3 slots (weapon, armour, trinket) and 3 tiers, the first three of 6 rarities (Common to Divine); gate 1 has about 25 items.
 
 - **Guild house:** 11 building kinds, each 1–3 cells wide with 3 levels (D-172): 7 rooms on stacked floors and 4 in the compound (D-168, D-169, D-180); replaces 5 facilities × 3 levels (D-075). Incident letters (D-173) are extra templates, not yet counted in §7e.
 - **Home-town sites: 5** × 3 levels, funded by patronage (D-171).
