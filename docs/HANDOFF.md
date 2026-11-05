@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-05 (twentieth session: S1 fit check published, awaiting the owner). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-11-05 (twentieth session: S1 fit check approved, D-231; build next). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
@@ -13,17 +13,19 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 - ✔ Art style: hand-painted stylised, first prototype art (D-211, D-212, PR #42)
 - ✔ Replan approved and recorded (D-213–D-217, PR #43)
 - ▶ Gate 0, design: ✔ fight (D-218–D-220); ✔ gear and budget (D-221–D-223); ✔ mock-ups (D-224, D-225, PR #46); ✔ gate 1 spec (D-226–D-230, PR #47)
-- ○ Gate 1, one delve: recruit, equip, budget, map trip, delve, fights the owner plays, letter home. Passes when after 3 delves the owner wants a 4th
+- ▶ Gate 1, S1 one fight: ✔ fit check (D-231); ○ build
+- ○ Gate 1, the rest: recruit, equip, budget, map trip, delve, fights the owner plays, letter home. Passes when after 3 delves the owner wants a 4th
 - ○ Gate 2, one season · ○ Gate 3, one year · ○ Gate 4, launch decision
 
 ## Just done
 
+- 2026-11-05 S1 fit check approved (D-231): layout C fits 375 × 667 (stage 327 px); fresh check 3 major, 7 minor, fixed.
 - 2026-11-05 Gate 1 spec approved (D-230, https://claude.ai/artifact/7V4yjafsYVxhL7YhXyv26A): `docs/specs/gate1-one-delve.md`, 6 slices (fight, delve, loop, gear, money, art), a playtest stop after slice 2, D-218 amended (stored streams). Answers D-226–D-229 from the spec questions https://claude.ai/artifact/GSbKtp9CWP54BN3pAQfUtQ. Fresh checks: about 100 findings fixed, 1 contested, 2 escalated (LESSONS). Branch review 3 major, 6 minor, 8 fixed (https://claude.ai/artifact/NLtErQLHKdHDQ7ggC2M7b6). Merged as PR #47.
 - 2026-11-05 Owner approved the mock-ups (D-224), asked for battle art (334 OpenArt credits approved and spent; 6 standees and a backdrop in `docs/design/art/`; OpenArt spend 1,858 in all), then for a side-on fight on the place's own ground: three layouts https://claude.ai/artifact/7nLcwmrQfciWm5pAfNF3W7, chose C (D-225; open notes: scene feel, crowding). Branch review: 2 major, 3 minor, all fixed (https://claude.ai/artifact/MVin2uAh7QVxTHpNznWju9). Merged as PR #46.
 
 ## Next
 
-1. Slice S1 (one fight), branch `ccr-1f4ee88e-glwrq1`: the 375 × 667 fit check of layout C is published for the owner's approval: https://claude.ai/artifact/9aFFu1Ljhbm4DLYQrtMqfY (source `docs/design/mockups/fight-fit.html`; measured 667 px with a 327 px stage; fresh check 3 major, 7 minor, all fixed). On approval: record it in DECISIONS (amends D-225's open proposals), link it in the spec's S1, then build per the spec; write-spec step 8 (re-check, checks fail first, review against the spec). After S2, stop for the owner's playtest (D-230).
+1. Slice S1 (one fight), branch `ccr-1f4ee88e-glwrq1`: fit check approved (D-231, https://claude.ai/artifact/9aFFu1Ljhbm4DLYQrtMqfY). Next: the build per the spec's S1 (engine `delve/`, content `gate1/`, `play.html`, `play-shot.mjs`, boundary rule, art copy with ledger test); write-spec step 8 (re-check, checks fail first, review against the spec). After S2, stop for the owner's playtest (D-230).
 2. Art: any more OpenArt spend needs a new approval with an exact quote, references included (LESSONS). The repo is public; OpenArt Starter images are non-commercial only. The engine test verdict (60 fps, 15 px, screen reader; D-154) is still the owner's to record.
 
 ## Open questions
@@ -33,7 +35,7 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 - Mobile first (D-150): the phone sources for the §1d measures, and the phone versions of the Steam store page, wishlists, playtest recruiting and Early Access (D-099, D-100, D-113). Open too: the tablet layout. The test laptop in the budget (PLAN §14) may no longer be needed before launch.
 - Engine findings from R4, for the owner: two people can get the same full name (`packages/engine/src/guild/people.ts:68` draws given and family names independently; seed phone-2 has two Ash Thornes); at week 23 of seed phone-1, 23 of 30 members rest from wounds (maybe balance).
 - Kingdom map art direction (D-097, D-144): the game's own map keeps its look with detail in code (D-212); geography review in the workshop.
-- Fight scene feel (D-225: "it still doesn't feel like they exist in the scene"; crowding): side-on ground art and lit standees are Proposed; decided at S1's fit check or in S6.
+- Fight scene feel (D-225: "it still doesn't feel like they exist in the scene"): side-on ground art and lit standees are Proposed, for S6 (crowding settled by D-231).
 - Later, tier not set: 20 class levels (D-074); intrigue (D-069); exploring the wilds (D-136); bardic songs (D-056).
 
 ## Working style with the owner
