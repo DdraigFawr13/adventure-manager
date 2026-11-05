@@ -1,17 +1,17 @@
 # Handoff
 
-Updated: 2026-11-05 (fifteenth session: art style chosen and merged as PR #42; replan approved, its decisions on a branch). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-11-05 (fifteenth session: art style chosen and merged as PR #42; replan approved and merged as PR #43). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
-Replanned on 2026-11-05: the owner approved a plan of fun gates in place of milestones M1–M7 (final page https://claude.ai/artifact/2cm2Vq1AVd8tUNBDEHSnLX). Its decisions are written on branch `ccr-80475cbd-9krsou` (one commit) and wait for review and the PR; until they merge, read that branch's DECISIONS tail and AGENTS.md "Phases". The game is for the owner to love first; launch is decided at gate 4. About 30–40 h a week.
+Replanned on 2026-11-05: the owner approved a plan of fun gates in place of milestones M1–M7 (final page https://claude.ai/artifact/2cm2Vq1AVd8tUNBDEHSnLX). Its decisions are D-213 (gates), D-214 (gate contents), D-215 (fights), D-216 (managing) and D-217 (art sharing), merged as PR #43. The game is for the owner to love first; launch is decided at gate 4. About 30–40 h a week.
 
 ## Plan map
 
 - ✔ Concept, style, first plan (D-045, D-061, D-115)
 - ✔ M1 prototypes so far: engine, year simulator, balance runner, phone map, text prototype (kept)
 - ✔ Art style: hand-painted stylised, first prototype art (D-211, D-212, PR #42)
-- ✔ Replan approved 2026-11-05 (decisions PR pending)
+- ✔ Replan approved and recorded (D-213–D-217, PR #43)
 - ▶ Gate 0, design: fight, gear and weekly-budget forms, mock-ups, gate 1 spec
 - ○ Gate 1, one delve: recruit, equip, budget, map trip, delve, fights the owner plays, letter home. Passes when after 3 delves the owner wants a 4th
 - ○ Gate 2, one season · ○ Gate 3, one year · ○ Gate 4, launch decision
@@ -24,7 +24,7 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 
 ## Next
 
-1. Replan decisions branch: when its review is in, fix findings, publish them, ask the owner to approve the PR, then merge (D-133). HANDOFF and roadmap commits go straight to `main` (D-194).
+1. Start a new branch from `main` for gate 0 (GIT-01); D-215 lists what the fight design must still settle (Tactics, disobedience, retreat, fight length, class actions as skills).
 2. Gate 0, fight design: a `planning-interview` form on the fight the owner chose (per-adventurer turns by speed, skill and target, front and back rows, no movement, foe intents; fights not led resolve on their own). Builds on D-118's exchanges and D-130's class actions.
 3. Gate 0, gear and budget workshop: 3 slots, 3 tiers, prices; the weekly split between training, gear and healing (refines D-143, D-186).
 4. Mock-ups (`ui-mockups`) of the fight, party-and-gear and budget screens; before the first use, STYLE.md needs `Minimum text`, `Minimum tap` and `Where facts live` lines (15 px, D-166; 44 px, D-167). Then the gate 1 spec (`write-spec`).
