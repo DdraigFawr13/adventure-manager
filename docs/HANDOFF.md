@@ -25,7 +25,7 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 
 ## Next
 
-1. Owner's verdict on the mock-ups (Approve / Change / Rethink). On a change: re-run the fact check and lint, a fresh check if layout or controls change, new record, republish to the same link. On approval: record it in DECISIONS, then the D-133 branch review and PR for `gate0-mockups`.
+1. Mock-ups approved (D-224). Battle art requested by the owner: painted standees (STYLE §4, D-211); quote given, awaiting spend approval. Then the D-133 branch review and PR for `gate0-mockups`.
 2. The gate 1 spec (`write-spec`), the fight first: it rewrites today's fight engine (`packages/engine/src/resolution/SPEC.md`) to per-actor turns, a health pool, single foes and per-delve uses; the rogue's and wizard's plain attacks and Tactics' bonus size are set there; the balance runner measures Auto against led play (D-220). The gear and money starting numbers (rarity steps, prices, stipend, starting chest, weekly sum, drill bonus; D-221–D-223) are set there too, measured by the balance runner. Also settle there: what "most of the band" means for fleeing with single tokens and the boss, and whether the breather helps Dying allies (D-218).
 3. Map: subtle painted detail on `/map.html` in code (D-212), mock-up first. The engine test verdict (60 fps, 15 px, screen reader; D-154) is still the owner's to record.
 4. Art: the kept pieces go into the prototype pages in gate 1. Any more OpenArt spend needs a new approval with an exact quote, references included (LESSONS). The repo is public; OpenArt Starter images are non-commercial only.
