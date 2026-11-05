@@ -202,14 +202,14 @@ code { font-family: ui-monospace, monospace; font-size: 15px; color: var(--brass
 .prop { display: inline-block; font-size: 15px; color: var(--warn-ink); border: 1px dashed var(--warn); border-radius: 3px; padding: 0 4px; }
 table.m td.prop2 { color: var(--brass2); }
 .qs li { margin-top: 6px; }
-table.m td { overflow-wrap: anywhere; }
+table.m td, #check-record li, #check-record p, .page > header p { overflow-wrap: anywhere; }
 .track span.stop { background: var(--seal); color: var(--paper); }
 </style>
 <div class="page">
 <header>
   <h1>One delve: the screens between the fights</h1>
   <p>Slice 2 starts here (gate 1 spec, S2 "First"). Slice 1 built one fight; slice 2 makes it a whole barrow delve: an entry room, fights, a choice room, the warden at the end. This page shows the screens that are new: the room card, a choice room, Scout ahead, the breather, Auto, Retreat and the three ways a delve ends. The fight itself stays as you approved it (D-231).</p>
-  <p class="key"><span class="ph">Dotted numbers</span> are one sample delve, followed from screen to screen; undotted ones are worked from the spec's rules (table below). Boxes marked <span class="prop">Proposed</span> are things the spec doesn't settle; the questions at the end ask about them. Room names and lines are proposed words for <code>gate1.en.json</code>.</p>
+  <p class="key"><span class="ph">Dotted numbers</span> are one sample delve, followed from screen to screen; undotted ones are worked from the spec's rules (table below). Boxes marked <span class="prop">Proposed</span> are things the spec doesn't settle; the questions at the end ask about them. Room names and lines are proposed words for <code>gate1.en.json</code>. The archer has no painted standee yet and stands in with the warden's (marked *), as in slice 1.</p>
 </header>
 
 <section class="screen">
@@ -228,7 +228,7 @@ table.m td { overflow-wrap: anywhere; }
         <button class="on" aria-pressed="true">Assault<span class="num">Odric 70%</span></button>
         <button>Talk<span class="num">Amis 65%</span></button>
       </div>
-      <p class="note">Success at the barrow mouth catches the first fight's foes off guard: they lose round 1.</p>
+      <p class="note">Success either way at the barrow mouth catches the first fight's foes off guard: they lose round 1.</p>
       <div class="mems">
         <div class="mem"><span class="tn">Odric Hale</span><span class="num">28/28</span><span class="sk">Warrior · Front</span></div>
         <div class="mem"><span class="tn">Wenna Cray</span><span class="num">17/17</span><span class="sk">Rogue · Front</span></div>
@@ -352,7 +352,7 @@ table.m td { overflow-wrap: anywhere; }
     <div class="sheet">
       <h3>A fight: 4 foes</h3>
       <div class="foeline"><span>Front: Hound × 2</span><span>Back: Archer × 2</span></div>
-      <p class="note">Hounds bite the front row; archers shoot the back row's most hurt first.</p>
+      <p class="note"><span class="prop">Proposed</span> Hounds bite the front row; archers shoot the back row's most hurt first.</p>
       <div class="rows" role="group" aria-label="Rows for the next fight">
         <div class="rowset"><span class="tn">Odric</span><button class="on" aria-pressed="true">Front</button><button>Back</button></div>
         <div class="rowset"><span class="tn">Wenna</span><button class="on" aria-pressed="true">Front</button><button>Back</button></div>
@@ -393,7 +393,7 @@ table.m td { overflow-wrap: anywhere; }
       <span class="rowchip" style="left:4%">Back</span><span class="rowchip" style="left:26%">Front</span>
       <div class="pc" style="left:12%;bottom:47%"><span class="sd sd-amis" style="height:72px;width:44px" aria-hidden="true"></span><span class="bar1"><span class="hp bad"><i style="width:16%"></i></span></span></div>
       <div class="pc" style="left:35%;bottom:47%"><span class="sd sd-odric" style="height:72px;width:44px" aria-hidden="true"></span><span class="bar1"><span class="hp"><i style="width:75%"></i></span></span></div>
-      <div class="pc now" style="left:13%;bottom:3%"><span class="sd sd-maud flip" style="height:88px;width:54px" aria-hidden="true"></span><span class="tg"><span class="tn">Maud</span><span class="hp"><i style="width:75%"></i></span><span class="num ph">9/12</span></span></div>
+      <div class="pc now" style="left:13%;bottom:3%"><span class="sd sd-maud flip" style="height:88px;width:54px" aria-hidden="true"></span><span class="tg"><span class="tn">Maud</span><span class="hp"><i style="width:100%"></i></span><span class="num">12/12</span></span></div>
       <div class="pc" style="left:36%;bottom:3%"><span class="sd sd-wenna flip" style="height:88px;width:54px" aria-hidden="true"></span><span class="bar1"><span class="hp hurt"><i style="width:35%"></i></span></span></div>
       <div class="fc" style="left:60%;bottom:56%"><span class="mark done">Done</span><span class="sd sd-hound" style="height:40px;width:44px" aria-hidden="true"></span><span class="bar1"><span class="n">1</span><span class="hp hurt"><i style="width:40%"></i></span></span></div>
       <div class="fc" style="left:60%;bottom:3%"><span class="mark done">Done</span><span class="sd sd-hound" style="height:52px;width:57px" aria-hidden="true"></span><span class="bar1"><span class="n">2</span><span class="hp"><i style="width:100%"></i></span></span></div>
@@ -411,7 +411,7 @@ table.m td { overflow-wrap: anywhere; }
           <div class="pl"><span class="tn">Odric Hale</span><span class="num ph">21/28</span><span class="hp"><i style="width:75%"></i></span></div>
           <div class="pl"><span class="tn">Wenna Cray</span><span class="num ph">6/17</span><span class="hp hurt"><i style="width:35%"></i></span></div>
           <div class="pl"><span class="tn">Brother Amis</span><span class="num">3/19</span><span class="hp bad"><i style="width:16%"></i></span></div>
-          <div class="pl now"><span class="tn">Maud Fenwick</span><span class="num ph">9/12</span><span class="hp"><i style="width:75%"></i></span></div>
+          <div class="pl now"><span class="tn">Maud Fenwick</span><span class="num">12/12</span><span class="hp"><i style="width:100%"></i></span></div>
         </div>
         <div class="target num"><b>Auto</b> Wenna → Hound 1: <span class="ph">3</span></div>
       </div>
@@ -430,6 +430,11 @@ table.m td { overflow-wrap: anywhere; }
       <div class="pc" style="left:35%;bottom:47%"><span class="sd sd-odric" style="height:72px;width:44px" aria-hidden="true"></span></div>
       <div class="pc down" style="left:13%;bottom:3%"><span class="sd sd-maud flip" style="height:88px;width:54px" aria-hidden="true"></span></div>
       <div class="pc now" style="left:36%;bottom:3%"><span class="sd sd-wenna flip" style="height:88px;width:54px" aria-hidden="true"></span></div>
+      <div class="fc" style="left:58%;bottom:58%"><span class="sd sd-hound" style="height:38px;width:42px" aria-hidden="true"></span></div>
+      <div class="fc down" style="left:64%;bottom:40%"><span class="sd sd-hound" style="height:42px;width:46px" aria-hidden="true"></span></div>
+      <div class="fc" style="left:60%;bottom:20%"><span class="sd sd-hound" style="height:47px;width:52px" aria-hidden="true"></span></div>
+      <div class="fc down" style="left:66%;bottom:3%"><span class="sd sd-hound" style="height:52px;width:57px" aria-hidden="true"></span></div>
+      <div class="fc" style="left:87%;bottom:28%"><span class="sd sd-warden" style="height:76px;width:47px" aria-hidden="true"><span class="standin">*</span></span></div>
     </div>
     <div class="panel">
       <div class="cmds" role="group" aria-label="Wenna's commands">
@@ -455,8 +460,8 @@ table.m td { overflow-wrap: anywhere; }
       <ul class="num">
         <li>Wenna leads the way out (best Wits standing): 75%.</li>
         <li>2 beats carrying Amis and Maud; 3 if she fails.</li>
-        <li>Each beat the 3 standing foes strike once, and the fallen roll to bleed.</li>
-        <li>The delve ends. Parts found so far are kept.</li>
+        <li>Each beat the 3 standing foes strike once; the Down roll to bleed and the Dying roll for death.</li>
+        <li>The delve ends: retreated, or routed if no one stands at the end. Parts found so far are kept.</li>
       </ul>
       <div class="row2"><button class="btn ghost">Stay</button><button class="btn danger">Retreat</button></div>
     </div>
@@ -570,7 +575,7 @@ table.m td { overflow-wrap: anywhere; }
     <tr><td>Health</td><td>Odric 28, Wenna 17, Amis 19, Maud 12 (as in slice 1). Breather: a Down member rises to 3 (Amis 3/19, below ⅓, so Badly hurt).</td></tr>
     <tr><td>Rooms</td><td>entry, fight, fight, then with 50% one more (choice or fight, even odds), fight, boss: 5 or 6. The sample drew 6 with a choice room 4th.</td></tr>
     <tr><td>Turn order (frame 7)</td><td>Wenna (Agility 15), hounds (14), Maud (11) before the archers (11) by id, Odric (10), Amis (8).</td></tr>
-    <tr><td>Intents (frame 7)</td><td>archers are <code>back-row-first</code>: the back row's lowest health is Amis (3 against Maud's 9).</td></tr>
+    <tr><td>Intents (frame 7)</td><td>archers are <code>back-row-first</code>: the back row's lowest health is Amis (3 against Maud's 12); hounds are <code>front-most</code>, so Maud is untouched.</td></tr>
     <tr><td>Auto</td><td>save-for-boss on by default; skill rules are skipped outside the boss room except Mend on a Down or Dying ally (spec, Auto).</td></tr>
     <tr><td>End states</td><td>Hurt below ⅔, Badly hurt below ⅓; Wenna 12/17 is above ⅔ (Unhurt as slice 1's word). Injury chance by end state: Badly hurt 7.5%, Down 22.5%, Dying 41%. A member still Dying at the end survives.</td></tr>
     <tr><td>Parts</td><td>each Down foe in a won room drops its part at 50%, the boss always: hound fang and grave fletching Common, warden's shroud Uncommon (<code>packages/content/src/gate1/foes.ts</code>). Fled foes drop nothing.</td></tr>
@@ -599,15 +604,37 @@ table.m td { overflow-wrap: anywhere; }
   <h2>Choices this page makes</h2>
   <ul class="qs">
     <li><span class="prop">Proposed</span> A start card with the approach (frame 1). Without it every slice 2 delve enters by assault.</li>
-    <li>The track shows how many rooms there are once the delve starts (5 or 6), with unseen rooms as "?" and the boss last. A scouted room shows its kind.</li>
+    <li><span class="prop">Proposed</span> The track shows how many rooms there are once the delve starts (5 or 6), with unseen rooms as "?" and the boss last. A scouted room shows its kind.</li>
+    <li><span class="prop">Proposed</span> Success on either way through the barrow mouth puts the first fight's foes off guard (the spec says "entry success").</li>
+    <li><span class="prop">Proposed</span> The scout result adds a one-line reminder of the foes' target rules (frame 5); the spec only requires kind, foe kinds, rows and count.</li>
+    <li><span class="prop">Proposed</span> "Save skills for the boss" sits in Auto's box and keeps its setting for the party across fights; it can be changed only while Auto plays.</li>
     <li>Choosing who tries works like the fight: tap a tester, read the line, tap again.</li>
-    <li>Retreat asks first (frame 8); in slice 1's fight it was greyed. Auto lights while on and Take over stops it.</li>
+    <li><span class="prop">Proposed</span> Retreat asks first (frame 8); the spec has only a button. In slice 1's fight it was greyed. Auto lights while on and Take over stops it.</li>
     <li>The end screen replaces slice 1's end card for a whole delve; a single fight that is won now leads to the breather.</li>
     <li>Not on any screen, as the spec has it: leaving between rooms without a fight (Retreat exists only in a fight), and using a draught at the breather (items are for fights). Say if either should change.</li>
   </ul>
 </section>
 
 <section id="check-record"><h2>Check record</h2>
-  <p>Not yet checked.</p>
+  <p>Checked 2026-11-05, before publishing.</p>
+  <h3>Files checked</h3>
+  <ul>
+    <li><code>docs/specs/gate1-one-delve.md</code> (Design: Fight, Auto, Rooms, End, Commands; S2); <code>docs/DECISIONS.md</code> D-218 to D-231; <code>docs/design/STYLE.md</code> screen rules (375 px first, 15 px text, 44 px taps); <code>packages/content/data/gate1-sample-party.json</code>, <code>gate1.en.json</code>, <code>text.en.json</code>; <code>packages/content/src/gate1/foes.ts</code>, <code>classes.ts</code>, <code>sites.ts</code>; <code>packages/content/src/base/resolution.ts</code> (v0 retreat); <code>docs/design/mockups/fight-fit.html</code> (D-231); the master Avoid list.</li>
+  </ul>
+  <h3>Facts</h3>
+  <p>About 60 numbers, names and rules checked: every chance, health figure, band, beat count, turn order, intent, injury chance, part name and rarity, room count and Auto rule is worked in "Where the numbers come from"; the fresh check recomputed them and found them right. Dotted figures are the sample delve.</p>
+  <h3>Fixes made</h3>
+  <ul>
+    <li>Own pass: a sideways scroll at 375 px from the numbers table (cells now wrap); the room card's note moved to the ledger face so its digits are lining.</li>
+    <li>Fresh check (1 major, 5 minor; each verified against the files and fixed): the Retreat card now says the Dying roll for death each beat and that a retreat can still end routed (spec, Round end and Retreat); Maud is 12/12 in the Auto frame, since no foe in room 3 can reach her; the Retreat frame now draws its foes; the track count, off guard on either way, the scout's target-rule line, the Retreat confirm and where the save-for-boss switch sits are marked Proposed and listed; the archer's stand-in standee is explained.</li>
+  </ul>
+  <h3>Lint, widths and screenshots</h3>
+  <ul>
+    <li><code>mockup-lint: 0 warnings</code> (<code>--min-text 15</code>). <code>tools/mockup-shot.mjs</code> at 1,200, 375, 412, 430 and 443 px: fonts loaded, smallest text 15 px, no sideways scroll, no tap under 44 px.</li>
+    <li>Every frame measured in Chromium at its fixed size (667 px, and 900 px for frame 12); no sheet overflows. Not measured on a real phone browser.</li>
+    <li>No screenshots embedded: the frames are the live render, as on the slice 1 page.</li>
+  </ul>
+  <h3>Fresh check and cost</h3>
+  <p>One independent reviewer agent, given the page and the fact sources only: 109,037 tokens (measured). Running agent cost for this mock-up: the same. No OpenArt credits spent.</p>
 </section>
 </div>
