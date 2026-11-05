@@ -26,7 +26,6 @@ import {
   ChoiceScreen,
   EndScreen,
   StartScreen,
-  type ChoiceTry,
 } from './delve/DelveScreens.tsx';
 import { SAVE_KEY, keepAside, nextSeed, readSave, writeSave, type Store } from './save.ts';
 import { logLines, t } from './words.ts';
@@ -77,7 +76,7 @@ export function Play() {
   const [notice, setNotice] = useState(start.notice);
   const [log, setLog] = useState<string[]>([]);
   // Screen-only state: the choice result before "Go on", the closed room card, the Retreat card.
-  const [attempt, setAttempt] = useState<ChoiceTry | null>(null);
+  const [resultClosed, setResultClosed] = useState('');
   const [cardClosed, setCardClosed] = useState('');
   const [retreatOpen, setRetreatOpen] = useState(false);
   const latest = useRef(game);
@@ -105,14 +104,14 @@ export function Play() {
   // Auto plays one adventurer turn (and the foes' turns after it) every 0.6 s while it is on.
   const stepKey = game.state.nextEventNo;
   useEffect(() => {
-    if (cardOpen || !autoDue(latest.current)) return;
+    if (cardOpen || retreatOpen || !autoDue(latest.current)) return;
     const timer = window.setTimeout(() => {
       if (autoDue(latest.current)) show(stepAuto(latest.current));
     }, AUTO_STEP_MS);
     return () => window.clearTimeout(timer);
     // `show` only reads refs and setters.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stepKey, cardOpen]);
+  }, [stepKey, cardOpen, retreatOpen]);
 
   const dismiss = (): void => setNotice('');
 
@@ -123,7 +122,7 @@ export function Play() {
     setGame(fresh);
     setLog([]);
     setNotice('');
-    setAttempt(null);
+    setResultClosed('');
     setRetreatOpen(false);
   };
 
@@ -155,22 +154,20 @@ export function Play() {
         delve={delve}
         notice={notice}
         onDismissNotice={dismiss}
-        onChoose={(option, tester, onFailure) => {
-          setAttempt({ onFailure });
-          show(chooseWay(game, option, tester));
-        }}
+        onChoose={(option, tester) => show(chooseWay(game, option, tester))}
       />
     );
   }
   if (delve.phase === 'breather') {
-    if (attempt)
+    // After a choice room its result shows until "Go on", also after a reload (from `lastChoice`).
+    const fromChoice = delve.rooms[delve.roomIndex]?.kind === 'choice' && !!delve.lastChoice;
+    if (fromChoice && resultClosed !== cardKey)
       return (
         <ChoiceResult
           delve={delve}
-          attempt={attempt}
           notice={notice}
           onDismissNotice={dismiss}
-          onGoOn={() => setAttempt(null)}
+          onGoOn={() => setResultClosed(cardKey)}
         />
       );
     const raised = game.events.flatMap((e) =>

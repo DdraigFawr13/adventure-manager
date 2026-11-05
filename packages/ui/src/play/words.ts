@@ -49,6 +49,12 @@ export function logLines(view: FightView, events: readonly GameEvent[]): string[
           if (e.actionId === 'action.guard') out.push(line('guard', { actor, target }));
           else if (e.actionId === 'action.ward') out.push(line('ward', { actor }));
           else if (e.actionId === 'action.haste') out.push(line('haste', { actor, target }));
+          else {
+            // A heal on a standing ally (Mend): the health it gave, from its own event.
+            const healed = events.find((h) => h.type === 'health.changed' && h.causeId === e.id);
+            if (healed?.type === 'health.changed' && healed.to > healed.from)
+              out.push(line('heal', { actor, target, amount: healed.to - healed.from }));
+          }
         } else if (e.damage > 0) out.push(line('hit', { actor, target, damage: e.damage }));
         else out.push(line('miss', { actor, target }));
         break;

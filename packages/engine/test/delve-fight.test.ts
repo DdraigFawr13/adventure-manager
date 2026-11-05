@@ -313,12 +313,12 @@ describe('delve fight: plain attacks and skills', () => {
 
 describe('delve fight: round end and the fight’s end', () => {
   it('Down adventurers roll to bleed and the Dying roll for death at the round end', () => {
-    // Chances: bleed base − 200 × (14 − 10) for Odric (1,200 − 800 = 400 since S2's tuning);
-    // death 3,500 − 150 × ((8 − 10) + (12 − 10)) = 3,500 for Maud. Over 40 seeds each roll must
-    // come up at least once.
+    // Chances: bleed base − 200 × (14 − 10) for Odric (1,095 − 800 = 295 since S2's tuning);
+    // death 3,500 − 150 × ((8 − 10) + (12 − 10)) = 3,500 for Maud. Over the seeds each roll must
+    // come up at least once (300 seeds: at 295 bp a bleed is rare).
     const dying: number[] = [];
     const died: number[] = [];
-    for (let n = 0; n < 40; n += 1) {
+    for (let n = 0; n < 300; n += 1) {
       let { state } = started(`bleed-${n}`, MISS);
       Object.assign(fighter(state, ODRIC), { status: 'down', health: 0 });
       Object.assign(fighter(state, MAUD), { status: 'dying', health: 0 });

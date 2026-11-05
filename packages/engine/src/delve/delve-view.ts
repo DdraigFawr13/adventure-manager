@@ -70,6 +70,9 @@ export interface DelveView {
     readonly optionIndex: number;
     readonly testerId: string;
     readonly success: boolean;
+    readonly failure: 'hurt' | 'alert' | null;
+    /** Health the tester lost (clamped at 1 health). */
+    readonly lost: number;
   } | null;
   /** Null when no rogue stands (the button is hidden). */
   readonly scout: {
@@ -164,7 +167,15 @@ export function delveView(state: GameState): DelveView | null {
     offGuard: run.bonuses.offGuard,
     alerted: run.bonuses.alerted,
     choice,
-    lastChoice: run.lastChoice ? { ...run.lastChoice } : null,
+    lastChoice: run.lastChoice
+      ? {
+          optionIndex: run.lastChoice.optionIndex,
+          testerId: run.lastChoice.testerId,
+          success: run.lastChoice.success,
+          failure: run.lastChoice.failure ?? null,
+          lost: run.lastChoice.lost ?? 0,
+        }
+      : null,
     scout:
       between && scout
         ? { scoutId: scout.id, chance: scoutChance(state), open: scoutRefusal(state) === null }

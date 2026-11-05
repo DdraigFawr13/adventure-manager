@@ -66,13 +66,23 @@ function fight(options: { good?: boolean; save?: boolean; boss?: boolean } = {})
 function step(
   state: GameState,
   actorId: string,
-): { actionId: string; targetId: string | null; events: readonly GameEvent[] } {
+): {
+  actionId: string;
+  targetId: string | null;
+  events: readonly GameEvent[];
+  state: GameState;
+} {
   giveTurn(state, actorId);
   const out = simulate(state, { type: 'fight.step', id: nextId(), day: 1 });
   const mine = ofType(out.events, 'fight.acted').filter((e) => e.subjectIds[0] === actorId);
   expect(mine.length).toBeGreaterThan(0);
   expect(mine.every((e) => e.auto)).toBe(true);
-  return { actionId: mine[0]!.actionId, targetId: mine[0]!.targetId, events: out.events };
+  return {
+    actionId: mine[0]!.actionId,
+    targetId: mine[0]!.targetId,
+    events: out.events,
+    state: out.state,
+  };
 }
 
 const member = (state: GameState, id: string) => run(state).fighters.find((f) => f.id === id)!;
@@ -137,6 +147,11 @@ describe('Auto: each rule', () => {
     boss.health = 40; // keep it standing through the test
     const first = step(state, WENNA);
     expect(first).toMatchObject({ actionId: 'action.hamstring', targetId: boss.id });
+    // Once a fight: her next turn takes another rule (the boss was just hit, so Strike from
+    // shadow), and Hamstring keeps its remaining uses.
+    const second = step(first.state, WENNA);
+    expect(second.actionId).not.toBe('action.hamstring');
+    expect(run(second.state).skillUses[WENNA]!['action.hamstring']).toBe(2);
   });
 
   it('cleric: a Dying ally → Mend them, even saving skills for the boss', () => {
@@ -164,7 +179,13 @@ describe('Auto: each rule', () => {
 
   it('cleric: in the boss room → Ward, once a round', () => {
     const state = fight({ boss: true, save: true });
-    expect(step(state, AMIS).actionId).toBe('action.ward');
+    const first = step(state, AMIS);
+    expect(first.actionId).toBe('action.ward');
+    // Again in the same round: Ward is skipped for the next rule (the plain attack).
+    const round = run(first.state).fight!.round;
+    const again = step(first.state, AMIS);
+    expect(run(again.state).fight!.round).toBe(round);
+    expect(again.actionId).toBe('action.mace');
   });
 
   it('wizard: in the boss room → Firebolt the boss', () => {

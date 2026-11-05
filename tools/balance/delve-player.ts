@@ -26,7 +26,8 @@ export type DelvePolicy = 'careful' | 'auto';
 /** What one delve records; every delve metric is computed from these. */
 export interface DelveResult {
   readonly seed: string;
-  readonly outcome: 'won' | 'retreated' | 'routed';
+  /** `stalled` when the runner stopped a fight (the delve never ended). */
+  readonly outcome: 'won' | 'retreated' | 'routed' | 'stalled';
   readonly deaths: number;
   readonly injuries: number;
   /** Party health left at the end as a share of the most, in basis points. */
@@ -77,7 +78,13 @@ export function playDelve(
       const view = delveView(state)!;
       const best = view
         .choice!.options.flatMap((o, optionIndex) => o.testers.map((t) => ({ optionIndex, t })))
-        .sort((a, b) => b.t.chance.total - a.t.chance.total)[0]!;
+        // The best chance; ties by option order, then tester id (spec "Balance").
+        .sort(
+          (a, b) =>
+            b.t.chance.total - a.t.chance.total ||
+            a.optionIndex - b.optionIndex ||
+            (a.t.id < b.t.id ? -1 : a.t.id > b.t.id ? 1 : 0),
+        )[0]!;
       run({ type: 'delve.choose', optionIndex: best.optionIndex, testerId: best.t.id });
       continue;
     }
@@ -118,8 +125,8 @@ export function playDelve(
   const left = party.reduce((s, f) => s + (f.status === 'dead' ? 0 : f.health), 0);
   return {
     seed,
-    outcome: d.outcome ?? 'routed',
-    deaths: (d.ends ?? []).filter((e) => e.died).length,
+    outcome: d.outcome ?? 'stalled',
+    deaths: party.filter((f) => f.status === 'dead').length,
     injuries: (d.ends ?? []).filter((e) => e.injury).length,
     healthBp: max ? Math.floor((left * 10000) / max) : 0,
     skillUsesLeft: Object.values(d.skillUses).reduce(

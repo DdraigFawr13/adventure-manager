@@ -350,7 +350,13 @@ export function FightScreen(props: Props) {
             </>
           );
           const style = { left: `${left}%`, bottom: `${bottom}%` };
-          const label = `${labelOf(view, f.id)}, ${f.health} of ${f.maxHealth}${bandWord(f) ? `, ${bandWord(f)}` : ''}${mark ? `, ${mark}` : ''}`;
+          const label = [
+            t('piece.label', { name: labelOf(view, f.id), health: f.health, max: f.maxHealth }),
+            bandWord(f),
+            mark,
+          ]
+            .filter(Boolean)
+            .join(', ');
           return tappable ? (
             <button
               key={f.id}

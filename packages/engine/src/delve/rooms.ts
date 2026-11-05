@@ -217,10 +217,12 @@ export function chooseWay(state: GameState, command: Cmd<'delve.choose'>, sink: 
   // Success either way through the entry puts the first fight's foes off guard (D-232).
   if (success && isEntry) run.bonuses.offGuard = true;
   if (!success && option.onFailure === 'alert') run.bonuses.alerted = true;
+  let lost = 0;
   if (!success && option.onFailure === 'hurt') {
     const { hurt } = delveContent(state).rules.room;
     const from = tester.health;
     tester.health = Math.max(1, from - hurt);
+    lost = from - tester.health;
     if (tester.health !== from)
       sink.emit({
         type: 'health.changed',
@@ -230,7 +232,13 @@ export function chooseWay(state: GameState, command: Cmd<'delve.choose'>, sink: 
         to: tester.health,
       });
   }
-  run.lastChoice = { optionIndex: command.optionIndex, testerId: tester.id, success };
+  run.lastChoice = {
+    optionIndex: command.optionIndex,
+    testerId: tester.id,
+    success,
+    failure: success ? null : option.onFailure,
+    lost,
+  };
   run.phase = 'breather';
 }
 
@@ -284,7 +292,8 @@ export function setRows(state: GameState, command: Cmd<'delve.rows'>, sink: Sink
   if (run.phase !== 'breather' || !run.seen) throw new Error('Rows are set after a seen scout.');
   for (const [id, row] of Object.entries(command.rows)) {
     const member = memberOf(run, id);
-    if (!member || member.status === 'dead') throw new Error(`${id} is not in the party.`);
+    if (!member || member.status !== 'up') throw new Error(`${id} is not a standing member.`);
+    if (row !== 'front' && row !== 'back') throw new Error(`No row ${String(row)}.`);
     if (member.row === row) continue;
     member.row = row;
     sink.emit({ type: 'rows.set', causeId: command.id, subjectIds: [id], row });

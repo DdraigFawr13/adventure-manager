@@ -11,7 +11,6 @@ import type { ResolutionContent } from '@adventure-manager/engine';
 import { inHistory, treeIsDirty } from './baseline.ts';
 import { playDelve, type DelvePolicy, type DelveResult } from './delve-player.ts';
 import { applyOverrides, parseOverride, type Override } from './overrides.ts';
-import { verdict } from './report.ts';
 import type { Target } from './metrics.ts';
 import { estimate, paired, resamples, type Estimate } from './stats.ts';
 
@@ -40,6 +39,8 @@ interface DelveMetric {
   readonly digits: number;
   readonly compute: (rs: DelveResult[]) => number;
   readonly target?: Target;
+  /** The policy the target is for; other policies show the metric without a verdict. */
+  readonly policy?: DelvePolicy;
 }
 
 const mean = (v: number[]) => (v.length ? v.reduce((a, b) => a + b, 0) / v.length : NaN);
@@ -52,8 +53,9 @@ export const DELVE_METRICS: readonly DelveMetric[] = [
     label: 'Delves that cost a life (%)',
     digits: 1,
     compute: (rs) => share(rs, (r) => r.deaths > 0),
-    // D-229 "about 1 delve in 10 costs a life", played well; the band is this runner's reading.
-    target: { min: 5, max: 15, source: 'D-229, careful player' },
+    // Spec Goals (D-229): played well, 8–12% of delves cost at least one life.
+    target: { min: 8, max: 12, source: 'spec Goals, D-229' },
+    policy: 'careful',
   },
   {
     id: 'deaths',
@@ -159,23 +161,54 @@ const targetText = (t?: Target) =>
     ? ''
     : `${t.min !== undefined && t.max !== undefined ? `${t.min}–${t.max}` : t.min !== undefined ? `≥ ${t.min}` : `≤ ${t.max}`} (${t.source})`;
 
+/** Spec J6: ok only when the whole 95% interval lies inside the band; near when it reaches it. */
+function verdict(e: Estimate, t: Target | undefined): string {
+  if (!t || ![e.value, e.low, e.high].every(Number.isFinite)) return '';
+  const lowOk = t.min === undefined || e.low >= t.min;
+  const highOk = t.max === undefined || e.high <= t.max;
+  if (lowOk && highOk) return 'ok';
+  const reaches =
+    (t.min === undefined || e.high >= t.min) && (t.max === undefined || e.low <= t.max);
+  return reaches ? 'near' : 'OFF';
+}
+
+/** D-220's checks of Auto against the careful player, paired by seed (spec Goals, J6). */
+function printAutoChecks(careful: DelveResult[], auto: DelveResult[], draws: number[][]): void {
+  const metric = (id: string) => DELVE_METRICS.find((m) => m.id === id)!;
+  const change = (id: string) => paired(careful, auto, metric(id).compute, draws).change;
+  const won = change('won');
+  const health = change('health');
+  const uses = change('uses');
+  const line = (label: string, e: Estimate, ok: boolean) =>
+    console.log(
+      `  ${label.padEnd(44)} ${signed(e.value, 1)} [${span(e, 1)}]  ${ok ? 'ok' : 'NOT MET'}`,
+    );
+  console.log('\nD-220, Auto against the careful player (change = Auto minus careful):');
+  line('Win rate within 5 points', won, won.low >= -5 && won.high <= 5);
+  line('Less health left at the end', health, health.high < 0);
+  line('Fewer skill uses left (reported, not tuned)', uses, uses.high < 0);
+}
+
 function printTable(
+  policy: DelvePolicy,
   results: DelveResult[],
   draws: number[][],
   ref?: { name: string; results: DelveResult[] },
 ) {
   const w = Math.max(...DELVE_METRICS.map((m) => m.label.length));
+  const target = (m: DelveMetric) =>
+    m.policy === undefined || m.policy === policy ? m.target : undefined;
   for (const m of DELVE_METRICS) {
     if (ref) {
       const both = paired(ref.results, results, m.compute, draws);
       const moved = both.change.low > 0 || both.change.high < 0;
       console.log(
-        `${m.label.padEnd(w)}  ${fmt(m.compute([...ref.results]), m.digits).padStart(8)} → ${`${fmt(both.now.value, m.digits)} [${span(both.now, m.digits)}]`.padEnd(24)} ${`${signed(both.change.value, m.digits)} [${span(both.change, m.digits)}]`.padEnd(24)} ${moved ? 'MOVED' : '     '}  ${verdict(both.now, m.target).padEnd(4)} ${targetText(m.target)}`,
+        `${m.label.padEnd(w)}  ${fmt(m.compute([...ref.results]), m.digits).padStart(8)} → ${`${fmt(both.now.value, m.digits)} [${span(both.now, m.digits)}]`.padEnd(24)} ${`${signed(both.change.value, m.digits)} [${span(both.change, m.digits)}]`.padEnd(24)} ${moved ? 'MOVED' : '     '}  ${verdict(both.now, target(m)).padEnd(4)} ${targetText(target(m))}`,
       );
     } else {
       const e = estimate(results, m.compute, draws);
       console.log(
-        `${m.label.padEnd(w)}  ${`${fmt(e.value, m.digits)} [${span(e, m.digits)}]`.padEnd(26)} ${verdict(e, m.target).padEnd(4)} ${targetText(m.target)}`,
+        `${m.label.padEnd(w)}  ${`${fmt(e.value, m.digits)} [${span(e, m.digits)}]`.padEnd(26)} ${verdict(e, target(m)).padEnd(4)} ${targetText(target(m))}`,
       );
     }
   }
@@ -271,7 +304,9 @@ export function runDelveScenario(name: string, opts: DelveOptions): void {
       }
       console.log('');
     }
-    printTable(results, draws, ref);
+    printTable(scenario.policy, results, draws, ref);
+    if (opts.comparePolicy === 'careful' && scenario.policy === 'auto' && ref)
+      printAutoChecks(ref.results, results, draws);
     if (opts.json)
       writeFileSync(
         opts.json,

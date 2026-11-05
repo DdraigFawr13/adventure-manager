@@ -289,24 +289,31 @@ describe('delve rooms: the boss, loot and the end', () => {
     expect(d.fight!.boss).toBe(true);
     const warden = d.fight!.foes.find((f) => f.kindId === 'foe.restless-warden')!;
     for (const f of d.fight!.foes) if (f !== warden) f.health = 1;
-    // Both minions fall first: more than half Down, but a boss band does not flee.
-    const view = fightView(state)!;
+    // Both minions fall first: more than half the band Down, but a boss band does not flee.
     let r: Result = { state, events: [] };
     const minions = d.fight!.foes.filter((f) => f !== warden).map((f) => f.id);
     for (const id of minions) {
       const v = fightView(r.state)!;
-      if (v.actorId === null) break;
-      const target = v.actions.find((a) => a.targets.includes(id));
-      if (!target) continue;
+      const target = v.actions.find((a) => a.targets.includes(id))!;
       r = send(r.state, {
         type: 'fight.act',
-        actorId: v.actorId,
+        actorId: v.actorId!,
         actionId: target.actionId,
         targetId: id,
       });
     }
-    expect(view.phase).toBe('fight');
-    expect(run(r.state).fight?.foes.find((f) => f.id === warden.id)?.status).toBe('up');
+    expect(
+      minions.every((id) => run(r.state).fight!.foes.find((f) => f.id === id)!.status === 'down'),
+    ).toBe(true);
+    // Let the round end (the flee check runs there): swap rows until round 2 starts.
+    const round = run(r.state).fight!.round;
+    for (let i = 0; i < 10 && run(r.state).fight?.round === round; i += 1) {
+      const v = fightView(r.state)!;
+      r = send(r.state, { type: 'fight.act', actorId: v.actorId!, actionId: 'action.swap-row' });
+    }
+    expect(run(r.state).fight!.round).toBe(round + 1);
+    expect(run(r.state).phase).toBe('fight');
+    expect(run(r.state).fight!.foes.find((f) => f.id === warden.id)?.status).toBe('up');
     run(r.state).fight!.foes.find((f) => f.id === warden.id)!.health = 1;
     const won = winFight(r.state);
     const end = run(won.state);

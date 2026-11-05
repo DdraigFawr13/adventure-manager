@@ -291,6 +291,9 @@ export interface DelveRun {
     readonly optionIndex: number;
     readonly testerId: string;
     readonly success: boolean;
+    /** What a failure cost: health lost (`hurt`) or the next room alerted. */
+    readonly failure?: 'hurt' | 'alert' | null;
+    readonly lost?: number;
   };
   readonly loot: { readonly parts: PartDrop[]; readonly gear: string[] };
   outcome: DelveOutcome | null;

@@ -17,10 +17,6 @@ import { actionName, memberLabel, nameOf, roomWords, t, wayWords } from '../word
 const pct = (bp: number): number => Math.floor(bp / 100);
 
 /** The picked try of a choice room, shown as its result until "Go on". */
-export interface ChoiceTry {
-  readonly onFailure: 'hurt' | 'alert';
-}
-
 interface FrameProps {
   readonly id: string;
   readonly sub: string;
@@ -287,7 +283,6 @@ export function ChoiceScreen(props: ChoiceProps) {
 /** The try's result, after the engine has rolled it; "Go on" leads to the breather. */
 export function ChoiceResult(props: {
   readonly delve: DelveView;
-  readonly attempt: ChoiceTry;
   readonly notice: string;
   readonly onDismissNotice: () => void;
   readonly onGoOn: () => void;
@@ -300,8 +295,8 @@ export function ChoiceResult(props: {
   if (last)
     line = last.success
       ? t(delve.offGuard ? 'choice.ok.entry' : 'choice.ok', { name })
-      : props.attempt.onFailure === 'hurt'
-        ? t('choice.failed.hurt', { name, n: delve.choiceHurt })
+      : last.failure === 'hurt'
+        ? t('choice.failed.hurt', { name, n: last.lost })
         : t('choice.failed.alert', { name });
   return (
     <Frame

@@ -167,7 +167,8 @@
     "end.delve.retreated": "The party falls back",
     "end.delve.retreated.line": "Out of the barrow, carrying the fallen.",
     "end.delve.routed": "The party is routed",
-    "end.delve.routed.line": "No one is left on their feet."
+    "end.delve.routed.line": "No one is left on their feet.",
+    "piece.label": "{name}, {health} of {max}"
   },
   "log": {
     "hit": "{actor} → {target}: {damage}",
