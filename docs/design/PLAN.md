@@ -479,6 +479,8 @@ Decisions: D-079..D-081, D-109, D-112. Every item is a data entry (GAME-04, D-04
 
 ### 7d. Guild and gear (Accepted 2026-10-26, D-080)
 
+**Amended (2026-11-05, D-216):** gear starts with 3 slots (weapon, armour, trinket) and 3 tiers.
+
 - **Guild house:** 11 building kinds, each 1–3 cells wide with 3 levels (D-172): 7 rooms on stacked floors and 4 in the compound (D-168, D-169, D-180); replaces 5 facilities × 3 levels (D-075). Incident letters (D-173) are extra templates, not yet counted in §7e.
 - **Home-town sites: 5** × 3 levels, funded by patronage (D-171).
 - **Gear:** 4 tiers × about 10 kit types (to revisit when the slots and items of D-143 are designed); about 30 magic-item templates that generate storied items, plus about 10 authored legendary items placed in the region.
@@ -558,6 +560,8 @@ Not risks for prototypes (handled elsewhere): engine choice and determinism (§1
 
 ### 9b. Prototype order (Accepted 2026-10-26, D-085)
 
+**Parked (2026-11-05, D-213):** the fun gates replace the remaining steps; this is reference for gate 4.
+
 The riskiest question first. All prototypes come after the plan is approved (D-001).
 
 0. **Engine test, web-first** (D-110, amends D-090): the ledger and kingdom-map view built in web tech; if web misses a bar, the owner decides what follows; there is no Godot fallback (D-163).
@@ -594,6 +598,8 @@ The writing test (R8) also checks **shape repetition**: across 100 simulated que
 ---
 
 ## 10. Playtest and metrics plan (Accepted 2026-10-26)
+
+**Parked (2026-11-05, D-213):** gates 1–3 are judged by the owner's own play; the tester stages are reference for gate 4.
 
 Decisions: D-088, D-089. Ties the §1 targets (D-065) and the §9 pass lines (D-086) to who plays, when, and what is measured. Milestone names follow §13.
 
@@ -818,6 +824,8 @@ Mock-up: `docs/design/mockups/kingdom-map.html` (interactive: base style and lay
 
 ## 13. Milestones (Accepted 2026-10-26)
 
+**Replaced (2026-11-05, D-213, D-214):** the milestones below are replaced by fun gates (gate 0 design, gate 1 one delve, gate 2 one season, gate 3 one year, gate 4 the launch decision). This section stays as reference for gate 4: the store route, price and timeline are parked until then.
+
 Decisions: D-099..D-101, D-108, D-111, D-156. Inputs: prototype order (§9b, D-085), playtest stages (§10a, D-089), engine test (D-090), scope tiers (CONCEPT §28), launch content (D-080, D-081), art and audio (D-098). **Durations are estimates** (REP-01), restated on 2026-10-26 for the owner building solo with AI help at 10–20 hours a week (D-108; the first figures assumed a small team) and for the lean launch cut (D-109).
 
 ### 13a. The ladder (Accepted 2026-10-26, D-099)
@@ -864,6 +872,8 @@ Free updates, in this order (owner chose war campaigns first, Plan Q13b); each a
 ---
 
 ## 14. Budget, team and business assumptions (Accepted 2026-10-26)
+
+**Parked (2026-11-05, D-213):** budget, team, price and funding are decided at gate 4; the figures assume 10–20 h a week and a store launch.
 
 Decisions: D-102..D-104, D-108, D-113, D-150, D-152, D-156, D-157. Inputs: art and audio costs (D-098), milestones and timing (D-099), launch model at the alpha gate (D-100), premium with a free demo (D-040), success targets (D-065), no runtime dependency, paid service or backend without asking (SAFE-03). **Every figure here is an estimate** (REP-01) unless marked as a fact; quotes and real spending replace them.
 

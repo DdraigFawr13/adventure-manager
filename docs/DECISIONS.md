@@ -20,6 +20,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-25)
 - **Decision:** The player manages and never fights. The guildmaster has stats that affect how well they do what they focus on. The guild is a persistent character, and control can pass to a successor. Detail: `docs/design/CONCEPT.md` §1.
 - **Why:** Owner's choice; keeps the adventurers as the stars and supports long, generational play.
+- **Amended (2026-11-05, D-215):** in fights the player chooses to lead, the player commands each adventurer turn by turn; the guildmaster still doesn't fight in person.
 
 ## D-004 Quests: simulation with key moments, tabletop view
 
@@ -27,6 +28,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Quests simulate with decision pauses at key moments; full auto-resolve is an option. A stylised tabletop-style board shows parties on missions. Detail: `docs/design/CONCEPT.md` §2.
 - **Why:** Owner's choice; matches FM's watch-and-intervene feel without building a second tactics game.
 - **Extended (2026-11-03, D-207):** in the watched party's main fight, every exchange is a decision pause (foe intents, one order); full auto-resolve stays an option.
+- **Amended (2026-11-05, D-215):** in led fights every turn is the player's (per-adventurer turns), replacing D-207's one order per exchange; fights not led resolve on their own.
 
 ## D-005 Rival guilds and a tiered ranking; tournaments are events
 
@@ -502,6 +504,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Amended (2026-10-26, D-109):** lean launch cut: about 24 monster kinds, about 40 key moments, about 4,500 template lines, 1 tournament, about 6 authored rival guilds with the rest generated; region crises added (D-112).
 - **Amended (2026-10-27, D-168):** the 5 facilities become the guild house's 11 room kinds and 5 home-town sites × 3 levels.
 - **Why:** Owner's choice (Plan Q7b): repeats stay rare within a guildmaster's career at about half the writing and art cost of the rich option.
+- **Amended (2026-11-05, D-214, D-216):** the volumes here are the target from gate 4; gear starts with 3 slots and 3 tiers (D-216).
 
 ## D-081 Launch people content
 
@@ -539,6 +542,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Amended (2026-10-26, D-110, D-113):** the engine test is web-first; resolution v0 comes before step 1; the simulation core is kept as the production engine; each step is time-boxed.
 - **Amended (2026-10-27, D-154):** step 3's mock-ups are phone screens, not 1366 and 1920 px desks.
 - **Note:** first recorded as "headless simulator first"; the owner reported that answer as a misclick the same day and chose quest first.
+- **Parked (2026-11-05, D-213):** the remaining prototype steps give way to the fun gates; reference for gate 4.
 
 ## D-086 Riskiest assumptions and their tests
 
@@ -567,6 +571,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Playtests run owner-only for prototypes, then 6–10 invited vertical-slice players (about two thirds management-sim veterans), a 30–50 closed alpha, the public demo and a 200+ beta. Measures cover pacing, danger and economy, engagement (watched vs auto-resolved, delegation, Trace use), onboarding drop-off, attachment, readability tasks and stability. Each measure has a target; misses become dated findings; the same miss in two rounds goes to the owner as a design problem. Detail: `docs/design/PLAN.md` §10a, §10b, §10d.
 - **Why:** Owner accepted the draft (Plan Q10b).
+- **Parked (2026-11-05, D-213):** gates 1–3 are judged by the owner's own play; the tester stages are reference for gate 4.
 
 ## D-090 Engine chosen after a two-engine test
 
@@ -601,6 +606,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The rest of the tools review stands as the plan: build-start tooling (engine tools in cloud sessions, per-stack checks, review skills on PRs, the `run` skill, CI checks that stay free for docs-only pushes); art connectors for exploration only (OpenArt with licence, disclosure and cost checks first; Figma if an artist joins; tldraw optional; Canva later); the not-needed list; ripgrep kept as is; the caveman skill not adopted. Detail: `docs/design/TOOLS-REVIEW.md`.
 - **Why:** Owner accepted the list after reviewing the page.
+- **Amended (2026-11-05, D-217):** OpenArt's licence was checked; its images may be shared for non-commercial use. The store-disclosure check is still open.
 
 ## D-095 A fresh session per merged PR or plan section
 
@@ -622,6 +628,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Amended (2026-10-26, D-109, D-113):** launch layers are places, guilds and action; factions and threats layers follow in an update. The slice's corner is drawn at M2 and the full base after alpha balance.
 - **Why:** Owner's choice (Plan Q12a): the best-looking launch map with a path to generated regions; a smaller launch layer set.
 - **Amended (2026-10-27, D-164):** the map pans and zooms freely, and every mark opens a pop-up with details and an image.
+- **Amended (2026-11-05, D-214):** marks that outlast a guildmaster, including map deeds, come forward to gate 3.
 
 ## D-098 Art and audio production lists and rough costs
 
@@ -630,6 +637,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Amended (2026-10-26, D-109):** about 48 monster pieces and about 160 portrait parts; art about $20,000–66,000.
 - **Amended (2026-10-27, D-156):** mobile first adds hall-room and town-view art (amount in D-157).
 - **Why:** Owner accepted the draft (Plan Q12b) and asked for a review of the Story-Generator repository's map code for art direction.
+- **Amended (2026-11-05, D-211, D-217):** illustrations are hand-painted stylised; generated images may appear in the prototype and be shared for non-commercial use, and are replaced before any sale.
 
 ## D-099 Milestones M0–M7 with gates
 
@@ -639,6 +647,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Why:** Owner accepted the draft (Plan Q13c); proving fun and balance before paying for bulk art protects the art budget (D-098).
 - **Amended (2026-10-27, D-156):** mobile first; the phone engine test joins M1, phone builds from M2, launch about 39–68 months from plan approval (estimate), with extra art and phone costs listed in D-156.
 - **Under review (2026-10-27, D-150):** the Steam page from M2 and Steam-based tester recruiting have no phone replacement yet; the owner decides it (HANDOFF open questions).
+- **Replaced (2026-11-05, D-213, D-214):** fun gates (gate 0 design to gate 4 the launch decision) replace M1–M7; this entry stays as reference for gate 4.
 
 ## D-100 Launch model decided at the alpha gate
 
@@ -646,18 +655,21 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** The plan assumes a full 1.0 release after the beta. At the M3 (alpha) exit the owner decides again between that and Steam Early Access, with the budget and alpha results in hand. Detail: `docs/design/PLAN.md` §13b.
 - **Why:** Owner's choice (Plan Q13a): Early Access brings money sooner and real long saves, but early reviews of a rough build count; the budget that tips it is not known yet.
 - **Under review (2026-10-27, D-150):** Early Access is a Steam model; whether phones get an equivalent (for example a public test track) is for the owner.
+- **Parked (2026-11-05, D-213):** the launch model is decided at gate 4.
 
 ## D-101 Post-launch order: war campaigns first
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** Free updates after launch, in order: war campaigns; map deeds and rumours; training academy and item commissioning; escorts and expeditions; look and sound upgrades (painted portraits, standee animations, bardic songs); optional AI flavour. Later-tier items each need their own decision. Paid expansions stay undecided (D-040). Detail: `docs/design/PLAN.md` §13c.
 - **Why:** Owner's choice (Plan Q13b): war campaigns are the biggest new play and already an Early update item.
+- **Amended (2026-11-05, D-214):** map deeds come forward to gate 3; the rest of this order is reference for gate 4.
 
 ## D-102 Team: start solo, hire later
 
 - **Status:** Accepted (2026-10-26)
 - **Decision:** The owner directs and designs, code is written with AI help, and contractors are paid per job for art, audio and optionally writing. At the M2 (slice) and M3 (alpha) gates the owner decides whether to add paid help; the likely first hire is one developer for 12–18 months. Detail: `docs/design/PLAN.md` §14a.
 - **Why:** Owner's choice (Plan Q14a): cheapest start; paid help is decided when the slice shows the pace and the funding is known.
+- **Parked (2026-11-05, D-213):** hiring is decided at gate 4.
 
 ## D-103 Budget and funding route
 
@@ -666,6 +678,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Amended (2026-10-26, D-108, D-109):** about $52,000–174,000 solo and $124,000–347,000 with a hire; about $8,000–27,000 before the hire gate.
 - **Why:** Owner accepted the draft (Plan Q14c); the slice is the pitch, so funding is chosen when there is something to show.
 - **Restated (2026-10-27, D-156, D-157):** the budget for mobile first is in D-157.
+- **Parked (2026-11-05, D-213):** budget and funding are decided at gate 4.
 
 ## D-104 Price $24.99; English at launch
 
@@ -674,6 +687,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Amended (2026-10-26, D-109):** break-even about 3,500–14,000 copies solo, cash costs only.
 - **Replaced for the phone launch (2026-10-27, D-152, D-157):** a free download with a $14.99 unlock; break-even is about 5,500–22,000 unlocks. English only at launch stands.
 - **Why:** Owner's choice (Plan Q14b): in line with comparable deep management games and an easy buy after the free demo.
+- **Parked (2026-11-05, D-213):** price and languages are decided at gate 4 (D-152 is parked too).
 
 ## D-105 Quality, CI and release process
 
@@ -681,6 +695,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Every push runs format, lint, strict types, engine unit tests, the determinism test, the content validator, save fixtures (from M2) and the docs and drift checks; screen tests when ui changes. The 1,000-guild-year balance run and performance checks run before each gate and release, not per push. CI uses path filters so docs-only changes stay free; game builds and Steam uploads run on release tags only, with Steam credentials as secrets set up by the owner. Bugs are GitHub issues in three severities; a save-losing or common-path crash blocks a release, and every fixed blocker or major bug gets a test. Steam branches `playtest`, `beta` and `default`; rollback to the previous build. An 8-step release checklist for the demo, launch and every patch, ending in the owner's sign-off. Detail: `docs/design/PLAN.md` §15.
 - **Why:** Owner accepted the draft (Plan Q15b); adopts the tools review (D-092..D-094) and keeps CI minutes low (CI-01..CI-06).
 - **Amended (2026-10-27, D-158):** the phone stores' test tracks, staged rollouts, fix-forward releases and cloud saves replace the Steam steps for the phone launch.
+- **Partly parked (2026-11-05, D-213):** the per-push checks and CI stay; the release process waits for gate 4.
 
 ## D-106 Launch platform: Windows
 
@@ -701,6 +716,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** The owner builds at about 10–20 hours a week. With the lean cut (D-109) the estimate is about 31–46 months to launch: M1 5–8, M2 7–10, M3 10–15, M4 2–3 alongside M5 7–10, M6 2–3 months. A lasting change in hours re-plans at the next gate. Detail: `docs/design/PLAN.md` §13a, §14e.
 - **Why:** Owner's answer (plan review Q1); the first estimate (18–28 months) assumed a small team, but the owner chose solo (D-102).
 - **Amended (2026-10-27, D-156):** mobile first; the phone engine test joins M1, phone builds from M2, launch about 39–68 months from plan approval (estimate), with extra art and phone costs listed in D-156.
+- **Amended (2026-11-05, D-213):** the owner now works about 30–40 hours a week; the month estimates here assume 10–20 and are reference only until gate 4.
 
 ## D-109 Lean launch cut
 
@@ -708,6 +724,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Decision:** Launch has 6 classes (warrior, rogue, ranger, cleric, wizard, bard-like support), 4 ancestries, about 24 monster kinds, about 16 attributes, about 30 traits, about 40 key moments, about 4,500 template lines, 1 tournament, about 6 authored rival guilds (the rest generated), no multiclassing or prestige, and 3 kingdom-map layers (places, guilds, action). Everything stays data; the cut content returns in free updates (PLAN §13c). Detail: `docs/design/PLAN.md` §7, §12.
 - **Why:** Owner's choice (plan review Q2): at 10–20 h a week the full scope was an estimated 4–6 years; this keeps the core (watched quests, key moments, permadeath, Chronicle, succession, delegation, the map) and cuts the items with the most cost for their fun.
 - **Amended (2026-10-27, D-168):** the buildable guild house and about 5 home-town sites join the launch cut.
+- **Amended (2026-11-05, D-214):** slice-size content until gate 4; the lean launch cut is the target from gate 4.
 
 ## D-110 Engine test is web-first
 
@@ -722,6 +739,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26)
 - **Decision:** If R1 (watching a quest is fun) fails twice, building stops and the core loop is redesigned before anything else. A milestone running 50% over its estimate triggers a cut review at that gate (content dropped or deferred, quality checks never). A prototype step over its time-box by half goes to the owner at once. Ending the project is the owner's call, not a rule. Detail: `docs/design/PLAN.md` §9b.
 - **Why:** Owner's choice (plan review Q4).
+- **Parked (2026-11-05, D-213):** each fun gate ends with the owner's verdict (go, loop or stop); these milestone slip rules are reference for gate 4.
 
 ## D-112 Small region crises at launch
 
@@ -922,6 +940,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-10-26) as direction; amends D-012. Slot list, item tiers and prices are not designed yet (to workshop with the gear content, PLAN §7d); the mock-up's slots are placeholders.
 - **Decision:** Each adventurer has RPG equipment slots, and any item can go in any fitting slot by hand. A quartermaster can fill empty or outgrown slots by a policy the player sets (for example best available, save the good gear for parties bound for deadly work, never touch hand-picked items), so a roster of 15–30 stays kitted without a chore (delegation as in D-012; gear is not among D-038's never-delegated choices, except storied items, which stay hand-assigned). Items are RPG-style: tiers and properties, with named storied items still hand-assigned (D-012). Basic gear can be bought from a smith in a shop area of the guild; later, buildings may give discounts or rarer stock (with the guildhall and compound plans, D-075). The character sheet shows equipment as small cards, one per slot, so an unwanted item is easy to spot; until items exist the cards are placeholders.
 - **Why:** Owner (2026-10-26): "I will want to show equipment as little cards on the character sheet. So like I can quickly see if someone has something I don't want them to have"; "I actually want to change things up so that I can add equipment to party members rpg style and have rpg style items. Or I can buy basics from a smith and have a shop area for equipment (maybe I can build buildings for discounts or rarer items in the future". Chose "Slots + quartermaster" over fully hands-on equipping and over keeping guild kit with item slots only. D-012's reason (no per-item micromanagement across a large roster) is kept by the quartermaster policy.
+- **Refined (2026-11-05, D-216):** 3 slots (weapon, armour, trinket) and 3 tiers to start; the quartermaster's role is open for the gate 0 gear workshop.
 
 ## D-144 A geography review in the map workshop: towns with reasons, sensible roads and rivers, a second city, outposts
 
@@ -1350,6 +1369,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted as a direction (2026-11-03); to be planned with the owner before any code. Keeps D-003 (the player commands from the desk, never fights). Extends D-004: in the watched party's main fight every exchange becomes a decision pause, not only key moments; full auto-resolve stays an option. Intended to keep STYLE §4's loose board (front and back, no grid); planning checks both. Builds on D-118, D-123, D-126, D-130 and D-132.
 - **Decision:** Combat becomes turn-based for the guildmaster, not for each adventurer. In the main fight (D-118's 3–6 exchanges), each foe group shows its intent before the exchange; the player can move members between front and back and gives the party one order from a small hand of order cards. Adventurers carry orders out with their own signature actions (D-130) and can disobey. Details on the page are proposals to settle in planning: the hand size set by the guildmaster's Tactics and the party's drills, and disobedience set by courage, trust, morale and the leader's stats. The board's preview comes from the engine's one simulation function (GAME-02). Around the fight, a delve runs room by room on the inked site map: the player picks paths from the scout's notes and decides after each room whether to push on or turn back (D-126's retreat). Unwatched parties resolve on their leaders, within the friction budget (D-068). Every number is content data. Owner's note: "Let's start with 1 but we may need to go to 4 or 5 after play tests": per-adventurer turns (concept 4, bends D-003) or full grid tactics (concept 5, reopens D-003, D-004, STYLE §4, D-123) stay possible if playtests show the orders aren't enough; Proposed, not planned.
 - **Why:** Owner (2026-11-03): "to make the game fun we will likely need to add some form of turn based combat in dungeons", after R7 round 1 found nothing punchy (D-203). Chosen from five concepts on the brainstorm page (https://claude.ai/artifact/NiWZ2Tg3yYcgxym1GJ3tDA), the recommended "Orders + read the foe + delve", over orders and foe intents without the delve, a commander's turn per adventurer and full squad tactics. The same page lists the non-combat ideas chosen in D-208 to D-210.
+- **Amended (2026-11-05, D-215):** the fight is per-adventurer turns (skill and target, front and back rows, no movement); the guildmaster's order hand is dropped. Foe intents and room-by-room delves stay.
 
 ## D-208 Four non-combat ideas go forward to planning: nemeses, personal quests, growing map threats, storied gear
 
@@ -1374,9 +1394,46 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-11-05). Amends the style lock (D-061) for illustrations only: STYLE §4's open "more fantasy flair" is settled, §7's portraits are painted from the start instead of woodcut first, and §1's rejection of a painterly look is reversed for illustrations by the owner's choice with pictures as new evidence. Not decided: whether the UI's type (§5), woodcut icons (§6) and candlelit palette (§2) change to match; whether the quest board's site maps (STYLE §4) stay inked; the art budget (PLAN §12c, priced for ink) is not re-estimated. D-094's licence and store-disclosure checks are still open, so these images stay out of any release build.
 - **Decision:** Portraits, monsters, scenes, the March map and the guild house and home-town art use an original hand-painted stylised look: chunky heroic proportions, simple bold shapes and readable silhouettes, soft brushed textures, warm saturated colour, little fine detail, the same simplicity for faces as for scenes. Reference: the two V1 images from round 2.5, kept in `docs/design/art/reference-v1-*.jpg`. Briefs and prompts describe these qualities and never name another game or use its assets. Portraits are still assembled from parts and stored as part data (STYLE §7). Generated images stay exploration and prototype only (D-094, D-098) until the replan settles what generated art is for.
 - **Why:** Owner, after three style rounds on OpenArt images: round 1 (https://claude.ai/artifact/4sF3AG1pvsHmkADi9BeWmV), "I'm not sure any of these really fit what I am looking for", then asked for more colour and magic, more stylised art and mixes; round 1.5 (https://claude.ai/artifact/67JNyMKgWrgEXJWqHs6UFc), "I was thinking we would go simpler actually more like world of warcraft type but a bit more detail portrait" (the owner's words; briefs and prompts never name the game); round 2.5 (https://claude.ai/artifact/Tg8NV2dAwWwGZ4rrpmK6jD), rated V1 (simple everywhere) "This is it" and V2 (detailed faces) "Close", and chose "V1 everywhere" over the recommended split.
+- **Settled (2026-11-05, D-217):** the replan settled what generated art is for: shareable for non-commercial use, replaced before any sale.
 
 ## D-212 First prototype art kept; the game's map keeps its look with subtle detail added
 
 - **Status:** Accepted (2026-11-05). Amends D-211: the March map is not generated art; the game's code-drawn map stays. Builds on D-164 (the free pan-and-zoom March); generated images stay prototype only (D-094).
 - **Decision:** Of the first 8 pieces, the four starting-party portraits and the barrow-wight are kept as prototype art, although they are more detailed than D-211's brief; the two V1 reference images stay the style target. The guild house and home town are redone simpler and cleaner, like a calm city-builder view: few big readable buildings, clear space, no clutter; the owner picked the tilted view for both (https://claude.ai/artifact/3dTDymwhRgPETKoNALTSxR). The generated March map is dropped: the game's own map (`/map.html`, drawn by code) keeps its look and gains subtle detail in code that enhances it, designed with a mock-up first. The kept pieces go into the prototype pages so the owner can play with them.
 - **Why:** Owner on the gallery (https://claude.ai/artifact/QW7go1gYLQdJkMRSA593eg): keep warrior, cleric, ranger, rogue and wight; redo house, town and map; "These aren't simple enough they have too much clutter. I want things simpler and cleaner more like a cities skyline type game view and I like the painted map I thought it would just make that better detail but keep it as it looks now just with more subtle details that enhance it"; and "Into the prototype pages, so I can play with them". Asked which map, the owner chose the game's /map.html map (recommended) over the generated one.
+
+## D-213 Replan: a game the owner loves first, built through fun gates
+
+- **Status:** Accepted (2026-11-05). Replaces D-099's milestones M1–M7 with fun gates; parks D-152 (price), D-156 (launch timeline), D-157 (budget), D-158 (store releases), D-085 (prototype order), D-089 (tester stages), D-100, D-102, D-103, D-104, D-111 and D-105's release process until gate 4, kept as reference; CI and the per-push checks stay. Amends D-108: the owner now works about 30–40 hours a week.
+- **Decision:** For now the project is a game the owner loves playing, and the launch is decided later. It grows through fun gates, each ending with the owner's own playtest verdict (GAME-06): gate 0, design (the fight, gear and budget on phone forms, mock-ups, the gate 1 spec); gate 1, one delve; gate 2, one season; gate 3, one year; gate 4, the launch decision. Gate 1 passes when, after 3 delves, the owner wants to start a 4th. The prototype stays a phone web page; store apps wait for gate 4. Everything built in M1 is kept (engine, year simulator, balance runner, phone map, text prototype). Each gate's contents are in D-214.
+- **Why:** Owner (replan, 2026-11-05): "I just didn't feel like this game was becoming something fun but the concept does sound really fun to me but I think I need some more involvement in this to become invested." Chose "A game I love playing myself first; decide on a launch later", "Replace M1–M7 with fun gates", "Phone web page now; store apps only when we decide to launch", the pass line "After 3 delves I want to start a 4th" and "About 30–40" hours. Pages: round 1 https://claude.ai/artifact/SqLn32L2NujjzvkFUaTCJr, review https://claude.ai/artifact/RzNpGDedS38dtJKcnNFJFS, final https://claude.ai/artifact/2cm2Vq1AVd8tUNBDEHSnLX (approved "Approved, start building").
+
+## D-214 What each fun gate holds
+
+- **Status:** Accepted (2026-11-05). Orders D-207–D-210's ideas and the Project Rotam ideas in time; amends D-109 and D-080: slice-size content until gate 4, the lean launch list after.
+- **Decision:**
+  - **Content until gate 4:** slice size, about 2 biomes, 4 classes, 10 monster kinds and 6 quest kinds. The full launch list (D-080, D-109) is the target from gate 4.
+  - **Gate 1, one delve:** recruit a party; equip it (D-216); split the weekly budget (D-216); travel the March on the phone map in real time with 1–2 road events (from Rotam: the road is play); a delve room by room (D-207); fights the owner plays (D-215); a letter home that retells what really happened (answers D-203); the kept prototype art in the pages and subtle painted detail on the map (D-212); save export and import (review finding 9, agreed by the owner).
+  - **Gate 2, one season:** several parties on the map; threats that spread and a crisis track (D-208, from Rotam); towns with 1–2 visible needs (from Rotam); wear and tear and scars that change people (D-209, D-216); craftsmen (D-216); recruiting windows; livelier letters and people (D-203); the redone house and town art.
+  - **Gate 3, one year:** the guild house and home town in the engine (D-168–D-193); marks that outlast a guildmaster (from Rotam; amends D-097 and D-101 by bringing map deeds forward); the land answering back (D-209); R7 again.
+  - **Later:** nemeses, personal quests, storied gear and the trophy wall, life after the guild, clients who lie, mentor and protégé, the race for the barrow, trouble in town, soldiers and war missions, and a one-line kill test (owner's "Later" tag).
+  - **Process:** the HANDOFF gets a plan map (WS-08).
+- **Why:** Owner's Now/Soon/Later tags in round 1, the review's keep list (scars and wear moved to "after"), "Slice size until the one-year gate; the full list is the launch target" and "One party: recruit and equip, travel the map, delve with orders, come home scarred" (review round 2). The review found the first Now list too big for 3 months and missing the managing and equipping the owner asked for.
+
+## D-215 Fights: the player commands each adventurer, turn by turn
+
+- **Status:** Accepted (2026-11-05). Amends D-003 (the player never fights: now the player commands each adventurer in fights they lead), D-004 (the decision pauses become full turns in led fights) and D-207 (one guildmaster order a turn is replaced by per-adventurer turns; foe intents and room-by-room delves stay). The fight is designed in gate 0 before code. Open for gate 0: what the guildmaster's Tactics stat, drills and disobedience now do; retreat (D-125, D-126) and fight length (D-118) in the new model; class actions (D-130) as skills.
+- **Decision:** In a fight the player leads, the combatants act in a turn order set by speed. On each adventurer's turn the player picks a skill and a target. Formations are front and back rows; there is no movement and no grid. Foes show what they will do next. Fights the player doesn't lead resolve on their own with the same rules and the party's own sensible choices, through the one simulation function (GAME-02). Foe intents are a pure preview of the state: showing them never advances the game's random streams, so preview and play agree (GAME-01, GAME-02). The choices of fights not led come from data rules, never from `Math.random`.
+- **Why:** Owner (review, 2026-11-05): "I want to be in the battlefield but in a simple way where I choose actions and targets and there is a turn order and skills and formations but there is no movement", "it would sort of be like raid or other phone games like that" (the owner's words; briefs never name another game); then on the final page "Yes: per-adventurer turns, and foes show their intent" and "The ones I choose to lead; the rest resolve on their own".
+
+## D-216 Managing the guild: three gear slots, a weekly budget, craftsmen and wear
+
+- **Status:** Accepted (2026-11-05). Refines D-143 (slots and tiers) and amends D-080 and PLAN §7d (4 tiers become 3 to start); the quartermaster's role is open for the gate 0 workshop. Training money sits beside D-187's training at home. Prices and numbers are set in the gate 0 workshop.
+- **Decision:** Each adventurer has three gear slots (weapon, armour, trinket) and items come in three tiers; deeper gear comes later. Each week the player splits a budget between training, gear and healing, and the split moves stats. Craftsmen arrive in gate 2 with the town: they unlock items or give discounts. Soldiers come later, for war missions and guarding the guild house. Wear and tear (gate 2): wounds lower an adventurer's starting health and exhaustion removes skill uses until the party rests.
+- **Why:** Owner's evening in round 1: "Sending out adventuring parties and trying to recruit craftsmen or soldiers. Trying to equip them and sending them off while managing fund allocations for training"; review answers "A few slots (weapon, armour, trinket) and 3 tiers; deeper later" and "A weekly budget split (training, gear, healing) that moves stats"; "the craftsmen may unlock things or give discounts and soldiers might be needed for war type missions or guards"; final page "Craftsmen in gate 2 with the town; soldiers later with war and guards" and "Lower health and fewer skill uses until rest, in gate 2".
+
+## D-217 Generated art may be shared, for non-commercial use only
+
+- **Status:** Accepted (2026-11-05). Amends D-094 and D-098: OpenArt's licence check is done; generated images may appear in the prototype and be shown publicly while the game is a free hobby project.
+- **Decision:** OpenArt images go into the prototype pages and may be shared freely while the game is free (non-commercial). Before any sale, they are replaced by drawn art or by images remade on a plan that allows commercial use. Images made on the Starter plan are treated as non-commercial for good, as a precaution: the terms don't say whether a later upgrade covers them (inference). The store-disclosure check of D-094 is still open. Every image keeps a ledger line (SAFE-05).
+- **Why:** OpenArt's terms (https://openart.ai/terms §4.1, last updated July 2026, read 2026-11-05): "For all subscription levels, you may freely use Output you generate for non-commercial purposes"; commercial use is for the Plus level and above, and the owner is on Starter. Owner: "Check the terms now, then share freely" (review) and "Share freely while it's a free hobby page; drawn art (or images remade on Plus) before any sale" (final page).
