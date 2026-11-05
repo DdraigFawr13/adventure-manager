@@ -10,7 +10,7 @@ Phase 2 style guide: theme, tone and visual identity. Each section records what 
 
 **Readability rule:** the in-world look carries the frame and the set-piece moments (map, inbox, quest board, contract signing). Dense data screens (rosters, finances, scouting) sit on a clean, legible layer: plain paper tone, crisp type, no texture behind numbers. This keeps the FM-style density (D-016, kept on the phone by D-153) readable.
 
-Rejected: modern FM interface with a fantasy skin (weak identity), illuminated manuscript as the main look (too busy for dense screens), painterly storybook (costly art and too gentle for permadeath).
+Rejected: modern FM interface with a fantasy skin (weak identity), illuminated manuscript as the main look (too busy for dense screens), painterly storybook (costly art and too gentle for permadeath; reversed for illustrations by D-211).
 
 **Amended (2026-11-05, D-211):** for illustrations only, the owner chose a painterly look after seeing pictures: hand-painted stylised fantasy. The desk metaphor and readability rule above still hold for screens.
 
@@ -92,7 +92,7 @@ Rejected: wax seals for every icon (blur at 16 px, clash with the "bad" colour),
 
 **Superseded by D-211 (kept for the record):** the woodcut-first text below. Still in force: parts, seeds, scar and age layers, the mourning corner, parts as data, and faces stored as art-independent data.
 
-**Woodcut portraits to start, painted portraits later.** Mock-up: `docs/design/mockups/portraits.html` (option A now, option C later).
+**Woodcut portraits to start, painted portraits later** (superseded by D-211). Mock-up: `docs/design/mockups/portraits.html` (option A now, option C later).
 
 - An engraved likeness in a cameo frame, assembled from drawn parts (head, hair, brows, eyes, nose, mouth, beard, ancestry ears, scars, age lines, kit at the collar). The adventurer's seed picks the parts (GAME-01); events add layers: a scar after an injury, greying and lines with age.
 - A fallen adventurer's portrait gets a black mourning corner and goes to the Hall of Heroes (D-042).
