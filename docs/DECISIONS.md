@@ -1513,6 +1513,7 @@ Settled rules for this project. Not a changelog: an entry stays while the rule i
 - **Status:** Accepted (2026-11-05). Gate 0's mock-ups (D-214) for the gate 1 fight (D-218–D-220), party and gear (D-221), smith (D-221) and weekly budget (D-222, D-223); the build follows them.
 - **Decision:** The mock-ups at https://claude.ai/artifact/X6JUpHnw2jAHT2MSEddQzH (source `docs/design/mockups/gate1-screens.html`) are the layout for gate 1's screens. Fight: foes at the top, then the front and back rows, the acting adventurer's skills in a tray at the bottom, a wrapping turn strip, intents on foe cards, hit % and damage on targets before the tap, Auto and Retreat in the top band. Party: a list with three slot tags each, a sheet with one card per slot, a loot compare. Smith: buying for one chosen adventurer, the rare offer from the chest, too-heavy armour greyed out, a short-pot warning. Budget: 4 presets, 3 sliders, the money line, drills, a pack-refill warning. Dotted numbers on the page are stand-ins the gate 1 spec sets. Gaps for the spec: a foe in the Hollow Barrow that reaches the back row, the wizard in content, the stipend, and the fight screen's height on a 375 × 667 phone (809 px tall today).
 - **Why:** Owner (2026-11-05), asked Approve / Change / Rethink: "Ok I approve."
+- **Amended (2026-11-05, D-225):** the fight layout above is replaced by the side-on fight with a command panel; the other screens stand.
 
 ## D-225 The fight is side-on on the place's own ground, with a classic command panel
 

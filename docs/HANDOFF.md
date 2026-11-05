@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-05 (eighteenth session: gate 1 screen mock-ups made and checked on branch `gate0-mockups`; owner's verdict pending). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-11-05 (eighteenth session: gate 1 screen mock-ups approved (D-224), battle art made, side-on fight layout C chosen (D-225) on branch `gate0-mockups`; branch review done, PR awaits the owner's approval). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
@@ -12,16 +12,17 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 - ✔ M1 prototypes so far: engine, year simulator, balance runner, phone map, text prototype (kept)
 - ✔ Art style: hand-painted stylised, first prototype art (D-211, D-212, PR #42)
 - ✔ Replan approved and recorded (D-213–D-217, PR #43)
-- ▶ Gate 0, design: ✔ fight (D-218–D-220); ✔ gear and budget (D-221–D-223); ▶ mock-ups (awaiting verdict); next gate 1 spec
+- ▶ Gate 0, design: ✔ fight (D-218–D-220); ✔ gear and budget (D-221–D-223); ✔ mock-ups (D-224, D-225; PR pending); next gate 1 spec
 - ○ Gate 1, one delve: recruit, equip, budget, map trip, delve, fights the owner plays, letter home. Passes when after 3 delves the owner wants a 4th
 - ○ Gate 2, one season · ○ Gate 3, one year · ○ Gate 4, launch decision
 
 ## Just done
 
+- 2026-11-05 Owner approved the mock-ups (D-224), asked for battle art (334 OpenArt credits approved and spent; 6 standees and a backdrop in `docs/design/art/`; OpenArt spend 1,858 in all), then for a side-on fight on the place's own ground: three layouts https://claude.ai/artifact/7nLcwmrQfciWm5pAfNF3W7, chose C (D-225; open notes: scene feel, crowding). Branch review: 2 major, 3 minor, all fixed.
 - 2026-11-05 Gate 1 screen mock-ups (`ui-mockups`) on branch `gate0-mockups`: https://claude.ai/artifact/X6JUpHnw2jAHT2MSEddQzH, source `docs/design/mockups/gate1-screens.html`. 13 frames at 375 px (fight normal also at 443): fight (turn, ally Down, band flees), party list, sheet, loot compare, smith (stock, pot short, rare offer), budget (pots, money line), drills, pack alert. Fresh check: 3 major, 4 minor, all fixed; check record on the page. STYLE.md gained its screen rules (15 px, 44 px, where facts live). Found: the barrow's content has no foe that reaches the back row (D-218 needs one); no wizard in content; stipend unset.
 - 2026-11-05 Gate 0 gear and budget design with `planning-interview`: round 1 https://claude.ai/artifact/Y4NMUNQ1HjGweJwRqGPW9d, review (independent reviewer plus mine, 16 findings, all agreed) https://claude.ai/artifact/VPo1C9L6oJNiyhs2VviDNE, final https://claude.ai/artifact/LoL5etsdMnPxiiGV98SJSJ ("Approved, record it"). Branch review: 2 major, 6 minor findings, all fixed (https://claude.ai/artifact/Y7MkkKqE2CCWDJR7vzMEqW). Merged as PR #45. Recorded as D-221 (6 rarities, gate 1 has 3; flat-point steps; armour limits; smith, loot, monster parts), D-222 (patron stipend, small chest, 3 pots that keep, party pack) and D-223 (drills in the refit week, quartermaster and gear wear in gate 2).
 - 2026-11-05 Gate 0 fight design with `planning-interview`: round 1 https://claude.ai/artifact/Ue2py2SaEcL55hMvSvwKb6, review (independent reviewer plus mine, 13 findings, all agreed) https://claude.ai/artifact/RVbyTb6kSVEpvq8baBBTwe, final https://claude.ai/artifact/7gRt8zLurycatygdqtviLn ("Approved, record it"). Recorded as D-218 (board, health pool, rows, foes flee, no round limit), D-219 (plain attack plus 2 class skills at 3 uses a delve, kits, wizard, 2 item kinds) and D-220 (Auto, Tactics, gate 2 list incl. the owner's costly revive). Review: 8 minor findings, all fixed (https://claude.ai/artifact/NSKgytzWyKxhD5GqHca8vj). Merged as PR #44.
-- 2026-11-05 Art pass merged as PR #42 (owner approved; docs-only, CI skipped by design): hand-painted stylised illustrations (D-211), keep/redo verdict (D-212), 9 prototype images and their ledger in `docs/design/art/`. Two reviews: https://claude.ai/artifact/1nPhE5RQiuSggAGzoHXMvU. OpenArt spend 1,524 credits in all (balance 3,345 → 1,821); detail in `docs/archive/handoff-2026-11.md`.
+- 2026-11-05 Art pass merged as PR #42 (owner approved; docs-only, CI skipped by design): hand-painted stylised illustrations (D-211), keep/redo verdict (D-212), 9 prototype images and their ledger in `docs/design/art/`. Two reviews: https://claude.ai/artifact/1nPhE5RQiuSggAGzoHXMvU. OpenArt spend 1,524 credits in that pass (balance 3,345 → 1,821); detail in `docs/archive/handoff-2026-11.md`.
 
 ## Next
 
