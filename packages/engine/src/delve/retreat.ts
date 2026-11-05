@@ -19,6 +19,8 @@ export interface RetreatPreview {
   /** Beats if the check passes; one more if it fails. */
   readonly beats: number;
   readonly failedBeats: number;
+  /** Whether the party carries anyone Down or Dying (one more beat). */
+  readonly carrying: boolean;
 }
 
 /** Why the party can't retreat now, or null. */
@@ -43,6 +45,7 @@ export function retreatPreview(state: GameState): RetreatPreview {
     chance: checkChance(state, run, leader.id, rules.attribute, rules.difficulty[run.danger]),
     beats,
     failedBeats: beats + rules.failedCheckBeats,
+    carrying,
   };
 }
 

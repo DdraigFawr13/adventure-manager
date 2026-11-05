@@ -75,3 +75,31 @@ export function logLines(view: FightView, events: readonly GameEvent[]): string[
   }
   return out;
 }
+
+/** An adventurer's first name. */
+export const memberLabel = (id: string): string => {
+  const shortNames: Readonly<Record<string, string>> = gate1Text.short;
+  return shortNames[id] ?? nameOf(id);
+};
+
+/** A room's name and line from the barrow's words (empty when a room has none). */
+export function roomWords(roomId: string): { name: string; line: string } {
+  const rooms: Readonly<Record<string, { name?: string; line?: string }>> = gate1Text.rooms;
+  return { name: rooms[roomId]?.name ?? roomId, line: rooms[roomId]?.line ?? '' };
+}
+
+/** The words for a choice room's way: the entry's first way takes the approach's words. */
+export function wayWords(roomId: string, optionIndex: number, approach: string): string {
+  const rooms: Readonly<
+    Record<
+      string,
+      {
+        name?: string;
+        options?: readonly string[];
+        approach?: Readonly<Record<string, string>>;
+      }
+    >
+  > = gate1Text.rooms;
+  const room = rooms[roomId];
+  return room?.options?.[optionIndex] || room?.approach?.[approach] || roomId;
+}

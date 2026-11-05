@@ -5,11 +5,15 @@ import {
   PACK_ACTION,
   SWAP_ACTION,
   previewAction,
+  retreatPreview,
+  retreatRefusal,
+  type DelveView,
   type FightView,
   type FighterView,
   type GameState,
 } from '@adventure-manager/engine';
 import { gate1Delve } from '@adventure-manager/content';
+import { roomWords } from '../words.ts';
 import { actionName, intentVerb, labelOf, nameOf, t } from '../words.ts';
 import type { Choice } from '../game.ts';
 
@@ -25,7 +29,7 @@ const STANDEES: Readonly<Record<string, string>> = {
 };
 
 /** The Hollow Barrow's burial hall (docs/design/art), reshaped into wall and floor as in D-231. */
-const BACKDROP = 'play/backdrop-burial-hall.jpg';
+export const BACKDROP = 'play/backdrop-burial-hall.jpg';
 
 /** Paintings that face left and are turned to face the foes. */
 const FACING_LEFT = new Set(['adv.wenna-cray', 'adv.maud-fenwick']);
@@ -61,10 +65,18 @@ interface Picked {
 interface Props {
   readonly state: GameState;
   readonly view: FightView;
+  readonly delve: DelveView;
   readonly log: readonly string[];
   readonly notice: string;
+  /** The room card is open over the stage (the fight starts when it closes). */
+  readonly card: boolean;
+  readonly retreatOpen: boolean;
   readonly onAct: (choice: Choice) => void;
-  readonly onNewFight: () => void;
+  readonly onCardGo: () => void;
+  readonly onAuto: (on: boolean) => void;
+  readonly onSaveSkills: (on: boolean) => void;
+  readonly onRetreatAsk: (open: boolean) => void;
+  readonly onRetreat: () => void;
   readonly onDismissNotice: () => void;
 }
 
@@ -90,7 +102,9 @@ function Bar({ f }: { readonly f: FighterView }) {
 }
 
 export function FightScreen(props: Props) {
-  const { state, view, log } = props;
+  const { state, view, delve, log } = props;
+  const auto = delve.auto.on;
+  const locked = auto || props.card || props.retreatOpen;
   const actorId = view.actorId;
   const actions = view.actions;
   const plain = actions[0]?.actionId;
@@ -114,7 +128,7 @@ export function FightScreen(props: Props) {
 
   const actionView = picked ? actions.find((a) => a.actionId === picked.actionId) : undefined;
   const targets =
-    picked && actionView
+    !auto && picked && actionView
       ? picked.actionId === PACK_ACTION
         ? picked.packIndex === undefined
           ? []
@@ -139,7 +153,7 @@ export function FightScreen(props: Props) {
   };
 
   const tapAction = (actionId: string): void => {
-    if (!actorId) return;
+    if (!actorId || auto) return;
     const a = actions.find((x) => x.actionId === actionId);
     if (!a?.usable) return;
     if (actionId === PACK_ACTION) {
@@ -165,7 +179,9 @@ export function FightScreen(props: Props) {
       ).toLowerCase()
     : '';
   let targetLine = log.slice(-2).join(' · ') || t('pick.action');
-  if (preview && target && picked) {
+  if (auto)
+    targetLine = log.length ? `${t('auto.did')}: ${log.slice(-2).join(' · ')}` : t('auto.did');
+  if (!auto && preview && target && picked) {
     const name = labelOf(view, target.id);
     if (preview.effect === 'heal' || preview.effect === 'raise')
       targetLine =
@@ -185,8 +201,9 @@ export function FightScreen(props: Props) {
         max: preview.damage.max.total,
         verb,
       });
-  } else if (picked && actionView && !actionView.needsTarget) targetLine = t('pick.self', { verb });
-  else if (packOpen) targetLine = t('pick.pack');
+  } else if (!auto && picked && actionView && !actionView.needsTarget)
+    targetLine = t('pick.self', { verb });
+  else if (!auto && packOpen) targetLine = t('pick.pack');
 
   // ---- Stage ----
   const pieces = layout(view);
@@ -197,13 +214,25 @@ export function FightScreen(props: Props) {
       <div className="band">
         <div>
           <div className="t">{nameOf(state.delve?.siteId ?? '')}</div>
-          <div className="s">{t('round', { n: view.round })}</div>
+          <div className="s">
+            {t('room.of', { n: delve.roomIndex + 1, total: delve.rooms.length })} ·{' '}
+            {t('round', { n: view.round })}
+          </div>
         </div>
         <div className="end">
-          <button className="chipbtn" disabled title={t('later')}>
+          <button
+            className={auto ? 'chipbtn lit' : 'chipbtn'}
+            aria-pressed={auto}
+            disabled={!auto && !actorId}
+            onClick={() => props.onAuto(!auto)}
+          >
             {t('auto')}
           </button>
-          <button className="chipbtn danger" disabled title={t('later')}>
+          <button
+            className="chipbtn danger"
+            disabled={retreatRefusal(state) !== null}
+            onClick={() => props.onRetreatAsk(true)}
+          >
             {t('retreat')}
           </button>
         </div>
@@ -245,7 +274,7 @@ export function FightScreen(props: Props) {
           if (f.status === 'fled') return null;
           const isActor = f.id === actorId;
           const isTarget = f.id === picked?.targetId;
-          const tappable = targets.includes(f.id);
+          const tappable = !locked && targets.includes(f.id);
           const intent = view.intents[f.id];
           const acted = view.order.find((o) => o.id === f.id)?.acted ?? false;
           const mark =
@@ -346,79 +375,99 @@ export function FightScreen(props: Props) {
         ) : null}
       </div>
       <div className="panel">
-        <div
-          className="cmds"
-          role="group"
-          aria-label={actorView ? labelOf(view, actorView.id) : ''}
-        >
-          <span className="ph-title">{actorView ? labelOf(view, actorView.id) : ''}</span>
-          {packOpen ? (
-            <>
-              {view.pack.map((item, i) => {
-                const usable =
-                  (actions.find((a) => a.actionId === PACK_ACTION)?.packTargets[i] ?? []).length >
-                  0;
+        {auto ? (
+          <div className="autobox" role="group" aria-label={t('auto.playing')}>
+            <span className="ph-title">{t('auto.playing')}</span>
+            <button
+              className="toggle"
+              role="switch"
+              aria-checked={delve.auto.saveSkillsForBoss}
+              onClick={() => props.onSaveSkills(!delve.auto.saveSkillsForBoss)}
+            >
+              <span className="box" aria-hidden="true">
+                {delve.auto.saveSkillsForBoss ? '✓' : ''}
+              </span>
+              {t('auto.save')}
+            </button>
+            <button className="cmd wide" onClick={() => props.onAuto(false)}>
+              {t('auto.take')}
+            </button>
+          </div>
+        ) : (
+          <div
+            className="cmds"
+            role="group"
+            aria-label={actorView ? labelOf(view, actorView.id) : ''}
+          >
+            <span className="ph-title">{actorView ? labelOf(view, actorView.id) : ''}</span>
+            {packOpen ? (
+              <>
+                {view.pack.map((item, i) => {
+                  const usable =
+                    (actions.find((a) => a.actionId === PACK_ACTION)?.packTargets[i] ?? []).length >
+                    0;
+                  return (
+                    <button
+                      key={i}
+                      className={
+                        picked?.actionId === PACK_ACTION && picked.packIndex === i
+                          ? 'cmd on wide'
+                          : 'cmd wide'
+                      }
+                      disabled={!usable}
+                      onClick={() => setPicked({ actionId: PACK_ACTION, packIndex: i })}
+                    >
+                      {nameOf(item.kindId)}
+                    </button>
+                  );
+                })}
+                <button
+                  className="cmd wide"
+                  onClick={() => {
+                    setSelection({
+                      key: turnKey,
+                      picked: plain ? { actionId: plain } : null,
+                      packOpen: false,
+                    });
+                  }}
+                >
+                  {t('pack.close')}
+                </button>
+              </>
+            ) : (
+              actions.map((a) => {
+                const half = a.actionId === PACK_ACTION || a.actionId === SWAP_ACTION;
+                const on = picked?.actionId === a.actionId;
                 return (
                   <button
-                    key={i}
-                    className={
-                      picked?.actionId === PACK_ACTION && picked.packIndex === i
-                        ? 'cmd on wide'
-                        : 'cmd wide'
-                    }
-                    disabled={!usable}
-                    onClick={() => setPicked({ actionId: PACK_ACTION, packIndex: i })}
+                    key={a.actionId}
+                    className={['cmd', half ? 'half' : 'wide', on ? 'on' : '']
+                      .filter(Boolean)
+                      .join(' ')}
+                    aria-pressed={on}
+                    disabled={!a.usable}
+                    onClick={() => tapAction(a.actionId)}
                   >
-                    {nameOf(item.kindId)}
+                    {actionName(a.actionId)}
+                    {a.actionId === PACK_ACTION ? (
+                      <span className="num">{view.pack.length}</span>
+                    ) : a.usesLeft !== null ? (
+                      <span className="num">
+                        {a.usesLeft}/{gate1Delve.rules.skillUses}
+                      </span>
+                    ) : null}
                   </button>
                 );
-              })}
-              <button
-                className="cmd wide"
-                onClick={() => {
-                  setSelection({
-                    key: turnKey,
-                    picked: plain ? { actionId: plain } : null,
-                    packOpen: false,
-                  });
-                }}
-              >
-                {t('pack.close')}
-              </button>
-            </>
-          ) : (
-            actions.map((a) => {
-              const half = a.actionId === PACK_ACTION || a.actionId === SWAP_ACTION;
-              const on = picked?.actionId === a.actionId;
-              return (
-                <button
-                  key={a.actionId}
-                  className={['cmd', half ? 'half' : 'wide', on ? 'on' : '']
-                    .filter(Boolean)
-                    .join(' ')}
-                  aria-pressed={on}
-                  disabled={!a.usable}
-                  onClick={() => tapAction(a.actionId)}
-                >
-                  {actionName(a.actionId)}
-                  {a.actionId === PACK_ACTION ? (
-                    <span className="num">{view.pack.length}</span>
-                  ) : a.usesLeft !== null ? (
-                    <span className="num">
-                      {a.usesLeft}/{gate1Delve.rules.skillUses}
-                    </span>
-                  ) : null}
-                </button>
-              );
-            })
-          )}
-        </div>
+              })
+            )}
+          </div>
+        )}
         <div className="side">
           <div className="plist">
             {view.fighters
               .filter((f) => f.side === 'party')
               .map((f) => {
-                const tappable = targets.includes(f.id);
+                const tappable = !auto && targets.includes(f.id);
                 const content = (
                   <>
                     <span className="tn">{nameOf(f.id)}</span>
@@ -452,41 +501,85 @@ export function FightScreen(props: Props) {
           </div>
         </div>
       </div>
-      {view.phase === 'ended' ? <EndCard view={view} onNewFight={props.onNewFight} /> : null}
+      {props.card ? <RoomCard delve={delve} onGo={props.onCardGo} /> : null}
+      {props.retreatOpen ? (
+        <RetreatCard
+          state={state}
+          view={view}
+          onStay={() => props.onRetreatAsk(false)}
+          onGo={props.onRetreat}
+        />
+      ) : null}
     </div>
   );
 }
 
-function EndCard({
-  view,
-  onNewFight,
-}: {
-  readonly view: FightView;
-  readonly onNewFight: () => void;
-}) {
-  const won = view.outcome === 'won';
+/** The card that opens each fight (D-232): the room, its line, off guard or alerted. */
+function RoomCard({ delve, onGo }: { readonly delve: DelveView; readonly onGo: () => void }) {
+  const words = roomWords(delve.roomId);
+  const boss = delve.rooms[delve.roomIndex]?.kind === 'boss';
+  const kicker = t(boss ? 'room.card.boss' : 'room.card.fight', {
+    n: delve.roomIndex + 1,
+    total: delve.rooms.length,
+  });
   return (
     <>
       <div className="dim" aria-hidden="true" />
-      <div className="endcard" role="dialog" aria-label={t(won ? 'end.won' : 'end.routed')}>
-        <h3>{t(won ? 'end.won' : 'end.routed')}</h3>
-        <p>{t(won ? 'end.won.line' : 'end.routed.line')}</p>
-        <ul className="num">
-          {view.fighters
-            .filter((f) => f.side === 'party')
-            .map((f) => (
-              <li key={f.id}>
-                <span>{nameOf(f.id)}</span>
-                <span>
-                  {f.health === f.maxHealth ? t('band.unhurt') : bandWord(f)}
-                  {f.status === 'up' && f.health < f.maxHealth ? ` ${f.health}/${f.maxHealth}` : ''}
-                </span>
-              </li>
-            ))}
-        </ul>
-        <button className="btn" onClick={onNewFight}>
-          {t('end.new')}
+      <div className="roomcard" role="dialog" aria-label={words.name}>
+        <span className="kicker">{kicker}</span>
+        <h3>{words.name}</h3>
+        <p>{words.line}</p>
+        {delve.offGuard ? <p className="note">{t('room.offguard')}</p> : null}
+        {delve.alerted ? <p className="note">{t('room.alerted')}</p> : null}
+        <button className="btn" onClick={onGo}>
+          {t('room.card.go')}
         </button>
+      </div>
+    </>
+  );
+}
+
+/** Retreat asks first (D-232): who leads, the chance, the beats, what the beats cost. */
+function RetreatCard({
+  state,
+  view,
+  onStay,
+  onGo,
+}: {
+  readonly state: GameState;
+  readonly view: FightView;
+  readonly onStay: () => void;
+  readonly onGo: () => void;
+}) {
+  const preview = retreatPreview(state);
+  const name = labelOf(view, preview.leaderId);
+  const { carrying } = preview;
+  const foes = view.fighters.filter((f) => f.side === 'foe' && f.status === 'up').length;
+  return (
+    <>
+      <div className="dim" aria-hidden="true" />
+      <div className="roomcard" role="dialog" aria-label={t('retreat.title')} style={{ top: 96 }}>
+        <h3>{t('retreat.title')}</h3>
+        <ul className="num">
+          <li>{t('retreat.lead', { name, chance: pct(preview.chance.total) })}</li>
+          <li>
+            {t(carrying ? 'retreat.beats.carry' : 'retreat.beats', {
+              beats: preview.beats,
+              failed: preview.failedBeats,
+              name,
+            })}
+          </li>
+          <li>{t('retreat.strike', { n: foes })}</li>
+          <li>{t('retreat.ends')}</li>
+        </ul>
+        <div className="row2">
+          <button className="btn ghost" onClick={onStay}>
+            {t('retreat.stay')}
+          </button>
+          <button className="btn danger" onClick={onGo}>
+            {t('retreat.go')}
+          </button>
+        </div>
       </div>
     </>
   );

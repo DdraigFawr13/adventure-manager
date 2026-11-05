@@ -1,8 +1,33 @@
-// The gate 1 play page (/play.html). S1: opens straight into the sample barrow fight, saves after
-// every command, and starts a new fight on request (gate 1 spec, S1).
-import { Component, useState, type ReactNode } from 'react';
+// The gate 1 play page (/play.html). S2: opens on the start card, plays one barrow delve screen by
+// screen, saves after every command, and starts a new delve on request (gate 1 spec, S2).
+import { Component, useEffect, useRef, useState, type ReactNode } from 'react';
 import { FightScreen } from './fight/FightScreen.tsx';
-import { commit, newFight, withView, type Choice, type Game } from './game.ts';
+import {
+  AUTO_STEP_MS,
+  autoDue,
+  chooseWay,
+  newDelve,
+  nextRoom,
+  play,
+  previewStart,
+  retreatNow,
+  saved,
+  scoutAhead,
+  setAuto,
+  setRows,
+  startDelve,
+  stepAuto,
+  withView,
+  type Game,
+} from './game.ts';
+import {
+  BreatherScreen,
+  ChoiceResult,
+  ChoiceScreen,
+  EndScreen,
+  StartScreen,
+  type ChoiceTry,
+} from './delve/DelveScreens.tsx';
 import { SAVE_KEY, keepAside, nextSeed, readSave, writeSave, type Store } from './save.ts';
 import { logLines, t } from './words.ts';
 
@@ -25,7 +50,7 @@ const today = (): string => new Date().toISOString().slice(0, 10);
 
 function freshGame(store: Store | null): Game {
   const seed = store ? nextSeed(store, today()) : `${today()}-0`;
-  const game = newFight(seed);
+  const game = newDelve(seed);
   if (store) writeSave(store, game.state, new Date().toISOString());
   return game;
 }
@@ -36,7 +61,8 @@ function firstLoad(): { game: Game; notice: string } {
   const loaded = readSave(store, Date.now());
   if (loaded.state) {
     const game = withView(loaded.state);
-    if (game.view) return { game, notice: loaded.note === 'older-rules' ? t('save.older') : '' };
+    if (game.delve || !loaded.state.delve)
+      return { game, notice: loaded.note === 'older-rules' ? t('save.older') : '' };
   }
   if (!loaded.mayWrite) writable = false;
   return {
@@ -50,29 +76,135 @@ export function Play() {
   const [game, setGame] = useState<Game>(start.game);
   const [notice, setNotice] = useState(start.notice);
   const [log, setLog] = useState<string[]>([]);
+  // Screen-only state: the choice result before "Go on", the closed room card, the Retreat card.
+  const [attempt, setAttempt] = useState<ChoiceTry | null>(null);
+  const [cardClosed, setCardClosed] = useState('');
+  const [retreatOpen, setRetreatOpen] = useState(false);
+  const latest = useRef(game);
 
-  const onAct = (choice: Choice): void => {
-    const next = commit(game, choice, storage(), new Date().toISOString());
+  /** Shows a game after a command and saves it at once (gate 1 spec: a save after every command). */
+  const show = (next: Game): void => {
+    saved(next, storage(), new Date().toISOString());
+    latest.current = next;
     setGame(next);
     setLog(next.view ? logLines(next.view, next.events) : []);
+    setRetreatOpen(false);
   };
 
-  const onNewFight = (): void => {
-    setGame(freshGame(storage()));
+  const { delve, view } = game;
+  const runId = game.state.delve?.id ?? '';
+  const cardKey = `${runId}:${delve?.roomIndex ?? 0}`;
+  const cardOpen =
+    !!delve &&
+    !!view &&
+    delve.phase === 'fight' &&
+    view.round === 1 &&
+    cardClosed !== cardKey &&
+    !view.order.some((o) => o.acted && view.fighters.find((f) => f.id === o.id)?.side === 'party');
+
+  // Auto plays one adventurer turn (and the foes' turns after it) every 0.6 s while it is on.
+  const stepKey = game.state.nextEventNo;
+  useEffect(() => {
+    if (cardOpen || !autoDue(latest.current)) return;
+    const timer = window.setTimeout(() => {
+      if (autoDue(latest.current)) show(stepAuto(latest.current));
+    }, AUTO_STEP_MS);
+    return () => window.clearTimeout(timer);
+    // `show` only reads refs and setters.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stepKey, cardOpen]);
+
+  const dismiss = (): void => setNotice('');
+
+  const onNewDelve = (): void => {
+    const store = storage();
+    const fresh = freshGame(store);
+    latest.current = fresh;
+    setGame(fresh);
     setLog([]);
     setNotice('');
+    setAttempt(null);
+    setRetreatOpen(false);
   };
 
-  if (!game.view) return <Broken />;
+  if (!delve) {
+    const preview = previewStart(game);
+    if (!preview) return <Broken />;
+    return (
+      <StartScreen
+        key={game.state.seed}
+        state={game.state}
+        preview={preview}
+        notice={notice}
+        onDismissNotice={dismiss}
+        onStart={(approach) => {
+          setNotice('');
+          show(startDelve(game, approach));
+        }}
+      />
+    );
+  }
+  if (delve.phase === 'ended') {
+    return <EndScreen delve={delve} notice={notice} onDismissNotice={dismiss} onNew={onNewDelve} />;
+  }
+  if (delve.phase === 'choice') {
+    return (
+      <ChoiceScreen
+        key={game.state.nextEventNo}
+        state={game.state}
+        delve={delve}
+        notice={notice}
+        onDismissNotice={dismiss}
+        onChoose={(option, tester, onFailure) => {
+          setAttempt({ onFailure });
+          show(chooseWay(game, option, tester));
+        }}
+      />
+    );
+  }
+  if (delve.phase === 'breather') {
+    if (attempt)
+      return (
+        <ChoiceResult
+          delve={delve}
+          attempt={attempt}
+          notice={notice}
+          onDismissNotice={dismiss}
+          onGoOn={() => setAttempt(null)}
+        />
+      );
+    const raised = game.events.flatMap((e) =>
+      e.type === 'fighter.raised' ? [{ id: e.subjectIds[0] ?? '', health: e.health }] : [],
+    );
+    return (
+      <BreatherScreen
+        delve={delve}
+        raised={raised}
+        notice={notice}
+        onDismissNotice={dismiss}
+        onScout={() => show(scoutAhead(game))}
+        onRow={(id, row) => show(setRows(game, { [id]: row }))}
+        onNext={() => show(nextRoom(game))}
+      />
+    );
+  }
+  if (!view) return <Broken />;
   return (
     <FightScreen
       state={game.state}
-      view={game.view}
+      view={view}
+      delve={delve}
       log={log}
       notice={notice}
-      onAct={onAct}
-      onNewFight={onNewFight}
-      onDismissNotice={() => setNotice('')}
+      card={cardOpen}
+      retreatOpen={retreatOpen}
+      onAct={(choice) => show(play(game, choice))}
+      onCardGo={() => setCardClosed(cardKey)}
+      onAuto={(on) => show(setAuto(game, on))}
+      onSaveSkills={(on) => show(setAuto(game, delve.auto.on, on))}
+      onRetreatAsk={setRetreatOpen}
+      onRetreat={() => show(retreatNow(game))}
+      onDismissNotice={dismiss}
     />
   );
 }

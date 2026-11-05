@@ -84,6 +84,8 @@ export interface DelveView {
   readonly auto: { readonly on: boolean; readonly saveSkillsForBoss: boolean };
   readonly outcome: DelveOutcome | null;
   readonly ends: readonly MemberEnd[];
+  /** Health a failed `hurt` way costs the tester. */
+  readonly choiceHurt: number;
 }
 
 export function delveView(state: GameState): DelveView | null {
@@ -173,6 +175,7 @@ export function delveView(state: GameState): DelveView | null {
     auto: { ...run.auto },
     outcome: run.outcome,
     ends: (run.ends ?? []).map((e) => ({ ...e })),
+    choiceHurt: content.rules.room.hurt,
   };
 }
 

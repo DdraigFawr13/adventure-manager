@@ -1,6 +1,6 @@
 # ui
 
-Screens. Full rules: `docs/STANDARDS.md`. The step 4 text prototype (`src/step4/`, D-195–D-200) is the page at the Vercel root; the watched-quest prototype (D-127) is at `/quest-watch.html`. The phone map engine test (`src/engine-test/phone/`, D-154, D-164, D-204) is at `/map.html`. The gate 1 play page (`src/play/`, gate 1 spec) is at `/play.html`; `node tools/play-shot.mjs fight` checks it after a build. All but the play page are throwaway screens; the engine underneath is kept (D-113).
+Screens. Full rules: `docs/STANDARDS.md`. The step 4 text prototype (`src/step4/`, D-195–D-200) is the page at the Vercel root; the watched-quest prototype (D-127) is at `/quest-watch.html`. The phone map engine test (`src/engine-test/phone/`, D-154, D-164, D-204) is at `/map.html`. The gate 1 play page (`src/play/`, gate 1 spec) is at `/play.html`; `node tools/play-shot.mjs fight` and `delve` check it after a build. All but the play page are throwaway screens; the engine underneath is kept (D-113).
 
 - Reads state and events, sends commands through `simulate`; never computes a rule or rebuilds a number's breakdown (GAME-02). Chance breakdowns come from the event's `Value` parts.
 - Words come from content text files (`packages/content/data/*.json`), never from `.tsx`.
