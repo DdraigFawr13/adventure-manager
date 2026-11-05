@@ -18,7 +18,10 @@ import { gate1Sites } from './sites.ts';
 export * from './rarity.ts';
 
 /** Bumped whenever a gate 1 number changes, so a seed and this version replay a run (GAME-01). */
-export const GATE1_RULES_VERSION = 1;
+export const GATE1_RULES_VERSION = 2;
+
+/** The site slice 2's page plays (spec S2: the barrow only). */
+export const GATE1_SITE = 'site.hollow-barrow';
 
 /** The guildmaster's Tactics in gate 1 (D-226; one fixed guildmaster). */
 export const GATE1_TACTICS = 12;
@@ -45,6 +48,24 @@ export const gate1Rules: DelveRules = {
   bleed: v0.bleed,
   deathRoll: v0.deathRoll,
   injuryBp: v0.injuryBp,
+  approachAttribute: baseResolution.rules.approachAttribute,
+  room: {
+    difficulty: { routine: 9, hazardous: 11, perilous: 13, deadly: 15 },
+    hurt: 4,
+    extraRoomBp: 5000,
+    scoutAttribute: 'stealth',
+    scoutClassId: 'class.rogue',
+  },
+  breatherRaiseTo: 3,
+  loot: { dropBp: 5000, bossDropBp: 10000 },
+  retreat: {
+    attribute: v0.retreat.attribute,
+    difficulty: v0.retreat.difficulty,
+    beats: v0.retreat.beats,
+    carryBeats: v0.retreat.carryBeats,
+    failedCheckBeats: v0.retreat.failedCheckBeats,
+  },
+  auto: { baseBp: 6000, witsStepBp: 300, tacticsStepBp: 200, pivot: 10, minBp: 3000, maxBp: 9500 },
 };
 
 // cast-ok: a fixed data file written to the sample-member shape; the delve tests start from it.

@@ -1,6 +1,6 @@
 // The S1–S2 start state (SPEC.md "Sample"): a game with the sample party as its roster and no
 // guild, so the play page can open straight into a fight.
-import type { Adventurer, GameState, ResolutionContent } from '../resolution/types.ts';
+import type { Adventurer, Approach, GameState, ResolutionContent } from '../resolution/types.ts';
 import type { DelveCommand } from './types.ts';
 
 export function sampleDelveState(content: ResolutionContent, seed: string): GameState {
@@ -27,6 +27,8 @@ export function sampleStart(
     readonly siteId: string;
     readonly tactics: number;
     readonly pack: Extract<DelveCommand, { type: 'delve.start' }>['pack'];
+    /** S1 passes nothing (assault); S2's start card picks it (D-232). */
+    readonly approach?: Approach;
   },
 ): Extract<DelveCommand, { type: 'delve.start' }> {
   if (!content.delve) throw new Error('This content has no delve pack.');
@@ -35,7 +37,7 @@ export function sampleStart(
     id: options.id,
     day: 1,
     siteId: options.siteId,
-    approach: 'assault',
+    approach: options.approach ?? 'assault',
     tactics: options.tactics,
     members: content.delve.sampleParty.map((m) => ({ ...m })),
     pack: options.pack,
