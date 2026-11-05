@@ -17,6 +17,9 @@ const allowed = {
   tools: new Set(['tools', 'engine', 'content']),
 };
 const pureLayers = new Set(['engine', 'content']);
+const V0_RULES = new Set(['quest.ts', 'turn.ts', 'actions.ts', 'harm.ts', 'encounters.ts']);
+const isDelveFile = (fileName) =>
+  path.relative(root, fileName).split(path.sep).join('/').startsWith('packages/engine/src/delve/');
 const reactLayers = new Set(['ui']);
 const packages = path.join(root, 'packages');
 const scope = '@adventure-manager/';
@@ -110,7 +113,16 @@ export function checkModule(fileName, sourceText) {
       return;
     }
     if (!allowed[layer].has(destination))
-      errors.push(`${layer} cannot import ${destination}: ${name}.`);
+      errors.push(`${layer} cannot import ${destination}: ${name}.`); // Gate 1's delve stays apart from frozen resolution v0 (gate 1 spec, Risks): types and
+    // check.ts's clamp may be shared, v0's rules may not.
+    if (name.startsWith('.') && isDelveFile(fileName)) {
+      const target = path.basename(path.resolve(path.dirname(fileName), name));
+      const inResolution = path
+        .resolve(path.dirname(fileName), name)
+        .includes(`${path.sep}resolution${path.sep}`);
+      if (inResolution && V0_RULES.has(target))
+        errors.push(`delve cannot import resolution v0's rules: ${name}.`);
+    }
   }
   // Type-safety rules from docs/STANDARDS.md, for every package: no `any`, no `@ts-ignore`,
   // no `as` casts except `as const`. A validated boundary marks its one cast with `// cast-ok: <why>`.

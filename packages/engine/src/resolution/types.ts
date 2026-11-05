@@ -4,6 +4,7 @@ import type { PronounKey } from '../core/text.ts';
 import type { RngState } from '../core/rng.ts';
 import type { Value } from '../core/value.ts';
 import type { ContractContent, Twist } from '../contract/types.ts';
+import type { DelveCommand, DelveContent, DelveEventBody, DelveRun } from '../delve/types.ts';
 import type { GuildCommand, GuildEventBody, GuildRules, GuildState } from '../guild/types.ts';
 
 export const ATTRIBUTES = [
@@ -162,6 +163,8 @@ export interface ResolutionContent {
   readonly contracts?: ContractContent;
   /** Guild year rules (guild/SPEC.md); absent in resolution-only games. */
   readonly guild?: GuildRules;
+  /** Gate 1's led fights and delves (delve/SPEC.md); absent in games without them. */
+  readonly delve?: DelveContent;
 }
 
 export interface FoeState {
@@ -206,6 +209,8 @@ export interface GameState {
   /** Day number of the guild's calendar; 1 is the first day of week 1. */
   calendar: number;
   guild: GuildState | null;
+  /** The running or last delve (delve/SPEC.md); absent in games without delves. */
+  delve?: DelveRun | null;
 }
 
 export type CheckPurpose =
@@ -241,7 +246,8 @@ export type Command =
       readonly day: number;
       readonly choice: 'push-on' | 'pull-out';
     }
-  | GuildCommand;
+  | GuildCommand
+  | DelveCommand;
 
 export type GameEvent = EventBase &
   (
@@ -280,4 +286,5 @@ export type GameEvent = EventBase &
     | { readonly type: 'injury.gained' }
     | { readonly type: 'quest.ended'; readonly outcome: QuestOutcome }
     | GuildEventBody
+    | DelveEventBody
   );

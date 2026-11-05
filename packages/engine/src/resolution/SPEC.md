@@ -1,6 +1,6 @@
 # Resolution v0
 
-Gate 1 replaces the main fight below with per-actor turns, health pools, single foes and per-delve skill uses (D-218–D-220); this file stays true for today's code until the gate 1 spec rewrites it.
+Frozen for gate 1 (D-229): led fights and delves follow `../delve/SPEC.md` (per-actor turns, health pools, single foes, per-delve skill uses; D-218–D-220). This file stays true for the year, career and resolution simulators, which keep v0 until gate 2.
 
 How a party, its plan, stats, gear and the site become odds and events (PLAN §9b step 0b, D-113). Decisions: D-118..D-126, D-129..D-131. Every number below is a starting value in content data (`packages/content/src/base/resolution.ts`), to be tuned by R1 and R2; none is in engine code.
 

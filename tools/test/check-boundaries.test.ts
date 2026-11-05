@@ -54,6 +54,20 @@ describe('package boundary check (STANDARDS.md, PLAN §11h)', () => {
     expect(check(uiFile, "import x from 'lodash';").join(' ')).toContain('external module');
   });
 
+  it("keeps the delve apart from resolution v0's rules (gate 1 spec, Risks)", () => {
+    const delveFile = path.join(root, 'packages/engine/src/delve/fight.ts');
+    expect(check(delveFile, "import { a } from '../resolution/harm.ts';").join(' ')).toContain(
+      "resolution v0's rules",
+    );
+    expect(check(delveFile, "import { a } from '../resolution/quest.ts';").join(' ')).toContain(
+      "resolution v0's rules",
+    );
+    expect(check(delveFile, "import type { A } from '../resolution/types.ts';")).toEqual([]);
+    expect(check(delveFile, "import { chanceValue } from '../resolution/check.ts';")).toEqual([]);
+    expect(check(delveFile, "import { a } from './actions.ts';")).toEqual([]);
+    expect(check(engineFile, "import { a } from '../resolution/harm.ts';")).toEqual([]);
+  });
+
   it('rejects files that typecheck would skip', () => {
     expect(check(engineFile.replace('.ts', '.mjs'), '').join(' ')).toContain('Only .ts');
   });

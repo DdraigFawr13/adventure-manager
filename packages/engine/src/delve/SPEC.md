@@ -1,0 +1,11 @@
+# Delve (gate 1)
+
+Led fights and delves, beside resolution v0 (D-229). Full rules: `docs/specs/gate1-one-delve.md`, Design "Engine"; numbers in `packages/content/src/gate1/`. S1 builds one fight; rooms, Auto, retreat and loot arrive in S2.
+
+- **State.** `GameState.delve: DelveRun | null`. The party's `fighters` carry health between rooms; `fight` holds the foes, the kept `order`, `turn`, who has `acted` this round, the foes' `intents` and the round marks (Ward on the fight; Spark, Guard and "hit this round" on fighters).
+- **Rolls.** Only `streamFor(state, 'delve.fight')` here (hits, damage, bleed, death, injury). Views never call it; the page saves after every command, so a reload replays the same rolls.
+- **Order.** Set at the fight's start by speed, ties by id. Moves last: knockback one place later, Hamstring to last, Haste right after the wizard. The next actor is the first fighter after the current one who has not acted this round; anyone passed while not up counts as passed, so a raised ally acts again from the next round, and a hasted ally who already acted acts there from the next round.
+- **Commands.** `delve.start` builds the run and enters the site's first fight room; `fight.act` takes the current adventurer's action. Each runs the foe turns after it and returns at the next adventurer's turn or the fight's end. `refusal` is the one validity check, shared with `fightView`.
+- **Numbers.** `hitChance` and `damageRange` (in `actions.ts`) are the only hit and damage rules; `fight.act` and `previewAction` both call them. Heals, Guard, Ward, Haste, swapping rows and items never miss.
+- **Readings the spec left open (S1):** the cleric's plain attack heals the most hurt standing ally 1 whether or not it hits; a firebomb's damage is reduced by each foe's armour (at least 1) and adds no weapon rarity; Cleave rolls to hit each of its two targets; a guarded ally's hits are rolled against the warrior; the fight also ends at once when no adventurer or no foe stands.
+- **End.** At the round's end: bleed rolls for the Down, death rolls for those Dying before them, marks clear, then the flee check (more than half Down; boss fights end on the boss). S1's site has one room, so the fight's end is the delve's: `delve.ended` with each member's wound step, injury roll and death.
