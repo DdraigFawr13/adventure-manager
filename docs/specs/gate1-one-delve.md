@@ -196,7 +196,7 @@ A `Letter` (same shape as `quest-report.ts`'s) built from the trip's events, whi
 
 ### S2 One delve
 
-- **First:** mock-up of the room card, choice room, scout result, breather, retreat and end screens (`ui-mockups`); the owner approves.
+- **First:** mock-up of the room card, choice room, scout result, breather, retreat and end screens (`ui-mockups`); the owner approves. Approved 2026-11-05 (D-232): https://claude.ai/artifact/2Gu4qWixkZLkPfU2oN1Jn3, source `docs/design/mockups/delve-screens.html`; it adds an approach picker on the start card (`delve.start`'s `approach`).
 - **The owner tries:** a whole barrow delve from the entry room to the warden with the sample party and a pack of 2 draughts and 2 firebombs (fixed until S5): choices, Scout ahead, Auto with save-for-boss, Retreat, the parts at the end; a button starts a new delve.
 - **Checks that fail now:** J3; `delve-rooms.test.ts` (layout, choice outcomes, off guard, alerted, off guard and alerted together, scout and rows, breather and Dying, boss and minions, retreat beats, `delve.ended` wound steps, injuries and deaths), `delve-auto.test.ts` (each `when`, the good-choice roll, save-for-boss); J6's S2 targets with stored baselines; `tools/play-shot.mjs delve`.
 - **Files:** `delve/{rooms.ts,auto.ts,loot.ts,retreat.ts}`, `simulate.ts`; `content/src/gate1/sites.ts` (the barrow only), words in `gate1.en.json`; `ui/src/play/delve/`; `tools/balance/{delve-player.ts,scenarios.ts,metrics.ts,run.ts}` and `baselines/delve-*.jsonl.gz`; save version unchanged unless the state's shape changes (then 2, with an upgrade and fixture).
