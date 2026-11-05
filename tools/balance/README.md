@@ -47,3 +47,12 @@ So 20 careers suits a first look at rates a year (deaths, stops, incidents), tho
 - **New number recorded per career**: add it to `Career` in `../career-play.ts`, then re-save the baselines: old ones lack the field, so a metric reading it shows "—".
 - Overrides reach any number, flag or word in the content: dots for keys, `[id]` for a list entry by id, a number for a list entry by index. A wrong path or type stops the run before any career plays.
 - Tests: `tools/test/balance.test.ts`.
+
+## Delves
+
+`node tools/balance/run.ts delve-careful` and `delve-auto` play seeded barrow delves (seeds `delve-0` …) with the sample party (gate 1 spec, "Balance"): the scripted careful player (`delve-player.ts`), or Auto in every fight. Both take the same choice rooms (best chance), scout whenever they can and never set rows, so a paired run differs only in who leads the fights. 1,000 delves take about 7 s.
+
+- `--delves N` for a quick look; `--set` and `--sweep` as for careers (`delve.foes[foe.restless-warden].health=34`, `delve.rules.bleed.baseBp=1200`; `[id]` also picks a key of a record keyed by ids).
+- `--compare-policy careful` plays the careful player on the same seeds and pairs with it: D-220's "Auto wins about as often but loses more health and skill uses".
+- `--compare` and `--save` work as for careers, with `baselines/delve-*.jsonl.gz` (one result per delve).
+- The runner stops a fight after 30 rounds and counts it stalled (target 0). The "Delves that cost a life" target (5–15%, D-229) is for the careful player.

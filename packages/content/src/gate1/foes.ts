@@ -33,7 +33,8 @@ const list: readonly FoeKind[] = [
   },
   {
     id: 'foe.restless-warden',
-    health: 40,
+    // Tuned in S2 from the spec's 40 (delve-careful).
+    health: 34,
     attack: 14,
     defence: 11,
     armour: 1,

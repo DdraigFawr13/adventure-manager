@@ -45,7 +45,8 @@ export const gate1Rules: DelveRules = {
   toughnessPivot: 10,
   skillUses: 3,
   packMax: 4,
-  bleed: v0.bleed,
+  // Tuned in S2 (delve-careful, 1,000 delves): v0's 3,000 made about 1 delve in 3 cost a life.
+  bleed: { ...v0.bleed, baseBp: 1200 },
   deathRoll: v0.deathRoll,
   injuryBp: v0.injuryBp,
   approachAttribute: baseResolution.rules.approachAttribute,
