@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-05 (nineteenth session: gate 1 spec approved (D-226–D-230), merged as PR #47). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-11-05 (twentieth session: S1 fit check published, awaiting the owner). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
@@ -23,7 +23,7 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 
 ## Next
 
-1. Slice S1 (one fight) in a fresh session from `main`: first the 375 × 667 fit check of layout C (`ui-mockups`, owner approves), then the build per the spec; write-spec step 8 (re-check, checks fail first, review against the spec). After S2, stop for the owner's playtest (D-230).
+1. Slice S1 (one fight), branch `ccr-1f4ee88e-glwrq1`: the 375 × 667 fit check of layout C is published for the owner's approval: https://claude.ai/artifact/9aFFu1Ljhbm4DLYQrtMqfY (source `docs/design/mockups/fight-fit.html`; measured 667 px with a 327 px stage; fresh check 3 major, 7 minor, all fixed). On approval: record it in DECISIONS (amends D-225's open proposals), link it in the spec's S1, then build per the spec; write-spec step 8 (re-check, checks fail first, review against the spec). After S2, stop for the owner's playtest (D-230).
 2. Art: any more OpenArt spend needs a new approval with an exact quote, references included (LESSONS). The repo is public; OpenArt Starter images are non-commercial only. The engine test verdict (60 fps, 15 px, screen reader; D-154) is still the owner's to record.
 
 ## Open questions
