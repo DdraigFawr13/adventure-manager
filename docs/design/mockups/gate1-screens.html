@@ -1,0 +1,546 @@
+<title>Gate 1 Screens</title>
+<meta name="description" content="Gate 0 mock-ups of the gate 1 fight, party and gear, smith and budget screens, at 375 px.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+DW+Pica:ital@0;1&family=Sorts+Mill+Goudy:ital@0;1&display=swap">
+<style>
+/* Gate 0 mock-ups (D-214): the gate 1 fight (D-218-D-220), party and gear (D-221), smith (D-221) and
+   budget (D-222, D-223) screens. Tokens copied from phone-r4.html (STYLE "Screen rules"). The hall is
+   always lamp-lit, so the page commits to one dark chrome theme, as phone-r4 does. */
+:root {
+  --desk: #3b2a1e; --desk2: #2c1f16; --desk3: #4a3626;
+  --paper: #efe4cc; --paper2: #e5d7b9; --paper3: #f6eedb; --ink: #2a2017; --ink2: #6b5a45; --rule: #d6c6a5;
+  --seal: #8e2a22; --brass: #b8923e; --brass2: #d7b66a;
+  --good: #3f6f8f; --warn: #c08a1e; --bad: #8e2a22;
+  --chrome: #f1e6cf; --chrome2: #c8b48f; --alert: #f5e3d6;
+  --title: "IM Fell English SC", "IM Fell English", Georgia, serif;
+  --letter: "IM Fell DW Pica", Georgia, serif;
+  --ledger: "Sorts Mill Goudy", "Goudy Old Style", Georgia, serif;
+    /* Added for these screens (not in phone-r4): */
+  --good-bg: #e4ecf0; --rare-bg: #f3e6c2; --rare-ink: #7a5a14; --now-bg: #fbf3df; --offer-bg: #f8eccd; --foe-chip: #e9b9a9; --warn-ink: #8a6210; --slider: #8a6a24;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--desk2); color: var(--chrome); font-family: var(--ledger); font-size: 16px; line-height: 1.4; font-variant-numeric: lining-nums; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-align: inherit; }
+:focus-visible { outline: 3px solid var(--brass2); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--title); font-weight: 400; margin: 0; }
+p { margin: 0; }
+.num { font-variant-numeric: lining-nums tabular-nums; }
+
+/* Page around the frames */
+.page { max-width: 1240px; margin: 0 auto; padding: 24px 16px 48px; }
+.page > header h1 { font-size: 34px; color: var(--brass2); }
+.page > header p { max-width: 62ch; margin-top: 8px; color: var(--chrome2); }
+.key { display: inline-block; margin-top: 12px; padding: 8px 12px; border: 1px solid var(--desk3); border-left: 3px solid var(--brass); background: var(--desk); color: var(--chrome); max-width: 62ch; }
+.screen { margin-top: 40px; }
+.screen > h2 { font-size: 26px; color: var(--brass2); border-bottom: 1px solid var(--desk3); padding-bottom: 6px; }
+.screen > p { max-width: 70ch; margin-top: 8px; color: var(--chrome2); }
+.scroll { overflow-x: auto; margin-top: 16px; padding-bottom: 8px; }
+.frames { display: flex; gap: 24px; align-items: flex-start; width: max-content; }
+.fcap { width: 375px; margin-bottom: 8px; color: var(--chrome2); font-size: 15px; }
+.fcap b { color: var(--brass2); font-family: var(--title); font-weight: 400; font-size: 18px; display: block; }
+.fcap.w443 { width: 443px; }
+
+/* The phone frame */
+.phone { width: 375px; min-height: 720px; background: var(--paper); color: var(--ink); display: flex; flex-direction: column; border-radius: 6px; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,.45); }
+.phone.w443 { width: 443px; }
+.ph { text-decoration: underline dotted var(--ink2); text-underline-offset: 3px; }
+.band { background: var(--desk2); color: var(--chrome); border-bottom: 2px solid var(--brass); padding: 8px 14px; display: flex; align-items: center; gap: 10px; }
+.band .t { font-family: var(--title); color: var(--brass2); font-size: 18px; line-height: 1.15; min-width: 0; }
+.band .s { color: var(--chrome2); font-size: 15px; }
+.band .end { margin-left: auto; display: flex; gap: 6px; }
+.chipbtn { min-height: 44px; min-width: 44px; padding: 0 12px; border: 1px solid var(--brass); border-radius: 4px; color: var(--brass2); display: inline-flex; align-items: center; justify-content: center; font-size: 15px; }
+.chipbtn.on { background: var(--brass); color: var(--desk2); }
+.chipbtn.danger { border-color: var(--alert); color: var(--alert); }
+.body { flex: 1; padding: 10px 14px 14px; display: flex; flex-direction: column; gap: 8px; }
+.lbl { font-size: 15px; color: var(--ink2); letter-spacing: .03em; }
+.btn { min-height: 44px; padding: 8px 14px; border-radius: 4px; background: var(--brass); color: var(--desk2); font-size: 16px; display: inline-flex; align-items: center; justify-content: center; text-align: center; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink2); }
+.btn[disabled] { background: var(--paper2); color: var(--ink2); cursor: not-allowed; }
+.row2 { display: flex; gap: 8px; flex-wrap: wrap; }
+.row2 > .btn { flex: 1 1 0; }
+.note { font-size: 15px; color: var(--ink2); }
+.warnbox { background: var(--alert); border-left: 4px solid var(--bad); padding: 8px 10px; font-size: 15px; }
+.warnbox b { color: var(--bad); }
+.tag { display: inline-block; font-size: 15px; padding: 0 6px; border-radius: 3px; border: 1px solid var(--rule); background: var(--paper3); white-space: nowrap; }
+.tag.unc { border-color: var(--good); color: var(--good); }
+.tag.rare { border-color: var(--brass); color: var(--rare-ink); background: var(--rare-bg); }
+
+/* Health bars: Hurt below 2/3, Badly hurt below 1/3, Down at 0 (D-218) */
+.hp { height: 8px; background: var(--paper2); border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; }
+.hp > i { display: block; height: 100%; background: var(--good); }
+.hp.hurt > i { background: var(--warn); }
+.hp.bad > i { background: var(--bad); }
+.hpline { display: flex; justify-content: space-between; gap: 6px; font-size: 15px; }
+.hpline .st { color: var(--ink2); }
+.hpline .st.hurt { color: var(--warn-ink); }
+.hpline .st.bad { color: var(--bad); }
+
+/* Fight */
+.turns { display: flex; flex-wrap: wrap; gap: 4px; background: var(--desk); padding: 6px 14px; }
+.turns span { flex: none; font-size: 15px; padding: 2px 6px; border-radius: 3px; background: var(--desk3); color: var(--chrome2); white-space: nowrap; }
+.turns span.tf { color: var(--foe-chip); }
+.turns span.done { opacity: .5; text-decoration: line-through; }
+.turns span.now { background: var(--brass); color: var(--desk2); }
+.foes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.foe { min-height: 44px; border: 1px solid var(--rule); background: var(--paper3); border-radius: 4px; padding: 5px 6px; display: flex; flex-direction: column; gap: 3px; font-size: 15px; line-height: 1.2; }
+.foe .n { font-family: var(--title); font-size: 16px; }
+.foe .it { color: var(--bad); }
+.foe .odds { margin-top: 2px; background: var(--ink); color: var(--paper); border-radius: 3px; padding: 2px 4px; text-align: center; }
+.foe.pick { border: 2px solid var(--brass); }
+.foe.combo .odds { background: var(--seal); }
+.foe.down { opacity: .5; }
+.foe.boss { grid-column: span 2; }
+.rowlbl { font-size: 15px; color: var(--ink2); border-top: 1px dashed var(--rule); padding-top: 4px; }
+.allies { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.ally { border: 1px solid var(--rule); background: var(--paper3); border-radius: 4px; padding: 5px 7px; display: flex; flex-direction: column; gap: 3px; min-height: 44px; }
+.ally .n { font-family: var(--title); font-size: 16px; line-height: 1.1; }
+.ally .c { font-size: 15px; color: var(--ink2); }
+.ally.now { border: 2px solid var(--brass); background: var(--now-bg); }
+.ally.down { background: var(--alert); border-color: var(--bad); }
+.ally.target { border: 2px dashed var(--good); }
+.ally .odds { font-size: 15px; background: var(--good); color: var(--paper); border-radius: 3px; padding: 1px 4px; text-align: center; }
+.tray { background: var(--desk); color: var(--chrome); padding: 10px 14px 12px; display: grid; gap: 8px; }
+.tray .who { font-family: var(--title); color: var(--brass2); font-size: 18px; display: flex; align-items: center; gap: 8px; }
+.tray .who .chipbtn { margin-left: auto; font-family: var(--ledger); }
+.tray .hint { font-size: 15px; color: var(--chrome2); }
+.skills { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.skill { min-height: 48px; border: 1px solid var(--brass); border-radius: 4px; padding: 4px 8px; color: var(--chrome); display: flex; flex-direction: column; justify-content: center; font-size: 15px; line-height: 1.2; }
+.skill b { font-weight: 400; font-size: 16px; }
+.skill small { font-size: 15px; color: var(--chrome2); }
+.skill.on { background: var(--brass); color: var(--desk2); }
+.skill.on small { color: var(--desk3); }
+.skill[disabled] { opacity: .45; }
+.result { background: var(--paper3); border: 1px solid var(--rule); border-radius: 4px; padding: 10px; display: grid; gap: 6px; }
+.result h3 { font-size: 20px; }
+.logline { font-family: var(--letter); font-size: 16px; }
+.list { display: grid; }
+.list > div { display: flex; justify-content: space-between; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--rule); font-size: 16px; }
+.list > div:last-child { border-bottom: 0; }
+.list .r { text-align: right; white-space: nowrap; }
+
+/* Party and gear */
+.member { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; padding: 8px 0; border-bottom: 1px solid var(--rule); min-height: 44px; }
+.member .n { font-family: var(--title); font-size: 18px; }
+.member .c { font-size: 15px; color: var(--ink2); }
+.member .slots { grid-column: 1 / -1; display: flex; gap: 6px; flex-wrap: wrap; }
+.member .go { align-self: center; color: var(--ink2); font-size: 15px; }
+.sheethead { display: flex; gap: 10px; align-items: center; }
+.portrait { width: 64px; height: 64px; border-radius: 4px; background: var(--paper2); border: 1px solid var(--rule); display: flex; align-items: center; justify-content: center; font-family: var(--title); font-size: 26px; color: var(--ink2); flex: none; }
+.sheethead .n { font-family: var(--title); font-size: 22px; line-height: 1.1; }
+.attrs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px 8px; font-size: 15px; }
+.attrs div { display: flex; justify-content: space-between; border-bottom: 1px dotted var(--rule); }
+.gear { border: 1px solid var(--rule); background: var(--paper3); border-radius: 4px; padding: 8px 10px; display: grid; gap: 3px; min-height: 44px; }
+.gear .slot { font-size: 15px; color: var(--ink2); letter-spacing: .04em; }
+.gear .name { font-family: var(--title); font-size: 18px; }
+.gear .fx { font-size: 15px; }
+.gear .flav { font-family: var(--letter); font-style: italic; font-size: 15px; color: var(--ink2); }
+.gear.empty { border-style: dashed; background: transparent; }
+.cmp { display: grid; grid-template-columns: 1fr auto auto auto; gap: 4px 10px; font-size: 16px; align-items: baseline; }
+.cmp .h { font-size: 15px; color: var(--ink2); }
+.up { color: var(--good); }
+.dn { color: var(--bad); }
+
+/* Smith and budget */
+.purse { display: flex; gap: 8px; }
+.purse div { flex: 1; background: var(--paper3); border: 1px solid var(--rule); border-radius: 4px; padding: 4px 8px; font-size: 15px; }
+.purse b { display: block; font-size: 18px; font-weight: 400; }
+.item { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; padding: 8px 0; border-bottom: 1px solid var(--rule); align-items: center; }
+.item .name { font-size: 16px; }
+.item .fx { font-size: 15px; color: var(--ink2); }
+.item .price { text-align: right; font-size: 16px; }
+.item .buy { min-height: 44px; min-width: 64px; }
+.item.off .name, .item.off .fx { color: var(--ink2); }
+.offer { border: 2px solid var(--brass); background: var(--offer-bg); border-radius: 4px; padding: 8px 10px; display: grid; gap: 4px; }
+.presets { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.presets .btn { font-size: 15px; }
+.presets .btn.ghost.on { background: var(--ink); color: var(--paper); }
+.slider { display: grid; gap: 4px; }
+.slider .top { display: flex; justify-content: space-between; font-size: 16px; }
+.slider input { width: 100%; height: 44px; margin: 0; accent-color: var(--slider); }
+.slider .sub { font-size: 15px; color: var(--ink2); }
+.money .in { color: var(--good); }
+.money .out { color: var(--bad); }
+.money .tot { font-weight: 700; }
+
+/* Check record */
+#check-record { margin-top: 48px; max-width: 80ch; }
+#check-record h2 { font-size: 26px; color: var(--brass2); }
+#check-record h3 { font-size: 20px; color: var(--brass2); margin-top: 16px; }
+#check-record li, #check-record p { color: var(--chrome); margin-top: 6px; }
+#check-record code { font-family: ui-monospace, monospace; font-size: 15px; color: var(--brass2); }
+.shots { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
+.shots img { border: 1px solid var(--desk3); max-width: 100%; height: auto; }
+</style>
+
+<div class="page">
+<header>
+  <h1>Gate 1 screens</h1>
+  <p>Gate 0 mock-ups of four screens the first delve needs (D-214): the fight, the party and its gear, the smith, and the weekly budget. Each frame is 375 px wide, the first phone width (D-159). One timeline runs through them: the Fen Lanterns delve into the Hollow Barrow in week 6 and refit at home in week 7.</p>
+  <p class="key"><span class="ph">Dotted numbers and lines</span> are starting ideas or stand-ins; the gate 1 spec sets them (D-218, D-221, D-222). Plain numbers come from the content files or a decision; the check record at the end lists where each comes from.</p>
+</header>
+
+<!-- ============ FIGHT ============ -->
+<section class="screen" id="fight">
+  <h2>1. The fight</h2>
+  <p>Foes at the top, the party's front row under them, the back row next, and the acting adventurer's skills in a tray at the bottom where a thumb reaches. The turn strip shows this round's order by speed. Each foe shows its intent; once a skill is picked, each target shows the hit chance and damage range before the tap (D-218).</p>
+  <div class="scroll"><div class="frames">
+
+    <div>
+      <p class="fcap"><b>Normal: Wenna's turn</b>Room 3 of 6, round 2. Strike from shadow is picked; the hound Odric already hit this round shows the bigger damage (D-219's combo).</p>
+      <div class="phone" id="fight-a">
+        <div class="band">
+          <div><div class="t">The Hollow Barrow</div><div class="s">Room 3 of 6 · Round 2</div></div>
+          <div class="end"><button class="chipbtn">Auto</button><button class="chipbtn danger">Retreat</button></div>
+        </div>
+        <div class="turns" aria-label="Turn order this round">
+          <span class="tf done">Hound 1</span><span class="done">Odric</span><span class="tf done">Hound 2</span><span class="now">Wenna</span><span>Maud</span><span class="tf">Warden</span><span class="tf">Hound 3</span><span>Amis</span><span class="tf">Hound 4</span>
+        </div>
+        <div class="body">
+                    <div class="foes">
+            <button class="foe"><span class="n">Hound 1</span><div class="hp"><i style="width:100%"></i></div><span class="it">Done</span><span class="odds num ph">70% · 2–4</span></button>
+            <button class="foe pick combo"><span class="n">Hound 2</span><div class="hp hurt"><i style="width:50%"></i></div><span class="it">Bites Odric</span><span class="odds num ph">70% · 6–9</span></button>
+            <button class="foe"><span class="n">Hound 3</span><div class="hp"><i style="width:100%"></i></div><span class="it">Bites Wenna</span><span class="odds num ph">70% · 2–4</span></button>
+            <button class="foe"><span class="n">Hound 4</span><div class="hp"><i style="width:100%"></i></div><span class="it">Bites Odric</span><span class="odds num ph">70% · 2–4</span></button>
+            <button class="foe boss"><span class="n">The restless warden</span><div class="hp"><i style="width:100%"></i></div><span class="it ph">Reaches the back: Maud</span><span class="odds num ph">55% · 2–4</span></button>
+          </div>
+          <div class="rowlbl">Front row</div>
+          <div class="allies">
+            <div class="ally"><span class="n">Odric Hale</span><span class="c">Warrior</span><div class="hp hurt"><i style="width:63%"></i></div><div class="hpline num"><span>15/24</span><span class="st hurt">Hurt</span></div></div>
+            <div class="ally now"><span class="n">Wenna Cray</span><span class="c">Rogue · acting</span><div class="hp"><i style="width:100%"></i></div><div class="hpline num"><span class="ph">18/18</span><span class="st">Fit</span></div></div>
+          </div>
+          <div class="rowlbl">Back row</div>
+          <div class="allies">
+            <div class="ally"><span class="n">Brother Amis</span><span class="c">Cleric</span><div class="hp"><i style="width:100%"></i></div><div class="hpline num"><span class="ph">18/18</span><span class="st">Fit</span></div></div>
+            <div class="ally"><span class="n">Maud Fenwick</span><span class="c">Wizard</span><div class="hp hurt"><i style="width:64%"></i></div><div class="hpline num"><span>9/14</span><span class="st hurt">Hurt</span></div></div>
+          </div>
+        </div>
+        <div class="tray">
+          <div class="who">Wenna Cray · Rogue<button class="chipbtn">Swap row</button></div>
+          <div class="skills">
+            <button class="skill"><b>Attack</b><small>Plain · no limit</small></button>
+            <button class="skill on"><b>Strike from shadow</b><small class="num">2 of 3 left this delve</small></button>
+            <button class="skill"><b>Hamstring</b><small class="num">3 of 3 left</small></button>
+            <button class="skill"><b>Pack</b><small class="num">4 items</small></button>
+          </div>
+          <div class="hint">Tap a foe. Swapping rows uses the turn.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="fcap"><b>Alert: Odric is Down</b>Round 3. Two hounds are down; Odric is Down and bleeding. Brother Amis picks Mend; Odric shows what it would do.</p>
+      <div class="phone" id="fight-b">
+        <div class="band">
+          <div><div class="t">The Hollow Barrow</div><div class="s">Room 3 of 6 · Round 3</div></div>
+          <div class="end"><button class="chipbtn">Auto</button><button class="chipbtn danger">Retreat</button></div>
+        </div>
+        <div class="turns" aria-label="Turn order this round">
+          <span class="tf done">Hound 1</span><span class="done">Odric</span><span class="tf done">Hound 2</span><span class="done">Wenna</span><span class="done">Maud</span><span class="tf done">Warden</span><span class="tf done">Hound 3</span><span class="now">Amis</span><span class="tf">Hound 4</span>
+        </div>
+        <div class="body">
+          <div class="warnbox"><b>Odric is Down and bleeding.</b> Untended, Odric rolls at the end of the round to slip to Dying.</div>
+          <div class="lbl">Foes</div>
+          <div class="foes">
+            <div class="foe down"><span class="n">Hound 1</span><div class="hp bad"><i style="width:0"></i></div><span>Down</span></div>
+            <div class="foe down"><span class="n">Hound 2</span><div class="hp bad"><i style="width:0"></i></div><span>Down</span></div>
+            <div class="foe"><span class="n">Hound 3</span><div class="hp hurt"><i style="width:40%"></i></div><span class="it">Done</span></div>
+            <div class="foe"><span class="n">Hound 4</span><div class="hp"><i style="width:100%"></i></div><span class="it">Bites Wenna</span></div>
+            <div class="foe boss"><span class="n">The restless warden</span><div class="hp hurt"><i style="width:60%"></i></div><span class="it">Done</span></div>
+          </div>
+          <div class="rowlbl">Front row · tap an ally</div>
+          <div class="allies">
+            <button class="ally down target"><span class="n">Odric Hale</span><span class="c">Down · bleeding</span><div class="hp bad"><i style="width:0"></i></div><span class="odds num">Raise: up with <span class="ph">3</span> health</span></button>
+            <button class="ally target"><span class="n">Wenna Cray</span><span class="c">Rogue</span><div class="hp hurt"><i style="width:56%"></i></div><span class="odds num">Heal <span class="ph">3–5</span></span></button>
+          </div>
+          <div class="rowlbl">Back row</div>
+          <div class="allies">
+            <div class="ally now"><span class="n">Brother Amis</span><span class="c">Cleric · acting</span><div class="hp"><i style="width:100%"></i></div><div class="hpline num"><span class="ph">18/18</span><span class="st">Fit</span></div></div>
+            <button class="ally target"><span class="n">Maud Fenwick</span><span class="c">Wizard</span><div class="hp bad"><i style="width:29%"></i></div><span class="odds num">Heal <span class="ph">3–5</span></span></button>
+          </div>
+        </div>
+        <div class="tray">
+          <div class="who">Brother Amis · Cleric<button class="chipbtn">Swap row</button></div>
+          <div class="skills">
+            <button class="skill"><b>Attack</b><small>Plain · heals an ally 1</small></button>
+            <button class="skill on"><b>Mend</b><small class="num">1 of 3 left this delve</small></button>
+            <button class="skill"><b>Ward</b><small class="num">3 of 3 left</small></button>
+            <button class="skill"><b>Pack</b><small class="num">3 items</small></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="fcap"><b>End: the band breaks</b>Three of five foes are down, so the rest flee (D-218). Wounds carry on; the breather gets Odric up; skills don't refill.</p>
+      <div class="phone" id="fight-c">
+        <div class="band">
+          <div><div class="t">The Hollow Barrow</div><div class="s">Room 3 of 6 · cleared</div></div>
+        </div>
+        <div class="body">
+          <div class="result">
+            <h3>The rest break and flee</h3>
+            <p class="logline ph">Hound 4 and the warden take one look at the floor and leave by the far arch. Nobody chases them.</p>
+          </div>
+          <div class="lbl">After the breather</div>
+          <div class="list num">
+            <div><span>Odric Hale</span><span class="r"><span class="ph">3</span>/24 · Badly hurt · was Down</span></div>
+            <div><span>Wenna Cray</span><span class="r"><span class="ph">10/18</span> · Hurt</span></div>
+            <div><span>Brother Amis</span><span class="r"><span class="ph">18/18</span> · Fit</span></div>
+            <div><span>Maud Fenwick</span><span class="r">4/14 · Badly hurt</span></div>
+          </div>
+          <div class="lbl">Skill uses left this delve</div>
+          <div class="list num">
+            <div><span>Odric: Guard 3 · Cleave 2</span><span class="r">Wenna: Strike 1 · Hamstring 3</span></div>
+            <div><span>Amis: Mend 0 · Ward 3</span><span class="r">Maud: Firebolt 1 · Haste 3</span></div>
+          </div>
+          <div class="lbl">Taken</div>
+          <div class="list">
+            <div><span>Monster parts: barrow hounds</span><span class="r num"><span class="ph">2</span> · <span class="tag">Common</span></span></div>
+            <div><span>Party pack</span><span class="r num">3 of 4 items</span></div>
+          </div>
+          <div class="row2" style="margin-top:auto">
+            <button class="btn ghost">Scout ahead (Wenna)</button>
+            <button class="btn">On to room 4</button>
+          </div>
+          <button class="btn ghost">Turn for home</button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="fcap w443"><b>Normal at 443 px</b>The owner's phone (D-159): the same turn, wider.</p>
+      <div id="fight-a-443"></div>
+    </div>
+
+  </div></div>
+</section>
+
+<!-- ============ PARTY AND GEAR ============ -->
+<section class="screen" id="party">
+  <h2>2. The party and its gear</h2>
+  <p>The party list shows each adventurer's three slots at a glance; the sheet shows one card per slot (D-143, D-221). Loot from the boss waits in the guild store until someone wears it; equipping compares against what that adventurer has on, with the fight's own numbers (GAME-02).</p>
+  <div class="scroll"><div class="frames">
+
+    <div>
+      <p class="fcap"><b>Normal: the party</b>Week 7, home from the barrow. Recruits arrived with a Common weapon and armour and no trinket (D-221).</p>
+      <div class="phone" id="party-a">
+        <div class="band"><div><div class="t">The Fen Lanterns</div><div class="s">Week 7 · refit week</div></div></div>
+        <div class="body">
+          <div class="warnbox" style="border-left-color:var(--good);background:var(--good-bg)"><b style="color:var(--good)">1 item to equip:</b> <span class="ph">Uncommon mace</span>, the boss's drop from the Hollow Barrow.</div>
+          <div>
+            <button class="member" style="width:100%"><span><span class="n">Odric Hale</span><br><span class="c">Warrior · front · Badly hurt, resting</span></span><span class="go">Open</span>
+              <span class="slots"><span class="tag">Weapon: Common blade</span><span class="tag">Armour: Common heavy</span><span class="tag">Trinket: none</span></span></button>
+            <button class="member" style="width:100%"><span><span class="n">Wenna Cray</span><br><span class="c">Rogue · front · Hurt, resting</span></span><span class="go">Open</span>
+              <span class="slots"><span class="tag">Weapon: Common dagger</span><span class="tag">Armour: Common light</span><span class="tag">Trinket: none</span></span></button>
+            <button class="member" style="width:100%"><span><span class="n">Brother Amis</span><br><span class="c">Cleric · back · Fit</span></span><span class="go">Open</span>
+              <span class="slots"><span class="tag">Weapon: Common mace</span><span class="tag">Armour: Common medium</span><span class="tag">Trinket: none</span></span></button>
+            <button class="member" style="width:100%"><span><span class="n">Maud Fenwick</span><br><span class="c">Wizard · back · Badly hurt, resting</span></span><span class="go">Open</span>
+              <span class="slots"><span class="tag">Weapon: Common staff</span><span class="tag">Armour: Common light</span><span class="tag">Trinket: none</span></span></button>
+          </div>
+          <div class="row2" style="margin-top:auto"><button class="btn ghost">The smith</button><button class="btn ghost">Budget</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="fcap"><b>Normal and empty: Wenna's sheet</b>Attributes from the content file; one card per slot; the empty trinket slot says what a trinket can do.</p>
+      <div class="phone" id="party-b">
+        <div class="band"><div><div class="t">Wenna Cray</div><div class="s">Rogue · the Fen Lanterns</div></div></div>
+        <div class="body">
+          <div class="sheethead">
+            <div class="portrait" aria-hidden="true">W</div>
+            <div class="num" style="font-size:15px">Front row · wage 74 copper a week<br>Health <span class="ph">10/18</span> · Hurt, resting<br>Strike from shadow · Hamstring</div>
+          </div>
+          <div class="attrs num">
+            <div><span>Might</span><span>9</span></div><div><span>Agility</span><span>15</span></div><div><span>Tough.</span><span>9</span></div><div><span>Stealth</span><span>16</span></div>
+            <div><span>Wits</span><span>14</span></div><div><span>Presence</span><span>10</span></div><div><span>Resolve</span><span>10</span></div><div><span>Lore</span><span>8</span></div>
+          </div>
+          <button class="gear"><span class="slot">WEAPON</span><span class="name">Common dagger</span><span class="fx num">Hit <span class="ph">70%</span> · damage <span class="ph">2–4</span> · daggers add speed</span><span class="flav ph">Plain steel, kept sharp, which is more than can be said for most.</span></button>
+          <button class="gear"><span class="slot">ARMOUR · light (rogues: light only)</span><span class="name">Common light armour</span><span class="fx num">Health <span class="ph">+0</span> · damage taken <span class="ph">−0</span></span></button>
+          <button class="gear empty"><span class="slot">TRINKET</span><span class="name" style="color:var(--ink2)">Nothing worn</span><span class="fx">A trinket gives one small special: speed, +1 skill use, or a resistance.</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="fcap"><b>Compare: equip the loot</b>The mace from the boss, compared for Brother Amis against his Common mace. One rarity step is the starting idea of +5% hit and +1 damage (D-221).</p>
+      <div class="phone" id="party-c">
+        <div class="band"><div><div class="t">Uncommon mace</div><div class="s">From the Hollow Barrow · guild store</div></div></div>
+        <div class="body">
+          <div class="gear"><span class="slot">WEAPON · mace · <span class="tag unc">Uncommon</span></span><span class="fx">Maces hit armour harder.</span><span class="flav ph">Someone buried this with the barrow's master. The master objected to it leaving.</span></div>
+          <div class="lbl">Who wears it · clerics use maces</div>
+          <div class="row2"><button class="chipbtn on" style="color:var(--desk2)">Brother Amis</button></div>
+          <div class="cmp num">
+            <span class="h">Brother Amis</span><span class="h">Now</span><span class="h">With it</span><span class="h">Change</span>
+            <span>Hit chance</span><span class="ph">60%</span><span class="ph">65%</span><span class="up">+5%</span>
+            <span>Damage</span><span class="ph">1–3</span><span class="ph">2–4</span><span class="up">+1</span>
+            <span>Health</span><span class="ph">18</span><span class="ph">18</span><span>same</span>
+          </div>
+          <p class="note">Hit chance against a barrow hound, worked out by the fight's own rules.</p>
+          <div class="row2" style="margin-top:auto">
+            <button class="btn ghost">Sell for <span class="ph">&nbsp;220</span></button>
+            <button class="btn">Equip on Amis</button>
+          </div>
+          <p class="note">His Common mace goes to the guild store; it sells for about half its price.</p>
+        </div>
+      </div>
+    </div>
+
+  </div></div>
+</section>
+
+<!-- ============ SMITH ============ -->
+<section class="screen" id="smith">
+  <h2>3. The smith</h2>
+  <p>Always in stock: each class's Common weapon and armour. Each week: some Uncommon pieces and one rare offer (D-221). Everyday buys come from the gear pot; the rare offer comes from the chest (D-222). Every line compares against the adventurer the player is buying for.</p>
+  <div class="scroll"><div class="frames">
+
+    <div>
+      <p class="fcap"><b>Normal: buying for Wenna</b>The gear pot holds money the budget put aside; part of it is kept for refilling the party pack before the next delve.</p>
+      <div class="phone" id="smith-a">
+        <div class="band"><div><div class="t">The smith</div><div class="s">Week 7 · stock changes next week</div></div></div>
+        <div class="body">
+          <div class="purse num">
+            <div>Gear pot<b>420</b><span class="ph">165</span> kept for the pack</div>
+            <div>Chest<b class="ph">6,569</b>for the rare offer</div>
+          </div>
+          <div class="row2"><span class="lbl" style="align-self:center">For</span><button class="chipbtn on" style="color:var(--desk2);flex:1">Wenna Cray · Rogue</button></div>
+          <div class="offer">
+            <span class="lbl">THIS WEEK'S RARE OFFER</span>
+            <span style="font-family:var(--title);font-size:18px">Rare dagger <span class="tag rare">Rare</span></span>
+            <span class="num" style="font-size:15px">vs her Common dagger: hit <span class="up">+10%</span> · damage <span class="up">+2</span></span>
+            <div class="row2"><span class="num" style="align-self:center;flex:1"><span class="ph">1,375</span> copper, from the chest</span><button class="btn" style="flex:none">Buy</button></div>
+          </div>
+          <div class="lbl">Uncommon this week</div>
+          <div class="item num"><div><div class="name">Uncommon dagger <span class="tag unc">Unc.</span></div><div class="fx">hit <span class="up">+5%</span> · damage <span class="up">+1</span></div></div><div class="price"><span class="ph">440</span><br><button class="btn ghost buy">Buy</button></div></div>
+          <div class="item num"><div><div class="name">Uncommon light armour <span class="tag unc">Unc.</span></div><div class="fx">health <span class="up ph">+2</span></div></div><div class="price"><span class="ph">440</span><br><button class="btn ghost buy">Buy</button></div></div>
+          <div class="lbl">Always in stock · Common</div>
+          <div class="item num"><div><div class="name">Common dagger</div><div class="fx">same as hers</div></div><div class="price"><span class="ph">110</span><br><button class="btn ghost buy">Buy</button></div></div>
+          <div class="item num off"><div><div class="name">Common heavy armour</div><div class="fx">Too heavy for a rogue</div></div><div class="price"><span class="ph">110</span></div></div>
+          <p class="note">Also: blade, mace, staff, light and medium armour. Sells back at about half.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="fcap"><b>Alert: the pot is short</b>Tapping Buy on the Uncommon dagger. The 165 kept for the pack is not spent on gear.</p>
+      <div class="phone" id="smith-b">
+        <div class="band"><div><div class="t">The smith</div><div class="s">Week 7 · buying for Wenna</div></div></div>
+        <div class="body">
+          <div class="purse num">
+            <div>Gear pot<b>420</b><span class="ph">255</span> free to spend</div>
+            <div>Chest<b class="ph">6,569</b>for the rare offer</div>
+          </div>
+          <div class="warnbox num"><b>Not enough in the gear pot.</b> The Uncommon dagger costs <span class="ph">440</span>; <span class="ph">255</span> is free after the pack refill. The pot keeps what it holds, so it grows each week the budget feeds it.</div>
+          <div class="row2"><button class="btn ghost">Change the budget</button><button class="btn ghost">Back</button></div>
+          <div class="item num"><div><div class="name">Uncommon dagger <span class="tag unc">Unc.</span></div><div class="fx">hit <span class="up">+5%</span> · damage <span class="up">+1</span></div></div><div class="price"><span class="ph">440</span><br><button class="btn buy" disabled>Short</button></div></div>
+          <div class="item num"><div><div class="name">Common dagger</div><div class="fx">same as hers</div></div><div class="price"><span class="ph">110</span><br><button class="btn ghost buy">Buy</button></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="fcap"><b>Confirm: the rare offer</b>A one-off spend from the chest, with what it leaves.</p>
+      <div class="phone" id="smith-c">
+        <div class="band"><div><div class="t">Buy the rare dagger?</div><div class="s">Week 7 · for Wenna Cray</div></div></div>
+        <div class="body">
+          <div class="gear"><span class="slot">WEAPON · dagger · <span class="tag rare">Rare</span></span><span class="fx num">vs her Common dagger: hit <span class="up">+10%</span> · damage <span class="up">+2</span> · daggers add speed</span><span class="flav ph">Thin as a rumour and twice as quick.</span></div>
+          <div class="list num money">
+            <div><span>Chest now</span><span class="r ph">6,569</span></div>
+            <div><span>Rare dagger</span><span class="r out">−<span class="ph">1,375</span></span></div>
+            <div class="tot"><span>Chest after</span><span class="r ph">5,194</span></div>
+          </div>
+          <p class="note">That leaves about <span class="ph">6</span> weeks of wages and running costs (<span class="ph">769</span> a week) if no delve pays.</p>
+          <p class="note">This offer goes when the stock changes next week.</p>
+          <div class="row2" style="margin-top:auto"><button class="btn ghost">Not now</button><button class="btn">Buy from the chest</button></div>
+        </div>
+      </div>
+    </div>
+
+  </div></div>
+</section>
+
+<!-- ============ BUDGET ============ -->
+<section class="screen" id="budget">
+  <h2>4. The weekly budget</h2>
+  <p>One sum a week moves from the chest into three pots: training, gear and healing. Presets set the sliders; all pots keep their money, so the player only comes here to change their mind (D-222). The money line shows income, costs, the pots and the chest.</p>
+  <div class="scroll"><div class="frames">
+
+    <div>
+      <p class="fcap"><b>Normal: week 7</b>Balanced preset. The delve's pay came in this week; the stipend and costs come every week.</p>
+      <div class="phone" id="budget-a">
+        <div class="band"><div><div class="t">The budget</div><div class="s">Week 7</div></div></div>
+        <div class="body">
+          <div class="presets">
+            <button class="btn ghost on">Balanced</button><button class="btn ghost">Train hard</button>
+            <button class="btn ghost">Patch up</button><button class="btn ghost">Save for gear</button>
+          </div>
+          <div class="lbl num">This week's sum: <span class="ph">250</span> copper into the pots</div>
+          <div class="slider"><div class="top num"><span>Training</span><span><span class="ph">+80</span> · pot 140</span></div><input type="range" aria-label="Training share" value="32"><span class="sub">Pays for drills in the refit week.</span></div>
+          <div class="slider"><div class="top num"><span>Gear</span><span><span class="ph">+90</span> · pot 420</span></div><input type="range" aria-label="Gear share" value="36"><span class="sub num">Smith buys; refills the pack before each delve (<span class="ph">165</span> next time).</span></div>
+          <div class="slider"><div class="top num"><span>Healing</span><span><span class="ph">+80</span> · pot 110</span></div><input type="range" aria-label="Healing share" value="32"><span class="sub">Shortens rest from wounds and injuries.</span></div>
+          <div class="lbl">Money line</div>
+          <div class="list num money">
+            <div><span>Chest, start of week</span><span class="r ph">3,950</span></div>
+            <div><span>Patron's stipend</span><span class="r in">+<span class="ph">600</span></span></div>
+            <div><span>Delve pay: the Hollow Barrow</span><span class="r in">+3,038</span></div>
+            <div><span>Wages (4)</span><span class="r out">−<span class="ph">269</span></span></div>
+            <div><span>Running costs</span><span class="r out">−500</span></div>
+            <div><span>Into the pots</span><span class="r out">−<span class="ph">250</span></span></div>
+            <div class="tot"><span>Chest, end of week</span><span class="r ph">6,569</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="fcap"><b>Drills in the refit week</b>Paid from the training pot (D-223). What a drill gives is set in the spec.</p>
+      <div class="phone" id="budget-b">
+        <div class="band"><div><div class="t">Drills</div><div class="s">Week 7 · the Fen Lanterns at home</div></div></div>
+        <div class="body">
+          <div class="purse num"><div>Training pot<b>140</b>this week</div></div>
+          <div class="item"><div><div class="name">Drill together this week</div><div class="fx ph">+1 speed in the first round of the next delve</div></div><div class="price num"><span class="ph">60</span><br><button class="btn buy">Drill</button></div></div>
+          <p class="note">The guildmaster's Tactics makes drills stronger.</p>
+          <p class="note">Odric, Wenna and Maud are resting from wounds; the drill still counts for the whole party.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="fcap"><b>Alert: the pack can't refill</b>Another week, after a run of hard delves: the gear pot is low when the party sets out.</p>
+      <div class="phone" id="budget-c">
+        <div class="band"><div><div class="t">The budget</div><div class="s">Before the next delve</div></div></div>
+        <div class="body">
+          <div class="warnbox num"><b>The pack refills 2 of 3 items.</b> Refilling all 3 costs <span class="ph">165</span>; the gear pot holds <span class="ph">110</span>. The party sets out with 3 of 4 items.</div>
+          <div class="presets">
+            <button class="btn ghost">Balanced</button><button class="btn ghost">Train hard</button>
+            <button class="btn ghost">Patch up</button><button class="btn ghost on">Save for gear</button>
+          </div>
+          <p class="note">Save for gear sends more of each week's sum to the gear pot from next week; this delve sets out as it is.</p>
+          <div class="row2" style="margin-top:auto"><button class="btn ghost">Back</button><button class="btn">Set out</button></div>
+        </div>
+      </div>
+    </div>
+
+  </div></div>
+</section>
+
+<section id="check-record"><h2>Check record</h2>
+  <p>Written after the fact check and the fresh check.</p>
+</section>
+</div>
+
+<script>
+// The 443 px frame repeats the normal fight frame (STYLE "Screen rules": further widths follow).
+(function () {
+  var src = document.getElementById('fight-a');
+  var host = document.getElementById('fight-a-443');
+  if (!src || !host) return;
+  var copy = src.cloneNode(true);
+  copy.removeAttribute('id');
+  copy.classList.add('w443');
+  copy.setAttribute('aria-label', 'Normal fight frame at 443 px');
+  host.appendChild(copy);
+})();
+</script>

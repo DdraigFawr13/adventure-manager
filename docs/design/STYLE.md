@@ -4,6 +4,14 @@ Phase 2 style guide: theme, tone and visual identity. Each section records what 
 
 **Under review (2026-11-05, D-211):** illustrations are now hand-painted stylised fantasy. The UI's palette (§2), type (§5), woodcut icons (§6) and the inked quest-board site maps (§4) are not yet changed to match; whether they should is an open question.
 
+## Screen rules for mock-ups and builds
+
+- Target widths: 375 px first (D-159), then 412, 430 and 443 (the owner's phone, D-159); desktop after launch (D-151).
+- Minimum text: 15 px, with lining figures (D-084, D-166).
+- Minimum tap: 44 px (D-167).
+- Where facts live: `docs/DECISIONS.md`; content numbers and names in `packages/content/src/base/` (`guild.ts` wages, running costs, refit; `money.ts` coin; `resolution.ts` classes, skills, foes) and `packages/content/data/` (`text.en.json` and `prototype-party.json` names, `naming.json` name pools); engine rules in each `packages/engine/src/*/SPEC.md`. Tokens: the `:root` block of `docs/design/mockups/phone-r4.html` until a token file exists.
+- Avoid list: `.claude/skills/ui-style/references/avoid.md`; no project items yet.
+
 ## 1. Visual metaphor (Accepted 2026-10-26)
 
 **Guildmaster's war table.** The screen is the guildmaster's desk: rosters in ledgers, contracts under wax seals, letters and criers' notices as the inbox (D-043), and quests played out on a painted regional map with miniatures (D-004).
