@@ -42,6 +42,7 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 
 ## Working style with the owner
 
+- The owner is in Pacific time (America/Los_Angeles). Base every date, time, "today" and "tomorrow" on Pacific time, never on the container's UTC clock: check with `TZ=America/Los_Angeles date` before scheduling or naming a day (got wrong twice; 2026-11-05 a task was set a day late).
 - End the session after each merged PR or finished plan section; the next one starts here (D-095).
 - PRs (D-133): independent adversarial review of the whole branch diff, its findings and fixes published as an artifact and linked, then the owner's approval, then create the PR; merge it yourself once CI is green. Commits after approval need a new review and approval. Handoff and roadmap-only commits go straight to `main` (D-194).
 - Every session updates and republishes `docs/roadmap.html` to https://claude.ai/artifact/FTio9mE7jLaK4Wrn189YAg (D-128); read the live artifact first, then publish with its `url`.
