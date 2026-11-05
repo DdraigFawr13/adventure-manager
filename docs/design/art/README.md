@@ -17,3 +17,13 @@ Known gap: the four portraits came out more detailed in the faces than D-211's b
 - `home-town.jpg`: the home town from a tilted city-builder view, with its sites and three empty plots (D-184), simpler than the first version (D-212); owner's pick of two.
 
 The house and town redos were image-to-image with the same two references, 47 credits each, generated 2026-11-05. Removed after the owner's review (D-212): the first guild house, home town and March map. The map stays the game's own (`/map.html`), with detail added in code.
+
+Battle standees and backdrop (owner asked for battle art on 2026-11-05 and approved 334 credits, option A; spent 334, balance 1,821 → 1,487, measured with `openart_account_get`). Same model, settings and two references as above: image-to-image, 2K, medium, 47 credits each at 3:4 and 52 at 9:16, generated 2026-11-05 in the same OpenArt project. Painted cut-out standees on round wooden bases (STYLE §4 standees in D-211's look), cut from their grey background in code and saved as WebP with transparency, 500 px on the long side. Prototype only, non-commercial (D-217). Used in the gate 1 fight mock-up (`docs/design/mockups/gate1-screens.html`).
+
+- `standee-warrior-odric.webp`: Odric Hale, warrior.
+- `standee-rogue-wenna.webp`: Wenna Cray, rogue.
+- `standee-cleric-amis.webp`: Brother Amis, cleric.
+- `standee-wizard-maud.webp`: Maud Fenwick, wizard (a stand-in: no wizard in content yet).
+- `standee-barrow-hound.webp`: a barrow hound.
+- `standee-restless-warden.webp`: the restless warden.
+- `backdrop-burial-hall.jpg`: the Hollow Barrow's burial hall, a 9:16 battle backdrop with an empty floor, 1,000 px on the long side.
