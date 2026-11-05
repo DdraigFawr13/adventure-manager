@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-05 (nineteenth session: gate 1 spec questions answered (D-226–D-229), spec drafted, fresh checks running). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-11-05 (nineteenth session: gate 1 spec approved (D-226–D-230); D-133 branch review done, PR next). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
@@ -20,7 +20,6 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 
 - 2026-11-05 Gate 1 spec approved (D-230, https://claude.ai/artifact/7V4yjafsYVxhL7YhXyv26A): `docs/specs/gate1-one-delve.md`, 6 slices (fight, delve, loop, gear, money, art), a playtest stop after slice 2, D-218 amended (stored streams). Answers D-226–D-229 from the spec questions https://claude.ai/artifact/GSbKtp9CWP54BN3pAQfUtQ. Fresh checks: about 100 findings fixed, 1 contested, 2 escalated (LESSONS).
 - 2026-11-05 Owner approved the mock-ups (D-224), asked for battle art (334 OpenArt credits approved and spent; 6 standees and a backdrop in `docs/design/art/`; OpenArt spend 1,858 in all), then for a side-on fight on the place's own ground: three layouts https://claude.ai/artifact/7nLcwmrQfciWm5pAfNF3W7, chose C (D-225; open notes: scene feel, crowding). Branch review: 2 major, 3 minor, all fixed (https://claude.ai/artifact/MVin2uAh7QVxTHpNznWju9). Merged as PR #46.
-- 2026-11-05 Gate 1 screen mock-ups (`ui-mockups`) on branch `gate0-mockups`: https://claude.ai/artifact/X6JUpHnw2jAHT2MSEddQzH, source `docs/design/mockups/gate1-screens.html`. 13 frames at 375 px. Fresh check: 3 major, 4 minor, all fixed; check record on the page. STYLE.md gained its screen rules (15 px, 44 px, where facts live). Found: the barrow's content has no foe that reaches the back row (D-218 needs one); no wizard in content; stipend unset.
 
 ## Next
 
@@ -35,6 +34,7 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 - Mobile first (D-150): the phone sources for the §1d measures, and the phone versions of the Steam store page, wishlists, playtest recruiting and Early Access (D-099, D-100, D-113). Open too: the tablet layout. The test laptop in the budget (PLAN §14) may no longer be needed before launch.
 - Engine findings from R4, for the owner: two people can get the same full name (`packages/engine/src/guild/people.ts:68` draws given and family names independently; seed phone-2 has two Ash Thornes); at week 23 of seed phone-1, 23 of 30 members rest from wounds (maybe balance).
 - Kingdom map art direction (D-097, D-144): the game's own map keeps its look with detail in code (D-212); geography review in the workshop.
+- Fight scene feel (D-225: "it still doesn't feel like they exist in the scene"; crowding): side-on ground art and lit standees are Proposed; decided at S1's fit check or in S6.
 - Later, tier not set: 20 class levels (D-074); intrigue (D-069); exploring the wilds (D-136); bardic songs (D-056).
 
 ## Working style with the owner
