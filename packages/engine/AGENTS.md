@@ -7,7 +7,7 @@ The game rules: pure code with no UI. Full rules: `docs/STANDARDS.md` ("The engi
 - No clock, `Math.random`, I/O, DOM, `process`, `Intl`, `localeCompare` or timers; no `Math.sin`, `exp`, `pow`, `log` or `**`. `npm run boundaries` enforces this.
 - Imports nothing outside this package; no external modules.
 - Integers only: money in copper coins, whole stats, chances in basis points (`chance(bp)`).
-- Randomness only from named streams via `streamFor(state, 'system.purpose')`; never share a stream between systems.
+- Randomness only from named streams via `streamFor(state, 'system.purpose')`; never share a stream between systems. `delve/` uses `streamFor` only, and imports nothing from v0's `resolution/` rules but its types and `check.ts`.
 - Every state change emits an event with a cause id; hoverable numbers are `Value`s with parts.
 - An event never holds an object or array from the state (copy it: `[...ids]`): headless tools change state in place with `apply` (D-148), so a shared array would change the event too.
 - Numbers a designer tunes live in content data, not here. No player-facing English here.

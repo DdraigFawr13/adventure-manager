@@ -13,3 +13,4 @@ export * from './base/founding.ts';
 export * from './base/house.ts';
 export * from './base/people.ts';
 export * from './base/step4.ts';
+export * from './gate1/index.ts';

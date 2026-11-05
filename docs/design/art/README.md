@@ -27,3 +27,5 @@ Battle standees and backdrop (owner asked for battle art on 2026-11-05 and appro
 - `standee-barrow-hound.webp`: a barrow hound.
 - `standee-restless-warden.webp`: the restless warden.
 - `backdrop-burial-hall.jpg`: the Hollow Barrow's burial hall, a 9:16 battle backdrop with an empty floor, 1,000 px on the long side.
+
+Copied into the play page (gate 1 S1, D-231): `packages/ui/public/play/` holds copies of `standee-warrior-odric.webp`, `standee-rogue-wenna.webp`, `standee-cleric-amis.webp`, `standee-wizard-maud.webp`, `standee-barrow-hound.webp`, `standee-restless-warden.webp` (also the barrow archer's stand-in until it has its own) and `backdrop-burial-hall.jpg`, same licence and limits as above. `tools/test/art-ledger.test.ts` checks every file there is named in this ledger (SAFE-05).

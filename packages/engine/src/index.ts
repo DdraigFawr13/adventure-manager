@@ -23,3 +23,4 @@ export { bedsOf, incidentChanceBp, sickbedsOf, trainingPlacesOf, upkeepOf } from
 export { yearOf, weekInYear } from './guild/turn.ts';
 export * from './history/chronicle.ts';
 export * from './history/writing.ts';
+export * from './delve/index.ts';
