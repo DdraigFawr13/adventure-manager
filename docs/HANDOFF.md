@@ -13,12 +13,13 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 - ✔ Art style: hand-painted stylised, first prototype art (D-211, D-212, PR #42)
 - ✔ Replan approved and recorded (D-213–D-217, PR #43)
 - ▶ Gate 0, design: ✔ fight (D-218–D-220); ✔ gear and budget (D-221–D-223); ✔ mock-ups (D-224, D-225, PR #46); ✔ gate 1 spec (D-226–D-230, PR #47)
-- ▶ Gate 1: ✔ S1 one fight (D-231, PR #48); ▶ S2 one delve: ✔ mock-up (D-232); ▶ the build (engine, balance done; page in progress), then the owner's playtest
+- ▶ Gate 1: ✔ S1 one fight (D-231, PR #48); ▶ S2 one delve: ✔ mock-up (D-232); ▶ the build (engine, balance, page done; branch review running), then the owner's playtest
 - ○ Gate 1, the rest: recruit, equip, budget, map trip, delve, fights the owner plays, letter home. Passes when after 3 delves the owner wants a 4th
 - ○ Gate 2, one season · ○ Gate 3, one year · ○ Gate 4, launch decision
 
 ## Just done
 
+- 2026-11-05 S2 page built (commit 9c88571): start card with approach, choice rooms, room card, breather, scout and rows, Auto every 600 ms, Retreat card, delve end; `play-shot delve` plays a whole delve on Auto (ok, no console errors). Baselines `delve-careful` and `delve-auto` saved (ec4b2ae); career baselines unchanged (classic 20 of 20 identical). Known: 5-foe rooms overlap intent marks (D-225 crowding).
 - 2026-11-05 S2 engine on `s2-delve-mockup` (commit 22460dc): rooms, choices, scout and rows, breather, Auto, retreat, loot; tests `delve-rooms`, `delve-auto`; balance runner delve mode (`delve-careful`, `delve-auto`, `--compare-policy`). Tuned: bleed 3,000 → 1,200 bp, warden health 40 → 34; careful loses a life in 11.1% of 1,000 delves (D-229 ok). Auto vs careful: wins 94.0% vs 76.5% (Auto never retreats), loses a life in 28.4%, ends with less health (37.1% vs 45.7%) but more skill uses left (11.7 vs 7.5); D-220's "wins about as often" doesn't hold yet; for the owner.
 - 2026-11-05 S2 mock-up approved (D-232, all Proposed items included) on branch `s2-delve-mockup`: `docs/design/mockups/delve-screens.html`, published https://claude.ai/artifact/2Gu4qWixkZLkPfU2oN1Jn3 (12 frames: start card, choice room, room card, breather, scout seen and heard, Auto, Retreat, won, retreated, routed, 443 px). Fresh check 1 major, 5 minor, all fixed (109,037 tokens). Proposed, for the owner: an approach picker on the start card, the room count on the track, off guard on either entry way, the Retreat confirm, the barrow room words.
 - 2026-11-05 S1 merged as PR #48: the barrow fight plays to the end at `/play.html`, saves after every command, reload repeats the fight. Branch review 2 major, 10 minor, all fixed (https://claude.ai/artifact/HsxCeJogF6iDDYV19z4ogP). Random legal play won 300 of 300 sample fights in 4.1 rounds on average (one room; balance is S2).
@@ -28,7 +29,7 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 
 ## Next
 
-1. Slice S2 (one delve): build on branch `s2-delve-mockup` (the mock-up is committed there) to D-232's page per the spec (rooms, Auto, retreat, loot, balance scenarios `delve-careful` and `delve-auto`). After S2, stop for the owner's playtest (D-230). Watch: S1's single fight is easy (random play won 300/300); balance is S2's job.
+1. Slice S2 (one delve): fix the independent branch review's findings, publish the review page, ask the owner's approval, then the PR (D-133) on branch `s2-delve-mockup`; built to D-232's page per the spec (rooms, Auto, retreat, loot, balance scenarios `delve-careful` and `delve-auto`). After S2, stop for the owner's playtest (D-230). Watch: S1's single fight is easy (random play won 300/300); balance is S2's job.
 2. Art: any more OpenArt spend needs a new approval with an exact quote, references included (LESSONS). The repo is public; OpenArt Starter images are non-commercial only. The engine test verdict (60 fps, 15 px, screen reader; D-154) is still the owner's to record.
 
 ## Open questions
