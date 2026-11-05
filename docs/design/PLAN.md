@@ -483,7 +483,7 @@ Decisions: D-079..D-081, D-109, D-112. Every item is a data entry (GAME-04, D-04
 
 - **Guild house:** 11 building kinds, each 1–3 cells wide with 3 levels (D-172): 7 rooms on stacked floors and 4 in the compound (D-168, D-169, D-180); replaces 5 facilities × 3 levels (D-075). Incident letters (D-173) are extra templates, not yet counted in §7e.
 - **Home-town sites: 5** × 3 levels, funded by patronage (D-171).
-- **Gear:** 4 tiers × about 10 kit types (to revisit when the slots and items of D-143 are designed); about 30 magic-item templates that generate storied items, plus about 10 authored legendary items placed in the region.
+- **Gear:** 6 rarities, 3 of them in gate 1 with about 25 items (D-221; was 4 tiers × about 10 kit types); about 30 magic-item templates that generate storied items, plus about 10 authored legendary items placed in the region.
 - **Guild traits:** about 25 earnable traits (D-020, D-075).
 - **Charter options:** values scale, about 8 specialties, about 12 house rules.
 
