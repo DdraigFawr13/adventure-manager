@@ -1,29 +1,35 @@
 # Handoff
 
-Updated: 2026-11-05 (fifteenth session: replan round 1 and art styles round 1 sent to the owner). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-11-05 (fifteenth session: art style chosen and merged as PR #42; replan approved, its decisions on a branch). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
-Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-061), plan approved 2026-10-26 (M0, D-115) with the plan review's decisions (D-108..D-114). Plan: `docs/design/PLAN.md`; game code may now start (D-001 lifted). Mobile first since D-150: phones lead, Windows after launch.
+Replanned on 2026-11-05: the owner approved a plan of fun gates in place of milestones M1–M7 (final page https://claude.ai/artifact/2cm2Vq1AVd8tUNBDEHSnLX). Its decisions are written on branch `ccr-80475cbd-9krsou` (one commit) and wait for review and the PR; until they merge, read that branch's DECISIONS tail and AGENTS.md "Phases". The game is for the owner to love first; launch is decided at gate 4. About 30–40 h a week.
+
+## Plan map
+
+- ✔ Concept, style, first plan (D-045, D-061, D-115)
+- ✔ M1 prototypes so far: engine, year simulator, balance runner, phone map, text prototype (kept)
+- ✔ Art style: hand-painted stylised, first prototype art (D-211, D-212, PR #42)
+- ✔ Replan approved 2026-11-05 (decisions PR pending)
+- ▶ Gate 0, design: fight, gear and weekly-budget forms, mock-ups, gate 1 spec
+- ○ Gate 1, one delve: recruit, equip, budget, map trip, delve, fights the owner plays, letter home. Passes when after 3 delves the owner wants a 4th
+- ○ Gate 2, one season · ○ Gate 3, one year · ○ Gate 4, launch decision
 
 ## Just done
 
-- 2026-11-05 Art pass (owner approved ~1,300 OpenArt credits): round 1 (https://claude.ai/artifact/4sF3AG1pvsHmkADi9BeWmV), none fit; round 1.5 (https://claude.ai/artifact/67JNyMKgWrgEXJWqHs6UFc), owner: "simpler actually more like world of warcraft type but a bit more detail portrait"; round 2.5 (https://claude.ai/artifact/Tg8NV2dAwWwGZ4rrpmK6jD), "V1 everywhere". Recorded as a new decision on branch `ccr-80475cbd-9krsou` (STYLE §4, §7), with 8 V1 pieces in `docs/design/art/`.
-- 2026-11-05 Gallery of the 8 pieces: https://claude.ai/artifact/QW7go1gYLQdJkMRSA593eg (collection `art4`: keep or redo, where to use them). Spend 1,336 credits (balance 3,345 → 2,009), 36 over the approved ~1,300: image references cost 47 an image, not the quoted 42 (LESSONS). Branch review: 10 findings, 9 fixed, 1 kept (owner's quote): https://claude.ai/artifact/1nPhE5RQiuSggAGzoHXMvU; PR waits for the owner's approval (D-133).
-- 2026-11-05 Gallery verdict: keep 4 portraits and wight; redo house and town "simpler and cleaner, more like a cities skyline type game view"; the map stays the game's own `/map.html` with subtle detail in code (owner's choice). Recorded as a new decision on the branch. Redo, 188 credits approved and spent (2,009 → 1,821): https://claude.ai/artifact/3dTDymwhRgPETKoNALTSxR (collection `art5`). Branch has commits after its review, so it needs a new review before the PR.
-- 2026-11-05 Replan review answered (`review1`): agreed all findings; slice-size content until the one-year gate; gate 1 = one party recruited, equipped (3 slots, 3 tiers), weekly budget split, map trip, delve; owner wants to control each adventurer in fights ("choose actions and targets… turn order and skills and formations… no movement"; like Raid), which reopens D-003 and D-207; wear and scars after gate 1; more than 20 h a week; pass line and stop test still blank. OpenArt terms checked (https://openart.ai/terms §4.1): Starter is non-commercial only; commercial needs Plus. Final page: https://claude.ai/artifact/2cm2Vq1AVd8tUNBDEHSnLX (collection `final`).
+- 2026-11-05 Art pass merged as PR #42 (owner approved; docs-only, CI skipped by design): hand-painted stylised illustrations (D-211), keep/redo verdict (D-212), 9 prototype images and their ledger in `docs/design/art/`. Two reviews: https://claude.ai/artifact/1nPhE5RQiuSggAGzoHXMvU. OpenArt spend 1,524 credits in all (balance 3,345 → 1,821); detail in `docs/archive/handoff-2026-11.md`.
+- 2026-11-05 Replan with `planning-interview`, ideas borrowed from Project Rotam: round 1 https://claude.ai/artifact/SqLn32L2NujjzvkFUaTCJr, review https://claude.ai/artifact/RzNpGDedS38dtJKcnNFJFS, final https://claude.ai/artifact/2cm2Vq1AVd8tUNBDEHSnLX ("Approved, start building"). Fun gates; slice-size content until gate 4; the owner commands each adventurer in fights they lead; 3 gear slots and 3 tiers; a weekly budget; craftsmen in gate 2; OpenArt images shareable for non-commercial use only.
 - 2026-11-03 Combat and fun brainstorm: https://claude.ai/artifact/NiWZ2Tg3yYcgxym1GJ3tDA. Owner chose the direction (D-207): turn-based orders in the main fight, foe intents, delves room by room; per-adventurer turns or grid tactics only if playtests call for them. Non-combat picks: four in round 1 (D-208: nemeses, personal quests, growing threats, storied gear). Round 2 (same page): two idea clusters and five more picks (D-209), clients who lie now and three later (D-210). Merged (PR #40); review: https://claude.ai/artifact/Lq6fjTatznbBgkneGkmSdv.
 
 ## Next
 
-0. When the owner says "final done", read `final` (7 last questions and approval; notes can overrule options). After approval record DECISIONS (replacing D-099 milestones, parking D-156/D-109 as needed), the HANDOFF plan map (WS-08), and start `write-spec` for gate 0/1. Art: read `art4`; any more OpenArt spend needs a new approval with an exact quote. Branch `ccr-80475cbd-9krsou`: PR only after the owner approves the review page.
-1. Plan D-207's fights and delve with the owner (planning-interview forms), then prototype one fight on the watched-quest page (D-127) and judge the punch before building the delve. Plan D-208/D-209's ideas alongside as two clusters, a living threat and a life on the road, plus clients who lie as a contract twist (D-210); mentors, the rival race and trouble in town later (D-210); storied gear in the gear workshop (D-143).
-2. Engine test verdict (D-110, D-154, D-167): the owner opens `/map.html` on their phone and judges 60 fps pinch and pan, 15 px text and a screen reader; record the verdict. Known gaps: the atlas's own lettering (title, scale) isn't enlarged; map.js 710 KB.
-3. Letters, people and real time (D-203, D-204): what would make letters and people vivid (owner: "we will flesh that out"), and the step 4 page on a real-time clock with the map; design with the owner before building. R7 reruns after.
-4. Open from house work: the inn fee is one number until the town's inn is in the engine; town sites (D-171, D-179, D-184) designed but not in the engine; draft fees unconfirmed (purse confirmed, D-205).
-5. Gear (D-143): workshop with the owner before the year simulator uses gear.
-6. R1 notes (D-132): hidden items and branching paths wait for quest design. Tuning left: reckless doubles deaths only on perilous work; injuries per death ~2.5–5 on composed contracts (target ~5).
-7. Master follow-up: before the first `ui-mockups` use, STYLE.md needs `Minimum text`, `Minimum tap` and `Where facts live` lines (15 px, D-166; 44 px, D-167), else the skill asks once; mock-ups stay in `docs/design/mockups/` with `tools/mockup-shot.mjs`.
+1. Replan decisions branch: when its review is in, fix findings, publish them, ask the owner to approve the PR, then merge (D-133). HANDOFF and roadmap commits go straight to `main` (D-194).
+2. Gate 0, fight design: a `planning-interview` form on the fight the owner chose (per-adventurer turns by speed, skill and target, front and back rows, no movement, foe intents; fights not led resolve on their own). Builds on D-118's exchanges and D-130's class actions.
+3. Gate 0, gear and budget workshop: 3 slots, 3 tiers, prices; the weekly split between training, gear and healing (refines D-143, D-186).
+4. Mock-ups (`ui-mockups`) of the fight, party-and-gear and budget screens; before the first use, STYLE.md needs `Minimum text`, `Minimum tap` and `Where facts live` lines (15 px, D-166; 44 px, D-167). Then the gate 1 spec (`write-spec`).
+5. Map: subtle painted detail on `/map.html` in code (D-212), mock-up first. The engine test verdict (60 fps, 15 px, screen reader; D-154) is still the owner's to record.
+6. Art: the kept pieces go into the prototype pages in gate 1. Any more OpenArt spend needs a new approval with an exact quote, references included (LESSONS). The repo is public; OpenArt Starter images are non-commercial only.
 
 ## Open questions
 
@@ -31,8 +37,8 @@ Build, milestone M1 (prototypes). Design phases done: concept (D-045), style (D-
 - Network policy (measured, D-167): `api.vercel.com` and `dl.google.com` are blocked here, so no Vercel CLI deploys and no Android SDK in sessions; the owner's setting, not needed while Vercel builds from GitHub.
 - Mobile first (D-150): the phone sources for the §1d measures, and the phone versions of the Steam store page, wishlists, playtest recruiting and Early Access (D-099, D-100, D-113). Open too: the tablet layout. The test laptop in the budget (PLAN §14) may no longer be needed before launch.
 - Engine findings from R4, for the owner: two people can get the same full name (`packages/engine/src/guild/people.ts:68` draws given and family names independently; seed phone-2 has two Ash Thornes); at week 23 of seed phone-1, 23 of 30 members rest from wounds (maybe balance).
-- Kingdom map art direction (D-097, D-144): Story-Generator layout as the base; geography review in the workshop.
-- Later, tier not set: 20 class levels (D-074); intrigue (D-069); exploring the wilds (D-136); quest board flair (STYLE §4); bardic songs (D-056).
+- Kingdom map art direction (D-097, D-144): the game's own map keeps its look with detail in code (D-212); geography review in the workshop.
+- Later, tier not set: 20 class levels (D-074); intrigue (D-069); exploring the wilds (D-136); bardic songs (D-056).
 
 ## Working style with the owner
 
