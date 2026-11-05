@@ -59,14 +59,14 @@ code { font-family: var(--mono); font-size: .85em; }
 
 <div class="wrap">
   <header>
-    <span class="meta">Updated 5 November 2026, twenty-first session · gate 1, slice 2: delve screens approved</span>
+    <span class="meta">Updated 5 November 2026, twenty-first session · gate 1, slice 2 merged: one delve</span>
     <h1>Adventure Manager roadmap</h1>
     <p class="sub">Where the design stands, what comes next, and what is parked for later. This page is a view of <code>docs/HANDOFF.md</code> and <code>docs/design/PLAN.md</code>; if they ever disagree, the handoff wins.</p>
   </header>
 
   <section class="now" aria-labelledby="now">
     <span class="pill p-now">Now</span>
-    <h2 id="now">Gate 1: slice 2, one delve: you approved its screens; the build is next</h2>
+    <h2 id="now">Gate 1: slice 2, one delve, is merged; your barrow playtest is next</h2>
     <p>Gate 0 designs the fight, gear and weekly budget on phone forms before any code; the fight, gear and budget are approved.</p>
     <ul class="m1">
       <li><span class="pill p-done">Done</span> <span>Code standards, engine workspace, named random streams, self-explaining values, approved tools (D-114, D-117)</span></li>
@@ -111,7 +111,8 @@ code { font-family: var(--mono); font-size: .85em; }
       <li><span class="pill p-done">Done</span> <span>You approved the <a href="https://claude.ai/artifact/7V4yjafsYVxhL7YhXyv26A">gate 1 spec</a> (D-230), merged as PR #47: 6 slices (one fight, one delve, the loop, gear, money and drills, art and the map), checked by fresh reviewers (about 100 findings fixed). Your answers: a stop after slice 2 so you can play barrow delves and judge the fights, and D-218 amended to the simpler roll design</span></li>
       <li><span class="pill p-done">Done</span> <span>Slice 1, one fight. The <a href="https://claude.ai/artifact/9aFFu1Ljhbm4DLYQrtMqfY">fit check</a> you approved (D-231): layout C fits a 375 × 667 phone (667 px, stage 327 px), with a tag only on the picked foe and the adventurer acting, and each foe's intent as a mark like "Bite → Wenna". Then the build: <code>/play.html</code> opens straight into a barrow fight, the sample party against 3 hounds and an archer; hit % and damage before each strike, a save after every move, the same fight after a reload, a New fight button. Random play won 300 of 300 sample fights in 4.1 rounds (one room; balance comes with slice 2). Review: 2 major and 10 minor findings, all fixed (<a href="https://claude.ai/artifact/HsxCeJogF6iDDYV19z4ogP">findings</a>). Merged (PR #48)</span></li>
       <li><span class="pill p-done">Done</span> <span>Slice 2's <a href="https://claude.ai/artifact/2Gu4qWixkZLkPfU2oN1Jn3">delve screens</a>, approved with every proposal (D-232): a start card where you pick stealth, assault or talk; a track of the 5 or 6 rooms; choice rooms where you pick the way and who tries; a room card before each fight; the breather with Scout ahead; Auto with "Save skills for the boss"; Retreat that asks first; and the end screens for won, retreated and routed. An independent check found 1 major and 5 minor problems, all fixed before you saw it</span></li>
-      <li><span class="pill p-soon">Next</span> <span>Slice 2's build: a whole barrow delve at <code>/play.html</code> with rooms, Auto, retreat and loot, tuned to D-229's targets; then you play barrow delves and judge the fights (D-230)</span></li>
+      <li><span class="pill p-done">Done</span> <span>Slice 2, one delve: a whole Hollow Barrow delve at <code>/play.html</code>. Pick the approach, choice rooms, 5 or 6 rooms ending at the warden, the breather, Scout ahead, Auto and Retreat, and the parts you find. Tuned to D-229: played carefully, 9.9% of 1,000 delves cost a life (target 8–12%). Auto wins 93.2% against the careful player's 76.1% because it never retreats; you chose to judge that in your playtest (D-233). Review: 4 major and 8 minor findings, all fixed but one minor (<a href="https://claude.ai/artifact/PABgUTS9GuW4oNRTeDMmKa">findings</a>). Merged (PR #49)</span></li>
+      <li><span class="pill p-now">Now</span> <span>Your playtest (D-230): play a few barrow delves at <code>/play.html</code> on your phone; are the fights fun, and how does Auto feel? Slice 3 (the loop: recruit, the map, the road, the letter home) waits for your verdict</span></li>
       <li><span class="pill p-wait">Then</span> <span>Gate 1, one delve: recruit and equip a party, send them across the map, play the delve and its fights, read their letter. It passes when after 3 delves you want a 4th</span></li>
       <li><span class="pill p-wait">Then</span> <span>Gate 2, one season · gate 3, one year · gate 4, the launch decision</span></li>
     </ul>

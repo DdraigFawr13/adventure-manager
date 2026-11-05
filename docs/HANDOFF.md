@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-05 (twenty-first session: S2 built and reviewed, waiting for the owner's PR approval). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-11-05 (twenty-first session: S2 one delve merged as PR #49; the owner's playtest is next). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
@@ -13,12 +13,13 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 - ✔ Art style: hand-painted stylised, first prototype art (D-211, D-212, PR #42)
 - ✔ Replan approved and recorded (D-213–D-217, PR #43)
 - ▶ Gate 0, design: ✔ fight (D-218–D-220); ✔ gear and budget (D-221–D-223); ✔ mock-ups (D-224, D-225, PR #46); ✔ gate 1 spec (D-226–D-230, PR #47)
-- ▶ Gate 1: ✔ S1 one fight (D-231, PR #48); ▶ S2 one delve: ✔ mock-up (D-232); ✔ the build and branch review; ○ the owner's PR approval, then the owner's playtest
+- ▶ Gate 1: ✔ S1 one fight (D-231, PR #48); ✔ S2 one delve (D-232, D-233, PR #49); ▶ the owner's barrow playtest (D-230)
 - ○ Gate 1, the rest: recruit, equip, budget, map trip, delve, fights the owner plays, letter home. Passes when after 3 delves the owner wants a 4th
 - ○ Gate 2, one season · ○ Gate 3, one year · ○ Gate 4, launch decision
 
 ## Just done
 
+- 2026-11-05 S2 merged as PR #49 (CI green): a whole Hollow Barrow delve at `/play.html`. Owner approved with D-233: Auto's win-rate gap (93.2% vs careful 76.1%, Auto never retreats) is judged in the playtest.
 - 2026-11-05 S2 branch review: 4 major, 8 minor, all fixed but one (the "rose with 3 health" note is lost on reload); review page https://claude.ai/artifact/PABgUTS9GuW4oNRTeDMmKa (source `docs/design/mockups/review-s2-branch.html`). Bleed retuned to 1,095 bp for the spec's interval rule; baselines re-saved (5eb546c).
 - 2026-11-05 S2 page built (commit 9c88571): start card with approach, choice rooms, room card, breather, scout and rows, Auto every 600 ms, Retreat card, delve end; `play-shot delve` plays a whole delve on Auto (ok, no console errors). Baselines `delve-careful` and `delve-auto` saved (ec4b2ae); career baselines unchanged (classic 20 of 20 identical). Known: 5-foe rooms overlap intent marks (D-225 crowding).
 - 2026-11-05 S2 engine on `s2-delve-mockup` (commit 22460dc): rooms, choices, scout and rows, breather, Auto, retreat, loot; tests `delve-rooms`, `delve-auto`; balance runner delve mode (`delve-careful`, `delve-auto`, `--compare-policy`). Tuned: bleed 3,000 → 1,095 bp, warden health 40 → 34; careful loses a life in 9.9% [8.1–11.8] of 1,000 delves (spec band 8–12, ok). Auto vs careful (paired): win rate +17.1 points [14.1–20.0] NOT MET (Auto never retreats), less health −8.6 ok, more skill uses left +4.1 (reported); the owner's call.
@@ -30,7 +31,7 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 
 ## Next
 
-1. Slice S2 (one delve): the owner approves the PR on the review page (and decides D-220's Auto win-rate gap); then create the PR from `s2-delve-mockup`, merge when CI is green, then the owner's playtest (D-230) per the spec (rooms, Auto, retreat, loot, balance scenarios `delve-careful` and `delve-auto`). After S2, stop for the owner's playtest (D-230). Watch: S1's single fight is easy (random play won 300/300); balance is S2's job.
+1. The owner's playtest (D-230): the owner plays a few barrow delves at `/play.html` on the phone and says whether the fights are fun and how Auto feels (D-233); record the verdict in DECISIONS in their words. Then slice S3 (the loop) in a fresh session from `main`, starting with its mock-ups if it changes screens. Open from S2: the "rose with 3 health" note is lost on reload; 5-foe rooms crowd the intent marks (S6).
 2. Art: any more OpenArt spend needs a new approval with an exact quote, references included (LESSONS). The repo is public; OpenArt Starter images are non-commercial only. The engine test verdict (60 fps, 15 px, screen reader; D-154) is still the owner's to record.
 
 ## Open questions
