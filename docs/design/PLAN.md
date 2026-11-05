@@ -740,6 +740,8 @@ Decisions: D-097, D-098, D-109, D-113. Inputs: STYLE §1–§8 (locked), content
 
 ### 12a. Made by hand vs generated (Accepted 2026-10-26, D-098)
 
+**Stale under D-211 (2026-11-05):** illustrations are now hand-painted stylised, so the ink and hatched items below (site stamps, monster cards, portrait parts) and the costs in §12c, priced for ink, need re-estimating in the replan.
+
 The rule: an artist draws **parts and set pieces**; code **assembles** them (GAME-04). Generated images from AI tools are for exploration only, never shipped, until licence and store-disclosure checks pass (D-094).
 
 | Asset | Made by | How much (launch) |
@@ -767,6 +769,8 @@ The rule: an artist draws **parts and set pieces**; code **assembles** them (GAM
 | Bardic songs (D-056) | After launch | — |
 
 ### 12c. Cost estimate (rough) (Accepted 2026-10-26, D-098)
+
+**Stale under D-211 (2026-11-05):** priced for ink pieces; not re-estimated for hand-painted art.
 
 | Area | Low | High | Basis (estimate) |
 |---|---|---|---|
