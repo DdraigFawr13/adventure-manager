@@ -58,7 +58,7 @@
     "band.dead": "Dead",
     "band.fled": "Fled",
     "band.unhurt": "Unhurt",
-    "pick.action": "Pick an action, then tap a target.",
+    "pick.action": "Tap a target to see the odds; tap it again to act.",
     "pick.target": "{target} {hit}% · {min}–{max}. Tap again to {verb}.",
     "pick.heal": "{target}: heals {amount}. Tap again to {verb}.",
     "pick.raise": "{target} is {band}. Tap again to raise them to {amount}.",
@@ -74,6 +74,25 @@
     "end.injury": "injured",
     "save.unreadable": "The saved fight could not be read; it was kept aside and a new fight began.",
     "save.older": "This fight was saved under older rules; numbers may differ from now on.",
-    "new.fight": "New fight"
+    "new.fight": "New fight",
+    "row.word.front": "front",
+    "row.word.back": "back",
+    "later": "From slice 2",
+    "order": "Turn order this round"
+  },
+  "log": {
+    "hit": "{actor} → {target}: {damage}",
+    "miss": "{actor} misses {target}",
+    "heal": "{actor} → {target}: +{amount}",
+    "raise": "{target} is back on their feet",
+    "item": "{actor} uses a {item}",
+    "guard": "{actor} guards {target}",
+    "ward": "{actor} wards the party",
+    "haste": "{actor} hastens {target}",
+    "swap": "{actor} moves to the {row} row",
+    "down": "{target} is Down",
+    "dying": "{target} is Dying",
+    "died": "{target} dies",
+    "fled": "The foes flee"
   }
 }
