@@ -43,7 +43,7 @@ Rejected: ledger tabs with Letters as home (the region gets sidelined), desk-as-
 - The dungeon or site map draws itself in ink as the party explores, with the scout's margin notes; unexplored space stays blank vellum. The finished map can go into the Chronicle (D-042).
 - Adventurers and monsters are flat portrait standees on bases; a fallen member tips over. Positions are loose, not a grid: the board shows the simulation and isn't a tactics game (D-004).
 - Key moments arrive as a wax seal on the map and stop the calendar.
-- **More fantasy flair** than the mock-up (owner's note). To define when art direction starts; candidates: illuminated initials and cartouches, painted monster vignettes in the margins, glowing or gilded ink for magic and wards.
+- **More fantasy flair** than the mock-up (owner's note). Settled by D-211 (hand-painted stylised illustrations). Earlier candidates, kept for the record: candidates: illuminated initials and cartouches, painted monster vignettes in the margins, glowing or gilded ink for magic and wards.
 - **Later (owner's note):** standee animations and effects: moves, attacks, reactions, spell effects. Not at launch. Like every board movement, they play simulation events and never decide anything (GAME-02).
 
 Owner's note: "B but with a bit more fantasy flare to be added to the art styling. I will also eventually want like effects of moves and reactions of the standees and animations of them doing various things but for now it works great."
@@ -83,6 +83,8 @@ Rejected: Alegreya family (too plain), Grenze family, scribe's hand, Texturina t
 Rejected: wax seals for every icon (blur at 16 px, clash with the "bad" colour), painted miniatures (cost, mushy when small), clean line glyphs (no period character).
 
 ## 7. Portraits (Accepted 2026-10-26)
+
+**Amended (2026-11-05, D-211):** portraits are hand-painted stylised from the start, in the same simple look as the rest of the illustrations; the woodcut cameo below is replaced. Parts, seeds, scars and the mourning corner stay as written.
 
 **Woodcut portraits to start, painted portraits later.** Mock-up: `docs/design/mockups/portraits.html` (option A now, option C later).
 
