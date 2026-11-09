@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-05 (twenty-first session: S2 one delve merged as PR #49; the owner's playtest is next). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
+Updated: 2026-11-09 (twenty-second session: whole-repo audit, waiting for the owner's replies; the owner's playtest is still next). A fresh session must be able to continue from this file alone. Keep it to 60 lines; move finished entries to `docs/archive/handoff-YYYY-MM.md`.
 
 ## Phase
 
@@ -19,6 +19,7 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 
 ## Just done
 
+- 2026-11-09 Whole-repo audit at a2d9c60: `docs/audit/2026-11-09-repo.md` (22 findings, none high, 4 medium: F1 `delve.start` validation, F2 deploy docs and the CI-05 override, F3 silent failed save, F4 gate 1 content test). Reply page https://claude.ai/artifact/S5uezSoys6HDWdj5Cs8eGh (collection `audit-2026-11-09`). On branch `ccr-dc704b7e-26b9po`, no PR yet (D-133), no code changed.
 - 2026-11-05 S2 merged as PR #49 (CI green): a whole Hollow Barrow delve at `/play.html`. Owner approved with D-233: Auto's win-rate gap (93.2% vs careful 76.1%, Auto never retreats) is judged in the playtest.
 - 2026-11-05 S2 branch review: 4 major, 8 minor, all fixed but one (the "rose with 3 health" note is lost on reload); review page https://claude.ai/artifact/PABgUTS9GuW4oNRTeDMmKa (source `docs/design/mockups/review-s2-branch.html`). Bleed retuned to 1,095 bp for the spec's interval rule; baselines re-saved (5eb546c).
 - 2026-11-05 S2 page built (commit 9c88571): start card with approach, choice rooms, room card, breather, scout and rows, Auto every 600 ms, Retreat card, delve end; `play-shot delve` plays a whole delve on Auto (ok, no console errors). Baselines `delve-careful` and `delve-auto` saved (ec4b2ae); career baselines unchanged (classic 20 of 20 identical). Known: 5-foe rooms overlap intent marks (D-225 crowding).
@@ -31,6 +32,7 @@ Replanned on 2026-11-05: the owner approved a plan of fun gates in place of mile
 
 ## Next
 
+0. Audit: when the owner says "audit replies done", read the replies, fill the report's Outcome, add accepted findings here, then ask approval for the report's PR (audit skill, "After the owner replies").
 1. The owner's playtest (D-230): the owner plays a few barrow delves at `/play.html` on the phone and says whether the fights are fun and how Auto feels (D-233); record the verdict in DECISIONS in their words. Then slice S3 (the loop) in a fresh session from `main`, starting with its mock-ups if it changes screens. Open from S2: the "rose with 3 health" note is lost on reload; 5-foe rooms crowd the intent marks (S6).
 2. Art: any more OpenArt spend needs a new approval with an exact quote, references included (LESSONS). The repo is public; OpenArt Starter images are non-commercial only. The engine test verdict (60 fps, 15 px, screen reader; D-154) is still the owner's to record.
 
